@@ -14,7 +14,6 @@
 </script>
 
 <svelte:head>
-  <title>GreenSloth</title>
   <meta
     name="description"
     content="Photosynthesis models at your pace - browse, compare, and explore curated ODE models of photosynthesis."

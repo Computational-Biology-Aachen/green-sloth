@@ -30,6 +30,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>GreenSloth</title>
+</svelte:head>
+
 <!-- Slide 1: Hero -->
 <Section>
   <div class="hero-inner">
