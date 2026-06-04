@@ -72,7 +72,7 @@
 </script>
 
 <svelte:head>
-  <title>Models — GreenSloth</title>
+  <title>Models - GreenSloth</title>
 </svelte:head>
 
 <SectionHeader>

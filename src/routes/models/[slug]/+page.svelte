@@ -32,7 +32,7 @@
 </script>
 
 <svelte:head>
-  <title>{data.meta.title} — GreenSloth</title>
+  <title>{data.meta.title} - GreenSloth</title>
 </svelte:head>
 
 <SectionHeader width="narrow">

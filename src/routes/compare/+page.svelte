@@ -129,7 +129,7 @@
 </script>
 
 <svelte:head>
-  <title>Compare models — GreenSloth</title>
+  <title>Compare models - GreenSloth</title>
 </svelte:head>
 
 <SectionHeader>

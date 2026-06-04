@@ -10,6 +10,10 @@
   } from "@computational-biology-aachen/design";
 </script>
 
+<svelte:head>
+  <title>About - GreenSloth</title>
+</svelte:head>
+
 <SectionHeader>
   <div class="header-row">
     <H1 color="light">About Us</H1>
