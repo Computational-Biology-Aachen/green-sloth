@@ -1,5 +1,4 @@
 <script lang="ts">
-  import cpblLogo from "$lib/assets/cpbl-logo.svg";
   import elouen from "$lib/assets/elouen.jpeg";
   import {
     H1,
@@ -14,20 +13,8 @@
   <title>About - GreenSloth</title>
 </svelte:head>
 
-<SectionHeader>
-  <div class="header-row">
-    <H1 color="light">About Us</H1>
-    <a
-      href="https://www.cpbl.rwth-aachen.de/go/id/sazuq/?lidx=1"
-      target="_blank"
-    >
-      <img
-        src={cpblLogo}
-        alt="RWTH Computational Life Science"
-        class="rwth-logo"
-      />
-    </a>
-  </div>
+<SectionHeader width="narrow">
+  <H1 color="light">About Us</H1>
 </SectionHeader>
 
 <Section
