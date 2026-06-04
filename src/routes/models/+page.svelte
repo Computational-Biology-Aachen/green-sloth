@@ -1,5 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import { models } from "$lib/models";
   import {
     ButtonTab,
     CardModel,
@@ -7,7 +8,6 @@
     Section,
     SectionHeader,
   } from "@computational-biology-aachen/design";
-  import { models } from "$lib/models";
 
   // Optional per-model scheme image, co-located in src/lib/models/<slug>/.
   const schemeModules = import.meta.glob("../../lib/models/*/scheme.svg", {

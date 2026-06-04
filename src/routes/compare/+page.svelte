@@ -132,7 +132,7 @@
   <title>Compare models - GreenSloth</title>
 </svelte:head>
 
-<SectionHeader>
+<SectionHeader width="narrow">
   <H1 color="light">Compare</H1>
 </SectionHeader>
 
