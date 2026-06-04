@@ -71,18 +71,6 @@
 </Section>
 
 <style>
-  .header-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-6);
-  }
-
-  .rwth-logo {
-    filter: brightness(0) invert(1);
-    height: 3rem;
-  }
-
   .about-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
