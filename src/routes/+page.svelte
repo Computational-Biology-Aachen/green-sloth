@@ -5,7 +5,6 @@
     Button,
     H1,
     H2,
-    Imprint,
     Section,
     Tabs,
     Text,
@@ -129,8 +128,6 @@
     {/snippet}
   </Tabs>
 </Section>
-
-<Imprint github="https://github.com/Computational-Biology-Aachen/greensloth" />
 
 <style>
   .hero-inner {
