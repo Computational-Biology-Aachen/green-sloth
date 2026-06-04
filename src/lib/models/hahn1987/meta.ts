@@ -8,4 +8,5 @@ export const meta: ModelMeta = {
     "Part of Photosynthesis": ["CBB Cycle"],
     Demonstrations: [],
   },
+  analyses: [{ type: "timecourse", tEnd: 100, nTimePoints: 500 }],
 };

@@ -29,9 +29,6 @@
   }
 
   const model = $derived(initFor(data.slug));
-  const tEnd = $derived(data.meta.sim?.tEnd ?? 100);
-  const nTimePoints = $derived(data.meta.sim?.nTimePoints ?? 500);
-  const variables = $derived(data.meta.sim?.variables);
 </script>
 
 <svelte:head>
@@ -80,9 +77,7 @@
   {#if model}
     <ModelDashboard
       model={model}
-      tEnd={tEnd}
-      nTimePoints={nTimePoints}
-      variables={variables}
+      analyses={data.meta.analyses}
     />
   {:else}
     <Text>Model could not be loaded.</Text>

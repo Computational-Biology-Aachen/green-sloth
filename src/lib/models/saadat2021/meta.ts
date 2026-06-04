@@ -1,4 +1,5 @@
 import type { ModelMeta } from "$lib/types";
+import { defaultPamProtocol } from "$lib/models/pamProtocols";
 
 export const meta: ModelMeta = {
   slug: "saadat2021",
@@ -23,4 +24,18 @@ export const meta: ModelMeta = {
       "Fitting of NPQ",
     ],
   },
+  analyses: [
+    { type: "timecourse", title: "Time course", tEnd: 100, nTimePoints: 500 },
+    {
+      type: "pam",
+      title: "PAM fluorescence",
+      ppfdKey: "PPFD",
+      pamProtocol: defaultPamProtocol,
+      showDerived: true,
+      variables: ["GAP", "atp"],
+      normalizedKeys: ["GAP", "atp"],
+      nTimePoints: 100,
+      timeoutInSeconds: 120,
+    },
+  ],
 };

@@ -1,30 +1,32 @@
 <!--
  @component
- Interactive-lite analysis dashboard: auto-runs a short time course (WASM
- RADAU5) on mount and exposes sliders for any parameter/variable that declares
- one in its model.ts. Client-only (runs a Web Worker).
+ Interactive-lite analysis dashboard: auto-runs every analysis declared in the
+ model's meta (time courses and PAM protocols) on mount and exposes sliders for
+ any parameter/variable that declares one in its model.ts. Moving a slider
+ re-runs all analyses. Client-only (runs a Web Worker).
 -->
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { Slider2 as Slider } from "@computational-biology-aachen/design";
+  import { H3, Slider2 as Slider } from "@computational-biology-aachen/design";
   import type { ModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+  import Pam from "./Pam.svelte";
   import { backends } from "./stores/backends";
   import TimeCourse from "./TimeCourse.svelte";
+  import type { ModelAnalysis } from "./types";
 
   let {
     model,
-    tEnd,
-    nTimePoints = 500,
-    variables = undefined,
+    analyses,
   }: {
     model: ModelBuilder;
-    tEnd: number;
-    nTimePoints?: number;
-    /** Variables to plot; omitted → all. */
-    variables?: string[];
+    analyses: ModelAnalysis[];
   } = $props();
 
-  let timeCourse = $state<TimeCourse | undefined>();
+  const DEFAULT_TIMEOUT = 30;
+  const DEFAULT_N_TIME_POINTS = 500;
+
+  type Runnable = { runSimulation: (model: ModelBuilder) => void };
+  let analysisRefs = $state<Array<Runnable | undefined>>([]);
 
   type SliderDef = {
     key: string;
@@ -85,23 +87,12 @@
       const vari = model.variables.get(def.id);
       if (vari) model.updateVariable(def.id, { ...vari, value });
     }
-    timeCourse?.runSimulation(model);
+    for (const ref of analysisRefs) ref?.runSimulation(model);
   }
 </script>
 
 {#if browser}
   <div class="dashboard">
-    <TimeCourse
-      bind:this={timeCourse}
-      {model}
-      {tEnd}
-      {nTimePoints}
-      backend={backends.wasmRadau5}
-      selectedKeys={variables}
-      timeoutInSeconds={30}
-      lineDisplay="last"
-    />
-
     {#if sliderDefs.length > 0}
       <div class="sliders">
         {#each sliderDefs as def (def.key)}
@@ -117,6 +108,43 @@
         {/each}
       </div>
     {/if}
+    {#each analyses as analysis, i (i)}
+      <div class="analysis">
+        {#if analysis.title}
+          <H3>{analysis.title}</H3>
+        {/if}
+        {#if analysis.type === "pam"}
+          <Pam
+            bind:this={analysisRefs[i]}
+            model={model}
+            pamProtocol={analysis.pamProtocol}
+            ppfdKey={analysis.ppfdKey}
+            fluoKey={analysis.fluoKey}
+            yMax={analysis.yMax}
+            backend={backends.wasmRadau5}
+            selectedKeys={analysis.variables}
+            normalizedKeys={analysis.normalizedKeys}
+            showDerived={analysis.showDerived ?? false}
+            nTimePoints={analysis.nTimePoints ?? DEFAULT_N_TIME_POINTS}
+            timeoutInSeconds={analysis.timeoutInSeconds ?? DEFAULT_TIMEOUT}
+            lineDisplay="last"
+          />
+        {:else}
+          <TimeCourse
+            bind:this={analysisRefs[i]}
+            model={model}
+            tEnd={analysis.tEnd}
+            backend={backends.wasmRadau5}
+            selectedKeys={analysis.variables}
+            normalizedKeys={analysis.normalizedKeys}
+            showDerived={analysis.showDerived ?? false}
+            nTimePoints={analysis.nTimePoints ?? DEFAULT_N_TIME_POINTS}
+            timeoutInSeconds={analysis.timeoutInSeconds ?? DEFAULT_TIMEOUT}
+            lineDisplay="last"
+          />
+        {/if}
+      </div>
+    {/each}
   </div>
 {/if}
 
@@ -125,6 +153,13 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
+    width: 100%;
+  }
+
+  .analysis {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
     width: 100%;
   }
 

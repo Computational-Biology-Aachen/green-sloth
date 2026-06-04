@@ -6,7 +6,16 @@ export const meta: ModelMeta = {
   title: "Matuszynska 2016 (PhD)",
   DOI: "",
   tags: {
-    "Part of Photosynthesis": ["PSII", "ATP Synthase", "Cytochrome b6f", "PQ Cycle", "PC", "FNR", "PSI"],
+    "Part of Photosynthesis": [
+      "PSII",
+      "ATP Synthase",
+      "Cytochrome b6f",
+      "PQ Cycle",
+      "PC",
+      "FNR",
+      "PSI",
+    ],
     Demonstrations: [],
   },
+  analyses: [{ type: "timecourse", tEnd: 100, nTimePoints: 500 }],
 };
