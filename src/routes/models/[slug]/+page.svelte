@@ -28,7 +28,7 @@
     Tr,
     Ul,
   } from "@computational-biology-aachen/design";
-  import type { ModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+  import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import Markdown, { type Plugin } from "svelte-exmarkdown";
   import type { PageData } from "./$types";
 
@@ -64,13 +64,13 @@
     },
   ];
 
-  // Eager glob so the ModelBuilder is available both at prerender (tables) and
+  // Eager glob so the KineticModelBuilder is available both at prerender (tables) and
   // on the client (interactive dashboard).
   const modelModules = import.meta.glob("../../../lib/models/*/model.ts", {
     eager: true,
-  }) as Record<string, { initModel: () => ModelBuilder }>;
+  }) as Record<string, { initModel: () => KineticModelBuilder }>;
 
-  function initFor(slug: string): ModelBuilder | null {
+  function initFor(slug: string): KineticModelBuilder | null {
     const key = Object.keys(modelModules).find(
       (p) => p.match(/\/models\/([^/]+)\//)?.[1] === slug,
     );

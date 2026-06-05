@@ -13,15 +13,15 @@
     Section,
     SectionHeader,
   } from "@computational-biology-aachen/design";
-  import type { ModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+  import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import { onMount } from "svelte";
 
   // Eager glob so both models can be built on the client when selected.
   const modelModules = import.meta.glob("../../lib/models/*/model.ts", {
     eager: true,
-  }) as Record<string, { initModel: () => ModelBuilder }>;
+  }) as Record<string, { initModel: () => KineticModelBuilder }>;
 
-  function initFor(slug: string): ModelBuilder | null {
+  function initFor(slug: string): KineticModelBuilder | null {
     const key = Object.keys(modelModules).find(
       (p) => p.match(/\/models\/([^/]+)\//)?.[1] === slug,
     );

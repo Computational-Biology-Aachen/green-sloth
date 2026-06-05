@@ -1,4 +1,4 @@
-import { ModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
   Divide,
@@ -26,8 +26,8 @@ import {
  * Ref: Matuszyńska et al. (2019), Physiologia Plantarum.
  * DOI: https://doi.org/10.1111/ppl.12962
  */
-export function initModel(): ModelBuilder {
-  return new ModelBuilder()
+export function initModel(): KineticModelBuilder {
+  return new KineticModelBuilder()
     .addParameter("protons", {
       value: 1.2589254117941661e-5,
       texName: "protons",

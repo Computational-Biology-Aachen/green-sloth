@@ -1,6 +1,6 @@
 <!--
  @component
- Read-only reference tables for a model, derived purely from a ModelBuilder.
+ Read-only reference tables for a model, derived purely from a KineticModelBuilder.
  Four accordions: Parameters, Variables, Derived (assignments), Reactions.
 -->
 <script lang="ts">
@@ -8,11 +8,11 @@
   import {
     getTexNames,
     stoichToTex,
-    type ModelBuilder,
+    type KineticModelBuilder,
   } from "@computational-biology-aachen/mxlweb-core";
   import { Base } from "@computational-biology-aachen/mxlweb-core/mathml";
 
-  let { model }: { model: ModelBuilder } = $props();
+  let { model }: { model: KineticModelBuilder } = $props();
 
   const texNames = $derived(
     getTexNames(

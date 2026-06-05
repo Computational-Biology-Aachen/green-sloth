@@ -8,7 +8,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { H3, Slider2 as Slider } from "@computational-biology-aachen/design";
-  import type { ModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+  import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import Pam from "./Pam.svelte";
   import { backends } from "./stores/backends";
   import TimeCourse from "./TimeCourse.svelte";
@@ -18,14 +18,14 @@
     model,
     analyses,
   }: {
-    model: ModelBuilder;
+    model: KineticModelBuilder;
     analyses: ModelAnalysis[];
   } = $props();
 
   const DEFAULT_TIMEOUT = 30;
   const DEFAULT_N_TIME_POINTS = 500;
 
-  type Runnable = { runSimulation: (model: ModelBuilder) => void };
+  type Runnable = { runSimulation: (model: KineticModelBuilder) => void };
   let analysisRefs = $state<Array<Runnable | undefined>>([]);
 
   type SliderDef = {
