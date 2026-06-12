@@ -70,6 +70,10 @@
     return out;
   });
 
+  // Whether to overlay the previous run as a dashed reference line.
+  let displayReference = $state(true);
+  const lineDisplay = $derived(displayReference ? "last" : "current");
+
   // Current slider values, seeded from the defs.
   let values = $state<Record<string, number>>({});
   $effect(() => {
@@ -108,6 +112,15 @@
         {/each}
       </div>
     {/if}
+    <div class="controls">
+      <label for="display-reference">Display reference?</label>
+      <input
+        id="display-reference"
+        class="solid"
+        type="checkbox"
+        bind:checked={displayReference}
+      />
+    </div>
     {#each analyses as analysis, i (i)}
       <div class="analysis">
         {#if analysis.title}
@@ -127,7 +140,7 @@
             showDerived={analysis.showDerived ?? false}
             nTimePoints={analysis.nTimePoints ?? DEFAULT_N_TIME_POINTS}
             timeoutInSeconds={analysis.timeoutInSeconds ?? DEFAULT_TIMEOUT}
-            lineDisplay="last"
+            lineDisplay={lineDisplay}
             plot={analysis.plot}
           />
         {:else}
@@ -141,7 +154,7 @@
             showDerived={analysis.showDerived ?? false}
             nTimePoints={analysis.nTimePoints ?? DEFAULT_N_TIME_POINTS}
             timeoutInSeconds={analysis.timeoutInSeconds ?? DEFAULT_TIMEOUT}
-            lineDisplay="last"
+            lineDisplay={lineDisplay}
             plot={analysis.plot}
           />
         {/if}
@@ -169,5 +182,26 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: var(--space-3);
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--gap);
+    margin-left: auto;
+  }
+  input {
+    border-radius: var(--radius-lg);
+    background-color: transparent;
+    padding: 0.35rem 0.5rem;
+    width: 100%;
+    font-size: 0.875rem;
+  }
+  label {
+    white-space: nowrap;
+  }
+  .solid {
+    border: var(--border);
   }
 </style>
