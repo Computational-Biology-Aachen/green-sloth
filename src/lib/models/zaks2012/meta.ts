@@ -1,0 +1,29 @@
+import type { ModelMeta } from "$lib/types";
+
+export const meta: ModelMeta = {
+  slug: "zaks2012",
+  title: "Zaks 2012",
+  DOI: "10.1073/pnas.1211017109",
+  tags: {
+    "Part of Photosynthesis": [
+      "PSII",
+      "PQ Cycle",
+      "Cytochrome b6f",
+      "PC",
+      "PSI",
+      "ATP Synthase",
+    ],
+    Demonstrations: [],
+  },
+  analyses: [
+    {
+      type: "timecourse",
+      title: "Time course",
+      tEnd: 100,
+      nTimePoints: 500,
+      // Variables span several orders of magnitude; auto-split them into
+      // per-magnitude subplots so small-valued species stay readable.
+      plot: { type: "magnitude" },
+    },
+  ],
+};
