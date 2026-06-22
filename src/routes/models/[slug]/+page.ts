@@ -1,4 +1,4 @@
-import { models, modelNames } from "$lib/models";
+import { modelNames, models } from "$lib/models";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
 
@@ -42,10 +42,11 @@ export const load: PageLoad = async ({ params }) => {
     return (await mdModules[key]()) as string;
   }
 
-  const [desc, comment] = await Promise.all([
+  const [desc, comment, changes] = await Promise.all([
     loadMd("model.md"),
     loadMd("comment.md"),
+    loadMd("changes.md"),
   ]);
 
-  return { slug, meta, schemeUrl, desc, comment };
+  return { slug, meta, schemeUrl, desc, comment, changes };
 };

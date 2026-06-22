@@ -179,17 +179,30 @@
 {/if}
 
 <!-- Curator comment -->
-{#if data.comment}
+{#if data.comment || data.changes}
   <Section
     variant="surface"
     width="narrow"
   >
-    <InfoBox header="Curator's note">
-      <Markdown
-        md={data.comment}
-        plugins={mdPlugins}
-      />
-    </InfoBox>
+    {#if data.changes}
+      <InfoBox
+        header="Changes"
+        variant="warning"
+      >
+        <Markdown
+          md={data.changes}
+          plugins={mdPlugins}
+        />
+      </InfoBox>
+    {/if}
+    {#if data.comment}
+      <InfoBox header="Curator's note">
+        <Markdown
+          md={data.comment}
+          plugins={mdPlugins}
+        />
+      </InfoBox>
+    {/if}
   </Section>
 {/if}
 
