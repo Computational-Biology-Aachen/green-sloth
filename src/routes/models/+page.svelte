@@ -120,44 +120,44 @@
     >
       <g
         id="g26"
-        transform="translate(-3.2695 -25.238)"
+        transform="translate(0.52825439,-33.1908)"
       >
         <rect
           id="rect1"
-          x="3.2695"
+          x="-0.52825439"
           y="108.2"
-          width="216.05"
+          width="223.64552"
           height="2"
           rx=".5"
           fill="#4d683d"
-          style="paint-order:markers stroke fill"
+          style="stroke-width:1.01742;paint-order:markers stroke fill"
         />
         <rect
           id="rect43"
-          x="3.2695"
+          x="-0.52825439"
           y="127.53"
-          width="216.05"
+          width="223.64551"
           height="2"
           rx=".5"
           fill="#4d683d"
-          style="paint-order:markers stroke fill"
+          style="stroke-width:1.01743;paint-order:markers stroke fill"
         />
         <g
           id="g43"
           transform="translate(10.133 25.589)"
           fill="#000000"
-          font-family="'Space Grotesk'"
+          font-family="Arial"
           font-size="8.2931px"
           stroke-width=".20733"
         >
           <text
             id="text1-2"
-            x="-6.3343873"
+            x="-8.3510342"
             y="81.641235"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="-6.3343873"
+              x="-8.3510342"
               y="81.641235"
               fill="#000000"
               font-weight="bold"
@@ -166,13 +166,13 @@
           >
           <text
             id="text1-2-3"
-            x="-6.6826963"
-            y="109.97566"
+            x="-8.6871319"
+            y="111.034"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="-6.6826963"
-              y="109.97566"
+              x="-8.6871319"
+              y="111.034"
               fill="#000000"
               font-weight="bold"
               stroke-width=".20733">Lumen</tspan
@@ -180,7 +180,7 @@
           >
         </g>
       </g>
-      <g transform="translate(6.8636 23.877)">
+      <g transform="translate(10.661354,15.9242)">
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "OEC")}
@@ -205,15 +205,15 @@
             style="paint-order:markers stroke fill"
           />
           <text
-            x="28.570921"
+            x="27.536812"
             y="96.907669"
-            font-family="'Space Grotesk'"
+            font-family="Arial"
             font-size="6.3989px"
             stroke-width=".15997"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="28.570921"
+              x="27.536812"
               y="96.907669"
               font-weight="bold"
               stroke-width=".15997">OEC</tspan
@@ -221,7 +221,7 @@
           >
         </g>
       </g>
-      <g transform="translate(6.8637 .35047)">
+      <g transform="translate(10.661454,-7.6023302)">
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "PSII")}
@@ -246,15 +246,15 @@
             style="paint-order:markers stroke fill"
           />
           <text
-            x="25.216417"
+            x="24.404585"
             y="96.725319"
-            font-family="'Space Grotesk'"
+            font-family="Arial"
             font-size="10.583px"
             stroke-width=".26458"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="25.216417"
+              x="24.404585"
               y="96.725319"
               font-weight="bold"
               stroke-width=".26458">PSII</tspan
@@ -285,16 +285,16 @@
             style="paint-order:markers stroke fill"
           />
           <text
-            x="71.703972"
-            y="95.296288"
-            font-family="'Space Grotesk'"
+            x="70.920174"
+            y="95.290581"
+            font-family="Arial"
             font-size="7.7885px"
             stroke-width=".19471"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="71.703972"
-              y="95.296288"
+              x="70.920174"
+              y="95.290581"
               font-weight="bold"
               stroke-width=".19471">Cytb6f</tspan
             ></text
@@ -324,15 +324,15 @@
             style="paint-order:markers stroke fill"
           />
           <text
-            x="132.22528"
+            x="132.18866"
             y="96.725327"
-            font-family="'Space Grotesk'"
+            font-family="Arial"
             font-size="10.583px"
             stroke-width=".26458"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="132.22528"
+              x="132.18866"
               y="96.725327"
               font-weight="bold"
               stroke-width=".26458"
@@ -404,8 +404,8 @@
             />
           </g>
           <g
-            transform="translate(-4.4538 -22.039)"
-            font-family="'Space Grotesk'"
+            transform="matrix(0.83789924,0,0,0.83789924,25.126425,-3.392121)"
+            font-family="Arial"
           >
             <text
               x="182.6032"
@@ -440,7 +440,7 @@
           </g>
         </g>
       </g>
-      <g transform="translate(.66246 8.3033)">
+      <g transform="translate(4.4602144,0.35049983)">
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "CBB Cycle")}
@@ -478,15 +478,15 @@
             </g>
           </g>
           <text
-            x="97.809265"
+            x="95.90773"
             y="30.169697"
-            font-family="'Space Grotesk'"
+            font-family="Arial"
             font-size="10.583px"
             stroke-width="1.5"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="97.809265"
+              x="95.90773"
               y="30.169697"
               font-weight="bold"
               stroke-width="1.5">CBB</tspan
@@ -494,7 +494,7 @@
           >
         </g>
       </g>
-      <g transform="translate(1.2198 8.8918)">
+      <g transform="translate(5.0175544,0.93899983)">
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "FNR")}
@@ -515,7 +515,7 @@
           <text
             x="146.53954"
             y="69.122124"
-            font-family="'Space Grotesk'"
+            font-family="Arial"
             font-size="6.4286px"
             stroke-width=".16071"
             style="line-height:1.05"
@@ -530,7 +530,7 @@
           >
         </g>
       </g>
-      <g transform="translate(20.088 -54.22)">
+      <g transform="translate(23.885754,-62.1728)">
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "PQ Cycle")}
@@ -553,16 +553,16 @@
             stroke-width="1.7544"
           />
           <text
-            x="45.390369"
-            y="149.88583"
-            font-family="'Space Grotesk'"
+            x="45.413319"
+            y="150.62613"
+            font-family="Arial"
             font-size="8.4667px"
             stroke-width=".26458"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="45.390369"
-              y="149.88583"
+              x="45.413319"
+              y="150.62613"
               font-size="8.4667px"
               font-weight="bold"
               stroke-width=".26458"
@@ -571,7 +571,7 @@
           >
         </g>
       </g>
-      <g transform="matrix(1.0437 0 0 1 66.984 -34.89)">
+      <g transform="matrix(1.0437 0 0 1 70.781754 -42.8428)">
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "PC")}
@@ -595,15 +595,15 @@
           />
           <text
             x="45.390369"
-            y="149.88583"
-            font-family="'Space Grotesk'"
+            y="151.43082"
+            font-family="Arial"
             font-size="8.4667px"
             stroke-width=".26458"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
               x="45.390369"
-              y="149.88583"
+              y="151.43082"
               font-size="8.4667px"
               font-weight="bold"
               stroke-width=".26458"
