@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import {
+    Bold,
     Code,
     H1,
     H2,
-    H3,
     InfoBox,
     Li,
     Link,
@@ -16,22 +17,14 @@
 
   const repo = "https://github.com/Computational-Biology-Aachen/green-sloth";
 
-  const modelTs = `import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
-import { Mul, Name, Num } from "@computational-biology-aachen/mxlweb-core/mathml";
+  const folder = `src/lib/models/<slug>/
+  model.mxl.json   # the model as data  (or model.sbml)
+  meta.ts          # title, DOI, tags, dashboard analyses
+  model.md         # prose description shown on the model page
+  comment.md       # short validation note            (optional)
+  scheme.svg       # reaction scheme diagram           (optional)`;
 
-export function initModel(): KineticModelBuilder {
-  return new KineticModelBuilder()
-    .addParameter("k", { value: 0.1, texName: "k" })
-    .addVariable("A", { value: 1.0, texName: "A" })
-    .addReaction("v1", {
-      fn: new Mul([new Name("k"), new Name("A")]),
-      stoichiometry: [{ name: "A", value: new Num(-1.0) }],
-      texName: "v\\\\_1",
-    });
-}`;
-
-  const metaTs = `import { defaultPamProtocol } from "$lib/models/pamProtocols";
-import type { ModelMeta } from "$lib/types";
+  const metaTs = `import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: "authoryear",
@@ -46,26 +39,13 @@ export const meta: ModelMeta = {
   ],
 };`;
 
-  const mxlpyCode = `from mxlpy.meta import generate_model_code_mxlweb
-
-ts_source = generate_model_code_mxlweb(
-    model,
-    tex_names={"vx": "V_x"},                       # optional
-    sliders={"PPFD": {"min": "0", "max": "1000", "step": "10"}},  # optional
-    docstring="Author et al. (Year), ...",        # optional
-)
-# write ts_source to src/lib/models/<slug>/model.ts`;
-
-  const sbmlCode = `from mxlpy import sbml
-from mxlpy.meta import generate_model_code_mxlweb
-
-model = sbml.read("model.xml")
-ts_source = generate_model_code_mxlweb(model)`;
+  const fromTs = `# Hand-written model.ts is still supported as the authoring source.
+# After writing src/lib/models/<slug>/model.ts, generate the data file:
+npm run generate:mxl     # writes model.mxl.json next to every model.ts`;
 
   const verifyCode = `npm install
-npm run check     # TypeScript + Svelte type checking
-npm run lint      # ESLint + Prettier
-npm run dev       # open the model page, confirm the analyses run`;
+npm run validate:models   # schema-validate + smoke-check every model
+npm run dev               # open the model page, confirm the analyses run`;
 </script>
 
 <svelte:head>
@@ -82,22 +62,31 @@ npm run dev       # open the model page, confirm the analyses run`;
 >
   <Text>
     GreenSloth ships curated photosynthesis ODE models, each simulated entirely
-    in your browser. This page describes how to add one today. The full write-up
-    lives in
+    in your browser. A model is now <Bold>data</Bold>, not code: a small folder
+    you can add through the GitHub web UI. The full write-up lives in
     <Link href="{repo}/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</Link>.
   </Text>
+</Section>
 
-  <InfoBox header="Heading toward a simpler path">
-    <Text>
-      The current path is code-based, a model is a small TypeScript folder.
-      We're moving to a data-first format (SBML / <Code>.mxl.json</Code> plus JSON
-      metadata) so models can be contributed as data and validated automatically.
-      Follow
-      <Link href="{repo}/issues/8">issue #8</Link> for progress. Until it lands, use
-      the steps below, and the
-      <Link href="#shortcuts">shortcuts</Link> if you already have the model.
-    </Text>
-  </InfoBox>
+<Section
+  variant="light"
+  width="narrow"
+>
+  <H2>Two ways to contribute</H2>
+  <Ol>
+    <Li>
+      <Bold>From the browser, no setup.</Bold> Use the
+      <Link href="{base}/contribute">in-app builder</Link>: paste your model,
+      confirm it simulates in the live preview, fill in the metadata, and open a
+      pre-filled issue. A workflow validates it and opens the pull request for
+      you.
+    </Li>
+    <Li>
+      <Bold>As a pull request yourself.</Bold> Clone the repo, drop a
+      <Code>src/lib/models/&lt;slug&gt;/</Code> folder (below), run the checks, and
+      open a PR.
+    </Li>
+  </Ol>
 </Section>
 
 <Section
@@ -107,18 +96,12 @@ npm run dev       # open the model page, confirm the analyses run`;
   <H2>What a model is</H2>
   <Text>
     Models are auto-discovered: drop a folder under
-    <Code>src/lib/models/&lt;slug&gt;/</Code> and it registers itself, there's no
-    central list to edit. A model appears on the site only when it has both
-    <Code>model.ts</Code> and <Code>meta.ts</Code>.
+    <Code>src/lib/models/&lt;slug&gt;/</Code> and it registers itself. A model appears
+    on the site when it has a <Code>meta.ts</Code> and a model file in any supported
+    format — <Code>model.mxl.json</Code> (preferred),
+    <Code>model.sbml</Code>, or a hand-written <Code>model.ts</Code>.
   </Text>
-  <Pre
-    >{`src/lib/models/<slug>/
-  model.ts      # builds the KineticModelBuilder  (the model itself)
-  meta.ts       # title, DOI, tags, dashboard analyses
-  model.md      # prose description shown on the model page
-  comment.md    # short validation note
-  scheme.svg    # reaction scheme diagram`}</Pre
-  >
+  <Pre>{folder}</Pre>
   <Text>
     Pick a <Code>&lt;slug&gt;</Code> like <Code>matuszynska2016_npq</Code>; it
     must match the <Code>slug</Code> field in <Code>meta.ts</Code>.
@@ -129,91 +112,79 @@ npm run dev       # open the model page, confirm the analyses run`;
   variant="light"
   width="narrow"
 >
-  <H2>Steps</H2>
-
-  <H3>1. <Code>model.ts</Code>, the model</H3>
+  <H2>1. The model file</H2>
   <Text>
-    Export an <Code>initModel()</Code> returning a
-    <Code>KineticModelBuilder</Code> from
-    <Code>@computational-biology-aachen/mxlweb-core</Code>. Rate laws are
-    written as MathML AST nodes (<Code>addParameter</Code>,
-    <Code>addVariable</Code>, <Code>addAssignment</Code> for derived quantities, <Code
-      >addReaction</Code
-    >).
+    The model itself is data. You don't hand-write it — export it from a tool:
   </Text>
-  <Pre>{modelTs}</Pre>
-  <Text>
-    See the existing models under <Code>src/lib/models/</Code> —
-    <Link href="{repo}/blob/main/src/lib/models/matuszynska2016_npq/model.ts"
-      >matuszynska2016_npq</Link
-    > is a complete reference. Writing the MathML by hand is the tedious part: if
-    you already have the model elsewhere, generate it instead (see shortcuts).
-  </Text>
-
-  <H3>2. <Code>meta.ts</Code>, presentation metadata</H3>
-  <Pre>{metaTs}</Pre>
-  <Text>
-    The full <Code>ModelMeta</Code> and analysis options (plot layouts, normalization,
-    PAM protocols, timeouts) are documented in
-    <Code>src/lib/types.ts</Code>.
-  </Text>
-
-  <H3>3. Description, comment and diagram</H3>
   <Ol>
     <Li>
-      <Code>model.md</Code>, a couple of paragraphs: what the model describes,
-      the organism, the key reference (link the DOI).
+      <Bold>mxlpy</Bold> (<Link
+        href="https://github.com/Computational-Biology-Aachen/mxlpy">repo</Link
+      >) exports the canonical <Code>.mxl.json</Code> directly — the format greensloth
+      loads first.
     </Li>
     <Li>
-      <Code>comment.md</Code>, one line on how the model was validated.
+      <Bold>SBML</Bold> works as-is: drop your <Code>model.sbml</Code> in the folder
+      and greensloth converts it on load with
+      <Code>sbmlToModel</Code>.
     </Li>
-    <Li><Code>scheme.svg</Code>, a diagram of the reaction scheme.</Li>
+    <Li>
+      <Bold>A hand-written <Code>model.ts</Code></Bold> (a
+      <Code>KineticModelBuilder</Code>) stays supported as the authoring source;
+      generate its data file with the script:
+    </Li>
   </Ol>
-
-  <H3>4. Verify and open a PR</H3>
-  <Pre>{verifyCode}</Pre>
-  <Text>
-    Then open a pull request against
-    <Link href={repo}>green-sloth</Link>.
-  </Text>
+  <Pre>{fromTs}</Pre>
+  <InfoBox header="Validate before you submit">
+    <Text>
+      The <Link href="{base}/contribute">in-app builder</Link> loads your model and
+      runs it live — the quickest way to confirm a <Code>.mxl.json</Code> or
+      <Code>.sbml</Code> file is well-formed before opening a contribution.
+    </Text>
+  </InfoBox>
 </Section>
 
 <Section
   variant="light"
   width="narrow"
 >
-  <span id="shortcuts"></span>
-  <H2>Shortcuts if you already have the model</H2>
-  <Text>You usually don't need to hand-write <Code>model.ts</Code>.</Text>
-
-  <H3>a) You have an mxlpy model</H3>
+  <H2>2. <Code>meta.ts</Code>, presentation metadata</H2>
   <Text>
-    <Link href="https://github.com/Computational-Biology-Aachen/mxlpy"
-      >mxlpy</Link
-    > has codegen for mxlweb. <Code>generate_model_code_mxlweb</Code> emits the exact
-    <Code>KineticModelBuilder</Code> TypeScript you'd otherwise write by hand, a drop-in
-    <Code>model.ts</Code>. You still write
-    <Code>meta.ts</Code> and the markdown/SVG yourself.
+    Presentation stays typed TypeScript — title, DOI, tags and the dashboard
+    analyses. The builder generates this for you; the full <Code>ModelMeta</Code
+    >
+    and analysis options are documented in <Code>src/lib/types.ts</Code>.
   </Text>
-  <Pre>{mxlpyCode}</Pre>
+  <Pre>{metaTs}</Pre>
+</Section>
 
-  <H3>b) You have an SBML model</H3>
-  <Text>Read the SBML with mxlpy, then codegen as above:</Text>
-  <Pre>{sbmlCode}</Pre>
+<Section
+  variant="light"
+  width="narrow"
+>
+  <H2>3. Description and diagram</H2>
+  <Ol>
+    <Li>
+      <Code>model.md</Code> — a couple of paragraphs: what the model describes, the
+      organism, the key reference (link the DOI).
+    </Li>
+    <Li
+      ><Code>comment.md</Code> — one line on how the model was validated (optional).</Li
+    >
+    <Li
+      ><Code>scheme.svg</Code> — a diagram of the reaction scheme (optional).</Li
+    >
+  </Ol>
+</Section>
+
+<Section
+  variant="light"
+  width="narrow"
+>
+  <H2>4. Verify and open a PR</H2>
+  <Pre>{verifyCode}</Pre>
   <Text>
-    Or convert it directly in TypeScript without Python —
-    <Code>mxlweb-core</Code> ships
-    <Code>sbmlToModel(xml)</Code> from its <Code>/sbml</Code> entry point, which you
-    can use in a one-off script to emit <Code>model.ts</Code>.
+    Then open a pull request against <Link href={repo}>green-sloth</Link>. CI
+    re-runs <Code>validate:models</Code> and a build on every PR.
   </Text>
-
-  <InfoBox
-    header="Always verify"
-    variant="warning"
-  >
-    <Text>
-      Whichever shortcut you use, run <Code>npm run dev</Code> and confirm the model
-      simulates and the dashboard analyses look right before opening a PR.
-    </Text>
-  </InfoBox>
 </Section>
