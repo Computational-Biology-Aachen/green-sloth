@@ -304,7 +304,7 @@
         >.
       </Text>
       <Accordion title="Figures">
-        {#each paperFigures as fig}
+        {#each paperFigures as fig (fig.src)}
           <Accordion title={fig.title}>
             <Image
               src={fig.src}
