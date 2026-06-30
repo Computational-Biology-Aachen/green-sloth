@@ -1,0 +1,82 @@
+name: Contribute a model
+description: Submit a photosynthesis model as data. A maintainer-run workflow turns this issue into a pull request.
+title: "[model] <slug>"
+labels: ["model-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing a model! Everything below is **text** — paste each
+        file's contents into its box and a workflow will open a PR that creates
+        `src/lib/models/<slug>/` for you.
+
+        The easiest way to fill this in is the in-app builder at **/contribute**,
+        which validates and live-previews your model and then pre-fills this form.
+        See [CONTRIBUTING.md](https://github.com/Computational-Biology-Aachen/green-sloth/blob/main/CONTRIBUTING.md)
+        for how to produce `model.mxl.json` (e.g. with mxlpy) or use SBML.
+  - type: input
+    id: slug
+    attributes:
+      label: Slug
+      description: Lowercase folder name, e.g. `matuszynska2016_npq`. Must match the `slug` in meta.ts.
+      placeholder: authoryear
+    validations:
+      required: true
+  - type: dropdown
+    id: model_format
+    attributes:
+      label: Model format
+      description: The format of the model file pasted below.
+      options:
+        - mxl.json (preferred)
+        - sbml
+    validations:
+      required: true
+  - type: textarea
+    id: model_source
+    attributes:
+      label: Model file
+      description: Full contents of `model.mxl.json` (or `model.sbml`).
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: meta_ts
+    attributes:
+      label: meta.ts
+      description: Presentation metadata (title, DOI, tags, analyses). The /contribute builder generates this for you.
+      render: typescript
+    validations:
+      required: true
+  - type: textarea
+    id: model_md
+    attributes:
+      label: model.md
+      description: A couple of paragraphs — what the model describes, the organism, the key reference.
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: comment_md
+    attributes:
+      label: comment.md
+      description: One line on how the model was validated.
+    validations:
+      required: false
+  - type: textarea
+    id: scheme_svg
+    attributes:
+      label: scheme.svg
+      description: Optional reaction-scheme diagram (SVG markup is text — paste it here).
+      render: xml
+    validations:
+      required: false
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before submitting
+      options:
+        - label: The slug is unique and matches the `slug` field in meta.ts.
+          required: true
+        - label: I validated the model in the /contribute builder (it simulates).
+          required: false

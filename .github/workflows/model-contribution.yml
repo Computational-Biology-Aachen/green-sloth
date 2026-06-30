@@ -1,0 +1,68 @@
+name: model contribution
+
+# Turns a "Contribute a model" issue (see .github/ISSUE_TEMPLATE) into a pull
+# request: parse the form, write src/lib/models/<slug>/, validate the model, and
+# open a PR. The PR is the review gate; this just removes the git busywork so a
+# model can be contributed entirely through the GitHub web UI.
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  open-pr:
+    if: contains(github.event.issue.labels.*.name, 'model-submission')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25
+          cache: npm
+
+      - name: Materialise model folder from the issue
+        id: parse
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: node scripts/issue-to-model.mjs
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate the model
+        run: npm run validate:models
+
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SLUG: ${{ steps.parse.outputs.slug }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          branch="model/${SLUG}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add "src/lib/models/${SLUG}"
+          git commit -m "feat: add ${SLUG} model (closes #${ISSUE})"
+          git push -u origin "$branch" --force
+          gh pr create \
+            --title "feat: add ${SLUG} model" \
+            --body "Automated from #${ISSUE}. Validated by the model-contribution workflow; please review the model data and metadata. Closes #${ISSUE}." \
+            --label model-submission
+
+      - name: Report failure on the issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh issue comment "$ISSUE" --body "⚠️ Couldn't turn this submission into a PR automatically. See the [workflow log](${RUN_URL}) for what failed (most often: invalid model file, malformed meta.ts, or a missing required field). Fix the issue body and it will retry."
