@@ -1,3 +1,4 @@
+import names from "$lib/names";
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
@@ -327,6 +328,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("LightIntensity", {
       value: 0.0,
       texName: "LightIntensity",
+      displayName: names.ppfd,
     })
     .addParameter("P680neut", {
       value: 1.0,

@@ -1,3 +1,4 @@
+import names from "$lib/names";
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
@@ -29,6 +30,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("PPFD", {
       value: 100.0,
       texName: "PPFD",
+      displayName: names.ppfd,
       slider: { min: "100", max: "2000", step: "10" },
     })
     .addParameter("CO2__dissolved_", {
