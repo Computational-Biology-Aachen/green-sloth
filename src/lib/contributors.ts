@@ -12,7 +12,7 @@ const contributors: Record<string, Contributor> = {
     github: "PhotosyntheticBatman",
   },
   joshaebeling: {
-    key: "joshoebeling",
+    key: "joshaebeling",
     name: "Josha Ebeling",
     github: "pmfjosh",
   },
