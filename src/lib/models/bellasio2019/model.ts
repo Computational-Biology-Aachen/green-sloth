@@ -1,3 +1,4 @@
+import names from "$lib/names";
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
 import {
   Abs,
@@ -18,10 +19,12 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("AP_tot", {
       value: 1.5,
+      displayName: names.atp_tot,
       texName: "AP\\_tot",
     })
     .addParameter("Pi_tot", {
       value: 15.0,
+      displayName: names.pi_tot,
       texName: "Pi\\_tot",
     })
     .addParameter("p_o2", {
@@ -38,6 +41,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("PPFD", {
       value: 1500.0,
+      displayName: names.ppfd,
       texName: "PPFD",
       slider: { min: "100", max: "2000", step: "10" },
     })

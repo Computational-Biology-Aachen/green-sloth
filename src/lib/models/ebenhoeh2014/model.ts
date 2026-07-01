@@ -1,3 +1,4 @@
+import names from "$lib/names";
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
@@ -20,6 +21,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("PPFD", {
       value: 100.0,
+      displayName: names.ppfd,
       texName: "PPFD",
     })
     .addParameter("cPPFD", {
