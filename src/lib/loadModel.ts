@@ -1,13 +1,12 @@
 /**
- * Data-first model loading. A model folder under `src/lib/models/<slug>/` can
+ * Code-first model loading. A model folder under `src/lib/models/<slug>/` can
  * ship its model as data or code; we load the first format available, preferring
- * data over code:
+ * code over data:
  *
- *   1. `model.mxl.json` — canonical mxl-schemas format (committed, generated from
+ *   1. `model.ts`       — hand-written builder, the authoring source
+ *   2. `model.mxl.json` — canonical mxl-schemas format (committed, generated from
  *      `model.ts` via `npm run generate:mxl`). The format the app normally loads.
- *   2. `model.sbml`     — SBML, for models contributed in the field standard.
- *   3. `model.ts`       — hand-written builder, the authoring source and dev
- *      fallback.
+ *   3. `model.sbml`     — SBML, for models contributed in the field standard.
  *
  * The globs are eager so a model builds synchronously at call sites (prerender
  * and client alike), matching the previous `model.ts`-only loading.
@@ -62,18 +61,18 @@ function asKinetic(model: unknown, slug: string): KineticModelBuilder {
 }
 
 /**
- * Build a model's {@link KineticModelBuilder}, preferring data formats over
- * code. Returns `null` for an unknown slug (no model file in any format).
+ * Build a model's {@link KineticModelBuilder}, preferring code over data formats.
+ * Returns `null` for an unknown slug (no model file in any format).
  */
 export function buildModel(slug: string): KineticModelBuilder | null {
+  const ts = tsBySlug.get(slug);
+  if (ts !== undefined) return ts.initModel();
+
   const json = jsonBySlug.get(slug);
   if (json !== undefined) return asKinetic(mxlJsonToModel(json), slug);
 
   const sbml = sbmlBySlug.get(slug);
   if (sbml !== undefined) return asKinetic(sbmlToModel(sbml), slug);
-
-  const ts = tsBySlug.get(slug);
-  if (ts !== undefined) return ts.initModel();
 
   return null;
 }
