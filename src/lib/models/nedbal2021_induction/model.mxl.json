@@ -1,0 +1,148 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
+  "spec_version": "1.0",
+  "kind": "kinetic",
+  "model_id": "nedbal2021_induction",
+  "model": {
+    "variables": {
+      "Signal": {
+        "value": {
+          "type": "Num",
+          "value": 1.28
+        },
+        "texName": "Signal"
+      }
+    },
+    "parameters": {
+      "rise": {
+        "value": {
+          "type": "Num",
+          "value": 0.58
+        },
+        "texName": "rise"
+      },
+      "tau_rise": {
+        "value": {
+          "type": "Num",
+          "value": 0.012
+        },
+        "texName": "tau\\_rise"
+      },
+      "decline": {
+        "value": {
+          "type": "Num",
+          "value": 0.3
+        },
+        "texName": "decline"
+      },
+      "tau_decline": {
+        "value": {
+          "type": "Num",
+          "value": 120
+        },
+        "texName": "tau\\_decline"
+      }
+    },
+    "reactions": {
+      "induction": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "rise"
+                    },
+                    {
+                      "type": "Exp",
+                      "child": {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Divide",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "time"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "tau_rise"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "tau_rise"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "decline"
+                        },
+                        {
+                          "type": "Exp",
+                          "child": {
+                            "type": "Minus",
+                            "children": [
+                              {
+                                "type": "Divide",
+                                "children": [
+                                  {
+                                    "type": "Name",
+                                    "value": "time"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "tau_decline"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "tau_decline"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "Signal": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "induction"
+      }
+    },
+    "derived": {},
+    "readouts": {}
+  }
+}

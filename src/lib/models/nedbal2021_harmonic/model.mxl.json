@@ -1,0 +1,890 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
+  "spec_version": "1.0",
+  "kind": "kinetic",
+  "model_id": "nedbal2021_harmonic",
+  "model": {
+    "variables": {
+      "Light": {
+        "value": {
+          "type": "Num",
+          "value": 8
+        },
+        "texName": "Light"
+      },
+      "Fit": {
+        "value": {
+          "type": "Num",
+          "value": 0.6910978387074505
+        },
+        "texName": "Fit"
+      },
+      "H1": {
+        "value": {
+          "type": "Num",
+          "value": 0.6941621928957273
+        },
+        "texName": "H1"
+      },
+      "H2": {
+        "value": {
+          "type": "Num",
+          "value": 0.7225299001332381
+        },
+        "texName": "H2"
+      },
+      "H3": {
+        "value": {
+          "type": "Num",
+          "value": 0.723004995834722
+        },
+        "texName": "H3"
+      },
+      "H4": {
+        "value": {
+          "type": "Num",
+          "value": 0.723400749843763
+        },
+        "texName": "H4"
+      }
+    },
+    "parameters": {
+      "period": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "period"
+      },
+      "light_amplitude": {
+        "value": {
+          "type": "Num",
+          "value": 6
+        },
+        "texName": "light\\_amplitude"
+      },
+      "a1": {
+        "value": {
+          "type": "Num",
+          "value": 0.034
+        },
+        "texName": "a1"
+      },
+      "a2": {
+        "value": {
+          "type": "Num",
+          "value": 0.0015
+        },
+        "texName": "a2"
+      },
+      "a3": {
+        "value": {
+          "type": "Num",
+          "value": 0.001
+        },
+        "texName": "a3"
+      },
+      "a4": {
+        "value": {
+          "type": "Num",
+          "value": 0.0006
+        },
+        "texName": "a4"
+      },
+      "p1": {
+        "value": {
+          "type": "Num",
+          "value": 0.5
+        },
+        "texName": "p1"
+      },
+      "p2": {
+        "value": {
+          "type": "Num",
+          "value": 0.2
+        },
+        "texName": "p2"
+      },
+      "p3": {
+        "value": {
+          "type": "Num",
+          "value": 0.1
+        },
+        "texName": "p3"
+      },
+      "p4": {
+        "value": {
+          "type": "Num",
+          "value": 0.05
+        },
+        "texName": "p4"
+      },
+      "n1": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "n1"
+      },
+      "n2": {
+        "value": {
+          "type": "Num",
+          "value": 2
+        },
+        "texName": "n2"
+      },
+      "n3": {
+        "value": {
+          "type": "Num",
+          "value": 3
+        },
+        "texName": "n3"
+      },
+      "n4": {
+        "value": {
+          "type": "Num",
+          "value": 4
+        },
+        "texName": "n4"
+      }
+    },
+    "reactions": {
+      "light": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Num",
+                  "value": 3.141592653589793
+                },
+                {
+                  "type": "Name",
+                  "value": "light_amplitude"
+                },
+                {
+                  "type": "Sin",
+                  "child": {
+                    "type": "Divide",
+                    "children": [
+                      {
+                        "type": "Mul",
+                        "children": [
+                          {
+                            "type": "Num",
+                            "value": 2
+                          },
+                          {
+                            "type": "Num",
+                            "value": 3.141592653589793
+                          },
+                          {
+                            "type": "Name",
+                            "value": "time"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Name",
+                        "value": "period"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "period"
+            }
+          ]
+        },
+        "stoichiometry": {
+          "Light": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "light"
+      },
+      "fluorescence": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 2
+                        },
+                        {
+                          "type": "Num",
+                          "value": 3.141592653589793
+                        },
+                        {
+                          "type": "Name",
+                          "value": "p1"
+                        },
+                        {
+                          "type": "Sin",
+                          "child": {
+                            "type": "Add",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "a1"
+                              },
+                              {
+                                "type": "Minus",
+                                "children": [
+                                  {
+                                    "type": "Divide",
+                                    "children": [
+                                      {
+                                        "type": "Mul",
+                                        "children": [
+                                          {
+                                            "type": "Num",
+                                            "value": 2
+                                          },
+                                          {
+                                            "type": "Num",
+                                            "value": 3.141592653589793
+                                          },
+                                          {
+                                            "type": "Name",
+                                            "value": "p1"
+                                          },
+                                          {
+                                            "type": "Name",
+                                            "value": "time"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "period"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "period"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 4
+                        },
+                        {
+                          "type": "Num",
+                          "value": 3.141592653589793
+                        },
+                        {
+                          "type": "Name",
+                          "value": "p2"
+                        },
+                        {
+                          "type": "Sin",
+                          "child": {
+                            "type": "Add",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "a2"
+                              },
+                              {
+                                "type": "Minus",
+                                "children": [
+                                  {
+                                    "type": "Divide",
+                                    "children": [
+                                      {
+                                        "type": "Mul",
+                                        "children": [
+                                          {
+                                            "type": "Num",
+                                            "value": 2
+                                          },
+                                          {
+                                            "type": "Num",
+                                            "value": 3.141592653589793
+                                          },
+                                          {
+                                            "type": "Name",
+                                            "value": "p2"
+                                          },
+                                          {
+                                            "type": "Name",
+                                            "value": "time"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "period"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "period"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 8
+                        },
+                        {
+                          "type": "Num",
+                          "value": 3.141592653589793
+                        },
+                        {
+                          "type": "Name",
+                          "value": "p4"
+                        },
+                        {
+                          "type": "Sin",
+                          "child": {
+                            "type": "Add",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "a4"
+                              },
+                              {
+                                "type": "Minus",
+                                "children": [
+                                  {
+                                    "type": "Divide",
+                                    "children": [
+                                      {
+                                        "type": "Mul",
+                                        "children": [
+                                          {
+                                            "type": "Num",
+                                            "value": 2
+                                          },
+                                          {
+                                            "type": "Num",
+                                            "value": 3.141592653589793
+                                          },
+                                          {
+                                            "type": "Name",
+                                            "value": "p4"
+                                          },
+                                          {
+                                            "type": "Name",
+                                            "value": "time"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "period"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "period"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 6
+                        },
+                        {
+                          "type": "Num",
+                          "value": 3.141592653589793
+                        },
+                        {
+                          "type": "Name",
+                          "value": "p3"
+                        },
+                        {
+                          "type": "Sin",
+                          "child": {
+                            "type": "Add",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "a3"
+                              },
+                              {
+                                "type": "Minus",
+                                "children": [
+                                  {
+                                    "type": "Divide",
+                                    "children": [
+                                      {
+                                        "type": "Mul",
+                                        "children": [
+                                          {
+                                            "type": "Num",
+                                            "value": 2
+                                          },
+                                          {
+                                            "type": "Num",
+                                            "value": 3.141592653589793
+                                          },
+                                          {
+                                            "type": "Name",
+                                            "value": "p3"
+                                          },
+                                          {
+                                            "type": "Name",
+                                            "value": "time"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "period"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "period"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "Fit": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "fluorescence"
+      },
+      "harmonic_1": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Num",
+                  "value": 3.141592653589793
+                },
+                {
+                  "type": "Name",
+                  "value": "a1"
+                },
+                {
+                  "type": "Name",
+                  "value": "n1"
+                },
+                {
+                  "type": "Sin",
+                  "child": {
+                    "type": "Add",
+                    "children": [
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "p1"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Divide",
+                        "children": [
+                          {
+                            "type": "Mul",
+                            "children": [
+                              {
+                                "type": "Num",
+                                "value": 2
+                              },
+                              {
+                                "type": "Num",
+                                "value": 3.141592653589793
+                              },
+                              {
+                                "type": "Name",
+                                "value": "n1"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "time"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Name",
+                            "value": "period"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "period"
+            }
+          ]
+        },
+        "stoichiometry": {
+          "H1": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "harmonic\\_1"
+      },
+      "harmonic_2": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Num",
+                  "value": 3.141592653589793
+                },
+                {
+                  "type": "Name",
+                  "value": "a2"
+                },
+                {
+                  "type": "Name",
+                  "value": "n2"
+                },
+                {
+                  "type": "Sin",
+                  "child": {
+                    "type": "Add",
+                    "children": [
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "p2"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Divide",
+                        "children": [
+                          {
+                            "type": "Mul",
+                            "children": [
+                              {
+                                "type": "Num",
+                                "value": 2
+                              },
+                              {
+                                "type": "Num",
+                                "value": 3.141592653589793
+                              },
+                              {
+                                "type": "Name",
+                                "value": "n2"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "time"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Name",
+                            "value": "period"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "period"
+            }
+          ]
+        },
+        "stoichiometry": {
+          "H2": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "harmonic\\_2"
+      },
+      "harmonic_3": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Num",
+                  "value": 3.141592653589793
+                },
+                {
+                  "type": "Name",
+                  "value": "a3"
+                },
+                {
+                  "type": "Name",
+                  "value": "n3"
+                },
+                {
+                  "type": "Sin",
+                  "child": {
+                    "type": "Add",
+                    "children": [
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "p3"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Divide",
+                        "children": [
+                          {
+                            "type": "Mul",
+                            "children": [
+                              {
+                                "type": "Num",
+                                "value": 2
+                              },
+                              {
+                                "type": "Num",
+                                "value": 3.141592653589793
+                              },
+                              {
+                                "type": "Name",
+                                "value": "n3"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "time"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Name",
+                            "value": "period"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "period"
+            }
+          ]
+        },
+        "stoichiometry": {
+          "H3": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "harmonic\\_3"
+      },
+      "harmonic_4": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Num",
+                  "value": 3.141592653589793
+                },
+                {
+                  "type": "Name",
+                  "value": "a4"
+                },
+                {
+                  "type": "Name",
+                  "value": "n4"
+                },
+                {
+                  "type": "Sin",
+                  "child": {
+                    "type": "Add",
+                    "children": [
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "p4"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Divide",
+                        "children": [
+                          {
+                            "type": "Mul",
+                            "children": [
+                              {
+                                "type": "Num",
+                                "value": 2
+                              },
+                              {
+                                "type": "Num",
+                                "value": 3.141592653589793
+                              },
+                              {
+                                "type": "Name",
+                                "value": "n4"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "time"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Name",
+                            "value": "period"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "period"
+            }
+          ]
+        },
+        "stoichiometry": {
+          "H4": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "harmonic\\_4"
+      }
+    },
+    "derived": {},
+    "readouts": {}
+  }
+}

@@ -1,0 +1,2585 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
+  "spec_version": "1.0",
+  "kind": "kinetic",
+  "model_id": "poolman2000",
+  "model": {
+    "variables": {
+      "_3PGA": {
+        "value": {
+          "type": "Num",
+          "value": 0.6387788347932627
+        },
+        "texName": "3PGA"
+      },
+      "BPGA": {
+        "value": {
+          "type": "Num",
+          "value": 0.0013570885908749779
+        },
+        "texName": "BPGA"
+      },
+      "GAP": {
+        "value": {
+          "type": "Num",
+          "value": 0.011259431827358068
+        },
+        "texName": "GAP"
+      },
+      "DHAP": {
+        "value": {
+          "type": "Num",
+          "value": 0.24770748227012374
+        },
+        "texName": "DHAP"
+      },
+      "FBP": {
+        "value": {
+          "type": "Num",
+          "value": 0.01980222074817044
+        },
+        "texName": "FBP"
+      },
+      "F6P": {
+        "value": {
+          "type": "Num",
+          "value": 1.093666906864421
+        },
+        "texName": "F6P"
+      },
+      "G6P": {
+        "value": {
+          "type": "Num",
+          "value": 2.5154338857582377
+        },
+        "texName": "G6P"
+      },
+      "G1P": {
+        "value": {
+          "type": "Num",
+          "value": 0.14589516537322303
+        },
+        "texName": "G1P"
+      },
+      "SBP": {
+        "value": {
+          "type": "Num",
+          "value": 0.09132688566151095
+        },
+        "texName": "SBP"
+      },
+      "S7P": {
+        "value": {
+          "type": "Num",
+          "value": 0.23281380022778891
+        },
+        "texName": "S7P"
+      },
+      "E4P": {
+        "value": {
+          "type": "Num",
+          "value": 0.02836065066520614
+        },
+        "texName": "E4P"
+      },
+      "X5P": {
+        "value": {
+          "type": "Num",
+          "value": 0.03647242425941113
+        },
+        "texName": "X5P"
+      },
+      "R5P": {
+        "value": {
+          "type": "Num",
+          "value": 0.06109130988031577
+        },
+        "texName": "R5P"
+      },
+      "RUBP": {
+        "value": {
+          "type": "Num",
+          "value": 0.2672164362349537
+        },
+        "texName": "RUBP"
+      },
+      "RU5P": {
+        "value": {
+          "type": "Num",
+          "value": 0.0244365238237522
+        },
+        "texName": "RU5P"
+      },
+      "ATP": {
+        "value": {
+          "type": "Num",
+          "value": 0.43633201706180874
+        },
+        "texName": "ATP"
+      }
+    },
+    "parameters": {
+      "CO2_dissolved": {
+        "value": {
+          "type": "Num",
+          "value": 0.2
+        },
+        "texName": "CO2 (dissolved)"
+      },
+      "NADPH": {
+        "value": {
+          "type": "Num",
+          "value": 0.21
+        },
+        "texName": "NADPH"
+      },
+      "protons": {
+        "value": {
+          "type": "Num",
+          "value": 0.000012589254117941661
+        },
+        "texName": "protons"
+      },
+      "A_star_P": {
+        "value": {
+          "type": "Num",
+          "value": 0.5
+        },
+        "texName": "A*P"
+      },
+      "NADP_star": {
+        "value": {
+          "type": "Num",
+          "value": 0.5
+        },
+        "texName": "NADP*"
+      },
+      "Pi_tot": {
+        "value": {
+          "type": "Num",
+          "value": 15
+        },
+        "texName": "Pi\\_tot"
+      },
+      "E0_rubisco_carboxylase": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_rubisco\\_carboxylase",
+        "slider": {
+          "min": "0.1",
+          "max": "2.0",
+          "step": "0.1"
+        }
+      },
+      "kcat_rubisco_carboxylase": {
+        "value": {
+          "type": "Num",
+          "value": 2.72
+        },
+        "texName": "kcat\\_rubisco\\_carboxylase"
+      },
+      "km_rubisco_carboxylase_RUBP": {
+        "value": {
+          "type": "Num",
+          "value": 0.02
+        },
+        "texName": "km\\_rubisco\\_carboxylase\\_RUBP"
+      },
+      "km_rubisco_carboxylase_CO2_dissolved": {
+        "value": {
+          "type": "Num",
+          "value": 0.0107
+        },
+        "texName": "km\\_rubisco\\_carboxylase\\_CO2 (dissolved)"
+      },
+      "ki_rubisco_carboxylase_3PGA": {
+        "value": {
+          "type": "Num",
+          "value": 0.04
+        },
+        "texName": "ki\\_rubisco\\_carboxylase\\_3PGA"
+      },
+      "ki_rubisco_carboxylase_FBP": {
+        "value": {
+          "type": "Num",
+          "value": 0.04
+        },
+        "texName": "ki\\_rubisco\\_carboxylase\\_FBP"
+      },
+      "ki_rubisco_carboxylase_SBP": {
+        "value": {
+          "type": "Num",
+          "value": 0.075
+        },
+        "texName": "ki\\_rubisco\\_carboxylase\\_SBP"
+      },
+      "ki_rubisco_carboxylase_Orthophosphate": {
+        "value": {
+          "type": "Num",
+          "value": 0.9
+        },
+        "texName": "ki\\_rubisco\\_carboxylase\\_Orthophosphate"
+      },
+      "ki_rubisco_carboxylase_NADPH": {
+        "value": {
+          "type": "Num",
+          "value": 0.07
+        },
+        "texName": "ki\\_rubisco\\_carboxylase\\_NADPH"
+      },
+      "kre_phosphoglycerate_kinase": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_phosphoglycerate\\_kinase"
+      },
+      "keq_phosphoglycerate_kinase": {
+        "value": {
+          "type": "Num",
+          "value": 0.00031
+        },
+        "texName": "keq\\_phosphoglycerate\\_kinase"
+      },
+      "kre_gadph": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_gadph"
+      },
+      "keq_gadph": {
+        "value": {
+          "type": "Num",
+          "value": 16000000
+        },
+        "texName": "keq\\_gadph"
+      },
+      "kre_triose_phosphate_isomerase": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_triose\\_phosphate\\_isomerase"
+      },
+      "keq_triose_phosphate_isomerase": {
+        "value": {
+          "type": "Num",
+          "value": 22
+        },
+        "texName": "keq\\_triose\\_phosphate\\_isomerase"
+      },
+      "kre_aldolase_dhap_gap": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_aldolase\\_dhap\\_gap"
+      },
+      "keq_aldolase_dhap_gap": {
+        "value": {
+          "type": "Num",
+          "value": 7.1
+        },
+        "texName": "keq\\_aldolase\\_dhap\\_gap"
+      },
+      "kre_aldolase_dhap_e4p": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_aldolase\\_dhap\\_e4p"
+      },
+      "keq_aldolase_dhap_e4p": {
+        "value": {
+          "type": "Num",
+          "value": 13
+        },
+        "texName": "keq\\_aldolase\\_dhap\\_e4p"
+      },
+      "E0_fbpase": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_fbpase"
+      },
+      "kcat_fbpase": {
+        "value": {
+          "type": "Num",
+          "value": 1.6
+        },
+        "texName": "kcat\\_fbpase"
+      },
+      "km_fbpase_s": {
+        "value": {
+          "type": "Num",
+          "value": 0.03
+        },
+        "texName": "km\\_fbpase\\_s"
+      },
+      "ki_fbpase_F6P": {
+        "value": {
+          "type": "Num",
+          "value": 0.7
+        },
+        "texName": "ki\\_fbpase\\_F6P"
+      },
+      "ki_fbpase_Orthophosphate": {
+        "value": {
+          "type": "Num",
+          "value": 12
+        },
+        "texName": "ki\\_fbpase\\_Orthophosphate"
+      },
+      "kre_transketolase_gap_f6p": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_transketolase\\_gap\\_f6p"
+      },
+      "keq_transketolase_gap_f6p": {
+        "value": {
+          "type": "Num",
+          "value": 0.084
+        },
+        "texName": "keq\\_transketolase\\_gap\\_f6p"
+      },
+      "kre_transketolase_gap_s7p": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_transketolase\\_gap\\_s7p"
+      },
+      "keq_transketolase_gap_s7p": {
+        "value": {
+          "type": "Num",
+          "value": 0.85
+        },
+        "texName": "keq\\_transketolase\\_gap\\_s7p"
+      },
+      "E0_SBPase": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_SBPase"
+      },
+      "kcat_SBPase": {
+        "value": {
+          "type": "Num",
+          "value": 0.32
+        },
+        "texName": "kcat\\_SBPase"
+      },
+      "km_SBPase_s": {
+        "value": {
+          "type": "Num",
+          "value": 0.013
+        },
+        "texName": "km\\_SBPase\\_s"
+      },
+      "ki_SBPase_Orthophosphate": {
+        "value": {
+          "type": "Num",
+          "value": 12
+        },
+        "texName": "ki\\_SBPase\\_Orthophosphate"
+      },
+      "kre_ribose_phosphate_isomerase": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_ribose\\_phosphate\\_isomerase"
+      },
+      "keq_ribose_phosphate_isomerase": {
+        "value": {
+          "type": "Num",
+          "value": 0.4
+        },
+        "texName": "keq\\_ribose\\_phosphate\\_isomerase"
+      },
+      "kre_ribulose_phosphate_epimerase": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_ribulose\\_phosphate\\_epimerase"
+      },
+      "keq_ribulose_phosphate_epimerase": {
+        "value": {
+          "type": "Num",
+          "value": 0.67
+        },
+        "texName": "keq\\_ribulose\\_phosphate\\_epimerase"
+      },
+      "E0_phosphoribulokinase": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_phosphoribulokinase"
+      },
+      "kcat_phosphoribulokinase": {
+        "value": {
+          "type": "Num",
+          "value": 7.9992
+        },
+        "texName": "kcat\\_phosphoribulokinase"
+      },
+      "km_phosphoribulokinase_RU5P": {
+        "value": {
+          "type": "Num",
+          "value": 0.05
+        },
+        "texName": "km\\_phosphoribulokinase\\_RU5P"
+      },
+      "km_phosphoribulokinase_ATP": {
+        "value": {
+          "type": "Num",
+          "value": 0.05
+        },
+        "texName": "km\\_phosphoribulokinase\\_ATP"
+      },
+      "ki_phosphoribulokinase_3PGA": {
+        "value": {
+          "type": "Num",
+          "value": 2
+        },
+        "texName": "ki\\_phosphoribulokinase\\_3PGA"
+      },
+      "ki_phosphoribulokinase_RUBP": {
+        "value": {
+          "type": "Num",
+          "value": 0.7
+        },
+        "texName": "ki\\_phosphoribulokinase\\_RUBP"
+      },
+      "ki_phosphoribulokinase_Orthophosphate": {
+        "value": {
+          "type": "Num",
+          "value": 4
+        },
+        "texName": "ki\\_phosphoribulokinase\\_Orthophosphate"
+      },
+      "ki_phosphoribulokinase_4": {
+        "value": {
+          "type": "Num",
+          "value": 2.5
+        },
+        "texName": "ki\\_phosphoribulokinase\\_4"
+      },
+      "ki_phosphoribulokinase_5": {
+        "value": {
+          "type": "Num",
+          "value": 0.4
+        },
+        "texName": "ki\\_phosphoribulokinase\\_5"
+      },
+      "kre_g6pi": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_g6pi"
+      },
+      "keq_g6pi": {
+        "value": {
+          "type": "Num",
+          "value": 2.3
+        },
+        "texName": "keq\\_g6pi"
+      },
+      "kre_phosphoglucomutase": {
+        "value": {
+          "type": "Num",
+          "value": 800000000
+        },
+        "texName": "kre\\_phosphoglucomutase"
+      },
+      "keq_phosphoglucomutase": {
+        "value": {
+          "type": "Num",
+          "value": 0.058
+        },
+        "texName": "keq\\_phosphoglucomutase"
+      },
+      "Orthophosphate_external": {
+        "value": {
+          "type": "Num",
+          "value": 0.5
+        },
+        "texName": "Orthophosphate (external)"
+      },
+      "km_ex_pga": {
+        "value": {
+          "type": "Num",
+          "value": 0.25
+        },
+        "texName": "km\\_ex\\_pga"
+      },
+      "km_ex_gap": {
+        "value": {
+          "type": "Num",
+          "value": 0.075
+        },
+        "texName": "km\\_ex\\_gap"
+      },
+      "km_ex_dhap": {
+        "value": {
+          "type": "Num",
+          "value": 0.077
+        },
+        "texName": "km\\_ex\\_dhap"
+      },
+      "km_N_translocator_Orthophosphate_external": {
+        "value": {
+          "type": "Num",
+          "value": 0.74
+        },
+        "texName": "km\\_N\\_translocator\\_Orthophosphate (external)"
+      },
+      "km_N_translocator_Orthophosphate": {
+        "value": {
+          "type": "Num",
+          "value": 0.63
+        },
+        "texName": "km\\_N\\_translocator\\_Orthophosphate"
+      },
+      "kcat_N_translocator": {
+        "value": {
+          "type": "Num",
+          "value": 2
+        },
+        "texName": "kcat\\_N\\_translocator"
+      },
+      "E0_N_translocator": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_N\\_translocator"
+      },
+      "km_ex_g1p_G1P": {
+        "value": {
+          "type": "Num",
+          "value": 0.08
+        },
+        "texName": "km\\_ex\\_g1p\\_G1P"
+      },
+      "km_ex_g1p_ATP": {
+        "value": {
+          "type": "Num",
+          "value": 0.08
+        },
+        "texName": "km\\_ex\\_g1p\\_ATP"
+      },
+      "ki_ex_g1p": {
+        "value": {
+          "type": "Num",
+          "value": 10
+        },
+        "texName": "ki\\_ex\\_g1p"
+      },
+      "ki_ex_g1p_3PGA": {
+        "value": {
+          "type": "Num",
+          "value": 0.1
+        },
+        "texName": "ki\\_ex\\_g1p\\_3PGA"
+      },
+      "ki_ex_g1p_F6P": {
+        "value": {
+          "type": "Num",
+          "value": 0.02
+        },
+        "texName": "ki\\_ex\\_g1p\\_F6P"
+      },
+      "ki_ex_g1p_FBP": {
+        "value": {
+          "type": "Num",
+          "value": 0.02
+        },
+        "texName": "ki\\_ex\\_g1p\\_FBP"
+      },
+      "E0_ex_g1p": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_ex\\_g1p"
+      },
+      "kcat_ex_g1p": {
+        "value": {
+          "type": "Num",
+          "value": 0.32
+        },
+        "texName": "kcat\\_ex\\_g1p"
+      },
+      "km_atp_synthase_ADP": {
+        "value": {
+          "type": "Num",
+          "value": 0.014
+        },
+        "texName": "km\\_atp\\_synthase\\_ADP"
+      },
+      "km_atp_synthase_Orthophosphate": {
+        "value": {
+          "type": "Num",
+          "value": 0.3
+        },
+        "texName": "km\\_atp\\_synthase\\_Orthophosphate"
+      },
+      "kcat_atp_synthase": {
+        "value": {
+          "type": "Num",
+          "value": 2.8
+        },
+        "texName": "kcat\\_atp\\_synthase"
+      },
+      "E0_atp_synthase": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_atp\\_synthase"
+      }
+    },
+    "reactions": {
+      "rubisco_carboxylase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "CO2_dissolved"
+                },
+                {
+                  "type": "Name",
+                  "value": "RUBP"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_rubisco_carboxylase"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "CO2_dissolved"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "km_rubisco_carboxylase_CO2_dissolved"
+                    }
+                  ]
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "RUBP"
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "km_rubisco_carboxylase_RUBP"
+                        },
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "FBP"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_rubisco_carboxylase_FBP"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "NADPH"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_rubisco_carboxylase_NADPH"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "Orthophosphate"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_rubisco_carboxylase_Orthophosphate"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "SBP"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_rubisco_carboxylase_SBP"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "_3PGA"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_rubisco_carboxylase_3PGA"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "RUBP": {
+            "type": "Num",
+            "value": -1
+          },
+          "_3PGA": {
+            "type": "Num",
+            "value": 2
+          }
+        },
+        "texName": "rubisco\\_carboxylase"
+      },
+      "phosphoglycerate_kinase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_phosphoglycerate_kinase"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "ATP"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "_3PGA"
+                    }
+                  ]
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "ADP"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "BPGA"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_phosphoglycerate_kinase"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "_3PGA": {
+            "type": "Num",
+            "value": -1
+          },
+          "ATP": {
+            "type": "Num",
+            "value": -1
+          },
+          "BPGA": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "phosphoglycerate\\_kinase"
+      },
+      "gadph": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_gadph"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "BPGA"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "NADPH"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "protons"
+                    }
+                  ]
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "GAP"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "NADP"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "Orthophosphate"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_gadph"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "BPGA": {
+            "type": "Num",
+            "value": -1
+          },
+          "GAP": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "gadph"
+      },
+      "triose_phosphate_isomerase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_triose_phosphate_isomerase"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "GAP"
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "DHAP"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_triose_phosphate_isomerase"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "GAP": {
+            "type": "Num",
+            "value": -1
+          },
+          "DHAP": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "triose\\_phosphate\\_isomerase"
+      },
+      "aldolase_dhap_gap": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_aldolase_dhap_gap"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "DHAP"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "GAP"
+                    }
+                  ]
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "FBP"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_aldolase_dhap_gap"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "GAP": {
+            "type": "Num",
+            "value": -1
+          },
+          "DHAP": {
+            "type": "Num",
+            "value": -1
+          },
+          "FBP": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "aldolase\\_dhap\\_gap"
+      },
+      "aldolase_dhap_e4p": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_aldolase_dhap_e4p"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "DHAP"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "E4P"
+                    }
+                  ]
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "SBP"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_aldolase_dhap_e4p"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "DHAP": {
+            "type": "Num",
+            "value": -1
+          },
+          "E4P": {
+            "type": "Num",
+            "value": -1
+          },
+          "SBP": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "aldolase\\_dhap\\_e4p"
+      },
+      "fbpase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "FBP"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_fbpase"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "FBP"
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "km_fbpase_s"
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Divide",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "F6P"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "ki_fbpase_F6P"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Divide",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Orthophosphate"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "ki_fbpase_Orthophosphate"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "FBP": {
+            "type": "Num",
+            "value": -1
+          },
+          "F6P": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "fbpase"
+      },
+      "transketolase_gap_f6p": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_transketolase_gap_f6p"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "F6P"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "GAP"
+                    }
+                  ]
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "E4P"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "X5P"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_transketolase_gap_f6p"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "GAP": {
+            "type": "Num",
+            "value": -1
+          },
+          "F6P": {
+            "type": "Num",
+            "value": -1
+          },
+          "E4P": {
+            "type": "Num",
+            "value": 1
+          },
+          "X5P": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "transketolase\\_gap\\_f6p"
+      },
+      "transketolase_gap_s7p": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_transketolase_gap_s7p"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "GAP"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "S7P"
+                    }
+                  ]
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "R5P"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "X5P"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_transketolase_gap_s7p"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "GAP": {
+            "type": "Num",
+            "value": -1
+          },
+          "S7P": {
+            "type": "Num",
+            "value": -1
+          },
+          "R5P": {
+            "type": "Num",
+            "value": 1
+          },
+          "X5P": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "transketolase\\_gap\\_s7p"
+      },
+      "SBPase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "SBP"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_SBPase"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "SBP"
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "km_SBPase_s"
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Divide",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Orthophosphate"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "ki_SBPase_Orthophosphate"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "SBP": {
+            "type": "Num",
+            "value": -1
+          },
+          "S7P": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "SBPase"
+      },
+      "ribose_phosphate_isomerase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_ribose_phosphate_isomerase"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "R5P"
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "RU5P"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_ribose_phosphate_isomerase"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "R5P": {
+            "type": "Num",
+            "value": -1
+          },
+          "RU5P": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "ribose\\_phosphate\\_isomerase"
+      },
+      "ribulose_phosphate_epimerase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_ribulose_phosphate_epimerase"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "X5P"
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "RU5P"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_ribulose_phosphate_epimerase"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "X5P": {
+            "type": "Num",
+            "value": -1
+          },
+          "RU5P": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "ribulose\\_phosphate\\_epimerase"
+      },
+      "phosphoribulokinase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ATP"
+                },
+                {
+                  "type": "Name",
+                  "value": "RU5P"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_phosphoribulokinase"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "RU5P"
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "km_phosphoribulokinase_RU5P"
+                        },
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "Orthophosphate"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_phosphoribulokinase_Orthophosphate"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "RUBP"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_phosphoribulokinase_RUBP"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "_3PGA"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_phosphoribulokinase_3PGA"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "ATP"
+                        },
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "ADP"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_phosphoribulokinase_4"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "km_phosphoribulokinase_ATP"
+                        },
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "ADP"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_phosphoribulokinase_5"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "RU5P": {
+            "type": "Num",
+            "value": -1
+          },
+          "ATP": {
+            "type": "Num",
+            "value": -1
+          },
+          "RUBP": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "phosphoribulokinase"
+      },
+      "g6pi": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_g6pi"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "F6P"
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "G6P"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_g6pi"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "F6P": {
+            "type": "Num",
+            "value": -1
+          },
+          "G6P": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "g6pi"
+      },
+      "phosphoglucomutase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kre_phosphoglucomutase"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "G6P"
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "G1P"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "keq_phosphoglucomutase"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "G6P": {
+            "type": "Num",
+            "value": -1
+          },
+          "G1P": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "phosphoglucomutase"
+      },
+      "ex_pga": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "_3PGA"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_ex_pga"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "N_translocator"
+                },
+                {
+                  "type": "Name",
+                  "value": "km_ex_pga"
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "_3PGA": {
+            "type": "Num",
+            "value": -1
+          }
+        },
+        "texName": "ex\\_pga"
+      },
+      "ex_gap": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "GAP"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_ex_pga"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "N_translocator"
+                },
+                {
+                  "type": "Name",
+                  "value": "km_ex_gap"
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "GAP": {
+            "type": "Num",
+            "value": -1
+          }
+        },
+        "texName": "ex\\_gap"
+      },
+      "ex_dhap": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "DHAP"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_ex_pga"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "N_translocator"
+                },
+                {
+                  "type": "Name",
+                  "value": "km_ex_dhap"
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "DHAP": {
+            "type": "Num",
+            "value": -1
+          }
+        },
+        "texName": "ex\\_dhap"
+      },
+      "ex_g1p": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ATP"
+                },
+                {
+                  "type": "Name",
+                  "value": "G1P"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_ex_g1p"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "G1P"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "km_ex_g1p_G1P"
+                    }
+                  ]
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "ADP"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_ex_g1p"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "ATP"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "km_ex_g1p_ATP"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Orthophosphate"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "km_ex_g1p_ATP"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "F6P"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_ex_g1p_F6P"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "FBP"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_ex_g1p_FBP"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "_3PGA"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "ki_ex_g1p_3PGA"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "G1P": {
+            "type": "Num",
+            "value": -1
+          },
+          "ATP": {
+            "type": "Num",
+            "value": -1
+          }
+        },
+        "texName": "ex\\_g1p"
+      },
+      "atp_synthase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ADP"
+                },
+                {
+                  "type": "Name",
+                  "value": "Orthophosphate"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_atp_synthase"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "ADP"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "km_atp_synthase_ADP"
+                    }
+                  ]
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "Orthophosphate"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "km_atp_synthase_Orthophosphate"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "ATP": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "atp\\_synthase"
+      }
+    },
+    "derived": {
+      "ADP": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "A_star_P"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ATP"
+                }
+              ]
+            }
+          ]
+        },
+        "texName": "ADP"
+      },
+      "NADP": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "NADP_star"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "NADPH"
+                }
+              ]
+            }
+          ]
+        },
+        "texName": "NADP"
+      },
+      "Orthophosphate": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Pi_tot"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ATP"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "DHAP"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "E4P"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "F6P"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "G1P"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "G6P"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "GAP"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "R5P"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "RU5P"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "S7P"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "X5P"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "_3PGA"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "BPGA"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "FBP"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "RUBP"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "SBP"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "texName": "Orthophosphate"
+      },
+      "vmax_rubisco_carboxylase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_rubisco_carboxylase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_rubisco_carboxylase"
+            }
+          ]
+        },
+        "texName": "vmax\\_rubisco\\_carboxylase"
+      },
+      "vmax_fbpase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_fbpase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_fbpase"
+            }
+          ]
+        },
+        "texName": "vmax\\_fbpase"
+      },
+      "vmax_SBPase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_SBPase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_SBPase"
+            }
+          ]
+        },
+        "texName": "vmax\\_SBPase"
+      },
+      "vmax_phosphoribulokinase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_phosphoribulokinase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_phosphoribulokinase"
+            }
+          ]
+        },
+        "texName": "vmax\\_phosphoribulokinase"
+      },
+      "vmax_ex_pga": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_N_translocator"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_N_translocator"
+            }
+          ]
+        },
+        "texName": "vmax\\_ex\\_pga"
+      },
+      "N_translocator": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Num",
+              "value": 1
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "km_N_translocator_Orthophosphate_external"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Orthophosphate_external"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "DHAP"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "km_ex_dhap"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "GAP"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "km_ex_gap"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Orthophosphate"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "km_N_translocator_Orthophosphate"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "_3PGA"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "km_ex_pga"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "texName": "N\\_translocator"
+      },
+      "vmax_ex_g1p": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_ex_g1p"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_ex_g1p"
+            }
+          ]
+        },
+        "texName": "vmax\\_ex\\_g1p"
+      },
+      "vmax_atp_synthase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_atp_synthase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_atp_synthase"
+            }
+          ]
+        },
+        "texName": "vmax\\_atp\\_synthase"
+      }
+    },
+    "readouts": {}
+  }
+}

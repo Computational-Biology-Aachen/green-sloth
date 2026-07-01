@@ -1,0 +1,638 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
+  "spec_version": "1.0",
+  "kind": "kinetic",
+  "model_id": "yokota1985",
+  "model": {
+    "variables": {
+      "glycolate": {
+        "value": {
+          "type": "Num",
+          "value": 0.09
+        },
+        "texName": "glycolate"
+      },
+      "glyoxylate": {
+        "value": {
+          "type": "Num",
+          "value": 0.7964601770483386
+        },
+        "texName": "glyoxylate"
+      },
+      "glycine": {
+        "value": {
+          "type": "Num",
+          "value": 8.999999999424611
+        },
+        "texName": "glycine"
+      },
+      "serine": {
+        "value": {
+          "type": "Num",
+          "value": 2.5385608670239126
+        },
+        "texName": "serine"
+      },
+      "hydroxypyruvate": {
+        "value": {
+          "type": "Num",
+          "value": 0.009782608695111009
+        },
+        "texName": "hydroxypyruvate"
+      },
+      "H2O2": {
+        "value": {
+          "type": "Num",
+          "value": 0.010880542843616855
+        },
+        "texName": "H2O2"
+      }
+    },
+    "parameters": {
+      "kf_phosphoglycolate_phosphatase": {
+        "value": {
+          "type": "Num",
+          "value": 60
+        },
+        "texName": "kf\\_phosphoglycolate\\_phosphatase",
+        "slider": {
+          "min": "0.1",
+          "max": "2.0",
+          "step": "0.1"
+        }
+      },
+      "E0_glycolate_oxidase": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_glycolate\\_oxidase"
+      },
+      "kcat_glycolate_oxidase": {
+        "value": {
+          "type": "Num",
+          "value": 100
+        },
+        "texName": "kcat\\_glycolate\\_oxidase"
+      },
+      "km_glycolate_oxidase_s": {
+        "value": {
+          "type": "Num",
+          "value": 0.06
+        },
+        "texName": "km\\_glycolate\\_oxidase\\_s"
+      },
+      "E0_glycine_transaminase": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_glycine\\_transaminase"
+      },
+      "kcat_glycine_transaminase": {
+        "value": {
+          "type": "Num",
+          "value": 143
+        },
+        "texName": "kcat\\_glycine\\_transaminase"
+      },
+      "km_glycine_transaminase_s": {
+        "value": {
+          "type": "Num",
+          "value": 3
+        },
+        "texName": "km\\_glycine\\_transaminase\\_s"
+      },
+      "E0_glycine_decarboxylase": {
+        "value": {
+          "type": "Num",
+          "value": 0.5
+        },
+        "texName": "E0\\_glycine\\_decarboxylase"
+      },
+      "kcat_glycine_decarboxylase": {
+        "value": {
+          "type": "Num",
+          "value": 100
+        },
+        "texName": "kcat\\_glycine\\_decarboxylase"
+      },
+      "km_glycine_decarboxylase_s": {
+        "value": {
+          "type": "Num",
+          "value": 6
+        },
+        "texName": "km\\_glycine\\_decarboxylase\\_s"
+      },
+      "E0_serine_glyoxylate_transaminase": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_serine\\_glyoxylate\\_transaminase"
+      },
+      "kcat_serine_glyoxylate_transaminase": {
+        "value": {
+          "type": "Num",
+          "value": 159
+        },
+        "texName": "kcat\\_serine\\_glyoxylate\\_transaminase"
+      },
+      "km_serine_glyoxylate_transaminase_glyoxylate": {
+        "value": {
+          "type": "Num",
+          "value": 0.15
+        },
+        "texName": "km\\_serine\\_glyoxylate\\_transaminase\\_glyoxylate"
+      },
+      "km_serine_glyoxylate_transaminase_serine": {
+        "value": {
+          "type": "Num",
+          "value": 2.72
+        },
+        "texName": "km\\_serine\\_glyoxylate\\_transaminase\\_serine"
+      },
+      "E0_glycerate_dehydrogenase": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_glycerate\\_dehydrogenase"
+      },
+      "kcat_glycerate_dehydrogenase": {
+        "value": {
+          "type": "Num",
+          "value": 398
+        },
+        "texName": "kcat\\_glycerate\\_dehydrogenase"
+      },
+      "km_glycerate_dehydrogenase_s": {
+        "value": {
+          "type": "Num",
+          "value": 0.12
+        },
+        "texName": "km\\_glycerate\\_dehydrogenase\\_s"
+      },
+      "E0_catalase": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "E0\\_catalase"
+      },
+      "kcat_catalase": {
+        "value": {
+          "type": "Num",
+          "value": 760500
+        },
+        "texName": "kcat\\_catalase"
+      },
+      "km_catalase_s": {
+        "value": {
+          "type": "Num",
+          "value": 137.9
+        },
+        "texName": "km\\_catalase\\_s"
+      }
+    },
+    "reactions": {
+      "phosphoglycolate_phosphatase": {
+        "fn": {
+          "type": "Name",
+          "value": "kf_phosphoglycolate_phosphatase"
+        },
+        "stoichiometry": {
+          "glycolate": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "phosphoglycolate\\_phosphatase"
+      },
+      "glycolate_oxidase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "glycolate"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_glycolate_oxidase"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "glycolate"
+                },
+                {
+                  "type": "Name",
+                  "value": "km_glycolate_oxidase_s"
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "glycolate": {
+            "type": "Num",
+            "value": -1
+          },
+          "glyoxylate": {
+            "type": "Num",
+            "value": 1
+          },
+          "H2O2": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "glycolate\\_oxidase"
+      },
+      "glycine_transaminase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "glyoxylate"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_glycine_transaminase"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "glyoxylate"
+                },
+                {
+                  "type": "Name",
+                  "value": "km_glycine_transaminase_s"
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "glyoxylate": {
+            "type": "Num",
+            "value": -1
+          },
+          "glycine": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "glycine\\_transaminase"
+      },
+      "glycine_decarboxylase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "glycine"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_glycine_decarboxylase"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "glycine"
+                },
+                {
+                  "type": "Name",
+                  "value": "km_glycine_decarboxylase_s"
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "glycine": {
+            "type": "Num",
+            "value": -2
+          },
+          "serine": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "glycine\\_decarboxylase"
+      },
+      "serine_glyoxylate_transaminase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "glyoxylate"
+                },
+                {
+                  "type": "Name",
+                  "value": "serine"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_serine_glyoxylate_transaminase"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "glyoxylate"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "serine"
+                    }
+                  ]
+                },
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "glyoxylate"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "km_serine_glyoxylate_transaminase_glyoxylate"
+                    }
+                  ]
+                },
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "serine"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "km_serine_glyoxylate_transaminase_serine"
+                    }
+                  ]
+                },
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "km_serine_glyoxylate_transaminase_glyoxylate"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "km_serine_glyoxylate_transaminase_serine"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "glyoxylate": {
+            "type": "Num",
+            "value": -1
+          },
+          "serine": {
+            "type": "Num",
+            "value": -1
+          },
+          "glycine": {
+            "type": "Num",
+            "value": 1
+          },
+          "hydroxypyruvate": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "serine\\_glyoxylate\\_transaminase"
+      },
+      "glycerate_dehydrogenase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "hydroxypyruvate"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_glycerate_dehydrogenase"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "hydroxypyruvate"
+                },
+                {
+                  "type": "Name",
+                  "value": "km_glycerate_dehydrogenase_s"
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "hydroxypyruvate": {
+            "type": "Num",
+            "value": -1
+          }
+        },
+        "texName": "glycerate\\_dehydrogenase"
+      },
+      "catalase": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "H2O2"
+                },
+                {
+                  "type": "Name",
+                  "value": "vmax_catalase"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "H2O2"
+                },
+                {
+                  "type": "Name",
+                  "value": "km_catalase_s"
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "H2O2": {
+            "type": "Num",
+            "value": -1
+          }
+        },
+        "texName": "catalase"
+      }
+    },
+    "derived": {
+      "vmax_glycolate_oxidase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_glycolate_oxidase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_glycolate_oxidase"
+            }
+          ]
+        },
+        "texName": "vmax\\_glycolate\\_oxidase"
+      },
+      "vmax_glycine_transaminase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_glycine_transaminase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_glycine_transaminase"
+            }
+          ]
+        },
+        "texName": "vmax\\_glycine\\_transaminase"
+      },
+      "vmax_glycine_decarboxylase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_glycine_decarboxylase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_glycine_decarboxylase"
+            }
+          ]
+        },
+        "texName": "vmax\\_glycine\\_decarboxylase"
+      },
+      "vmax_serine_glyoxylate_transaminase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_serine_glyoxylate_transaminase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_serine_glyoxylate_transaminase"
+            }
+          ]
+        },
+        "texName": "vmax\\_serine\\_glyoxylate\\_transaminase"
+      },
+      "vmax_glycerate_dehydrogenase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_glycerate_dehydrogenase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_glycerate_dehydrogenase"
+            }
+          ]
+        },
+        "texName": "vmax\\_glycerate\\_dehydrogenase"
+      },
+      "vmax_catalase": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "E0_catalase"
+            },
+            {
+              "type": "Name",
+              "value": "kcat_catalase"
+            }
+          ]
+        },
+        "texName": "vmax\\_catalase"
+      }
+    },
+    "readouts": {}
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
+  "spec_version": "1.0",
+  "kind": "kinetic",
+  "model_id": "nedbal2021_ojip",
+  "model": {
+    "variables": {
+      "ChlF": {
+        "value": {
+          "type": "Num",
+          "value": 0.02
+        },
+        "texName": "ChlF"
+      }
+    },
+    "parameters": {
+      "j": {
+        "value": {
+          "type": "Num",
+          "value": 0.04
+        },
+        "texName": "j"
+      },
+      "i": {
+        "value": {
+          "type": "Num",
+          "value": 0.006
+        },
+        "texName": "i"
+      },
+      "p": {
+        "value": {
+          "type": "Num",
+          "value": 0.014
+        },
+        "texName": "p"
+      },
+      "tau_j": {
+        "value": {
+          "type": "Num",
+          "value": 0.00025
+        },
+        "texName": "tau\\_j"
+      },
+      "tau_i": {
+        "value": {
+          "type": "Num",
+          "value": 0.004
+        },
+        "texName": "tau\\_i"
+      },
+      "tau_p": {
+        "value": {
+          "type": "Num",
+          "value": 0.03
+        },
+        "texName": "tau\\_p"
+      }
+    },
+    "reactions": {
+      "ojip": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "i"
+                    },
+                    {
+                      "type": "Exp",
+                      "child": {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Divide",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "time"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "tau_i"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "tau_i"
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "j"
+                    },
+                    {
+                      "type": "Exp",
+                      "child": {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Divide",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "time"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "tau_j"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "tau_j"
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "p"
+                    },
+                    {
+                      "type": "Exp",
+                      "child": {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Divide",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "time"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "tau_p"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "tau_p"
+                }
+              ]
+            }
+          ]
+        },
+        "stoichiometry": {
+          "ChlF": {
+            "type": "Num",
+            "value": 1
+          }
+        },
+        "texName": "ojip"
+      }
+    },
+    "derived": {},
+    "readouts": {}
+  }
+}
