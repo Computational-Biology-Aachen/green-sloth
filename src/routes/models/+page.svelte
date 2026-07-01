@@ -89,7 +89,9 @@
       if (!fuzzyMatch(info.title, query)) return false;
       for (const [cat, sel] of Object.entries(active)) {
         if (sel.size === 0) continue;
-        const modelTags = info.tags[cat] ?? [];
+        // `cat` is a dynamic facet category built from Tags at runtime, not
+        // a literal key, so it can't be checked against Tags statically.
+        const modelTags = (info.tags as Record<string, string[]>)[cat] ?? [];
         if (![...sel].every((t) => modelTags.includes(t))) return false;
       }
       return true;

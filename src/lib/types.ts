@@ -82,11 +82,32 @@ export interface PamAnalysis {
 
 export type ModelAnalysis = TimeCourseAnalysis | PamAnalysis;
 
+export type Part =
+  | "PSII"
+  | "OEC"
+  | "ATP Synthase"
+  | "Cytochrome b6f"
+  | "PQ Cycle"
+  | "PC"
+  | "FNR"
+  | "PSI"
+  | "CBB Cycle";
+
+// Maps each tag category to its value union. Add a category here (and its
+// value type) to extend the tag system — Tags below follows automatically.
+type TagValues = {
+  "Part of Photosynthesis": Part;
+};
+
+export type Tags = {
+  [K in keyof TagValues]: Array<TagValues[K]>;
+};
+
 export interface ModelMeta {
   slug: string;
   title: string;
   DOI?: string;
-  tags: Record<string, string[]>;
+  tags: Tags;
   /** Analyses auto-run on the model's dashboard. */
   analyses: ModelAnalysis[];
 }
