@@ -1,0 +1,3620 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/steady-state-model.schema.json",
+  "spec_version": "1.0",
+  "kind": "steady-state",
+  "model_id": "Johnson2021",
+  "model": {
+    "parameters": {
+      "PAR": {
+        "value": {
+          "type": "Num",
+          "value": 800
+        },
+        "displayName": "PAR",
+        "texName": "\\mathrm{PAR}",
+        "slider": {
+          "min": "0",
+          "max": "2400",
+          "step": "10"
+        }
+      },
+      "Temp": {
+        "value": {
+          "type": "Num",
+          "value": 25
+        },
+        "texName": "T"
+      },
+      "CO2": {
+        "value": {
+          "type": "Num",
+          "value": 200
+        },
+        "displayName": "CO2",
+        "texName": "\\mathrm{CO_2}"
+      },
+      "O2": {
+        "value": {
+          "type": "Num",
+          "value": 209
+        },
+        "displayName": "O2",
+        "texName": "\\mathrm{O_2}"
+      },
+      "Abs": {
+        "value": {
+          "type": "Num",
+          "value": 0.85
+        },
+        "texName": "\\mathrm{Abs}"
+      },
+      "beta": {
+        "value": {
+          "type": "Num",
+          "value": 0.52
+        },
+        "texName": "\\beta"
+      },
+      "CB6F": {
+        "value": {
+          "type": "Num",
+          "value": 0.0000011666666666666668
+        },
+        "texName": "\\mathrm{CB6F}"
+      },
+      "RUB": {
+        "value": {
+          "type": "Num",
+          "value": 0.00002777777777777778
+        },
+        "texName": "\\mathrm{RUB}"
+      },
+      "Rds": {
+        "value": {
+          "type": "Num",
+          "value": 0.01
+        },
+        "texName": "R_{ds}"
+      },
+      "Ku2": {
+        "value": {
+          "type": "Num",
+          "value": 0
+        },
+        "texName": "K_{u2}"
+      },
+      "theta1": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "\\theta_1"
+      },
+      "eps1": {
+        "value": {
+          "type": "Num",
+          "value": 0
+        },
+        "texName": "\\epsilon_1"
+      },
+      "eps2": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "\\epsilon_2"
+      },
+      "nl": {
+        "value": {
+          "type": "Num",
+          "value": 0.75
+        },
+        "texName": "n_l"
+      },
+      "nc": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "n_c"
+      },
+      "Kf": {
+        "value": {
+          "type": "Num",
+          "value": 50000000
+        },
+        "texName": "K_f"
+      },
+      "Kd": {
+        "value": {
+          "type": "Num",
+          "value": 550000000
+        },
+        "texName": "K_d"
+      },
+      "Kp1": {
+        "value": {
+          "type": "Num",
+          "value": 14500000000
+        },
+        "texName": "K_{p1}"
+      },
+      "Kn1": {
+        "value": {
+          "type": "Num",
+          "value": 14500000000
+        },
+        "texName": "K_{n1}"
+      },
+      "Kp2": {
+        "value": {
+          "type": "Num",
+          "value": 4500000000
+        },
+        "texName": "K_{p2}"
+      },
+      "kq": {
+        "value": {
+          "type": "Num",
+          "value": 300
+        },
+        "texName": "k_q"
+      },
+      "kc": {
+        "value": {
+          "type": "Num",
+          "value": 3.6
+        },
+        "texName": "k_c"
+      },
+      "ko": {
+        "value": {
+          "type": "Num",
+          "value": 0.9720000000000001
+        },
+        "texName": "k_o"
+      },
+      "Kc": {
+        "value": {
+          "type": "Num",
+          "value": 0.00026
+        },
+        "texName": "K_c"
+      },
+      "Ko": {
+        "value": {
+          "type": "Num",
+          "value": 0.179
+        },
+        "texName": "K_o"
+      }
+    },
+    "derived": {
+      "Q": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "PAR"
+            },
+            {
+              "type": "Num",
+              "value": 1000000
+            }
+          ]
+        },
+        "displayName": "Q"
+      },
+      "C": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "CO2"
+            },
+            {
+              "type": "Num",
+              "value": 1000000
+            }
+          ]
+        },
+        "displayName": "C"
+      },
+      "O_bar": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "O2"
+            },
+            {
+              "type": "Num",
+              "value": 1000
+            }
+          ]
+        },
+        "displayName": "O"
+      },
+      "Vqmax": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "CB6F"
+            },
+            {
+              "type": "Name",
+              "value": "kq"
+            }
+          ]
+        },
+        "displayName": "Vqmax",
+        "texName": "V_{qmax}"
+      },
+      "Vcmax": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "RUB"
+            },
+            {
+              "type": "Name",
+              "value": "kc"
+            }
+          ]
+        },
+        "displayName": "Vcmax",
+        "texName": "V_{cmax}"
+      },
+      "Rd": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Vcmax"
+            },
+            {
+              "type": "Name",
+              "value": "Rds"
+            }
+          ]
+        },
+        "displayName": "Rd",
+        "texName": "R_d"
+      },
+      "S": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "kc"
+                },
+                {
+                  "type": "Name",
+                  "value": "Kc"
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Ko"
+                },
+                {
+                  "type": "Name",
+                  "value": "ko"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "S"
+      },
+      "gammas": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "O_bar"
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Name",
+                  "value": "S"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "gammas",
+        "texName": "\\Gamma^*"
+      },
+      "eta": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "nl"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "nc"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 3
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 7
+                            },
+                            {
+                              "type": "Name",
+                              "value": "gammas"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Name",
+                          "value": "C"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 4
+                        },
+                        {
+                          "type": "Divide",
+                          "children": [
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Num",
+                                  "value": 8
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "gammas"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Name",
+                              "value": "C"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "nc"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "eta",
+        "texName": "\\eta"
+      },
+      "phi1P_max": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Kp1"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Kp1"
+                },
+                {
+                  "type": "Name",
+                  "value": "Kd"
+                },
+                {
+                  "type": "Name",
+                  "value": "Kf"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi1P_max"
+      },
+      "a2": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Abs"
+            },
+            {
+              "type": "Name",
+              "value": "beta"
+            }
+          ]
+        },
+        "displayName": "a2"
+      },
+      "a1": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Abs"
+            },
+            {
+              "type": "Name",
+              "value": "a2"
+            }
+          ]
+        },
+        "displayName": "a1"
+      },
+      "JP700_j": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Q"
+                },
+                {
+                  "type": "Name",
+                  "value": "Vqmax"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Q"
+                },
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "Vqmax"
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "a1"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "phi1P_max"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "JP700_j"
+      },
+      "JP680_j": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "JP700_j"
+            },
+            {
+              "type": "Name",
+              "value": "eta"
+            }
+          ]
+        },
+        "displayName": "JP680_j"
+      },
+      "Vc_j": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "JP680_j"
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 4
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 2
+                            },
+                            {
+                              "type": "Name",
+                              "value": "gammas"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Name",
+                          "value": "C"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Vc_j"
+      },
+      "Vo_j": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Vc_j"
+                },
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Name",
+                  "value": "gammas"
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "C"
+            }
+          ]
+        },
+        "displayName": "Vo_j"
+      },
+      "Ag_j": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Vc_j"
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Vo_j"
+                },
+                {
+                  "type": "Num",
+                  "value": 2
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Ag_j"
+      },
+      "Vc_c": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "C"
+                },
+                {
+                  "type": "Name",
+                  "value": "Vcmax"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "C"
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "Kc"
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Divide",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "O_bar"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "Ko"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Vc_c"
+      },
+      "Vo_c": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Vc_c"
+                },
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Name",
+                  "value": "gammas"
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "C"
+            }
+          ]
+        },
+        "displayName": "Vo_c"
+      },
+      "Ag_c": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Vc_c"
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Vo_c"
+                },
+                {
+                  "type": "Num",
+                  "value": 2
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Ag_c"
+      },
+      "JP680_c": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Ag_c"
+                },
+                {
+                  "type": "Num",
+                  "value": 4
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 2
+                            },
+                            {
+                              "type": "Name",
+                              "value": "gammas"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Name",
+                          "value": "C"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "gammas"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "C"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "JP680_c"
+      },
+      "JP700_c": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "JP680_c"
+            },
+            {
+              "type": "Name",
+              "value": "eta"
+            }
+          ]
+        },
+        "displayName": "JP700_c"
+      },
+      "JP680_a": {
+        "fn": {
+          "type": "Min",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "JP680_j"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "JP680_c"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Sqrt",
+                      "child": {
+                        "type": "Max",
+                        "children": [
+                          {
+                            "type": "Minus",
+                            "children": [
+                              {
+                                "type": "Pow",
+                                "left": {
+                                  "type": "Add",
+                                  "children": [
+                                    {
+                                      "type": "Name",
+                                      "value": "JP680_j"
+                                    },
+                                    {
+                                      "type": "Name",
+                                      "value": "JP680_c"
+                                    }
+                                  ]
+                                },
+                                "right": {
+                                  "type": "Num",
+                                  "value": 2
+                                }
+                              },
+                              {
+                                "type": "Mul",
+                                "children": [
+                                  {
+                                    "type": "Num",
+                                    "value": 4
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "theta1"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "JP680_j"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "JP680_c"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Num",
+                            "value": 0
+                          }
+                        ]
+                      },
+                      "base": {
+                        "type": "Num",
+                        "value": 2
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "theta1"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "JP680_j"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "JP680_c"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Sqrt",
+                      "child": {
+                        "type": "Max",
+                        "children": [
+                          {
+                            "type": "Minus",
+                            "children": [
+                              {
+                                "type": "Pow",
+                                "left": {
+                                  "type": "Add",
+                                  "children": [
+                                    {
+                                      "type": "Name",
+                                      "value": "JP680_j"
+                                    },
+                                    {
+                                      "type": "Name",
+                                      "value": "JP680_c"
+                                    }
+                                  ]
+                                },
+                                "right": {
+                                  "type": "Num",
+                                  "value": 2
+                                }
+                              },
+                              {
+                                "type": "Mul",
+                                "children": [
+                                  {
+                                    "type": "Num",
+                                    "value": 4
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "theta1"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "JP680_j"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "JP680_c"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Num",
+                            "value": 0
+                          }
+                        ]
+                      },
+                      "base": {
+                        "type": "Num",
+                        "value": 2
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "theta1"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "JP680_a"
+      },
+      "JP700_a": {
+        "fn": {
+          "type": "Min",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "JP700_j"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "JP700_c"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Sqrt",
+                      "child": {
+                        "type": "Max",
+                        "children": [
+                          {
+                            "type": "Minus",
+                            "children": [
+                              {
+                                "type": "Pow",
+                                "left": {
+                                  "type": "Add",
+                                  "children": [
+                                    {
+                                      "type": "Name",
+                                      "value": "JP700_j"
+                                    },
+                                    {
+                                      "type": "Name",
+                                      "value": "JP700_c"
+                                    }
+                                  ]
+                                },
+                                "right": {
+                                  "type": "Num",
+                                  "value": 2
+                                }
+                              },
+                              {
+                                "type": "Mul",
+                                "children": [
+                                  {
+                                    "type": "Num",
+                                    "value": 4
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "theta1"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "JP700_j"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "JP700_c"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Num",
+                            "value": 0
+                          }
+                        ]
+                      },
+                      "base": {
+                        "type": "Num",
+                        "value": 2
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "theta1"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "JP700_j"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "JP700_c"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Sqrt",
+                      "child": {
+                        "type": "Max",
+                        "children": [
+                          {
+                            "type": "Minus",
+                            "children": [
+                              {
+                                "type": "Pow",
+                                "left": {
+                                  "type": "Add",
+                                  "children": [
+                                    {
+                                      "type": "Name",
+                                      "value": "JP700_j"
+                                    },
+                                    {
+                                      "type": "Name",
+                                      "value": "JP700_c"
+                                    }
+                                  ]
+                                },
+                                "right": {
+                                  "type": "Num",
+                                  "value": 2
+                                }
+                              },
+                              {
+                                "type": "Mul",
+                                "children": [
+                                  {
+                                    "type": "Num",
+                                    "value": 4
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "theta1"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "JP700_j"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "JP700_c"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Num",
+                            "value": 0
+                          }
+                        ]
+                      },
+                      "base": {
+                        "type": "Num",
+                        "value": 2
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "theta1"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "JP700_a"
+      },
+      "Ag_a": {
+        "fn": {
+          "type": "Piecewise",
+          "children": [
+            {
+              "type": "Min",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Ag_j"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "Ag_c"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Sqrt",
+                          "child": {
+                            "type": "Max",
+                            "children": [
+                              {
+                                "type": "Minus",
+                                "children": [
+                                  {
+                                    "type": "Pow",
+                                    "left": {
+                                      "type": "Add",
+                                      "children": [
+                                        {
+                                          "type": "Name",
+                                          "value": "Ag_j"
+                                        },
+                                        {
+                                          "type": "Name",
+                                          "value": "Ag_c"
+                                        }
+                                      ]
+                                    },
+                                    "right": {
+                                      "type": "Num",
+                                      "value": 2
+                                    }
+                                  },
+                                  {
+                                    "type": "Mul",
+                                    "children": [
+                                      {
+                                        "type": "Num",
+                                        "value": 4
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "theta1"
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "Ag_j"
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "Ag_c"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Num",
+                                "value": 0
+                              }
+                            ]
+                          },
+                          "base": {
+                            "type": "Num",
+                            "value": 2
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 2
+                        },
+                        {
+                          "type": "Name",
+                          "value": "theta1"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Ag_j"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "Ag_c"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Sqrt",
+                          "child": {
+                            "type": "Max",
+                            "children": [
+                              {
+                                "type": "Minus",
+                                "children": [
+                                  {
+                                    "type": "Pow",
+                                    "left": {
+                                      "type": "Add",
+                                      "children": [
+                                        {
+                                          "type": "Name",
+                                          "value": "Ag_j"
+                                        },
+                                        {
+                                          "type": "Name",
+                                          "value": "Ag_c"
+                                        }
+                                      ]
+                                    },
+                                    "right": {
+                                      "type": "Num",
+                                      "value": 2
+                                    }
+                                  },
+                                  {
+                                    "type": "Mul",
+                                    "children": [
+                                      {
+                                        "type": "Num",
+                                        "value": 4
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "theta1"
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "Ag_j"
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "Ag_c"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Num",
+                                "value": 0
+                              }
+                            ]
+                          },
+                          "base": {
+                            "type": "Num",
+                            "value": 2
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 2
+                        },
+                        {
+                          "type": "Name",
+                          "value": "theta1"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "GreaterThan",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "C"
+                },
+                {
+                  "type": "Name",
+                  "value": "gammas"
+                }
+              ]
+            },
+            {
+              "type": "Max",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Ag_j"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "Ag_c"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Sqrt",
+                          "child": {
+                            "type": "Max",
+                            "children": [
+                              {
+                                "type": "Minus",
+                                "children": [
+                                  {
+                                    "type": "Pow",
+                                    "left": {
+                                      "type": "Add",
+                                      "children": [
+                                        {
+                                          "type": "Name",
+                                          "value": "Ag_j"
+                                        },
+                                        {
+                                          "type": "Name",
+                                          "value": "Ag_c"
+                                        }
+                                      ]
+                                    },
+                                    "right": {
+                                      "type": "Num",
+                                      "value": 2
+                                    }
+                                  },
+                                  {
+                                    "type": "Mul",
+                                    "children": [
+                                      {
+                                        "type": "Num",
+                                        "value": 4
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "theta1"
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "Ag_j"
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "Ag_c"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Num",
+                                "value": 0
+                              }
+                            ]
+                          },
+                          "base": {
+                            "type": "Num",
+                            "value": 2
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 2
+                        },
+                        {
+                          "type": "Name",
+                          "value": "theta1"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Ag_j"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "Ag_c"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Sqrt",
+                          "child": {
+                            "type": "Max",
+                            "children": [
+                              {
+                                "type": "Minus",
+                                "children": [
+                                  {
+                                    "type": "Pow",
+                                    "left": {
+                                      "type": "Add",
+                                      "children": [
+                                        {
+                                          "type": "Name",
+                                          "value": "Ag_j"
+                                        },
+                                        {
+                                          "type": "Name",
+                                          "value": "Ag_c"
+                                        }
+                                      ]
+                                    },
+                                    "right": {
+                                      "type": "Num",
+                                      "value": 2
+                                    }
+                                  },
+                                  {
+                                    "type": "Mul",
+                                    "children": [
+                                      {
+                                        "type": "Num",
+                                        "value": 4
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "theta1"
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "Ag_j"
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "Ag_c"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Num",
+                                "value": 0
+                              }
+                            ]
+                          },
+                          "base": {
+                            "type": "Num",
+                            "value": 2
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 2
+                        },
+                        {
+                          "type": "Name",
+                          "value": "theta1"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Ag_a",
+        "texName": "A_g"
+      },
+      "An_a": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Ag_a"
+            },
+            {
+              "type": "Name",
+              "value": "Rd"
+            }
+          ]
+        },
+        "displayName": "An_a",
+        "texName": "A_n"
+      },
+      "phi1P_a0": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "JP700_a"
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Q"
+                },
+                {
+                  "type": "Name",
+                  "value": "a1"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "q1_a": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "phi1P_a0"
+            },
+            {
+              "type": "Name",
+              "value": "phi1P_max"
+            }
+          ]
+        },
+        "displayName": "q1_a"
+      },
+      "phi2P_a0": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "JP680_a"
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Q"
+                },
+                {
+                  "type": "Name",
+                  "value": "a2"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "CB6F_a": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "JP700_j"
+            },
+            {
+              "type": "Name",
+              "value": "kq"
+            }
+          ]
+        },
+        "displayName": "CB6F_a"
+      },
+      "q2_a": {
+        "fn": {
+          "type": "Min",
+          "children": [
+            {
+              "type": "Max",
+              "children": [
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "CB6F_a"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "CB6F"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Num",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "type": "Num",
+              "value": 1
+            }
+          ]
+        },
+        "displayName": "q2_a"
+      },
+      "num_kn": {
+        "fn": {
+          "type": "Max",
+          "children": [
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Minus",
+                          "children": [
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Pow",
+                                  "left": {
+                                    "type": "Name",
+                                    "value": "Kp2"
+                                  },
+                                  "right": {
+                                    "type": "Num",
+                                    "value": 2
+                                  }
+                                },
+                                {
+                                  "type": "Pow",
+                                  "left": {
+                                    "type": "Name",
+                                    "value": "phi2P_a0"
+                                  },
+                                  "right": {
+                                    "type": "Num",
+                                    "value": 2
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Num",
+                                  "value": 2
+                                },
+                                {
+                                  "type": "Pow",
+                                  "left": {
+                                    "type": "Name",
+                                    "value": "Kp2"
+                                  },
+                                  "right": {
+                                    "type": "Num",
+                                    "value": 2
+                                  }
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "phi2P_a0"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "q2_a"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Pow",
+                              "left": {
+                                "type": "Name",
+                                "value": "Kp2"
+                              },
+                              "right": {
+                                "type": "Num",
+                                "value": 2
+                              }
+                            },
+                            {
+                              "type": "Pow",
+                              "left": {
+                                "type": "Name",
+                                "value": "q2_a"
+                              },
+                              "right": {
+                                "type": "Num",
+                                "value": 2
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 4
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kp2"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Ku2"
+                        },
+                        {
+                          "type": "Pow",
+                          "left": {
+                            "type": "Name",
+                            "value": "phi2P_a0"
+                          },
+                          "right": {
+                            "type": "Num",
+                            "value": 2
+                          }
+                        },
+                        {
+                          "type": "Name",
+                          "value": "q2_a"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kp2"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Ku2"
+                    },
+                    {
+                      "type": "Pow",
+                      "left": {
+                        "type": "Name",
+                        "value": "phi2P_a0"
+                      },
+                      "right": {
+                        "type": "Num",
+                        "value": 2
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kp2"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Ku2"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "phi2P_a0"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "q2_a"
+                    }
+                  ]
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Pow",
+                      "left": {
+                        "type": "Name",
+                        "value": "Ku2"
+                      },
+                      "right": {
+                        "type": "Num",
+                        "value": 2
+                      }
+                    },
+                    {
+                      "type": "Pow",
+                      "left": {
+                        "type": "Name",
+                        "value": "phi2P_a0"
+                      },
+                      "right": {
+                        "type": "Num",
+                        "value": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Num",
+              "value": 0
+            }
+          ]
+        }
+      },
+      "Kn2_a": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Sqrt",
+                          "child": {
+                            "type": "Name",
+                            "value": "num_kn"
+                          },
+                          "base": {
+                            "type": "Num",
+                            "value": 2
+                          }
+                        },
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Kp2"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "phi2P_a0"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Ku2"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "phi2P_a0"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Kp2"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "q2_a"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 2
+                    },
+                    {
+                      "type": "Name",
+                      "value": "phi2P_a0"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "Kf"
+            },
+            {
+              "type": "Name",
+              "value": "Ku2"
+            },
+            {
+              "type": "Name",
+              "value": "Kd"
+            }
+          ]
+        },
+        "displayName": "Kn2_a",
+        "texName": "K_{n2}"
+      },
+      "denom2": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Kp2"
+            },
+            {
+              "type": "Name",
+              "value": "Kn2_a"
+            },
+            {
+              "type": "Name",
+              "value": "Kd"
+            },
+            {
+              "type": "Name",
+              "value": "Kf"
+            },
+            {
+              "type": "Name",
+              "value": "Ku2"
+            }
+          ]
+        }
+      },
+      "denom2c": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Kn2_a"
+            },
+            {
+              "type": "Name",
+              "value": "Kd"
+            },
+            {
+              "type": "Name",
+              "value": "Kf"
+            },
+            {
+              "type": "Name",
+              "value": "Ku2"
+            }
+          ]
+        }
+      },
+      "phi2p_a": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "q2_a"
+                },
+                {
+                  "type": "Name",
+                  "value": "Kp2"
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "denom2"
+            }
+          ]
+        },
+        "displayName": "phi2p_a"
+      },
+      "phi2n_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "q2_a"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kn2_a"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom2"
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Name",
+                          "value": "q2_a"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kn2_a"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom2c"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi2n_a"
+      },
+      "phi2d_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "q2_a"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kd"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom2"
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Name",
+                          "value": "q2_a"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kd"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom2c"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi2d_a"
+      },
+      "phi2f_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "q2_a"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kf"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom2"
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Name",
+                          "value": "q2_a"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kf"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom2c"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi2f_a"
+      },
+      "phi2u_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "q2_a"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Ku2"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom2"
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Name",
+                          "value": "q2_a"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Ku2"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom2c"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi2u_a"
+      },
+      "phi2P_a": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "phi2p_a"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Name",
+                  "value": "phi2u_a"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi2P_a"
+      },
+      "phi2N_a": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "phi2n_a"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Name",
+                  "value": "phi2u_a"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi2N_a"
+      },
+      "phi2D_a": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "phi2d_a"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Name",
+                  "value": "phi2u_a"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi2D_a"
+      },
+      "phi2F_a": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "phi2f_a"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Name",
+                  "value": "phi2u_a"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi2F_a"
+      },
+      "denom1_open": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Kp1"
+            },
+            {
+              "type": "Name",
+              "value": "Kd"
+            },
+            {
+              "type": "Name",
+              "value": "Kf"
+            }
+          ]
+        }
+      },
+      "denom1_closed": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Kn1"
+            },
+            {
+              "type": "Name",
+              "value": "Kd"
+            },
+            {
+              "type": "Name",
+              "value": "Kf"
+            }
+          ]
+        }
+      },
+      "phi1P_a": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "q1_a"
+                },
+                {
+                  "type": "Name",
+                  "value": "Kp1"
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "denom1_open"
+            }
+          ]
+        },
+        "displayName": "phi1P_a"
+      },
+      "phi1N_a": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Name",
+                      "value": "q1_a"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "Kn1"
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "denom1_closed"
+            }
+          ]
+        },
+        "displayName": "phi1N_a"
+      },
+      "phi1D_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "q1_a"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kd"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom1_open"
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Name",
+                          "value": "q1_a"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kd"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom1_closed"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi1D_a"
+      },
+      "phi1F_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "q1_a"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kf"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom1_open"
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Name",
+                          "value": "q1_a"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Kf"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "denom1_closed"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "phi1F_a"
+      },
+      "Fm_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "a2"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Kd"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "eps2"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "a1"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Kn1"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kd"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "eps1"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Fm_a"
+      },
+      "Fo_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "a2"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Kp2"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kd"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "eps2"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "a1"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Kp1"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kd"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "eps1"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Fo_a"
+      },
+      "Fmp_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "a2"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Kn2_a"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kd"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "eps2"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "a1"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Kn1"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kd"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "eps1"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Fmp_a"
+      },
+      "Fop_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "a2"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Kp2"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kn2_a"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kd"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "eps2"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "a1"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Kp1"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kd"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Kf"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "eps1"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Fop_a"
+      },
+      "Fs_a": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "a2"
+                },
+                {
+                  "type": "Name",
+                  "value": "phi2F_a"
+                },
+                {
+                  "type": "Name",
+                  "value": "eps2"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "a1"
+                },
+                {
+                  "type": "Name",
+                  "value": "phi1F_a"
+                },
+                {
+                  "type": "Name",
+                  "value": "eps1"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Fs_a"
+      },
+      "PAM1_a": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Num",
+              "value": 1
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Fs_a"
+                },
+                {
+                  "type": "Name",
+                  "value": "Fmp_a"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "PAM1_a"
+      },
+      "PAM2_a": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Fs_a"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Fmp_a"
+                    }
+                  ]
+                },
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Fm_a"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "PAM2_a"
+      },
+      "PAM3_a": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Fs_a"
+            },
+            {
+              "type": "Name",
+              "value": "Fm_a"
+            }
+          ]
+        },
+        "displayName": "PAM3_a"
+      },
+      "ETR": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "Q"
+                    },
+                    {
+                      "type": "Num",
+                      "value": 0.85
+                    }
+                  ]
+                },
+                {
+                  "type": "Num",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "PAM1_a"
+            }
+          ]
+        },
+        "displayName": "ETR"
+      },
+      "qP": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Fmp_a"
+                },
+                {
+                  "type": "Name",
+                  "value": "Fs_a"
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Fmp_a"
+                },
+                {
+                  "type": "Name",
+                  "value": "Fop_a"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "qP"
+      },
+      "qL": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "Fmp_a"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Fs_a"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "Fop_a"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "Fmp_a"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Fop_a"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "Fs_a"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "qL"
+      },
+      "kPuddle": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "ETR"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Name",
+                  "value": "qP"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "kPuddle"
+      },
+      "kLake": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "ETR"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Name",
+                  "value": "qL"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "kLake"
+      },
+      "NPQ": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Fm_a"
+                },
+                {
+                  "type": "Name",
+                  "value": "Fmp_a"
+                }
+              ]
+            },
+            {
+              "type": "Num",
+              "value": 1
+            }
+          ]
+        },
+        "displayName": "NPQ"
+      },
+      "active_cb6f": {
+        "fn": {
+          "type": "Max",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "CB6F"
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Name",
+                      "value": "q2_a"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Num",
+              "value": 1e-12
+            }
+          ]
+        }
+      },
+      "k_CB6F": {
+        "fn": {
+          "type": "Piecewise",
+          "children": [
+            {
+              "type": "Name",
+              "value": "kq"
+            },
+            {
+              "type": "GreaterEqual",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "JP700_a"
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "JP700_j"
+                    },
+                    {
+                      "type": "Num",
+                      "value": 0.999
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "JP700_a"
+                },
+                {
+                  "type": "Name",
+                  "value": "active_cb6f"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "k_CB6F"
+      }
+    }
+  }
+}

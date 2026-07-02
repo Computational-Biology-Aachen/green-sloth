@@ -1,0 +1,469 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/steady-state-model.schema.json",
+  "spec_version": "1.0",
+  "kind": "steady-state",
+  "model_id": "Bernacchi2023",
+  "model": {
+    "parameters": {
+      "Ci": {
+        "value": {
+          "type": "Num",
+          "value": 275
+        },
+        "displayName": "Ci",
+        "texName": "C_i",
+        "slider": {
+          "min": "0",
+          "max": "1500",
+          "step": "5"
+        }
+      },
+      "PPFD": {
+        "value": {
+          "type": "Num",
+          "value": 1500
+        },
+        "displayName": "PPFD",
+        "texName": "\\mathrm{PPFD}",
+        "slider": {
+          "min": "0",
+          "max": "2500",
+          "step": "10"
+        }
+      },
+      "Vcmax": {
+        "value": {
+          "type": "Num",
+          "value": 100
+        },
+        "texName": "V_{cmax}"
+      },
+      "Jmax": {
+        "value": {
+          "type": "Num",
+          "value": 200
+        },
+        "texName": "J_{max}"
+      },
+      "TPU": {
+        "value": {
+          "type": "Num",
+          "value": 12
+        },
+        "texName": "T_{PU}"
+      },
+      "Rd": {
+        "value": {
+          "type": "Num",
+          "value": 1.5
+        },
+        "texName": "R_d"
+      },
+      "Gamma_star": {
+        "value": {
+          "type": "Num",
+          "value": 42.75
+        },
+        "texName": "\\Gamma^*"
+      },
+      "Kc": {
+        "value": {
+          "type": "Num",
+          "value": 404.9
+        },
+        "texName": "K_c"
+      },
+      "Ko": {
+        "value": {
+          "type": "Num",
+          "value": 278.4
+        },
+        "texName": "K_o"
+      },
+      "O": {
+        "value": {
+          "type": "Num",
+          "value": 210
+        },
+        "displayName": "O",
+        "texName": "O"
+      },
+      "alpha": {
+        "value": {
+          "type": "Num",
+          "value": 0.24
+        },
+        "texName": "\\alpha"
+      },
+      "theta": {
+        "value": {
+          "type": "Num",
+          "value": 0.7
+        },
+        "texName": "\\theta"
+      }
+    },
+    "derived": {
+      "absorbed": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "alpha"
+            },
+            {
+              "type": "Name",
+              "value": "PPFD"
+            }
+          ]
+        },
+        "texName": "\\text{abs}",
+        "displayName": "absorbed"
+      },
+      "Ci_safe": {
+        "fn": {
+          "type": "Max",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Ci"
+            },
+            {
+              "type": "Num",
+              "value": 1
+            }
+          ]
+        },
+        "texName": "C_{i, safe}",
+        "displayName": "Ci_safe"
+      },
+      "J": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "absorbed"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Jmax"
+                    }
+                  ]
+                },
+                {
+                  "type": "Sqrt",
+                  "child": {
+                    "type": "Max",
+                    "children": [
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Pow",
+                            "left": {
+                              "type": "Add",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "absorbed"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "Jmax"
+                                }
+                              ]
+                            },
+                            "right": {
+                              "type": "Num",
+                              "value": 2
+                            }
+                          },
+                          {
+                            "type": "Mul",
+                            "children": [
+                              {
+                                "type": "Num",
+                                "value": 4
+                              },
+                              {
+                                "type": "Name",
+                                "value": "theta"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "absorbed"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "Jmax"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Num",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "base": {
+                    "type": "Num",
+                    "value": 2
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Name",
+                  "value": "theta"
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "J",
+        "texName": "J"
+      },
+      "Wc": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Vcmax"
+                },
+                {
+                  "type": "Name",
+                  "value": "Ci_safe"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Ci_safe"
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "Kc"
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Divide",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "O"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "Ko"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "displayName": "Wc",
+        "texName": "W_c"
+      },
+      "rubisco": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Gamma_star"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Ci_safe"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "Wc"
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "Rd"
+            }
+          ]
+        },
+        "displayName": "Ac",
+        "texName": "A_c"
+      },
+      "rubp": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "J"
+                    },
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Ci_safe"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Gamma_star"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 4
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Ci_safe"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 8
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Gamma_star"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "Rd"
+            }
+          ]
+        },
+        "displayName": "Aj",
+        "texName": "A_j"
+      },
+      "tpu": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 3
+                },
+                {
+                  "type": "Name",
+                  "value": "TPU"
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "Rd"
+            }
+          ]
+        },
+        "displayName": "Ap",
+        "texName": "A_p"
+      },
+      "an": {
+        "fn": {
+          "type": "Min",
+          "children": [
+            {
+              "type": "Name",
+              "value": "rubisco"
+            },
+            {
+              "type": "Name",
+              "value": "rubp"
+            },
+            {
+              "type": "Name",
+              "value": "tpu"
+            }
+          ]
+        },
+        "displayName": "An",
+        "texName": "A_n"
+      }
+    }
+  }
+}
