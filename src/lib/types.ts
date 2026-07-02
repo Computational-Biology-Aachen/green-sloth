@@ -102,14 +102,19 @@ export type Part =
   | "PSI"
   | "CBB Cycle";
 
+export type ModelType =
+  | "ODE"
+  | "Steady State";
+
 // Maps each tag category to its value union. Add a category here (and its
 // value type) to extend the tag system — Tags below follows automatically.
 type TagValues = {
-  "Part of Photosynthesis": Part;
+  "Part of Photosynthesis": Array<Part>;
+  "Model type": Array<ModelType>;
 };
 
 export type Tags = {
-  [K in keyof TagValues]: Array<TagValues[K]>;
+  [K in keyof TagValues]: TagValues[K];
 };
 
 export interface ModelMeta {

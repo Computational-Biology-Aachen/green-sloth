@@ -17,6 +17,7 @@ export const meta: ModelMeta = {
       "PSI",
       "CBB Cycle",
     ],
+    "Model type": ["ODE"],
   },
   analyses: [
     {

@@ -7,6 +7,7 @@ export const meta: ModelMeta = {
   DOI: "10.1016/j.nonrwa.2008.01.021",
   tags: {
     "Part of Photosynthesis": ["CBB Cycle"],
+    "Model type": ["ODE"],
   },
   analyses: [
     {

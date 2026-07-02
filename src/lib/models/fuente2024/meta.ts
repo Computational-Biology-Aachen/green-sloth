@@ -14,6 +14,7 @@ export const meta: ModelMeta = {
       "PSI",
       "ATP Synthase",
     ],
+    "Model type": ["ODE"],
   },
   analyses: [
     {

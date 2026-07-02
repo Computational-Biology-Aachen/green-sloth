@@ -7,6 +7,7 @@ export const meta: ModelMeta = {
   DOI: "10.1093/jexbot/51.suppl_1.319",
   tags: {
     "Part of Photosynthesis": [],
+    "Model type": ["ODE"],
   },
   analyses: [
     {

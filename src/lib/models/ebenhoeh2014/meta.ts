@@ -13,6 +13,7 @@ export const meta: ModelMeta = {
       "Cytochrome b6f",
       "PQ Cycle",
     ],
+    "Model type": ["ODE"],
   },
   analyses: [
     {

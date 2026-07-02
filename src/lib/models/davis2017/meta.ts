@@ -16,6 +16,7 @@ export const meta: ModelMeta = {
       "CBB Cycle",
       "ATP Synthase",
     ],
+    "Model type": ["ODE"],
   },
   analyses: [
     {

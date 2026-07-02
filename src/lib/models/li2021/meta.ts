@@ -17,6 +17,7 @@ export const meta: ModelMeta = {
       "CBB Cycle",
       "OEC",
     ],
+    "Model type": ["ODE"],
   },
   analyses: [
     {

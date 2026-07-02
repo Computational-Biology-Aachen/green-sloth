@@ -15,6 +15,7 @@ export const meta: ModelMeta = {
       "FNR",
       "PSI",
     ],
+    "Model type": ["ODE"],
   },
   analyses: [
     {

@@ -7,6 +7,7 @@ export const meta: ModelMeta = {
   DOI: "fixme",
   tags: {
     "Part of Photosynthesis": [],
+    "Model type": ["ODE"],
   },
   analyses: [
     {
