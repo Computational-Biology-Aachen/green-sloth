@@ -191,12 +191,18 @@
   }
 
   function saveMxlpy() {
-    if (!(model instanceof KineticModelBuilder)) return;
-    downloadText(
-      model.buildMxlpy(),
-      `${data.slug.replace(/[^A-Za-z0-9]/g, "_")}.py`,
-      "text/x-python",
-    );
+    if (model instanceof KineticModelBuilder)
+      return downloadText(
+        model.buildMxlpy(),
+        `${data.slug.replace(/[^A-Za-z0-9]/g, "_")}.py`,
+        "text/x-python",
+      );
+    if (model instanceof SteadyStateModelBuilder)
+      return downloadText(
+        model.buildMxlpy(),
+        `${data.slug.replace(/[^A-Za-z0-9]/g, "_")}.py`,
+        "text/x-python",
+      );
   }
 
   function saveMxlweb() {
@@ -230,6 +236,9 @@
       {/snippet}
       {#if model instanceof KineticModelBuilder}
         <ButtonMenuItem onclick={saveModel}>SBML</ButtonMenuItem>
+        <ButtonMenuItem onclick={saveMxlpy}>MxlPy</ButtonMenuItem>
+      {/if}
+      {#if model instanceof SteadyStateModelBuilder}
         <ButtonMenuItem onclick={saveMxlpy}>MxlPy</ButtonMenuItem>
       {/if}
       <ButtonMenuItem onclick={saveMxlJson}>mxl.json</ButtonMenuItem>
