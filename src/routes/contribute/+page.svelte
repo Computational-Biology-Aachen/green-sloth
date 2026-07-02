@@ -1,7 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
-  import ModelDashboard from "$lib/ModelDashboard.svelte";
+  import ModelDashboard from "$lib/KineticModelDashboard.svelte";
   import type { ModelAnalysis } from "$lib/types";
   import {
     Button,

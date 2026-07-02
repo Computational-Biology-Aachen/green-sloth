@@ -1,8 +1,10 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import ModelDashboard from "$lib/KineticModelDashboard.svelte";
+  import ModelTables from "$lib/KineticModelTables.svelte";
   import { buildModel } from "$lib/loadModel";
-  import ModelDashboard from "$lib/ModelDashboard.svelte";
-  import ModelTables from "$lib/ModelTables.svelte";
+  import SSModelDashboard from "$lib/SSModelDashboard.svelte";
+  import SSModelTables from "$lib/SSModelTables.svelte";
   import {
     Accordion,
     Bold,
@@ -35,7 +37,11 @@
   } from "@computational-biology-aachen/design";
   import Icon from "@computational-biology-aachen/design/Icon.svelte";
   import Row from "@computational-biology-aachen/design/Row.svelte";
-  import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+  import {
+    KineticModelBuilder,
+    ModelBuilderBase,
+    SteadyStateModelBuilder,
+  } from "@computational-biology-aachen/mxlweb-core";
   import { modelToSbml } from "@computational-biology-aachen/mxlweb-core/sbml";
   import { error } from "@sveltejs/kit";
   import Markdown, { type Plugin } from "svelte-exmarkdown";
@@ -103,7 +109,7 @@
       }),
   );
 
-  function initFor(slug: string): KineticModelBuilder {
+  function initFor(slug: string): ModelBuilderBase {
     const model = buildModel(slug);
     if (model === null) {
       error(404, `Model "${slug}" not found`);
@@ -273,8 +279,14 @@
   width="narrow"
 >
   <H2>Analysis</H2>
-  {#if model}
+
+  {#if model instanceof KineticModelBuilder}
     <ModelDashboard
+      model={model}
+      analyses={data.meta.analyses}
+    />
+  {:else if model instanceof SteadyStateModelBuilder}
+    <SSModelDashboard
       model={model}
       analyses={data.meta.analyses}
     />
@@ -290,7 +302,13 @@
     width="narrow"
   >
     <H2>Model definition</H2>
-    <ModelTables model={model} />
+    {#if model instanceof KineticModelBuilder}
+      <ModelTables model={model} />
+    {:else if model instanceof SteadyStateModelBuilder}
+      <SSModelTables model={model} />
+    {:else}
+      <Text>Model could not be loaded.</Text>
+    {/if}
   </Section>
 {/if}
 

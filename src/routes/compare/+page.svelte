@@ -14,6 +14,10 @@
     Section,
     SectionHeader,
   } from "@computational-biology-aachen/design";
+  import {
+    KineticModelBuilder,
+    type ModelBuilderBase,
+  } from "@computational-biology-aachen/mxlweb-core";
   import { onMount } from "svelte";
 
   function validSlug(slug: string | null, fallback: string): string {
@@ -58,34 +62,62 @@
     };
   }
 
-  const categories = [
-    { key: "variables", label: "Variables" },
-    { key: "parameters", label: "Parameters" },
-    { key: "reactions", label: "Reactions" },
-    { key: "assignments", label: "Derived" },
-  ] as const;
+  type CategoryKey = "variables" | "parameters" | "reactions" | "assignments";
+
+  // Reactions only exist on KineticModelBuilder; SteadyStateModelBuilder has
+  // no such field, so it's read through this guard instead of plain indexing.
+  function categoryMap(
+    model: ModelBuilderBase | null,
+    key: CategoryKey,
+  ): Map<string, unknown> | undefined {
+    if (key === "reactions") {
+      return model instanceof KineticModelBuilder ? model.reactions : undefined;
+    }
+    return model?.[key];
+  }
+
+  const hasReactions = $derived(
+    modelA instanceof KineticModelBuilder ||
+      modelB instanceof KineticModelBuilder,
+  );
+
+  const categories = $derived(
+    (
+      [
+        { key: "variables", label: "Variables" },
+        { key: "parameters", label: "Parameters" },
+        { key: "reactions", label: "Reactions" },
+        { key: "assignments", label: "Derived" },
+      ] as const satisfies { key: CategoryKey; label: string }[]
+    ).filter(({ key }) => key !== "reactions" || hasReactions),
+  );
 
   const overview = $derived(
     categories.map(({ key, label }) => ({
       label,
-      a: modelA?.[key].size ?? 0,
-      b: modelB?.[key].size ?? 0,
-      shared: diff(modelA?.[key], modelB?.[key]).shared.length,
+      a: categoryMap(modelA, key)?.size ?? 0,
+      b: categoryMap(modelB, key)?.size ?? 0,
+      shared: diff(categoryMap(modelA, key), categoryMap(modelB, key)).shared
+        .length,
     })),
   );
 
   // Categories shown with a full shared/unique breakdown.
-  const detailCategories = [
-    { key: "variables", label: "Variables" },
-    { key: "reactions", label: "Reactions" },
-    { key: "parameters", label: "Parameters" },
-  ] as const;
+  const detailCategories = $derived(
+    (
+      [
+        { key: "variables", label: "Variables" },
+        { key: "reactions", label: "Reactions" },
+        { key: "parameters", label: "Parameters" },
+      ] as const satisfies { key: CategoryKey; label: string }[]
+    ).filter(({ key }) => key !== "reactions" || hasReactions),
+  );
 
   const details = $derived(
     detailCategories.map(({ key, label }) => ({
       key,
       label,
-      bucket: diff(modelA?.[key], modelB?.[key]),
+      bucket: diff(categoryMap(modelA, key), categoryMap(modelB, key)),
     })),
   );
 
