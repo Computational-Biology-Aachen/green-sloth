@@ -9,7 +9,6 @@
     Text,
   } from "@computational-biology-aachen/design";
   import Bold from "@computational-biology-aachen/design/Bold.svelte";
-  import "../app.css";
 </script>
 
 <svelte:head>
