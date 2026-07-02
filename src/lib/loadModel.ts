@@ -11,7 +11,10 @@
  * The globs are eager so a model builds synchronously at call sites (prerender
  * and client alike), matching the previous `model.ts`-only loading.
  */
-import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import {
+  KineticModelBuilder,
+  ModelBuilderBase,
+} from "@computational-biology-aachen/mxlweb-core";
 import { mxlJsonToModel } from "@computational-biology-aachen/mxlweb-core/mxl";
 import { sbmlToModel } from "@computational-biology-aachen/mxlweb-core/sbml";
 
@@ -52,27 +55,19 @@ export const buildableSlugs: ReadonlySet<string> = new Set([
   ...tsBySlug.keys(),
 ]);
 
-/** Greensloth only renders kinetic models; assert rather than silently mis-handle others. */
-function asKinetic(model: unknown, slug: string): KineticModelBuilder {
-  if (!(model instanceof KineticModelBuilder)) {
-    throw new Error(`model "${slug}" is not a kinetic model`);
-  }
-  return model;
-}
-
 /**
  * Build a model's {@link KineticModelBuilder}, preferring code over data formats.
  * Returns `null` for an unknown slug (no model file in any format).
  */
-export function buildModel(slug: string): KineticModelBuilder | null {
+export function buildModel(slug: string): ModelBuilderBase | null {
   const ts = tsBySlug.get(slug);
   if (ts !== undefined) return ts.initModel();
 
   const json = jsonBySlug.get(slug);
-  if (json !== undefined) return asKinetic(mxlJsonToModel(json), slug);
+  if (json !== undefined) return mxlJsonToModel(json);
 
   const sbml = sbmlBySlug.get(slug);
-  if (sbml !== undefined) return asKinetic(sbmlToModel(sbml), slug);
+  if (sbml !== undefined) return sbmlToModel(sbml);
 
   return null;
 }

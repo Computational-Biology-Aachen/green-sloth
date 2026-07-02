@@ -8,24 +8,23 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { H3, Slider2 as Slider } from "@computational-biology-aachen/design";
-  import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
-  import Pam from "./Pam.svelte";
-  import { backends } from "./stores/backends";
-  import TimeCourse from "./TimeCourse.svelte";
+  import H2 from "@computational-biology-aachen/design/H2.svelte";
+  import type { SteadyStateModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+  import Sweep from "./Sweep.svelte";
   import type { ModelAnalysis } from "./types";
 
   let {
     model,
     analyses,
   }: {
-    model: KineticModelBuilder;
+    model: SteadyStateModelBuilder;
     analyses: ModelAnalysis[];
   } = $props();
 
   const DEFAULT_TIMEOUT = 30;
   const DEFAULT_N_TIME_POINTS = 500;
 
-  type Runnable = { runSimulation: (model: KineticModelBuilder) => void };
+  type Runnable = { runSimulation: (model: SteadyStateModelBuilder) => void };
   let analysisRefs = $state<Array<Runnable | undefined>>([]);
 
   type SliderDef = {
@@ -126,37 +125,14 @@
         {#if analysis.title}
           <H3>{analysis.title}</H3>
         {/if}
-        {#if analysis.type === "pam"}
-          <Pam
-            bind:this={analysisRefs[i]}
+        {#if analysis.type === "sweep"}
+          <Sweep
             model={model}
-            pamProtocol={analysis.pamProtocol}
-            ppfdKey={analysis.ppfdKey}
-            fluoKey={analysis.fluoKey}
-            yMax={analysis.yMax}
-            backend={backends.wasmRadau5}
-            selectedKeys={analysis.variables}
-            normalizedKeys={analysis.normalizedKeys}
-            showDerived={analysis.showDerived ?? false}
-            nTimePoints={analysis.nTimePoints ?? DEFAULT_N_TIME_POINTS}
-            timeoutInSeconds={analysis.timeoutInSeconds ?? DEFAULT_TIMEOUT}
+            analysis={analysis}
             lineDisplay={lineDisplay}
-            plot={analysis.plot}
           />
         {:else}
-          <TimeCourse
-            bind:this={analysisRefs[i]}
-            model={model}
-            tEnd={analysis.tEnd}
-            backend={backends.wasmRadau5}
-            selectedKeys={analysis.variables}
-            normalizedKeys={analysis.normalizedKeys}
-            showDerived={analysis.showDerived ?? false}
-            nTimePoints={analysis.nTimePoints ?? DEFAULT_N_TIME_POINTS}
-            timeoutInSeconds={analysis.timeoutInSeconds ?? DEFAULT_TIMEOUT}
-            lineDisplay={lineDisplay}
-            plot={analysis.plot}
-          />
+          <H2>Whoopsi, wrong analysis</H2>
         {/if}
       </div>
     {/each}

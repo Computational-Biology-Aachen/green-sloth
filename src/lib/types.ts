@@ -32,6 +32,29 @@ export type PlotLayout =
       shareY?: boolean;
     };
 
+/** A steady-state sweep shown in the analysis dashboard. */
+export interface SweepAnalysis {
+  type: "sweep";
+  parameter: string;
+  min: number;
+  max: number;
+  steps: number;
+  /** Heading shown above the chart; omitted → no heading. */
+  title?: string;
+  yLabel: string;
+  /** Include derived quantities (assignments/reactions) in the plot. */
+  showDerived?: boolean;
+  /** Keys to normalise to their own max before plotting. */
+  selectedKeys?: string[];
+  normalizedKeys?: string[];
+  /** Chart layout; omitted → a single chart. */
+  plot?: PlotLayout;
+  xMin?: number | undefined;
+  xMax?: number | undefined;
+  yMin?: number | undefined;
+  yMax?: number | undefined;
+}
+
 /** A time course (simulation over time) shown in the analysis dashboard. */
 export interface TimeCourseAnalysis {
   type: "timecourse";
@@ -89,7 +112,7 @@ export type Contributor = {
   gitlab?: string;
 };
 
-export type ModelAnalysis = TimeCourseAnalysis | PamAnalysis;
+export type ModelAnalysis = TimeCourseAnalysis | PamAnalysis | SweepAnalysis;
 
 export type Part =
   | "PSII"
@@ -102,9 +125,7 @@ export type Part =
   | "PSI"
   | "CBB Cycle";
 
-export type ModelType =
-  | "ODE"
-  | "Steady State";
+export type ModelType = "ODE" | "Steady State";
 
 // Maps each tag category to its value union. Add a category here (and its
 // value type) to extend the tag system — Tags below follows automatically.
