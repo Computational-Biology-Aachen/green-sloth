@@ -682,20 +682,22 @@
       placeholder="Filter models…"
       bind:value={query}
     />
-    <div
-      class="validation-toggle"
-      role="group"
-      aria-label="Filter by validation status"
-    >
-      {#each validationOptions as { value, label } (value)}
-        <ButtonTab
-          selected={validation === value}
-          onclick={() => (validation = value)}
-        >
-          {label}
-        </ButtonTab>
-      {/each}
-    </div>
+    {#if import.meta.env.DEV}
+      <div
+        class="validation-toggle"
+        role="group"
+        aria-label="Filter by validation status"
+      >
+        {#each validationOptions as { value, label } (value)}
+          <ButtonTab
+            selected={validation === value}
+            onclick={() => (validation = value)}
+          >
+            {label}
+          </ButtonTab>
+        {/each}
+      </div>
+    {/if}
   </div>
   <div class="grid">
     {#each filtered as [slug, info] (slug)}
