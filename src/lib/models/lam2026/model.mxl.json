@@ -606,6 +606,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "PSII_total",
         "texName": "PSII\\_tot"
       }
     },

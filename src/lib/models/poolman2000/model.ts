@@ -1,4 +1,5 @@
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import names from "$lib/names";
 import {
   Add,
   Divide,
@@ -15,22 +16,27 @@ export function initModel(): KineticModelBuilder {
       texName: "CO2 (dissolved)",
     })
     .addParameter("NADPH", {
+      displayName: names.nadph,
       value: 0.21,
       texName: "NADPH",
     })
     .addParameter("protons", {
+      displayName: names.protons,
       value: 1.2589254117941661e-5,
       texName: "protons",
     })
     .addParameter("A_star_P", {
+      displayName: names.atp_tot,
       value: 0.5,
       texName: "A*P",
     })
     .addParameter("NADP_star", {
+      displayName: names.nadp_tot,
       value: 0.5,
       texName: "NADP*",
     })
     .addParameter("Pi_tot", {
+      displayName: names.pi_tot,
       value: 15.0,
       texName: "Pi\\_tot",
     })
@@ -316,18 +322,22 @@ export function initModel(): KineticModelBuilder {
       texName: "E0\\_atp\\_synthase",
     })
     .addVariable("_3PGA", {
+      displayName: names.pga,
       value: 0.6387788347932627,
       texName: "3PGA",
     })
     .addVariable("BPGA", {
+      displayName: names.bpga,
       value: 0.0013570885908749779,
       texName: "BPGA",
     })
     .addVariable("GAP", {
+      displayName: names.gap,
       value: 0.011259431827358068,
       texName: "GAP",
     })
     .addVariable("DHAP", {
+      displayName: names.dhap,
       value: 0.24770748227012374,
       texName: "DHAP",
     })
@@ -368,22 +378,27 @@ export function initModel(): KineticModelBuilder {
       texName: "R5P",
     })
     .addVariable("RUBP", {
+      displayName: names.rubp,
       value: 0.2672164362349537,
       texName: "RUBP",
     })
     .addVariable("RU5P", {
+      displayName: names.ru5p,
       value: 0.0244365238237522,
       texName: "RU5P",
     })
     .addVariable("ATP", {
+      displayName: names.atp,
       value: 0.43633201706180874,
       texName: "ATP",
     })
     .addAssignment("ADP", {
+      displayName: names.adp,
       fn: new Add([new Name("A_star_P"), new Minus([new Name("ATP")])]),
       texName: "ADP",
     })
     .addAssignment("NADP", {
+      displayName: names.nadp,
       fn: new Add([new Name("NADP_star"), new Minus([new Name("NADPH")])]),
       texName: "NADP",
     })

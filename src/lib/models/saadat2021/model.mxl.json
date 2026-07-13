@@ -10,6 +10,7 @@
           "type": "Num",
           "value": 0.9167729479368978
         },
+        "displayName": "PGA",
         "texName": "3PGA"
       },
       "BPGA": {
@@ -17,6 +18,7 @@
           "type": "Num",
           "value": 0.0003814495319659031
         },
+        "displayName": "BPGA",
         "texName": "BPGA"
       },
       "GAP": {
@@ -24,6 +26,7 @@
           "type": "Num",
           "value": 0.00580821050261484
         },
+        "displayName": "GAP",
         "texName": "GAP"
       },
       "DHAP": {
@@ -31,6 +34,7 @@
           "type": "Num",
           "value": 0.1277806166216142
         },
+        "displayName": "DHAP",
         "texName": "DHAP"
       },
       "FBP": {
@@ -101,6 +105,7 @@
           "type": "Num",
           "value": 0.11293260727162346
         },
+        "displayName": "RUBP",
         "texName": "RUBP"
       },
       "RU5P": {
@@ -108,6 +113,7 @@
           "type": "Num",
           "value": 0.014062330254191594
         },
+        "displayName": "RU5P",
         "texName": "RU5P"
       },
       "atp": {
@@ -115,6 +121,7 @@
           "type": "Num",
           "value": 1.4612747767895344
         },
+        "displayName": "ATP",
         "texName": "atp"
       },
       "fd_ox": {
@@ -122,6 +129,7 @@
           "type": "Num",
           "value": 3.715702384326767
         },
+        "displayName": "Fd_ox",
         "texName": "fd\\_ox"
       },
       "protons_lumen": {
@@ -129,6 +137,7 @@
           "type": "Num",
           "value": 0.002086128887296243
         },
+        "displayName": "protons_lumen",
         "texName": "protons\\_lumen"
       },
       "lhc": {
@@ -143,6 +152,7 @@
           "type": "Num",
           "value": 0.5578718406315588
         },
+        "displayName": "NADPH",
         "texName": "nadph"
       },
       "pc_ox": {
@@ -150,6 +160,7 @@
           "type": "Num",
           "value": 1.8083642974980014
         },
+        "displayName": "PC_ox",
         "texName": "pc\\_ox"
       },
       "pq_ox": {
@@ -157,6 +168,7 @@
           "type": "Num",
           "value": 10.251099271612473
         },
+        "displayName": "PQ",
         "texName": "pq\\_ox"
       },
       "psbs_de": {
@@ -185,6 +197,7 @@
           "type": "Num",
           "value": 1.2034405327140102e-7
         },
+        "displayName": "H2O2",
         "texName": "H2O2"
       },
       "DHA": {
@@ -249,6 +262,7 @@
           "type": "Num",
           "value": 7.9
         },
+        "displayName": "pH",
         "texName": "pH"
       },
       "protons": {
@@ -256,6 +270,7 @@
           "type": "Num",
           "value": 0.000012589254117941661
         },
+        "displayName": "protons",
         "texName": "protons"
       },
       "bH": {
@@ -263,6 +278,7 @@
           "type": "Num",
           "value": 100
         },
+        "displayName": "bH",
         "texName": "bH"
       },
       "F": {
@@ -270,6 +286,7 @@
           "type": "Num",
           "value": 96.485
         },
+        "displayName": "F",
         "texName": "F"
       },
       "E_0_PC": {
@@ -319,6 +336,7 @@
           "type": "Num",
           "value": 0.0083
         },
+        "displayName": "R",
         "texName": "R"
       },
       "T": {
@@ -326,6 +344,7 @@
           "type": "Num",
           "value": 298
         },
+        "displayName": "T",
         "texName": "T"
       },
       "Carotenoids_tot": {
@@ -340,6 +359,7 @@
           "type": "Num",
           "value": 5
         },
+        "displayName": "Fd_tot",
         "texName": "Fd*"
       },
       "PC_tot": {
@@ -347,6 +367,7 @@
           "type": "Num",
           "value": 4
         },
+        "displayName": "PC_tot",
         "texName": "PC\\_tot"
       },
       "PSBS_tot": {
@@ -354,6 +375,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "PsbS_tot",
         "texName": "PSBS\\_tot"
       },
       "LHC_tot": {
@@ -361,6 +383,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "LHC_tot",
         "texName": "LHC\\_tot"
       },
       "gamma0": {
@@ -417,6 +440,7 @@
           "type": "Num",
           "value": 17.5
         },
+        "displayName": "PQ_tot",
         "texName": "PQ\\_tot"
       },
       "staticAntII": {
@@ -452,6 +476,7 @@
           "type": "Num",
           "value": 0.8
         },
+        "displayName": "NADP_tot",
         "texName": "NADP*"
       },
       "A_P": {
@@ -459,6 +484,7 @@
           "type": "Num",
           "value": 2.55
         },
+        "displayName": "AP_tot",
         "texName": "A*P"
       },
       "Pi_tot": {
@@ -466,6 +492,7 @@
           "type": "Num",
           "value": 17.05
         },
+        "displayName": "Pi_tot",
         "texName": "Pi\\_tot"
       },
       "kf_ferredoxin_thioredoxin_reductase": {
@@ -515,6 +542,7 @@
           "type": "Num",
           "value": 4.666666666666667
         },
+        "displayName": "HPR",
         "texName": "HPR"
       },
       "Pi_mol": {
@@ -641,6 +669,7 @@
           "type": "Num",
           "value": 2.5
         },
+        "displayName": "PSII_total",
         "texName": "PSII\\_total"
       },
       "PSI_total": {
@@ -648,6 +677,7 @@
           "type": "Num",
           "value": 2.5
         },
+        "displayName": "PSI_total",
         "texName": "PSI\\_total"
       },
       "kH0": {
@@ -4684,6 +4714,7 @@
             }
           ]
         },
+        "displayName": "pH_lumen",
         "texName": "pH\\_lumen"
       },
       "zx": {
@@ -4726,6 +4757,7 @@
             }
           ]
         },
+        "displayName": "Fd_red",
         "texName": "fd\\_red"
       },
       "pc_red": {
@@ -4747,6 +4779,7 @@
             }
           ]
         },
+        "displayName": "PC_red",
         "texName": "pc\\_red"
       },
       "psbs_pr": {
@@ -4901,6 +4934,7 @@
             }
           ]
         },
+        "displayName": "Q",
         "texName": "Q"
       },
       "keq_pq_red": {
@@ -5003,6 +5037,7 @@
             }
           ]
         },
+        "displayName": "PQH2",
         "texName": "pq\\_red"
       },
       "PSII_cross_section": {
@@ -5114,6 +5149,7 @@
             }
           ]
         },
+        "displayName": "NADP",
         "texName": "nadp"
       },
       "adp": {
@@ -5135,6 +5171,7 @@
             }
           ]
         },
+        "displayName": "ADP",
         "texName": "adp"
       },
       "pi": {
@@ -5327,6 +5364,7 @@
             }
           ]
         },
+        "displayName": "Pi",
         "texName": "pi"
       },
       "ascorbate": {
@@ -7100,6 +7138,7 @@
             }
           ]
         },
+        "displayName": "B0",
         "texName": "ps2states"
       },
       "B1": {
@@ -7979,6 +8018,7 @@
             }
           ]
         },
+        "displayName": "B1",
         "texName": "ps2states"
       },
       "B2": {
@@ -9129,6 +9169,7 @@
             }
           ]
         },
+        "displayName": "B2",
         "texName": "ps2states"
       },
       "B3": {
@@ -10068,6 +10109,7 @@
             }
           ]
         },
+        "displayName": "B3",
         "texName": "ps2states"
       },
       "A0": {
@@ -10859,6 +10901,7 @@
             }
           ]
         },
+        "displayName": "A1",
         "texName": "ps1states"
       },
       "A2": {

@@ -10,6 +10,7 @@
           "type": "Num",
           "value": 1.28
         },
+        "displayName": "Fluo",
         "texName": "Signal"
       }
     },

@@ -1,4 +1,5 @@
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import names from "$lib/names";
 import {
   Add,
   Divide,
@@ -113,6 +114,7 @@ export function initModel(): KineticModelBuilder {
       texName: "K\\_m132",
     })
     .addParameter("ATP", {
+      displayName: names.atp,
       value: 0.2,
       texName: "ATP",
       slider: {
@@ -122,25 +124,22 @@ export function initModel(): KineticModelBuilder {
       },
     })
     .addVariable("RuBP", {
+      displayName: names.rubp,
       value: 2.0,
       texName: "RuBP",
     })
-    .addVariable("PGA", {
-      value: 2.4,
-      texName: "PGA",
-    })
+    .addVariable("PGA", { displayName: names.pga, value: 2.4, texName: "PGA" })
     .addVariable("DPGA", {
+      displayName: names.bpga,
       value: 1.0,
       texName: "DPGA",
     })
     .addVariable("Ru5P", {
+      displayName: names.ru5p,
       value: 1.0,
       texName: "Ru5P",
     })
-    .addVariable("GAP", {
-      value: 1.0,
-      texName: "GAP",
-    })
+    .addVariable("GAP", { displayName: names.gap, value: 1.0, texName: "GAP" })
     .addReaction("v1", {
       fn: new Divide([
         new Mul([new Name("RuBP"), new Name("V1_max")]),

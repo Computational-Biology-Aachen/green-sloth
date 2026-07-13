@@ -15,10 +15,7 @@ import {
 
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
-    .addParameter("pH", {
-      value: 7.8,
-      texName: "pH",
-    })
+    .addParameter("pH", { displayName: names.ph, value: 7.8, texName: "pH" })
     .addParameter("PPFD", {
       value: 100.0,
       displayName: names.ppfd,
@@ -29,53 +26,61 @@ export function initModel(): KineticModelBuilder {
       texName: "cPPFD",
     })
     .addParameter("PSII_total", {
+      displayName: names.psii_tot,
       value: 2.5,
       texName: "PSII\\_total",
     })
     .addParameter("PSI_total", {
+      displayName: names.psi_tot,
       value: 2.5,
       texName: "PSI\\_total",
     })
     .addParameter("PQ_tot", {
+      displayName: names.pq_tot,
       value: 17.5,
       texName: "PQ\\_tot",
     })
     .addParameter("PC_tot", {
+      displayName: names.pc_tot,
       value: 4.0,
       texName: "PC\\_tot",
     })
     .addParameter("Fd_star", {
+      displayName: names.fd_tot,
       value: 5.0,
       texName: "Fd*",
     })
     .addParameter("NADP_star", {
+      displayName: names.nadp_tot,
       value: 25.0,
       texName: "NADP*",
     })
     .addParameter("A_star_P", {
+      displayName: names.atp_tot,
       value: 60.0,
       texName: "A*P",
     })
     .addParameter("LHC_tot", {
+      displayName: names.lhc_tot,
       value: 1.0,
       texName: "LHC\\_tot",
     })
     .addParameter("F", {
+      displayName: names.faraday_constant,
       value: 96.485,
       texName: "F",
     })
     .addParameter("R", {
+      displayName: names.gas_constant,
       value: 0.0083,
       texName: "R",
     })
     .addParameter("T", {
+      displayName: names.temperature,
       value: 298.0,
       texName: "T",
     })
-    .addParameter("bH", {
-      value: 100.0,
-      texName: "bH",
-    })
+    .addParameter("bH", { displayName: names.b_h, value: 100.0, texName: "bH" })
     .addParameter("E0_QA", {
       value: -0.14,
       texName: "E^0\\_QA",
@@ -121,6 +126,7 @@ export function initModel(): KineticModelBuilder {
       texName: "k2",
     })
     .addParameter("Q", {
+      displayName: names.npq_coefficient,
       value: 0.0,
       texName: "Q",
     })
@@ -149,6 +155,7 @@ export function initModel(): KineticModelBuilder {
       texName: "DeltaG0\\_ATP",
     })
     .addParameter("HPR", {
+      displayName: names.hpr,
       value: 4.666666666666667,
       texName: "HPR",
     })
@@ -225,6 +232,7 @@ export function initModel(): KineticModelBuilder {
       texName: "n\\_ST",
     })
     .addVariable("Plastoquinone_oxidised", {
+      displayName: names.pq,
       value: 17.5,
       texName: "Plastoquinone (oxidised)",
     })
@@ -233,18 +241,18 @@ export function initModel(): KineticModelBuilder {
       texName: "Plastocyanine (oxidised)",
     })
     .addVariable("Ferredoxine_oxidised", {
+      displayName: names.fd_ox,
       value: 5.0,
       texName: "Ferredoxine (oxidised)",
     })
-    .addVariable("ATP", {
-      value: 0.0,
-      texName: "ATP",
-    })
+    .addVariable("ATP", { displayName: names.atp, value: 0.0, texName: "ATP" })
     .addVariable("NADPH", {
+      displayName: names.nadph,
       value: 0.0,
       texName: "NADPH",
     })
     .addVariable("protons_lumen", {
+      displayName: names.protons_lumen,
       value: 0.00025238293779207717,
       texName: "protons\\_lumen",
     })
@@ -261,6 +269,7 @@ export function initModel(): KineticModelBuilder {
       texName: "dG\\_pH",
     })
     .addAssignment("pH_lumen", {
+      displayName: names.ph_lumen,
       fn: new Minus([
         new Divide([
           new Ln(
@@ -275,6 +284,7 @@ export function initModel(): KineticModelBuilder {
       texName: "pH\\_lumen",
     })
     .addAssignment("Plastoquinone_reduced", {
+      displayName: names.pqh2,
       fn: new Add([
         new Name("PQ_tot"),
         new Minus([new Name("Plastoquinone_oxidised")]),
@@ -289,6 +299,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Plastocyanine (reduced)",
     })
     .addAssignment("Ferredoxine_reduced", {
+      displayName: names.fd_red,
       fn: new Add([
         new Name("Fd_star"),
         new Minus([new Name("Ferredoxine_oxidised")]),
@@ -296,10 +307,12 @@ export function initModel(): KineticModelBuilder {
       texName: "Ferredoxine (reduced)",
     })
     .addAssignment("ADP", {
+      displayName: names.adp,
       fn: new Add([new Name("A_star_P"), new Minus([new Name("ATP")])]),
       texName: "ADP",
     })
     .addAssignment("NADP", {
+      displayName: names.nadp,
       fn: new Add([new Name("NADP_star"), new Minus([new Name("NADPH")])]),
       texName: "NADP",
     })
@@ -426,6 +439,7 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_ferredoxin\\_reductase",
     })
     .addAssignment("A1", {
+      displayName: names.a1,
       fn: new Divide([
         new Name("PSI_total"),
         new Add([
@@ -731,6 +745,7 @@ export function initModel(): KineticModelBuilder {
       texName: "nadph\\_consumption",
     })
     .addAssignment("B0", {
+      displayName: names.b0,
       fn: new Divide([
         new Mul([
           new Name("PSII_total"),
@@ -988,6 +1003,7 @@ export function initModel(): KineticModelBuilder {
       texName: "B0",
     })
     .addAssignment("B1", {
+      displayName: names.b1,
       fn: new Divide([
         new Mul([
           new Name("PPFD"),
@@ -1229,6 +1245,7 @@ export function initModel(): KineticModelBuilder {
       texName: "B1",
     })
     .addAssignment("B2", {
+      displayName: names.b2,
       fn: new Divide([
         new Mul([
           new Name("PSII_total"),
@@ -1544,6 +1561,7 @@ export function initModel(): KineticModelBuilder {
       texName: "B2",
     })
     .addAssignment("B3", {
+      displayName: names.b3,
       fn: new Divide([
         new Mul([
           new Name("PPFD"),
@@ -1827,6 +1845,7 @@ export function initModel(): KineticModelBuilder {
       texName: "ATP/tot",
     })
     .addAssignment("Fluo", {
+      displayName: names.fluorescence,
       fn: new Add([
         new Divide([
           new Mul([

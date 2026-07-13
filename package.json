@@ -13,7 +13,8 @@
     "format": "prettier --write src/",
     "lint": "eslint src/",
     "generate:mxl": "vite-node scripts/generate-mxl.ts",
-    "validate:models": "vite-node scripts/validate-models.ts"
+    "validate:models": "vite-node scripts/validate-models.ts",
+    "sync:names": "vite-node scripts/sync-names.ts"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": ">=3.0.10",

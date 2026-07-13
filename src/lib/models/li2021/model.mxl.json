@@ -10,6 +10,7 @@
           "type": "Num",
           "value": 0
         },
+        "displayName": "QA_red",
         "texName": "QA\\_red"
       },
       "PQH_2": {
@@ -17,6 +18,7 @@
           "type": "Num",
           "value": 0
         },
+        "displayName": "PQH2",
         "texName": "PQH\\_2"
       },
       "pH_lumen": {
@@ -24,6 +26,7 @@
           "type": "Num",
           "value": 7.8
         },
+        "displayName": "pH_lumen",
         "texName": "pH\\_lumen"
       },
       "Dpsi": {
@@ -45,6 +48,7 @@
           "type": "Num",
           "value": 0
         },
+        "displayName": "PC_ox",
         "texName": "PC\\_ox"
       },
       "Y2": {
@@ -73,6 +77,7 @@
           "type": "Num",
           "value": 0
         },
+        "displayName": "Fd_red",
         "texName": "Fd\\_red"
       },
       "NADPH_st": {
@@ -80,6 +85,7 @@
           "type": "Num",
           "value": 1.5
         },
+        "displayName": "NADPH",
         "texName": "NADPH\\_st"
       },
       "Cl_lu": {
@@ -188,6 +194,7 @@
           "type": "Num",
           "value": 7.8
         },
+        "displayName": "pH",
         "texName": "pH\\_st"
       },
       "Em_Fd": {
@@ -293,6 +300,7 @@
           "type": "Num",
           "value": 4.666666666666667
         },
+        "displayName": "HPR",
         "texName": "HPR"
       },
       "Vmax_ATPsynth": {
@@ -307,6 +315,7 @@
           "type": "Num",
           "value": 0.014
         },
+        "displayName": "bH",
         "texName": "b\\_H"
       },
       "vpc": {
@@ -356,6 +365,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "QA_total",
         "texName": "QA\\_total"
       },
       "PQ_tot": {
@@ -363,6 +373,7 @@
           "type": "Num",
           "value": 7
         },
+        "displayName": "PQ_tot",
         "texName": "PQ\\_tot"
       },
       "P700_total": {
@@ -370,6 +381,7 @@
           "type": "Num",
           "value": 0.667
         },
+        "displayName": "P700_total",
         "texName": "P700\\_total"
       },
       "PC_tot": {
@@ -377,6 +389,7 @@
           "type": "Num",
           "value": 2
         },
+        "displayName": "PC_tot",
         "texName": "PC\\_tot"
       },
       "Fd_tot": {
@@ -384,6 +397,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "Fd_tot",
         "texName": "Fd\\_tot"
       },
       "NADP_tot": {
@@ -391,6 +405,7 @@
           "type": "Num",
           "value": 5
         },
+        "displayName": "NADP_tot",
         "texName": "NADP\\_tot"
       },
       "Carotenoids_tot": {
@@ -2348,6 +2363,7 @@
             }
           ]
         },
+        "displayName": "QA",
         "texName": "QA"
       },
       "Y0": {
@@ -2390,6 +2406,7 @@
             }
           ]
         },
+        "displayName": "PQ",
         "texName": "PQ"
       },
       "PC_red": {
@@ -2411,6 +2428,7 @@
             }
           ]
         },
+        "displayName": "PC_red",
         "texName": "PC\\_red"
       },
       "Fd_ox": {
@@ -2432,6 +2450,7 @@
             }
           ]
         },
+        "displayName": "Fd_ox",
         "texName": "Fd\\_ox"
       },
       "NADP_st": {
@@ -2453,6 +2472,7 @@
             }
           ]
         },
+        "displayName": "NADP",
         "texName": "NADP\\_st"
       },
       "Vx": {
@@ -2666,6 +2686,7 @@
             }
           ]
         },
+        "displayName": "NPQ",
         "texName": "NPQ"
       },
       "PhiPSII": {

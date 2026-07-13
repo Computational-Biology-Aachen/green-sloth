@@ -218,6 +218,7 @@ export function initModel(): KineticModelBuilder {
       texName: "tau\\_0",
     })
     .addParameter("PSII_tot", {
+      displayName: names.psii_tot,
       value: 1.0,
       texName: "PSII\\_tot",
     })

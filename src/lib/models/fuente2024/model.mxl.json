@@ -17,6 +17,7 @@
           "type": "Num",
           "value": 3.537090541057567
         },
+        "displayName": "PQ",
         "texName": "PQ"
       },
       "PSI_ox": {
@@ -38,6 +39,7 @@
           "type": "Num",
           "value": 144.95412072145785
         },
+        "displayName": "ATP",
         "texName": "ATP\\_st"
       }
     },
@@ -61,6 +63,7 @@
           "type": "Num",
           "value": 7
         },
+        "displayName": "PQ_tot",
         "texName": "PQ\\_tot"
       },
       "H_stroma": {
@@ -75,6 +78,7 @@
           "type": "Num",
           "value": 1000
         },
+        "displayName": "AP_tot",
         "texName": "AP\\_tot"
       },
       "V_lumen": {
@@ -180,6 +184,7 @@
           "type": "Num",
           "value": 0.01
         },
+        "displayName": "bH",
         "texName": "bH"
       },
       "NPQ_max": {
@@ -244,6 +249,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "PSI_total",
         "texName": "PSI\\_total"
       },
       "Fluo_0": {
@@ -837,6 +843,7 @@
             }
           ]
         },
+        "displayName": "PQH2",
         "texName": "PQH\\_2"
       },
       "PSI_red": {
@@ -879,6 +886,7 @@
             }
           ]
         },
+        "displayName": "ADP",
         "texName": "ADP\\_st"
       },
       "osc_light": {
@@ -1105,6 +1113,7 @@
             }
           ]
         },
+        "displayName": "Fluo",
         "texName": "Fluo"
       },
       "NPQ": {
@@ -1153,6 +1162,7 @@
             }
           ]
         },
+        "displayName": "NPQ",
         "texName": "NPQ"
       },
       "O2": {
@@ -1227,6 +1237,7 @@
             }
           ]
         },
+        "displayName": "O2",
         "texName": "O2"
       }
     },

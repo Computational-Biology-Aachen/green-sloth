@@ -1,4 +1,5 @@
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import names from "$lib/names";
 import {
   Add,
   Divide,
@@ -190,6 +191,7 @@ export function initModel(): KineticModelBuilder {
       texName: "eprime",
     })
     .addAssignment("F", {
+      displayName: names.fluorescence,
       fn: new Add([
         new Name("y15"),
         new Divide([

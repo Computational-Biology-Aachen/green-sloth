@@ -10,6 +10,7 @@
           "type": "Num",
           "value": 0.9928653922138561
         },
+        "displayName": "PGA",
         "texName": "3PGA"
       },
       "BPGA": {
@@ -17,6 +18,7 @@
           "type": "Num",
           "value": 0.0005297732935310749
         },
+        "displayName": "BPGA",
         "texName": "BPGA"
       },
       "GAP": {
@@ -24,6 +26,7 @@
           "type": "Num",
           "value": 0.0062663539939955834
         },
+        "displayName": "GAP",
         "texName": "GAP"
       },
       "DHAP": {
@@ -31,6 +34,7 @@
           "type": "Num",
           "value": 0.13785977143668732
         },
+        "displayName": "DHAP",
         "texName": "DHAP"
       },
       "FBP": {
@@ -101,6 +105,7 @@
           "type": "Num",
           "value": 0.13184790283048484
         },
+        "displayName": "RUBP",
         "texName": "RUBP"
       },
       "RU5P": {
@@ -108,6 +113,7 @@
           "type": "Num",
           "value": 0.015060770937455408
         },
+        "displayName": "RU5P",
         "texName": "RU5P"
       },
       "ATP": {
@@ -115,6 +121,7 @@
           "type": "Num",
           "value": 1.612922506604933
         },
+        "displayName": "ATP",
         "texName": "ATP"
       },
       "Ferredoxine_oxidised": {
@@ -122,6 +129,7 @@
           "type": "Num",
           "value": 3.8624032084329674
         },
+        "displayName": "Fd_ox",
         "texName": "Ferredoxine (oxidised)"
       },
       "protons_lumen": {
@@ -129,6 +137,7 @@
           "type": "Num",
           "value": 0.002208423037307405
         },
+        "displayName": "protons_lumen",
         "texName": "protons\\_lumen"
       },
       "Light_minus_harvesting_complex": {
@@ -143,6 +152,7 @@
           "type": "Num",
           "value": 0.491395685599137
         },
+        "displayName": "NADPH",
         "texName": "NADPH"
       },
       "Plastocyanine_oxidised": {
@@ -157,6 +167,7 @@
           "type": "Num",
           "value": 10.991562708096392
         },
+        "displayName": "PQ",
         "texName": "Plastoquinone (oxidised)"
       },
       "PsbS_de_minus_protonated": {
@@ -180,6 +191,7 @@
           "type": "Num",
           "value": 0.000012589254117941661
         },
+        "displayName": "protons",
         "texName": "protons"
       },
       "pH": {
@@ -187,6 +199,7 @@
           "type": "Num",
           "value": 7.9
         },
+        "displayName": "pH",
         "texName": "pH"
       },
       "CO2_dissolved": {
@@ -226,6 +239,7 @@
           "type": "Num",
           "value": 100
         },
+        "displayName": "bH",
         "texName": "bH"
       },
       "F": {
@@ -233,6 +247,7 @@
           "type": "Num",
           "value": 96.485
         },
+        "displayName": "F",
         "texName": "F"
       },
       "E0_PC": {
@@ -282,6 +297,7 @@
           "type": "Num",
           "value": 0.0083
         },
+        "displayName": "R",
         "texName": "R"
       },
       "T": {
@@ -289,6 +305,7 @@
           "type": "Num",
           "value": 298
         },
+        "displayName": "T",
         "texName": "T"
       },
       "Carotenoids_tot": {
@@ -303,6 +320,7 @@
           "type": "Num",
           "value": 5
         },
+        "displayName": "Fd_tot",
         "texName": "Fd*"
       },
       "PC_tot": {
@@ -310,6 +328,7 @@
           "type": "Num",
           "value": 4
         },
+        "displayName": "PC_tot",
         "texName": "PC\\_tot"
       },
       "PSBS_tot": {
@@ -317,6 +336,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "PsbS_tot",
         "texName": "PSBS\\_tot"
       },
       "LHC_tot": {
@@ -324,6 +344,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "LHC_tot",
         "texName": "LHC\\_tot"
       },
       "gamma0": {
@@ -380,6 +401,7 @@
           "type": "Num",
           "value": 17.5
         },
+        "displayName": "PQ_tot",
         "texName": "PQ\\_tot"
       },
       "staticAntII": {
@@ -401,6 +423,7 @@
           "type": "Num",
           "value": 0.8
         },
+        "displayName": "NADP_tot",
         "texName": "NADP*"
       },
       "A_star_P": {
@@ -408,6 +431,7 @@
           "type": "Num",
           "value": 2.55
         },
+        "displayName": "AP_tot",
         "texName": "A*P"
       },
       "Pi_tot": {
@@ -415,6 +439,7 @@
           "type": "Num",
           "value": 17.05
         },
+        "displayName": "Pi_tot",
         "texName": "Pi\\_tot"
       },
       "kf_atp_synthase": {
@@ -429,6 +454,7 @@
           "type": "Num",
           "value": 4.666666666666667
         },
+        "displayName": "HPR",
         "texName": "HPR"
       },
       "Pi_mol": {
@@ -560,6 +586,7 @@
           "type": "Num",
           "value": 2.5
         },
+        "displayName": "PSII_total",
         "texName": "PSII\\_total"
       },
       "PSI_total": {
@@ -567,6 +594,7 @@
           "type": "Num",
           "value": 2.5
         },
+        "displayName": "PSI_total",
         "texName": "PSI\\_total"
       },
       "kH0": {
@@ -3650,6 +3678,7 @@
             }
           ]
         },
+        "displayName": "pH_lumen",
         "texName": "pH\\_lumen"
       },
       "Zeaxanthin": {
@@ -3692,6 +3721,7 @@
             }
           ]
         },
+        "displayName": "Fd_red",
         "texName": "Ferredoxine (reduced)"
       },
       "Plastocyanine_reduced": {
@@ -3867,6 +3897,7 @@
             }
           ]
         },
+        "displayName": "Q",
         "texName": "Q"
       },
       "keq_Plastoquinone_reduced": {
@@ -3969,6 +4000,7 @@
             }
           ]
         },
+        "displayName": "PQH2",
         "texName": "Plastoquinone (reduced)"
       },
       "PSII_cross_section": {
@@ -4038,6 +4070,7 @@
             }
           ]
         },
+        "displayName": "NADP",
         "texName": "NADP"
       },
       "ADP": {
@@ -4059,6 +4092,7 @@
             }
           ]
         },
+        "displayName": "ADP",
         "texName": "ADP"
       },
       "Orthophosphate": {
@@ -4801,6 +4835,7 @@
             }
           ]
         },
+        "displayName": "A1",
         "texName": "A1"
       },
       "vmax_rubisco_carboxylase": {
@@ -5994,6 +6029,7 @@
             }
           ]
         },
+        "displayName": "B0",
         "texName": "B0"
       },
       "B1": {
@@ -6873,6 +6909,7 @@
             }
           ]
         },
+        "displayName": "B1",
         "texName": "B1"
       },
       "B2": {
@@ -8023,6 +8060,7 @@
             }
           ]
         },
+        "displayName": "B2",
         "texName": "B2"
       },
       "B3": {
@@ -8962,6 +9000,7 @@
             }
           ]
         },
+        "displayName": "B3",
         "texName": "B3"
       },
       "PQ_ox_div_tot": {
@@ -9142,6 +9181,7 @@
             }
           ]
         },
+        "displayName": "Fluo",
         "texName": "Fluo"
       }
     },

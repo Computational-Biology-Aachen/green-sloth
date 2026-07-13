@@ -28,6 +28,7 @@
             }
           ]
         },
+        "displayName": "CO2",
         "texName": "CO2"
       },
       "HCO3": {
@@ -42,6 +43,7 @@
           "type": "Num",
           "value": 2
         },
+        "displayName": "RUBP",
         "texName": "RUBP"
       },
       "PGA": {
@@ -49,6 +51,7 @@
           "type": "Num",
           "value": 4
         },
+        "displayName": "PGA",
         "texName": "PGA"
       },
       "DHAP": {
@@ -56,6 +59,7 @@
           "type": "Num",
           "value": 4
         },
+        "displayName": "DHAP",
         "texName": "DHAP"
       },
       "ATP_st": {
@@ -63,6 +67,7 @@
           "type": "Num",
           "value": 0.68
         },
+        "displayName": "ATP",
         "texName": "ATP\\_st"
       },
       "NADPH_st": {
@@ -70,6 +75,7 @@
           "type": "Num",
           "value": 0.21
         },
+        "displayName": "NADPH",
         "texName": "NADPH\\_st"
       },
       "RU5P": {
@@ -77,6 +83,7 @@
           "type": "Num",
           "value": 0.34
         },
+        "displayName": "RU5P",
         "texName": "RU5P"
       },
       "Ract": {
@@ -114,6 +121,7 @@
             }
           ]
         },
+        "displayName": "Ci",
         "texName": "Ci"
       },
       "gs": {
@@ -705,6 +713,7 @@
           "type": "Num",
           "value": 0.5
         },
+        "displayName": "NADP_tot",
         "texName": "NADP\\_tot"
       }
     },
@@ -2601,6 +2610,7 @@
             }
           ]
         },
+        "displayName": "ADP",
         "texName": "ADP\\_st"
       },
       "NADP_st": {
@@ -2622,6 +2632,7 @@
             }
           ]
         },
+        "displayName": "NADP",
         "texName": "NADP\\_st"
       },
       "Pi_st": {
@@ -2930,6 +2941,7 @@
             }
           ]
         },
+        "displayName": "O2",
         "texName": "O2"
       },
       "Ract_eq": {

@@ -1,4 +1,5 @@
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import names from "$lib/names";
 import {
   Add,
   Divide,
@@ -36,6 +37,7 @@ export function initModel(): KineticModelBuilder {
       texName: "tau\\_p",
     })
     .addVariable("ChlF", {
+      displayName: names.fluorescence,
       value: 0.02,
       texName: "ChlF",
     })

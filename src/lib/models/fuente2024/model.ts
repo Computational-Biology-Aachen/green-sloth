@@ -22,6 +22,7 @@ export function initModel(): KineticModelBuilder {
       texName: "stoic\\_PSI",
     })
     .addParameter("PQ_tot", {
+      displayName: names.pq_tot,
       value: 7.0,
       texName: "PQ\\_tot",
     })
@@ -30,6 +31,7 @@ export function initModel(): KineticModelBuilder {
       texName: "H\\_stroma",
     })
     .addParameter("AP_tot", {
+      displayName: names.atp_tot,
       value: 1000.0,
       texName: "AP\\_tot",
     })
@@ -89,10 +91,7 @@ export function initModel(): KineticModelBuilder {
       value: 10000.0,
       texName: "L\\_PSI",
     })
-    .addParameter("bH", {
-      value: 0.01,
-      texName: "bH",
-    })
+    .addParameter("bH", { displayName: names.b_h, value: 0.01, texName: "bH" })
     .addParameter("NPQ_max", {
       value: 0.6,
       texName: "NPQ\\_max",
@@ -127,6 +126,7 @@ export function initModel(): KineticModelBuilder {
       texName: "f",
     })
     .addParameter("PSI_total", {
+      displayName: names.psi_tot,
       value: 1.0,
       texName: "PSI\\_total",
     })
@@ -143,6 +143,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Q\\_active",
     })
     .addVariable("PQ", {
+      displayName: names.pq,
       value: 3.537090541057567,
       texName: "PQ",
     })
@@ -155,6 +156,7 @@ export function initModel(): KineticModelBuilder {
       texName: "H\\_lumen",
     })
     .addVariable("ATP_st", {
+      displayName: names.atp,
       value: 144.95412072145785,
       texName: "ATP\\_st",
     })
@@ -163,6 +165,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Q\\_inactive",
     })
     .addAssignment("PQH_2", {
+      displayName: names.pqh2,
       fn: new Add([new Name("PQ_tot"), new Minus([new Name("PQ")])]),
       texName: "PQH\\_2",
     })
@@ -171,6 +174,7 @@ export function initModel(): KineticModelBuilder {
       texName: "PSI\\_red",
     })
     .addAssignment("ADP_st", {
+      displayName: names.adp,
       fn: new Add([new Name("AP_tot"), new Minus([new Name("ATP_st")])]),
       texName: "ADP\\_st",
     })
@@ -226,6 +230,7 @@ export function initModel(): KineticModelBuilder {
       texName: "RCII\\_open",
     })
     .addAssignment("Fluo", {
+      displayName: names.fluorescence,
       fn: new Mul([
         new Name("sigma_PSII"),
         new Add([new Name("Fluo_0"), new Name("RCII_closed")]),
@@ -233,6 +238,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Fluo",
     })
     .addAssignment("NPQ", {
+      displayName: names.npq,
       fn: new Divide([
         new Mul([new Name("NPQ_max"), new Name("Q_active")]),
         new Add([
@@ -243,6 +249,7 @@ export function initModel(): KineticModelBuilder {
       texName: "NPQ",
     })
     .addAssignment("O2", {
+      displayName: names.o2,
       fn: new Mul([
         new Num(0.25),
         new Name("PSI_total"),

@@ -1,4 +1,5 @@
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import names from "$lib/names";
 import {
   Add,
   Minus,
@@ -159,6 +160,7 @@ export function initModel(): KineticModelBuilder {
       texName: "PAg",
     })
     .addParameter("PAr", {
+      displayName: names.ppfd,
       value: 0.0002,
       texName: "PAr",
     })
@@ -167,21 +169,13 @@ export function initModel(): KineticModelBuilder {
       texName: "h",
     })
     .addVariable("RuBP", {
+      displayName: names.rubp,
       value: 1.0,
       texName: "RuBP",
     })
-    .addVariable("PGA", {
-      value: 1.0,
-      texName: "PGA",
-    })
-    .addVariable("ADP", {
-      value: 1.0,
-      texName: "ADP",
-    })
-    .addVariable("Pi", {
-      value: 10.0,
-      texName: "Pi",
-    })
+    .addVariable("PGA", { displayName: names.pga, value: 1.0, texName: "PGA" })
+    .addVariable("ADP", { displayName: names.adp, value: 1.0, texName: "ADP" })
+    .addVariable("Pi", { displayName: names.pi, value: 10.0, texName: "Pi" })
     .addVariable("TP", {
       value: 1.0,
       texName: "TP",
@@ -231,6 +225,7 @@ export function initModel(): KineticModelBuilder {
       texName: "S7P",
     })
     .addVariable("Ru5P", {
+      displayName: names.ru5p,
       value: 1.0,
       texName: "Ru5P",
     })
@@ -275,15 +270,14 @@ export function initModel(): KineticModelBuilder {
       texName: "NH3",
     })
     .addVariable("CO2", {
+      displayName: names.co2,
       value: 0.33,
       texName: "CO2",
       slider: { min: "0.1", max: "1.0", step: "0.01" },
     })
-    .addVariable("O2", {
-      value: 0.245,
-      texName: "O2",
-    })
+    .addVariable("O2", { displayName: names.o2, value: 0.245, texName: "O2" })
     .addVariable("Ci", {
+      displayName: names.co2_intercellular,
       value: 0.4,
       texName: "Ci",
     })
@@ -292,6 +286,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Oi",
     })
     .addVariable("AP_tot", {
+      displayName: names.atp_tot,
       value: 11.0,
       texName: "AP\\_tot",
     })
@@ -300,6 +295,7 @@ export function initModel(): KineticModelBuilder {
       texName: "UP\\_tot",
     })
     .addAssignment("ATP", {
+      displayName: names.atp,
       fn: new Add([new Name("AP_tot"), new Minus([new Name("ADP")])]),
       texName: "ATP",
     })

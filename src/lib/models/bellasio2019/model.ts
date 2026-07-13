@@ -346,10 +346,12 @@ export function initModel(): KineticModelBuilder {
       texName: "gs0",
     })
     .addParameter("NADP_tot", {
+      displayName: names.nadp_tot,
       value: 0.5,
       texName: "NADP\\_tot",
     })
     .addVariable("CO2", {
+      displayName: names.co2,
       value: new Divide([
         new Mul([new Num(0.3), new Name("Ca")]),
         new Name("Kh_co2"),
@@ -361,26 +363,28 @@ export function initModel(): KineticModelBuilder {
       texName: "HCO3",
     })
     .addVariable("RUBP", {
+      displayName: names.rubp,
       value: 2.0,
       texName: "RUBP",
     })
-    .addVariable("PGA", {
-      value: 4.0,
-      texName: "PGA",
-    })
+    .addVariable("PGA", { displayName: names.pga, value: 4.0, texName: "PGA" })
     .addVariable("DHAP", {
+      displayName: names.dhap,
       value: 4.0,
       texName: "DHAP",
     })
     .addVariable("ATP_st", {
+      displayName: names.atp,
       value: 0.68,
       texName: "ATP\\_st",
     })
     .addVariable("NADPH_st", {
+      displayName: names.nadph,
       value: 0.21,
       texName: "NADPH\\_st",
     })
     .addVariable("RU5P", {
+      displayName: names.ru5p,
       value: 0.34,
       texName: "RU5P",
     })
@@ -397,6 +401,7 @@ export function initModel(): KineticModelBuilder {
       texName: "J\\_ATP",
     })
     .addVariable("Ci", {
+      displayName: names.co2_intercellular,
       value: new Mul([new Num(0.65), new Name("Ca")]),
       texName: "Ci",
     })
@@ -405,10 +410,12 @@ export function initModel(): KineticModelBuilder {
       texName: "gs",
     })
     .addAssignment("ADP_st", {
+      displayName: names.adp,
       fn: new Add([new Name("AP_tot"), new Minus([new Name("ATP_st")])]),
       texName: "ADP\\_st",
     })
     .addAssignment("NADP_st", {
+      displayName: names.nadp,
       fn: new Add([new Name("NADP_tot"), new Minus([new Name("NADPH_st")])]),
       texName: "NADP\\_st",
     })
@@ -476,6 +483,7 @@ export function initModel(): KineticModelBuilder {
       texName: "f\\_rubp",
     })
     .addAssignment("O2", {
+      displayName: names.o2,
       fn: new Divide([new Name("p_o2"), new Name("Kh_o2")]),
       texName: "O2",
     })

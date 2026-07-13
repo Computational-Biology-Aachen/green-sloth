@@ -10,6 +10,7 @@
           "type": "Num",
           "value": 0.02
         },
+        "displayName": "Fluo",
         "texName": "ChlF"
       }
     },

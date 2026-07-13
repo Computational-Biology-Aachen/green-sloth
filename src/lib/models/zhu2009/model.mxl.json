@@ -10,6 +10,7 @@
           "type": "Num",
           "value": 2
         },
+        "displayName": "RUBP",
         "texName": "RuBP"
       },
       "PGA": {
@@ -17,6 +18,7 @@
           "type": "Num",
           "value": 2.4
         },
+        "displayName": "PGA",
         "texName": "PGA"
       },
       "DPGA": {
@@ -24,6 +26,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "BPGA",
         "texName": "DPGA"
       },
       "Ru5P": {
@@ -31,6 +34,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "RU5P",
         "texName": "Ru5P"
       },
       "GAP": {
@@ -38,6 +42,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "GAP",
         "texName": "GAP"
       }
     },
@@ -201,6 +206,7 @@
           "type": "Num",
           "value": 0.2
         },
+        "displayName": "ATP",
         "texName": "ATP",
         "slider": {
           "min": "0.1",

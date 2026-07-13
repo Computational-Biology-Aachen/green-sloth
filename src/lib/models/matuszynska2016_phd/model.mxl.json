@@ -10,6 +10,7 @@
           "type": "Num",
           "value": 1.6999999999999997
         },
+        "displayName": "ATP",
         "texName": "atp"
       },
       "pq_ox": {
@@ -17,6 +18,7 @@
           "type": "Num",
           "value": 4.706348349506148
         },
+        "displayName": "PQ",
         "texName": "pq\\_ox"
       },
       "pc_ox": {
@@ -24,6 +26,7 @@
           "type": "Num",
           "value": 3.9414515288091567
         },
+        "displayName": "PC_ox",
         "texName": "pc\\_ox"
       },
       "fd_ox": {
@@ -31,6 +34,7 @@
           "type": "Num",
           "value": 3.7761613271207324
         },
+        "displayName": "Fd_ox",
         "texName": "fd\\_ox"
       },
       "protons_lumen": {
@@ -38,6 +42,7 @@
           "type": "Num",
           "value": 7.737821100836988
         },
+        "displayName": "protons_lumen",
         "texName": "protons\\_lumen"
       },
       "lhc": {
@@ -68,6 +73,7 @@
           "type": "Num",
           "value": 7.9
         },
+        "displayName": "pH",
         "texName": "pH"
       },
       "PPFD": {
@@ -88,6 +94,7 @@
           "type": "Num",
           "value": 0.6
         },
+        "displayName": "NADPH",
         "texName": "nadph"
       },
       "O2_lumen": {
@@ -102,6 +109,7 @@
           "type": "Num",
           "value": 100
         },
+        "displayName": "bH",
         "texName": "bH"
       },
       "F": {
@@ -109,6 +117,7 @@
           "type": "Num",
           "value": 96.485
         },
+        "displayName": "F",
         "texName": "F"
       },
       "E_0_PC": {
@@ -151,6 +160,7 @@
           "type": "Num",
           "value": 0.8
         },
+        "displayName": "NADP_tot",
         "texName": "NADP*"
       },
       "R": {
@@ -158,6 +168,7 @@
           "type": "Num",
           "value": 0.0083
         },
+        "displayName": "R",
         "texName": "R"
       },
       "T": {
@@ -165,6 +176,7 @@
           "type": "Num",
           "value": 298
         },
+        "displayName": "T",
         "texName": "T"
       },
       "A_P": {
@@ -172,6 +184,7 @@
           "type": "Num",
           "value": 2.55
         },
+        "displayName": "AP_tot",
         "texName": "A*P"
       },
       "Carotenoids_tot": {
@@ -186,6 +199,7 @@
           "type": "Num",
           "value": 5
         },
+        "displayName": "Fd_tot",
         "texName": "Fd*"
       },
       "PC_tot": {
@@ -193,6 +207,7 @@
           "type": "Num",
           "value": 4
         },
+        "displayName": "PC_tot",
         "texName": "PC\\_tot"
       },
       "PSBS_tot": {
@@ -200,6 +215,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "PsbS_tot",
         "texName": "PSBS\\_tot"
       },
       "LHC_tot": {
@@ -207,6 +223,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "LHC_tot",
         "texName": "LHC\\_tot"
       },
       "gamma0": {
@@ -263,6 +280,7 @@
           "type": "Num",
           "value": 17.5
         },
+        "displayName": "PQ_tot",
         "texName": "PQ\\_tot"
       },
       "staticAntII": {
@@ -291,6 +309,7 @@
           "type": "Num",
           "value": 4.666666666666667
         },
+        "displayName": "HPR",
         "texName": "HPR"
       },
       "Pi_mol": {
@@ -417,6 +436,7 @@
           "type": "Num",
           "value": 2.5
         },
+        "displayName": "PSII_total",
         "texName": "PSII\\_total"
       },
       "PSI_total": {
@@ -424,6 +444,7 @@
           "type": "Num",
           "value": 2.5
         },
+        "displayName": "PSI_total",
         "texName": "PSI\\_total"
       },
       "kH0": {
@@ -1579,6 +1600,7 @@
             }
           ]
         },
+        "displayName": "NADP",
         "texName": "nadp"
       },
       "RT": {
@@ -1616,6 +1638,7 @@
             }
           ]
         },
+        "displayName": "ADP",
         "texName": "adp"
       },
       "dG_pH": {
@@ -1672,6 +1695,7 @@
             }
           ]
         },
+        "displayName": "pH_lumen",
         "texName": "pH\\_lumen"
       },
       "zx": {
@@ -1714,6 +1738,7 @@
             }
           ]
         },
+        "displayName": "Fd_red",
         "texName": "fd\\_red"
       },
       "pc_red": {
@@ -1735,6 +1760,7 @@
             }
           ]
         },
+        "displayName": "PC_red",
         "texName": "pc\\_red"
       },
       "psbs_pr": {
@@ -1889,6 +1915,7 @@
             }
           ]
         },
+        "displayName": "Q",
         "texName": "Q"
       },
       "keq_pq_red": {
@@ -1991,6 +2018,7 @@
             }
           ]
         },
+        "displayName": "PQH2",
         "texName": "pq\\_red"
       },
       "PSII_cross_section": {
@@ -2589,6 +2617,7 @@
             }
           ]
         },
+        "displayName": "A1",
         "texName": "A1"
       },
       "B0": {
@@ -3590,6 +3619,7 @@
             }
           ]
         },
+        "displayName": "B0",
         "texName": "ps2states"
       },
       "B1": {
@@ -4469,6 +4499,7 @@
             }
           ]
         },
+        "displayName": "B1",
         "texName": "ps2states"
       },
       "B2": {
@@ -5619,6 +5650,7 @@
             }
           ]
         },
+        "displayName": "B2",
         "texName": "ps2states"
       },
       "B3": {
@@ -6558,6 +6590,7 @@
             }
           ]
         },
+        "displayName": "B3",
         "texName": "ps2states"
       },
       "Fluo": {
@@ -6650,6 +6683,7 @@
             }
           ]
         },
+        "displayName": "Fluo",
         "texName": "Fluo"
       }
     },

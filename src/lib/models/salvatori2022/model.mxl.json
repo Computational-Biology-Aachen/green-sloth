@@ -31,6 +31,7 @@
           "type": "Num",
           "value": 5
         },
+        "displayName": "NADP",
         "texName": "NADP"
       },
       "NADPH": {
@@ -38,6 +39,7 @@
           "type": "Num",
           "value": 5
         },
+        "displayName": "NADPH",
         "texName": "NADPH"
       },
       "R": {
@@ -347,6 +349,7 @@
             "value": -1
           }
         },
+        "displayName": "NPQ",
         "texName": "NPQ"
       },
       "NPQ_activation": {
@@ -564,6 +567,7 @@
             }
           ]
         },
+        "displayName": "pH",
         "texName": "pH"
       },
       "ETR": {

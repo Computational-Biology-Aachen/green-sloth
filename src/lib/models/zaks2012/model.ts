@@ -442,10 +442,7 @@ export function initModel(): KineticModelBuilder {
       value: 0.25,
       texName: "ATPperProton",
     })
-    .addVariable("ATP", {
-      value: 2.0,
-      texName: "ATP",
-    })
+    .addVariable("ATP", { displayName: names.atp, value: 2.0, texName: "ATP" })
     .addVariable("ActiveATPs", {
       value: 0.05,
       texName: "ActiveATPs",
@@ -455,10 +452,12 @@ export function initModel(): KineticModelBuilder {
       texName: "Antheraxanthin",
     })
     .addVariable("Fdxox", {
+      displayName: names.fd_ox,
       value: 1.0,
       texName: "Fdxox",
     })
     .addVariable("Fdxr", {
+      displayName: names.fd_red,
       value: 1e-14,
       texName: "Fdxr",
     })
@@ -498,11 +497,9 @@ export function initModel(): KineticModelBuilder {
       value: 0.2,
       texName: "PCr",
     })
-    .addVariable("PQ", {
-      value: 8.999,
-      texName: "PQ",
-    })
+    .addVariable("PQ", { displayName: names.pq, value: 8.999, texName: "PQ" })
     .addVariable("PQH2", {
+      displayName: names.pqh2,
       value: 0.001,
       texName: "PQH2",
     })
@@ -559,6 +556,7 @@ export function initModel(): KineticModelBuilder {
       texName: "pH\\_stroma",
     })
     .addAssignment("pH_lumen", {
+      displayName: names.ph_lumen,
       fn: new Add([
         new Name("pHLumenStart"),
         new Minus([

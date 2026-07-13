@@ -1,4 +1,5 @@
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import names from "$lib/names";
 import {
   Add,
   Divide,
@@ -115,6 +116,7 @@ export function initModel(): KineticModelBuilder {
       texName: "hydroxypyruvate",
     })
     .addVariable("H2O2", {
+      displayName: names.h2o2,
       value: 0.010880542843616855,
       texName: "H2O2",
     })

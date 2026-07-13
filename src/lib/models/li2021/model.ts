@@ -66,6 +66,7 @@ export function initModel(): KineticModelBuilder {
       texName: "NPQ\\_max",
     })
     .addParameter("pH_st", {
+      displayName: names.ph,
       value: 7.8,
       texName: "pH\\_st",
     })
@@ -126,6 +127,7 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_ClCe",
     })
     .addParameter("HPR", {
+      displayName: names.hpr,
       value: 4.666666666666667,
       texName: "HPR",
     })
@@ -134,6 +136,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Vmax\\_ATPsynth",
     })
     .addParameter("b_H", {
+      displayName: names.b_h,
       value: 0.014,
       texName: "b\\_H",
     })
@@ -162,26 +165,32 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_leak",
     })
     .addParameter("QA_total", {
+      displayName: names.qa_tot,
       value: 1.0,
       texName: "QA\\_total",
     })
     .addParameter("PQ_tot", {
+      displayName: names.pq_tot,
       value: 7.0,
       texName: "PQ\\_tot",
     })
     .addParameter("P700_total", {
+      displayName: names.p700_tot,
       value: 0.667,
       texName: "P700\\_total",
     })
     .addParameter("PC_tot", {
+      displayName: names.pc_tot,
       value: 2.0,
       texName: "PC\\_tot",
     })
     .addParameter("Fd_tot", {
+      displayName: names.fd_tot,
       value: 1.0,
       texName: "Fd\\_tot",
     })
     .addParameter("NADP_tot", {
+      displayName: names.nadp_tot,
       value: 5.0,
       texName: "NADP\\_tot",
     })
@@ -190,14 +199,17 @@ export function initModel(): KineticModelBuilder {
       texName: "Carotenoids\\_tot",
     })
     .addVariable("QA_red", {
+      displayName: names.qa_red,
       value: 0.0,
       texName: "QA\\_red",
     })
     .addVariable("PQH_2", {
+      displayName: names.pqh2,
       value: 0.0,
       texName: "PQH\\_2",
     })
     .addVariable("pH_lumen", {
+      displayName: names.ph_lumen,
       value: 7.8,
       texName: "pH\\_lumen",
     })
@@ -210,6 +222,7 @@ export function initModel(): KineticModelBuilder {
       texName: "K\\_lu",
     })
     .addVariable("PC_ox", {
+      displayName: names.pc_ox,
       value: 0.0,
       texName: "PC\\_ox",
     })
@@ -226,10 +239,12 @@ export function initModel(): KineticModelBuilder {
       texName: "singO2",
     })
     .addVariable("Fd_red", {
+      displayName: names.fd_red,
       value: 0.0,
       texName: "Fd\\_red",
     })
     .addVariable("NADPH_st", {
+      displayName: names.nadph,
       value: 1.5,
       texName: "NADPH\\_st",
     })
@@ -242,6 +257,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Cl\\_st",
     })
     .addAssignment("QA", {
+      displayName: names.qa,
       fn: new Add([new Name("QA_total"), new Minus([new Name("QA_red")])]),
       texName: "QA",
     })
@@ -250,18 +266,22 @@ export function initModel(): KineticModelBuilder {
       texName: "Y0",
     })
     .addAssignment("PQ", {
+      displayName: names.pq,
       fn: new Add([new Name("PQ_tot"), new Minus([new Name("PQH_2")])]),
       texName: "PQ",
     })
     .addAssignment("PC_red", {
+      displayName: names.pc_red,
       fn: new Add([new Name("PC_tot"), new Minus([new Name("PC_ox")])]),
       texName: "PC\\_red",
     })
     .addAssignment("Fd_ox", {
+      displayName: names.fd_ox,
       fn: new Add([new Name("Fd_tot"), new Minus([new Name("Fd_red")])]),
       texName: "Fd\\_ox",
     })
     .addAssignment("NADP_st", {
+      displayName: names.nadp,
       fn: new Add([new Name("NADP_tot"), new Minus([new Name("NADPH_st")])]),
       texName: "NADP\\_st",
     })
@@ -303,6 +323,7 @@ export function initModel(): KineticModelBuilder {
       texName: "PsbSP",
     })
     .addAssignment("NPQ", {
+      displayName: names.npq,
       fn: new Add([
         new Mul([new Num(0.5), new Name("NPQ_max"), new Name("PsbSP")]),
         new Mul([new Num(0.1), new Name("NPQ_max"), new Name("Zx")]),

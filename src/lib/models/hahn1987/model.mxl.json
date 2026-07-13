@@ -10,6 +10,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "RUBP",
         "texName": "RuBP"
       },
       "PGA": {
@@ -17,6 +18,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "PGA",
         "texName": "PGA"
       },
       "ADP": {
@@ -24,6 +26,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "ADP",
         "texName": "ADP"
       },
       "Pi": {
@@ -31,6 +34,7 @@
           "type": "Num",
           "value": 10
         },
+        "displayName": "Pi",
         "texName": "Pi"
       },
       "TP": {
@@ -122,6 +126,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "RU5P",
         "texName": "Ru5P"
       },
       "PGl": {
@@ -199,6 +204,7 @@
           "type": "Num",
           "value": 0.33
         },
+        "displayName": "CO2",
         "texName": "CO2",
         "slider": {
           "min": "0.1",
@@ -211,6 +217,7 @@
           "type": "Num",
           "value": 0.245
         },
+        "displayName": "O2",
         "texName": "O2"
       },
       "Ci": {
@@ -218,6 +225,7 @@
           "type": "Num",
           "value": 0.4
         },
+        "displayName": "Ci",
         "texName": "Ci"
       },
       "Oi": {
@@ -232,6 +240,7 @@
           "type": "Num",
           "value": 11
         },
+        "displayName": "AP_tot",
         "texName": "AP\\_tot"
       },
       "UP_tot": {
@@ -507,6 +516,7 @@
           "type": "Num",
           "value": 0.0002
         },
+        "displayName": "PPFD",
         "texName": "PAr"
       },
       "h": {
@@ -1697,6 +1707,7 @@
             }
           ]
         },
+        "displayName": "ATP",
         "texName": "ATP"
       },
       "UTP": {

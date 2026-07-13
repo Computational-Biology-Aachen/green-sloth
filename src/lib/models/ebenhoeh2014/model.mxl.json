@@ -10,6 +10,7 @@
           "type": "Num",
           "value": 17.5
         },
+        "displayName": "PQ",
         "texName": "Plastoquinone (oxidised)"
       },
       "Plastocyanine_oxidised": {
@@ -24,6 +25,7 @@
           "type": "Num",
           "value": 5
         },
+        "displayName": "Fd_ox",
         "texName": "Ferredoxine (oxidised)"
       },
       "ATP": {
@@ -31,6 +33,7 @@
           "type": "Num",
           "value": 0
         },
+        "displayName": "ATP",
         "texName": "ATP"
       },
       "NADPH": {
@@ -38,6 +41,7 @@
           "type": "Num",
           "value": 0
         },
+        "displayName": "NADPH",
         "texName": "NADPH"
       },
       "protons_lumen": {
@@ -45,6 +49,7 @@
           "type": "Num",
           "value": 0.00025238293779207717
         },
+        "displayName": "protons_lumen",
         "texName": "protons\\_lumen"
       },
       "Light_minus_harvesting_complex": {
@@ -61,6 +66,7 @@
           "type": "Num",
           "value": 7.8
         },
+        "displayName": "pH",
         "texName": "pH"
       },
       "PPFD": {
@@ -83,6 +89,7 @@
           "type": "Num",
           "value": 2.5
         },
+        "displayName": "PSII_total",
         "texName": "PSII\\_total"
       },
       "PSI_total": {
@@ -90,6 +97,7 @@
           "type": "Num",
           "value": 2.5
         },
+        "displayName": "PSI_total",
         "texName": "PSI\\_total"
       },
       "PQ_tot": {
@@ -97,6 +105,7 @@
           "type": "Num",
           "value": 17.5
         },
+        "displayName": "PQ_tot",
         "texName": "PQ\\_tot"
       },
       "PC_tot": {
@@ -104,6 +113,7 @@
           "type": "Num",
           "value": 4
         },
+        "displayName": "PC_tot",
         "texName": "PC\\_tot"
       },
       "Fd_star": {
@@ -111,6 +121,7 @@
           "type": "Num",
           "value": 5
         },
+        "displayName": "Fd_tot",
         "texName": "Fd*"
       },
       "NADP_star": {
@@ -118,6 +129,7 @@
           "type": "Num",
           "value": 25
         },
+        "displayName": "NADP_tot",
         "texName": "NADP*"
       },
       "A_star_P": {
@@ -125,6 +137,7 @@
           "type": "Num",
           "value": 60
         },
+        "displayName": "AP_tot",
         "texName": "A*P"
       },
       "LHC_tot": {
@@ -132,6 +145,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "LHC_tot",
         "texName": "LHC\\_tot"
       },
       "F": {
@@ -139,6 +153,7 @@
           "type": "Num",
           "value": 96.485
         },
+        "displayName": "F",
         "texName": "F"
       },
       "R": {
@@ -146,6 +161,7 @@
           "type": "Num",
           "value": 0.0083
         },
+        "displayName": "R",
         "texName": "R"
       },
       "T": {
@@ -153,6 +169,7 @@
           "type": "Num",
           "value": 298
         },
+        "displayName": "T",
         "texName": "T"
       },
       "bH": {
@@ -160,6 +177,7 @@
           "type": "Num",
           "value": 100
         },
+        "displayName": "bH",
         "texName": "bH"
       },
       "E0_QA": {
@@ -244,6 +262,7 @@
           "type": "Num",
           "value": 0
         },
+        "displayName": "Q",
         "texName": "Q"
       },
       "staticAntI": {
@@ -293,6 +312,7 @@
           "type": "Num",
           "value": 4.666666666666667
         },
+        "displayName": "HPR",
         "texName": "HPR"
       },
       "kf_nadph_consumption": {
@@ -1322,6 +1342,7 @@
             }
           ]
         },
+        "displayName": "pH_lumen",
         "texName": "pH\\_lumen"
       },
       "Plastoquinone_reduced": {
@@ -1343,6 +1364,7 @@
             }
           ]
         },
+        "displayName": "PQH2",
         "texName": "Plastoquinone (reduced)"
       },
       "Plastocyanine_reduced": {
@@ -1385,6 +1407,7 @@
             }
           ]
         },
+        "displayName": "Fd_red",
         "texName": "Ferredoxine (reduced)"
       },
       "ADP": {
@@ -1406,6 +1429,7 @@
             }
           ]
         },
+        "displayName": "ADP",
         "texName": "ADP"
       },
       "NADP": {
@@ -1427,6 +1451,7 @@
             }
           ]
         },
+        "displayName": "NADP",
         "texName": "NADP"
       },
       "Light_minus_harvesting_complex_protonated": {
@@ -2135,6 +2160,7 @@
             }
           ]
         },
+        "displayName": "A1",
         "texName": "A1"
       },
       "B0": {
@@ -3185,6 +3211,7 @@
             }
           ]
         },
+        "displayName": "B0",
         "texName": "B0"
       },
       "B1": {
@@ -4117,6 +4144,7 @@
             }
           ]
         },
+        "displayName": "B1",
         "texName": "B1"
       },
       "B2": {
@@ -5328,6 +5356,7 @@
             }
           ]
         },
+        "displayName": "B2",
         "texName": "B2"
       },
       "B3": {
@@ -6324,6 +6353,7 @@
             }
           ]
         },
+        "displayName": "B3",
         "texName": "B3"
       },
       "PQ_red_div_tot": {
@@ -6494,6 +6524,7 @@
             }
           ]
         },
+        "displayName": "Fluo",
         "texName": "Fluo"
       }
     },
