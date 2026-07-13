@@ -26,6 +26,22 @@
     }),
   );
 
+  // A model is "validated" once it has at least one paper-reproduction figure
+  // co-located in src/lib/models/<slug>/figs/ — same rule as ModelPage.svelte.
+  const modelFigs = import.meta.glob(
+    "$lib/models/*/figs/*.{png,jpg,svg,jpeg}",
+    {
+      eager: true,
+    },
+  ) as Record<string, unknown>;
+
+  const validatedSlugs = new Set(
+    Object.keys(modelFigs).flatMap((path) => {
+      const slug = path.match(/\/models\/([^/]+)\/figs\//)?.[1];
+      return slug ? [slug] : [];
+    }),
+  );
+
   // All tag categories → their distinct tags, across every model.
   const categories: Record<string, string[]> = {};
   for (const info of Object.values(models)) {
@@ -53,6 +69,14 @@
 
   let query = $state("");
   let filterInput = $state<HTMLInputElement>();
+
+  type Validation = "all" | "validated" | "unvalidated";
+  let validation = $state<Validation>("all");
+  const validationOptions: Array<{ value: Validation; label: string }> = [
+    { value: "all", label: "All" },
+    { value: "validated", label: "Validated" },
+    { value: "unvalidated", label: "Unvalidated" },
+  ];
 
   // Intercept the usual search shortcuts so they focus the model filter
   // instead of the browser's find bar: Ctrl/Cmd+F always, and "/" when the
@@ -97,8 +121,11 @@
   // AND everywhere: a model must match the name query (when present) and carry
   // every selected tag (within and across categories).
   const filtered = $derived(
-    Object.entries(models).filter(([, info]) => {
+    Object.entries(models).filter(([slug, info]) => {
       if (!fuzzyMatch(info.title, query)) return false;
+      if (validation === "validated" && !validatedSlugs.has(slug)) return false;
+      if (validation === "unvalidated" && validatedSlugs.has(slug))
+        return false;
       for (const [cat, sel] of Object.entries(active)) {
         if (sel.size === 0) continue;
         // `cat` is a dynamic facet category built from Tags at runtime, not
@@ -647,13 +674,31 @@
 </Section>
 
 <Section variant="surface">
-  <input
-    bind:this={filterInput}
-    type="search"
-    class="filter"
-    placeholder="Filter models…"
-    bind:value={query}
-  />
+  <div class="filter-row">
+    <input
+      bind:this={filterInput}
+      type="search"
+      class="filter"
+      placeholder="Filter models…"
+      bind:value={query}
+    />
+    {#if import.meta.env.DEV}
+      <div
+        class="validation-toggle"
+        role="group"
+        aria-label="Filter by validation status"
+      >
+        {#each validationOptions as { value, label } (value)}
+          <ButtonTab
+            selected={validation === value}
+            onclick={() => (validation = value)}
+          >
+            {label}
+          </ButtonTab>
+        {/each}
+      </div>
+    {/if}
+  </div>
   <div class="grid">
     {#each filtered as [slug, info] (slug)}
       <CardModel
@@ -689,7 +734,21 @@
     color: var(--color-text-muted);
   }
 
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .validation-toggle {
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--space-4);
+  }
+
   .filter {
+    flex: 1 1 240px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     background: var(--color-surface);

@@ -123,7 +123,8 @@ export type Part =
   | "PC"
   | "FNR"
   | "PSI"
-  | "CBB Cycle";
+  | "CBB Cycle"
+  | "Photorespiration";
 
 export type ModelType = "ODE" | "Steady State";
 

@@ -398,7 +398,7 @@
     </InfoBox>
   {:else}
     <InfoBox
-      header="Validation fiigures missing"
+      header="Validation figures missing"
       variant="warning"
     >
       This model implementation has not been validated yet.</InfoBox
