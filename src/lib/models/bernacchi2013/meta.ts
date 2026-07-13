@@ -2,9 +2,9 @@ import contributors from "$lib/contributors";
 import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
-  slug: "bernacchi2023",
-  title: "Bernacchi 2023",
-  DOI: "FIXME",
+  slug: "bernacchi2013",
+  title: "Bernacchi 2013",
+  DOI: "10.1111/pce.12118",
   tags: {
     "Part of Photosynthesis": [],
     "Model type": ["Steady State"],

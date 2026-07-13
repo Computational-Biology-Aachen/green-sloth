@@ -4,7 +4,7 @@ import type { ModelMeta } from "$lib/types";
 export const meta: ModelMeta = {
   slug: "fvcb1980",
   title: "FvCB 1980",
-  DOI: "FIXME",
+  DOI: "10.1007/BF00386231",
   tags: {
     "Part of Photosynthesis": [],
     "Model type": ["Steady State"],

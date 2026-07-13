@@ -4,7 +4,7 @@ import type { ModelMeta } from "$lib/types";
 export const meta: ModelMeta = {
   slug: "nedbal2021_ojip",
   title: "Nedbal 2021 (OJIP)",
-  DOI: "fixme",
+  DOI: "10.1093/plphys/kiab317",
   tags: {
     "Part of Photosynthesis": [],
     "Model type": ["ODE"],
