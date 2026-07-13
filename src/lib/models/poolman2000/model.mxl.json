@@ -77,6 +77,7 @@
           "type": "Num",
           "value": 0.23281380022778891
         },
+        "displayName": "S7P",
         "texName": "S7P"
       },
       "E4P": {
@@ -84,6 +85,7 @@
           "type": "Num",
           "value": 0.02836065066520614
         },
+        "displayName": "E4P",
         "texName": "E4P"
       },
       "X5P": {
@@ -2145,6 +2147,7 @@
             "value": 1
           }
         },
+        "displayName": "ATP synthase",
         "texName": "atp\\_synthase"
       }
     },

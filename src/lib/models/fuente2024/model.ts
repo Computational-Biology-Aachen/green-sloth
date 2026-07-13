@@ -401,6 +401,7 @@ export function initModel(): KineticModelBuilder {
       texName: "v\\_Leak",
     })
     .addReaction("v_PQ", {
+      displayName: names.r_pq_reduction,
       fn: new Mul([new Name("PQH_2"), new Name("k_X")]),
       stoichiometry: [{ name: "PQ", value: new Num(1.0) }],
       texName: "v\\_PQ",

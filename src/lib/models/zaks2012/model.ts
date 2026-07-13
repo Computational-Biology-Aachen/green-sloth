@@ -66,6 +66,7 @@ export function initModel(): KineticModelBuilder {
       texName: "PsbSDose",
     })
     .addParameter("kF", {
+      displayName: names.fluorescence_rate_constant,
       value: 70000000.0,
       texName: "kF",
     })

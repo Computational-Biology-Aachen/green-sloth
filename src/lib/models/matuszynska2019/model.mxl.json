@@ -77,6 +77,7 @@
           "type": "Num",
           "value": 0.15890073845176905
         },
+        "displayName": "S7P",
         "texName": "S7P"
       },
       "E4P": {
@@ -84,6 +85,7 @@
           "type": "Num",
           "value": 0.007322797350442026
         },
+        "displayName": "E4P",
         "texName": "E4P"
       },
       "X5P": {
@@ -255,6 +257,7 @@
           "type": "Num",
           "value": 0.38
         },
+        "displayName": "E0_PC",
         "texName": "E^0\\_PC"
       },
       "E0_P700": {
@@ -262,6 +265,7 @@
           "type": "Num",
           "value": 0.48
         },
+        "displayName": "E0_P700",
         "texName": "E^0\\_P700"
       },
       "E0_FA": {
@@ -269,6 +273,7 @@
           "type": "Num",
           "value": -0.55
         },
+        "displayName": "E0_FA",
         "texName": "E^0\\_FA"
       },
       "E0_Fd": {
@@ -276,6 +281,7 @@
           "type": "Num",
           "value": -0.43
         },
+        "displayName": "E0_Fd",
         "texName": "E^0\\_Fd"
       },
       "E0_NADP": {
@@ -283,6 +289,7 @@
           "type": "Num",
           "value": -0.113
         },
+        "displayName": "E0_NADP",
         "texName": "E^0\\_NADP"
       },
       "convf": {
@@ -313,6 +320,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "Carotenoids_tot",
         "texName": "Carotenoids\\_tot"
       },
       "Fd_star": {
@@ -352,6 +360,7 @@
           "type": "Num",
           "value": 0.1
         },
+        "displayName": "gamma0",
         "texName": "gamma0"
       },
       "gamma1": {
@@ -359,6 +368,7 @@
           "type": "Num",
           "value": 0.25
         },
+        "displayName": "gamma1",
         "texName": "gamma1"
       },
       "gamma2": {
@@ -366,6 +376,7 @@
           "type": "Num",
           "value": 0.6
         },
+        "displayName": "gamma2",
         "texName": "gamma2"
       },
       "gamma3": {
@@ -373,6 +384,7 @@
           "type": "Num",
           "value": 0.15
         },
+        "displayName": "gamma3",
         "texName": "gamma3"
       },
       "kZSat": {
@@ -380,6 +392,7 @@
           "type": "Num",
           "value": 0.12
         },
+        "displayName": "K_ZSat",
         "texName": "kZSat"
       },
       "E0_QA": {
@@ -387,6 +400,7 @@
           "type": "Num",
           "value": -0.14
         },
+        "displayName": "E0_QA",
         "texName": "E^0\\_QA"
       },
       "E0_PQ": {
@@ -394,6 +408,7 @@
           "type": "Num",
           "value": 0.354
         },
+        "displayName": "E0_PQ",
         "texName": "E^0\\_PQ"
       },
       "PQ_tot": {
@@ -409,6 +424,7 @@
           "type": "Num",
           "value": 0.1
         },
+        "displayName": "staticAntII",
         "texName": "staticAntII"
       },
       "staticAntI": {
@@ -416,6 +432,7 @@
           "type": "Num",
           "value": 0.37
         },
+        "displayName": "staticAntI",
         "texName": "staticAntI"
       },
       "NADP_star": {
@@ -447,6 +464,7 @@
           "type": "Num",
           "value": 20
         },
+        "displayName": "kf_atp_synthase",
         "texName": "kf\\_atp\\_synthase"
       },
       "HPR": {
@@ -462,6 +480,7 @@
           "type": "Num",
           "value": 0.01
         },
+        "displayName": "Pi_mol",
         "texName": "Pi\\_mol"
       },
       "DeltaG0_ATP": {
@@ -469,6 +488,7 @@
           "type": "Num",
           "value": 30.6
         },
+        "displayName": "DeltaG0_ATP",
         "texName": "DeltaG0\\_ATP"
       },
       "kcat_b6f": {
@@ -476,6 +496,7 @@
           "type": "Num",
           "value": 2.5
         },
+        "displayName": "kcat_b6f",
         "texName": "kcat\\_b6f"
       },
       "kh_lhc_protonation": {
@@ -511,6 +532,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "kf_cyclic_electron_flow",
         "texName": "kf\\_cyclic\\_electron\\_flow",
         "slider": {
           "min": "0.0",
@@ -558,6 +580,7 @@
           "type": "Num",
           "value": 0.22
         },
+        "displayName": "km_fnr_NADP",
         "texName": "km\\_fnr\\_NADP"
       },
       "E0_fnr": {
@@ -565,6 +588,7 @@
           "type": "Num",
           "value": 3
         },
+        "displayName": "E0_fnr",
         "texName": "E0\\_fnr"
       },
       "kcat_fnr": {
@@ -572,6 +596,7 @@
           "type": "Num",
           "value": 500
         },
+        "displayName": "kcat_fnr",
         "texName": "kcat\\_fnr"
       },
       "kf_ndh": {
@@ -579,6 +604,7 @@
           "type": "Num",
           "value": 0.002
         },
+        "displayName": "kf_ndh",
         "texName": "kf\\_ndh"
       },
       "PSII_total": {
@@ -602,6 +628,7 @@
           "type": "Num",
           "value": 500000000
         },
+        "displayName": "kH0",
         "texName": "kH0"
       },
       "kPQred": {
@@ -609,6 +636,7 @@
           "type": "Num",
           "value": 250
         },
+        "displayName": "kPQred",
         "texName": "kPQred"
       },
       "kPCox": {
@@ -616,6 +644,7 @@
           "type": "Num",
           "value": 2500
         },
+        "displayName": "kPCox",
         "texName": "kPCox"
       },
       "kFdred": {
@@ -623,6 +652,7 @@
           "type": "Num",
           "value": 250000
         },
+        "displayName": "kFdred",
         "texName": "kFdred"
       },
       "k2": {
@@ -630,6 +660,7 @@
           "type": "Num",
           "value": 5000000000
         },
+        "displayName": "k2",
         "texName": "k2"
       },
       "kH": {
@@ -637,6 +668,7 @@
           "type": "Num",
           "value": 5000000000
         },
+        "displayName": "kH",
         "texName": "kH"
       },
       "kF": {
@@ -644,6 +676,7 @@
           "type": "Num",
           "value": 625000000
         },
+        "displayName": "kF",
         "texName": "kF"
       },
       "kf_proton_leak": {
@@ -651,6 +684,7 @@
           "type": "Num",
           "value": 10
         },
+        "displayName": "kf_proton_leak",
         "texName": "kf\\_proton\\_leak"
       },
       "kPTOX": {
@@ -658,6 +692,7 @@
           "type": "Num",
           "value": 0.01
         },
+        "displayName": "kPTOX",
         "texName": "kPTOX"
       },
       "kStt7": {
@@ -665,6 +700,7 @@
           "type": "Num",
           "value": 0.0035
         },
+        "displayName": "kStt7",
         "texName": "kStt7"
       },
       "km_lhc_state_transition_12": {
@@ -672,6 +708,7 @@
           "type": "Num",
           "value": 0.2
         },
+        "displayName": "km_lhc_state_transition_12",
         "texName": "km\\_lhc\\_state\\_transition\\_12"
       },
       "n_ST": {
@@ -679,6 +716,7 @@
           "type": "Num",
           "value": 2
         },
+        "displayName": "n_ST",
         "texName": "n\\_ST"
       },
       "kPph1": {
@@ -686,6 +724,7 @@
           "type": "Num",
           "value": 0.0013
         },
+        "displayName": "kPph1",
         "texName": "kPph1"
       },
       "E0_rubisco": {
@@ -1224,6 +1263,7 @@
             "value": "convf"
           }
         },
+        "displayName": "ATP synthase",
         "texName": "atp\\_synthase"
       },
       "b6f": {
@@ -1332,6 +1372,7 @@
             ]
           }
         },
+        "displayName": "cyt b6f",
         "texName": "b6f"
       },
       "lhc_protonation": {
@@ -1477,6 +1518,7 @@
             "value": 2
           }
         },
+        "displayName": "cyclic electron flow",
         "texName": "cyclic\\_electron\\_flow"
       },
       "violaxanthin_deepoxidase": {
@@ -1885,6 +1927,7 @@
             "value": "convf"
           }
         },
+        "displayName": "FNR",
         "texName": "fnr"
       },
       "ndh": {
@@ -1907,6 +1950,7 @@
             "value": -1
           }
         },
+        "displayName": "NDH",
         "texName": "ndh"
       },
       "PSII": {
@@ -1946,6 +1990,7 @@
             ]
           }
         },
+        "displayName": "PSII",
         "texName": "PSII"
       },
       "PSI": {
@@ -1990,6 +2035,7 @@
             "value": 1
           }
         },
+        "displayName": "PSI",
         "texName": "PSI"
       },
       "proton_leak": {
@@ -2061,6 +2107,7 @@
             ]
           }
         },
+        "displayName": "proton leak",
         "texName": "proton\\_leak"
       },
       "PTOX": {
@@ -2087,6 +2134,7 @@
             "value": 1
           }
         },
+        "displayName": "PTOX",
         "texName": "PTOX"
       },
       "lhc_state_transition_12": {
@@ -2156,6 +2204,7 @@
             "value": -1
           }
         },
+        "displayName": "LHC state transition 1->2",
         "texName": "lhc\\_state\\_transition\\_12"
       },
       "lhc_state_transition_21": {
@@ -2178,6 +2227,7 @@
             "value": 1
           }
         },
+        "displayName": "LHC state transition 2->1",
         "texName": "lhc\\_state\\_transition\\_21"
       },
       "rubisco_carboxylase": {
@@ -3622,6 +3672,7 @@
             }
           ]
         },
+        "displayName": "RT",
         "texName": "RT"
       },
       "dG_pH": {
@@ -3642,6 +3693,7 @@
             }
           ]
         },
+        "displayName": "dG_pH",
         "texName": "dG\\_pH"
       },
       "pH_lumen": {
@@ -4049,6 +4101,7 @@
             }
           ]
         },
+        "displayName": "PSII_cross_section",
         "texName": "PSII\\_cross\\_section"
       },
       "NADP": {
@@ -4354,6 +4407,7 @@
             }
           ]
         },
+        "displayName": "keq_atp_synthase",
         "texName": "keq\\_atp\\_synthase"
       },
       "keq_b6f": {
@@ -4466,6 +4520,7 @@
             ]
           }
         },
+        "displayName": "keq_b6f",
         "texName": "keq\\_b6f"
       },
       "keq_fnr": {
@@ -4543,6 +4598,7 @@
             ]
           }
         },
+        "displayName": "keq_fnr",
         "texName": "keq\\_fnr"
       },
       "vmax_fnr": {
@@ -4559,6 +4615,7 @@
             }
           ]
         },
+        "displayName": "vmax_fnr",
         "texName": "vmax\\_fnr"
       },
       "keq_PCP700": {
@@ -4610,6 +4667,7 @@
             ]
           }
         },
+        "displayName": "keq_PCP700",
         "texName": "keq\\_PCP700"
       },
       "keq_ferredoxin_reductase": {
@@ -4661,6 +4719,7 @@
             ]
           }
         },
+        "displayName": "keq_ferredoxin_reductase",
         "texName": "keq\\_ferredoxin\\_reductase"
       },
       "A1": {

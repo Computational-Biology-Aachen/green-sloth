@@ -56,6 +56,7 @@
           "type": "Num",
           "value": 0
         },
+        "displayName": "zx",
         "texName": "Zx"
       },
       "singO2": {
@@ -607,6 +608,7 @@
             "value": -0.5
           }
         },
+        "displayName": "PQ reduction",
         "texName": "v\\_PQ"
       },
       "v_b6f": {
@@ -1557,6 +1559,7 @@
             }
           ]
         },
+        "displayName": "vx",
         "texName": "Vx"
       },
       "DeltaGATP_V": {

@@ -60,10 +60,26 @@ export function initModel(): KineticModelBuilder {
     .addParameter("k_ATPsynth", { value: 20.0, texName: "k\\_ATPsynth" })
     .addParameter("k_ATPconsum", { value: 10.0, texName: "k\\_ATPconsum" })
     .addParameter("k_PQH2", { value: 250.0, texName: "k\\_PQH2" })
-    .addParameter("k_H", { value: 5000000000.0, texName: "k\\_H" })
-    .addParameter("k_F", { value: 625000000.0, texName: "k\\_F" })
-    .addParameter("k_P", { value: 5000000000.0, texName: "k\\_P" })
-    .addParameter("k_PTOX", { value: 0.01, texName: "k\\_PTOX" })
+    .addParameter("k_H", {
+      displayName: names.npq_heat_dissipation_rate,
+      value: 5000000000.0,
+      texName: "k\\_H",
+    })
+    .addParameter("k_F", {
+      displayName: names.fluorescence_rate_constant,
+      value: 625000000.0,
+      texName: "k\\_F",
+    })
+    .addParameter("k_P", {
+      displayName: names.psii_rate_constant,
+      value: 5000000000.0,
+      texName: "k\\_P",
+    })
+    .addParameter("k_PTOX", {
+      displayName: names.k_ptox,
+      value: 0.01,
+      texName: "k\\_PTOX",
+    })
     .addParameter("pH_st", {
       displayName: names.ph,
       value: 7.8,
@@ -84,15 +100,35 @@ export function initModel(): KineticModelBuilder {
     .addParameter("k_EZ", { value: 0.00024, texName: "k\\_EZ" })
     .addParameter("K_pHSat", { value: 5.8, texName: "K\\_pHSat" })
     .addParameter("nhx", { value: 5.0, texName: "nhx" })
-    .addParameter("K_ZSat", { value: 0.12, texName: "K\\_ZSat" })
+    .addParameter("K_ZSat", {
+      displayName: names.k_zsat,
+      value: 0.12,
+      texName: "K\\_ZSat",
+    })
     .addParameter("nhl", { value: 3, texName: "nhl" })
     .addParameter("k_deprot", { value: 0.0096, texName: "k\\_deprot" })
     .addParameter("k_prot", { value: 0.0096, texName: "k\\_prot" })
     .addParameter("K_pHSatLHC", { value: 5.8, texName: "K\\_pHSatLHC" })
-    .addParameter("gamma_0", { value: 0.1, texName: "gamma\\_0" })
-    .addParameter("gamma_1", { value: 0.25, texName: "gamma\\_1" })
-    .addParameter("gamma_2", { value: 0.6, texName: "gamma\\_2" })
-    .addParameter("gamma_3", { value: 0.15, texName: "gamma\\_3" })
+    .addParameter("gamma_0", {
+      displayName: names.gamma0,
+      value: 0.1,
+      texName: "gamma\\_0",
+    })
+    .addParameter("gamma_1", {
+      displayName: names.gamma1,
+      value: 0.25,
+      texName: "gamma\\_1",
+    })
+    .addParameter("gamma_2", {
+      displayName: names.gamma2,
+      value: 0.6,
+      texName: "gamma\\_2",
+    })
+    .addParameter("gamma_3", {
+      displayName: names.gamma3,
+      value: 0.15,
+      texName: "gamma\\_3",
+    })
     .addParameter("F", {
       displayName: names.faraday_constant,
       value: 96.485,
@@ -108,9 +144,21 @@ export function initModel(): KineticModelBuilder {
       value: 298,
       texName: "T",
     })
-    .addParameter("E0_QA", { value: -0.14, texName: "E0\\_QA" })
-    .addParameter("E0_PQ", { value: 0.354, texName: "E0\\_PQ" })
-    .addParameter("E0_PC", { value: 0.38, texName: "E0\\_PC" })
+    .addParameter("E0_QA", {
+      displayName: names.e0_qa,
+      value: -0.14,
+      texName: "E0\\_QA",
+    })
+    .addParameter("E0_PQ", {
+      displayName: names.e0_pq,
+      value: 0.354,
+      texName: "E0\\_PQ",
+    })
+    .addParameter("E0_PC", {
+      displayName: names.e0_pc,
+      value: 0.38,
+      texName: "E0\\_PC",
+    })
     .addParameter("DG_ATP", { value: 30.6, texName: "DG\\_ATP" })
     .addParameter("PPFD", {
       value: 100,
@@ -138,7 +186,11 @@ export function initModel(): KineticModelBuilder {
     })
     .addVariable("atp", { displayName: names.atp, value: 25.0, texName: "atp" })
     .addVariable("psbs_de", { value: 1, texName: "psbs\\_de" })
-    .addVariable("vx", { value: 1, texName: "vx" })
+    .addVariable("vx", {
+      displayName: names.violaxanthin_fraction,
+      value: 1,
+      texName: "vx",
+    })
     .addAssignment("pH_lu", {
       displayName: names.ph_lumen,
       fn: new Minus([
@@ -259,6 +311,7 @@ export function initModel(): KineticModelBuilder {
       texName: "psbs\\_pr",
     })
     .addAssignment("zx", {
+      displayName: names.zeaxanthin_fraction,
       fn: new Add([new Name("X_tot"), new Minus([new Name("vx")])]),
       texName: "zx",
     })
@@ -942,6 +995,7 @@ export function initModel(): KineticModelBuilder {
       texName: "v\\_PSII",
     })
     .addReaction("v_PQ", {
+      displayName: names.r_pq_reduction,
       fn: new Add([
         new Mul([
           new Name("pq_red"),
@@ -978,6 +1032,7 @@ export function initModel(): KineticModelBuilder {
       texName: "v\\_PQ",
     })
     .addReaction("atp_synthase", {
+      displayName: names.r_atp_synthase,
       fn: new Mul([
         new Name("k_ATPsynth"),
         new Name("vmax_atp_synthase"),
@@ -1013,6 +1068,7 @@ export function initModel(): KineticModelBuilder {
       texName: "atp\\_activase",
     })
     .addReaction("proton_leak", {
+      displayName: names.r_proton_leak,
       fn: new Mul([
         new Name("k_leak"),
         new Add([new Name("protons"), new Minus([new Name("H_st")])]),

@@ -216,14 +216,8 @@ export function initModel(): KineticModelBuilder {
       value: 0.1,
       texName: "TPGA",
     })
-    .addVariable("E4P", {
-      value: 0.1,
-      texName: "E4P",
-    })
-    .addVariable("S7P", {
-      value: 0.1,
-      texName: "S7P",
-    })
+    .addVariable("E4P", { displayName: names.e4p, value: 0.1, texName: "E4P" })
+    .addVariable("S7P", { displayName: names.s7p, value: 0.1, texName: "S7P" })
     .addVariable("Ru5P", {
       displayName: names.ru5p,
       value: 1.0,

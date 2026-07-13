@@ -362,10 +362,12 @@ export function initModel(): KineticModelBuilder {
       texName: "SBP",
     })
     .addVariable("S7P", {
+      displayName: names.s7p,
       value: 0.23281380022778891,
       texName: "S7P",
     })
     .addVariable("E4P", {
+      displayName: names.e4p,
       value: 0.02836065066520614,
       texName: "E4P",
     })
@@ -902,6 +904,7 @@ export function initModel(): KineticModelBuilder {
       texName: "ex\\_g1p",
     })
     .addReaction("atp_synthase", {
+      displayName: names.r_atp_synthase,
       fn: new Divide([
         new Mul([
           new Name("ADP"),

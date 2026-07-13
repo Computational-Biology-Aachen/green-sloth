@@ -61,22 +61,27 @@ export function initModel(): KineticModelBuilder {
       texName: "F",
     })
     .addParameter("E0_PC", {
+      displayName: names.e0_pc,
       value: 0.38,
       texName: "E^0\\_PC",
     })
     .addParameter("E0_P700", {
+      displayName: names.e0_p700,
       value: 0.48,
       texName: "E^0\\_P700",
     })
     .addParameter("E0_FA", {
+      displayName: names.e0_fa,
       value: -0.55,
       texName: "E^0\\_FA",
     })
     .addParameter("E0_Fd", {
+      displayName: names.e0_fd,
       value: -0.43,
       texName: "E^0\\_Fd",
     })
     .addParameter("E0_NADP", {
+      displayName: names.e0_nadp,
       value: -0.113,
       texName: "E^0\\_NADP",
     })
@@ -95,6 +100,7 @@ export function initModel(): KineticModelBuilder {
       texName: "T",
     })
     .addParameter("Carotenoids_tot", {
+      displayName: names.carotenoids_tot,
       value: 1.0,
       texName: "Carotenoids\\_tot",
     })
@@ -119,30 +125,37 @@ export function initModel(): KineticModelBuilder {
       texName: "LHC\\_tot",
     })
     .addParameter("gamma0", {
+      displayName: names.gamma0,
       value: 0.1,
       texName: "gamma0",
     })
     .addParameter("gamma1", {
+      displayName: names.gamma1,
       value: 0.25,
       texName: "gamma1",
     })
     .addParameter("gamma2", {
+      displayName: names.gamma2,
       value: 0.6,
       texName: "gamma2",
     })
     .addParameter("gamma3", {
+      displayName: names.gamma3,
       value: 0.15,
       texName: "gamma3",
     })
     .addParameter("kZSat", {
+      displayName: names.k_zsat,
       value: 0.12,
       texName: "kZSat",
     })
     .addParameter("E0_QA", {
+      displayName: names.e0_qa,
       value: -0.14,
       texName: "E^0\\_QA",
     })
     .addParameter("E0_PQ", {
+      displayName: names.e0_pq,
       value: 0.354,
       texName: "E^0\\_PQ",
     })
@@ -152,10 +165,12 @@ export function initModel(): KineticModelBuilder {
       texName: "PQ\\_tot",
     })
     .addParameter("staticAntII", {
+      displayName: names.static_antenna_ii,
       value: 0.1,
       texName: "staticAntII",
     })
     .addParameter("staticAntI", {
+      displayName: names.static_antenna_i,
       value: 0.37,
       texName: "staticAntI",
     })
@@ -175,6 +190,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Pi\\_tot",
     })
     .addParameter("kf_atp_synthase", {
+      displayName: names.kf_atp_synthase,
       value: 20.0,
       texName: "kf\\_atp\\_synthase",
     })
@@ -184,14 +200,17 @@ export function initModel(): KineticModelBuilder {
       texName: "HPR",
     })
     .addParameter("Pi_mol", {
+      displayName: names.pi_mol,
       value: 0.01,
       texName: "Pi\\_mol",
     })
     .addParameter("DeltaG0_ATP", {
+      displayName: names.delta_g0_atp,
       value: 30.6,
       texName: "DeltaG0\\_ATP",
     })
     .addParameter("kcat_b6f", {
+      displayName: names.kcat_b6f,
       value: 2.5,
       texName: "kcat\\_b6f",
     })
@@ -212,6 +231,7 @@ export function initModel(): KineticModelBuilder {
       texName: "kf\\_lhc\\_deprotonation",
     })
     .addParameter("kf_cyclic_electron_flow", {
+      displayName: names.kf_cyclic_electron_flow,
       value: 1.0,
       texName: "kf\\_cyclic\\_electron\\_flow",
       slider: {
@@ -241,18 +261,22 @@ export function initModel(): KineticModelBuilder {
       texName: "km\\_fnr\\_Ferredoxine (reduced)",
     })
     .addParameter("km_fnr_NADP", {
+      displayName: names.km_fnr_nadp,
       value: 0.22,
       texName: "km\\_fnr\\_NADP",
     })
     .addParameter("E0_fnr", {
+      displayName: names.e0_fnr,
       value: 3.0,
       texName: "E0\\_fnr",
     })
     .addParameter("kcat_fnr", {
+      displayName: names.kcat_fnr,
       value: 500.0,
       texName: "kcat\\_fnr",
     })
     .addParameter("kf_ndh", {
+      displayName: names.kf_ndh,
       value: 0.002,
       texName: "kf\\_ndh",
     })
@@ -267,54 +291,67 @@ export function initModel(): KineticModelBuilder {
       texName: "PSI\\_total",
     })
     .addParameter("kH0", {
+      displayName: names.base_heat_dissipation_rate,
       value: 500000000.0,
       texName: "kH0",
     })
     .addParameter("kPQred", {
+      displayName: names.k_pq_red,
       value: 250.0,
       texName: "kPQred",
     })
     .addParameter("kPCox", {
+      displayName: names.k_pc_ox,
       value: 2500.0,
       texName: "kPCox",
     })
     .addParameter("kFdred", {
+      displayName: names.k_fd_red,
       value: 250000.0,
       texName: "kFdred",
     })
     .addParameter("k2", {
+      displayName: names.psii_rate_constant,
       value: 5000000000.0,
       texName: "k2",
     })
     .addParameter("kH", {
+      displayName: names.npq_heat_dissipation_rate,
       value: 5000000000.0,
       texName: "kH",
     })
     .addParameter("kF", {
+      displayName: names.fluorescence_rate_constant,
       value: 625000000.0,
       texName: "kF",
     })
     .addParameter("kf_proton_leak", {
+      displayName: names.kf_proton_leak,
       value: 10.0,
       texName: "kf\\_proton\\_leak",
     })
     .addParameter("kPTOX", {
+      displayName: names.k_ptox,
       value: 0.01,
       texName: "kPTOX",
     })
     .addParameter("kStt7", {
+      displayName: names.k_stt7,
       value: 0.0035,
       texName: "kStt7",
     })
     .addParameter("km_lhc_state_transition_12", {
+      displayName: names.km_lhc_state_transition_12,
       value: 0.2,
       texName: "km\\_lhc\\_state\\_transition\\_12",
     })
     .addParameter("n_ST", {
+      displayName: names.n_st,
       value: 2.0,
       texName: "n\\_ST",
     })
     .addParameter("kPph1", {
+      displayName: names.k_pph1,
       value: 0.0013,
       texName: "kPph1",
     })
@@ -619,10 +656,12 @@ export function initModel(): KineticModelBuilder {
       texName: "SBP",
     })
     .addVariable("S7P", {
+      displayName: names.s7p,
       value: 0.15890073845176905,
       texName: "S7P",
     })
     .addVariable("E4P", {
+      displayName: names.e4p,
       value: 0.007322797350442026,
       texName: "E4P",
     })
@@ -686,10 +725,12 @@ export function initModel(): KineticModelBuilder {
       texName: "Violaxanthin",
     })
     .addAssignment("RT", {
+      displayName: names.rt,
       fn: new Mul([new Name("R"), new Name("T")]),
       texName: "RT",
     })
     .addAssignment("dG_pH", {
+      displayName: names.delta_g_ph,
       fn: new Mul([new Num(2.302585092994046), new Name("R"), new Name("T")]),
       texName: "dG\\_pH",
     })
@@ -797,6 +838,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Plastoquinone (reduced)",
     })
     .addAssignment("PSII_cross_section", {
+      displayName: names.psii_cross_section,
       fn: new Add([
         new Name("staticAntII"),
         new Mul([
@@ -843,6 +885,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Orthophosphate",
     })
     .addAssignment("keq_atp_synthase", {
+      displayName: names.keq_atp_synthase,
       fn: new Mul([
         new Name("Pi_mol"),
         new Exp(
@@ -862,6 +905,7 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_atp\\_synthase",
     })
     .addAssignment("keq_b6f", {
+      displayName: names.keq_b6f,
       fn: new Exp(
         new Divide([
           new Add([
@@ -884,6 +928,7 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_b6f",
     })
     .addAssignment("keq_fnr", {
+      displayName: names.keq_fnr,
       fn: new Exp(
         new Divide([
           new Add([
@@ -899,10 +944,12 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_fnr",
     })
     .addAssignment("vmax_fnr", {
+      displayName: names.vmax_fnr,
       fn: new Mul([new Name("E0_fnr"), new Name("kcat_fnr")]),
       texName: "vmax\\_fnr",
     })
     .addAssignment("keq_PCP700", {
+      displayName: names.keq_pc_p700,
       fn: new Exp(
         new Divide([
           new Add([
@@ -915,6 +962,7 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_PCP700",
     })
     .addAssignment("keq_ferredoxin_reductase", {
+      displayName: names.keq_ferredoxin_reductase,
       fn: new Exp(
         new Divide([
           new Add([
@@ -1035,6 +1083,7 @@ export function initModel(): KineticModelBuilder {
       texName: "vmax\\_ex\\_g1p",
     })
     .addReaction("atp_synthase", {
+      displayName: names.r_atp_synthase,
       fn: new Mul([
         new Name("kf_atp_synthase"),
         new Add([
@@ -1057,6 +1106,7 @@ export function initModel(): KineticModelBuilder {
       texName: "atp\\_synthase",
     })
     .addReaction("b6f", {
+      displayName: names.r_b6f,
       fn: new Max([
         new Minus([new Name("kcat_b6f")]),
         new Mul([
@@ -1125,6 +1175,7 @@ export function initModel(): KineticModelBuilder {
       texName: "lhc\\_deprotonation",
     })
     .addReaction("cyclic_electron_flow", {
+      displayName: names.r_cyclic_electron_flow,
       fn: new Mul([
         new Name("Plastoquinone_oxidised"),
         new Name("kf_cyclic_electron_flow"),
@@ -1175,6 +1226,7 @@ export function initModel(): KineticModelBuilder {
       texName: "zeaxanthin\\_epoxidase",
     })
     .addReaction("fnr", {
+      displayName: names.r_fnr,
       fn: new Divide([
         new Mul([
           new Name("vmax_fnr"),
@@ -1270,11 +1322,13 @@ export function initModel(): KineticModelBuilder {
       texName: "fnr",
     })
     .addReaction("ndh", {
+      displayName: names.r_ndh,
       fn: new Mul([new Name("Plastoquinone_oxidised"), new Name("kf_ndh")]),
       stoichiometry: [{ name: "Plastoquinone_oxidised", value: new Num(-1.0) }],
       texName: "ndh",
     })
     .addReaction("PSII", {
+      displayName: names.r_psii,
       fn: new Mul([new Num(0.5), new Name("B1"), new Name("k2")]),
       stoichiometry: [
         { name: "Plastoquinone_oxidised", value: new Num(-1.0) },
@@ -1286,6 +1340,7 @@ export function initModel(): KineticModelBuilder {
       texName: "PSII",
     })
     .addReaction("PSI", {
+      displayName: names.r_psi,
       fn: new Mul([
         new Name("A1"),
         new Name("PPFD"),
@@ -1298,6 +1353,7 @@ export function initModel(): KineticModelBuilder {
       texName: "PSI",
     })
     .addReaction("proton_leak", {
+      displayName: names.r_proton_leak,
       fn: new Mul([
         new Name("kf_proton_leak"),
         new Add([
@@ -1319,6 +1375,7 @@ export function initModel(): KineticModelBuilder {
       texName: "proton\\_leak",
     })
     .addReaction("PTOX", {
+      displayName: names.r_ptox,
       fn: new Mul([
         new Name("O2_dissolved_lumen"),
         new Name("Plastoquinone_reduced"),
@@ -1328,6 +1385,7 @@ export function initModel(): KineticModelBuilder {
       texName: "PTOX",
     })
     .addReaction("lhc_state_transition_12", {
+      displayName: names.r_lhc_state_transition_12,
       fn: new Divide([
         new Mul([
           new Num(1.0),
@@ -1354,6 +1412,7 @@ export function initModel(): KineticModelBuilder {
       texName: "lhc\\_state\\_transition\\_12",
     })
     .addReaction("lhc_state_transition_21", {
+      displayName: names.r_lhc_state_transition_21,
       fn: new Mul([
         new Name("Light_minus_harvesting_complex_protonated"),
         new Name("kPph1"),

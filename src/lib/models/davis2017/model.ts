@@ -207,6 +207,7 @@ export function initModel(): KineticModelBuilder {
       texName: "PC\\_ox",
     })
     .addVariable("Zx", {
+      displayName: names.zeaxanthin_fraction,
       value: 0.0,
       texName: "Zx",
     })
@@ -266,6 +267,7 @@ export function initModel(): KineticModelBuilder {
       texName: "NADP\\_st",
     })
     .addAssignment("Vx", {
+      displayName: names.violaxanthin_fraction,
       fn: new Add([new Name("Xanthophyll_tot"), new Minus([new Name("Zx")])]),
       texName: "Vx",
     })
@@ -424,6 +426,7 @@ export function initModel(): KineticModelBuilder {
       texName: "v\\_PSII",
     })
     .addReaction("v_PQ", {
+      displayName: names.r_pq_reduction,
       fn: new Divide([
         new Mul([new Name("PQH_2"), new Name("QA"), new Name("k_QA")]),
         new Name("Keq_QA"),

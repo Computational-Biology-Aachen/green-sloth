@@ -112,6 +112,7 @@
           "type": "Num",
           "value": 0.1
         },
+        "displayName": "E4P",
         "texName": "E4P"
       },
       "S7P": {
@@ -119,6 +120,7 @@
           "type": "Num",
           "value": 0.1
         },
+        "displayName": "S7P",
         "texName": "S7P"
       },
       "Ru5P": {
