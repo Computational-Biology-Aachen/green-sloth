@@ -42,6 +42,7 @@
           "type": "Num",
           "value": 0.01980222074817044
         },
+        "displayName": "FBP",
         "texName": "FBP"
       },
       "F6P": {
@@ -49,6 +50,7 @@
           "type": "Num",
           "value": 1.093666906864421
         },
+        "displayName": "F6P",
         "texName": "F6P"
       },
       "G6P": {
@@ -56,6 +58,7 @@
           "type": "Num",
           "value": 2.5154338857582377
         },
+        "displayName": "G6P",
         "texName": "G6P"
       },
       "G1P": {
@@ -63,6 +66,7 @@
           "type": "Num",
           "value": 0.14589516537322303
         },
+        "displayName": "G1P",
         "texName": "G1P"
       },
       "SBP": {
@@ -70,6 +74,7 @@
           "type": "Num",
           "value": 0.09132688566151095
         },
+        "displayName": "SBP",
         "texName": "SBP"
       },
       "S7P": {
@@ -93,6 +98,7 @@
           "type": "Num",
           "value": 0.03647242425941113
         },
+        "displayName": "X5P",
         "texName": "X5P"
       },
       "R5P": {
@@ -100,6 +106,7 @@
           "type": "Num",
           "value": 0.06109130988031577
         },
+        "displayName": "R5P",
         "texName": "R5P"
       },
       "RUBP": {
@@ -192,6 +199,7 @@
           "type": "Num",
           "value": 2.72
         },
+        "displayName": "kcat_rubisco_carboxylase",
         "texName": "kcat\\_rubisco\\_carboxylase"
       },
       "km_rubisco_carboxylase_RUBP": {
@@ -199,6 +207,7 @@
           "type": "Num",
           "value": 0.02
         },
+        "displayName": "km_rubisco_carboxylase_RUBP",
         "texName": "km\\_rubisco\\_carboxylase\\_RUBP"
       },
       "km_rubisco_carboxylase_CO2_dissolved": {
@@ -206,6 +215,7 @@
           "type": "Num",
           "value": 0.0107
         },
+        "displayName": "km_rubisco_carboxylase_CO2",
         "texName": "km\\_rubisco\\_carboxylase\\_CO2 (dissolved)"
       },
       "ki_rubisco_carboxylase_3PGA": {
@@ -213,6 +223,7 @@
           "type": "Num",
           "value": 0.04
         },
+        "displayName": "ki_rubisco_carboxylase_3PGA",
         "texName": "ki\\_rubisco\\_carboxylase\\_3PGA"
       },
       "ki_rubisco_carboxylase_FBP": {
@@ -220,6 +231,7 @@
           "type": "Num",
           "value": 0.04
         },
+        "displayName": "ki_rubisco_carboxylase_FBP",
         "texName": "ki\\_rubisco\\_carboxylase\\_FBP"
       },
       "ki_rubisco_carboxylase_SBP": {
@@ -227,6 +239,7 @@
           "type": "Num",
           "value": 0.075
         },
+        "displayName": "ki_rubisco_carboxylase_SBP",
         "texName": "ki\\_rubisco\\_carboxylase\\_SBP"
       },
       "ki_rubisco_carboxylase_Orthophosphate": {
@@ -234,6 +247,7 @@
           "type": "Num",
           "value": 0.9
         },
+        "displayName": "ki_rubisco_carboxylase_Pi",
         "texName": "ki\\_rubisco\\_carboxylase\\_Orthophosphate"
       },
       "ki_rubisco_carboxylase_NADPH": {
@@ -241,6 +255,7 @@
           "type": "Num",
           "value": 0.07
         },
+        "displayName": "ki_rubisco_carboxylase_NADPH",
         "texName": "ki\\_rubisco\\_carboxylase\\_NADPH"
       },
       "kre_phosphoglycerate_kinase": {
@@ -248,6 +263,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_phosphoglycerate_kinase",
         "texName": "kre\\_phosphoglycerate\\_kinase"
       },
       "keq_phosphoglycerate_kinase": {
@@ -255,6 +271,7 @@
           "type": "Num",
           "value": 0.00031
         },
+        "displayName": "keq_phosphoglycerate_kinase",
         "texName": "keq\\_phosphoglycerate\\_kinase"
       },
       "kre_gadph": {
@@ -262,6 +279,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_gadph",
         "texName": "kre\\_gadph"
       },
       "keq_gadph": {
@@ -269,6 +287,7 @@
           "type": "Num",
           "value": 16000000
         },
+        "displayName": "keq_gadph",
         "texName": "keq\\_gadph"
       },
       "kre_triose_phosphate_isomerase": {
@@ -276,6 +295,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_triose_phosphate_isomerase",
         "texName": "kre\\_triose\\_phosphate\\_isomerase"
       },
       "keq_triose_phosphate_isomerase": {
@@ -283,6 +303,7 @@
           "type": "Num",
           "value": 22
         },
+        "displayName": "keq_triose_phosphate_isomerase",
         "texName": "keq\\_triose\\_phosphate\\_isomerase"
       },
       "kre_aldolase_dhap_gap": {
@@ -290,6 +311,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_aldolase_dhap_gap",
         "texName": "kre\\_aldolase\\_dhap\\_gap"
       },
       "keq_aldolase_dhap_gap": {
@@ -297,6 +319,7 @@
           "type": "Num",
           "value": 7.1
         },
+        "displayName": "keq_aldolase_dhap_gap",
         "texName": "keq\\_aldolase\\_dhap\\_gap"
       },
       "kre_aldolase_dhap_e4p": {
@@ -304,6 +327,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_aldolase_dhap_e4p",
         "texName": "kre\\_aldolase\\_dhap\\_e4p"
       },
       "keq_aldolase_dhap_e4p": {
@@ -311,6 +335,7 @@
           "type": "Num",
           "value": 13
         },
+        "displayName": "keq_aldolase_dhap_e4p",
         "texName": "keq\\_aldolase\\_dhap\\_e4p"
       },
       "E0_fbpase": {
@@ -318,6 +343,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "E0_fbpase",
         "texName": "E0\\_fbpase"
       },
       "kcat_fbpase": {
@@ -325,6 +351,7 @@
           "type": "Num",
           "value": 1.6
         },
+        "displayName": "kcat_fbpase",
         "texName": "kcat\\_fbpase"
       },
       "km_fbpase_s": {
@@ -332,6 +359,7 @@
           "type": "Num",
           "value": 0.03
         },
+        "displayName": "km_fbpase_s",
         "texName": "km\\_fbpase\\_s"
       },
       "ki_fbpase_F6P": {
@@ -339,6 +367,7 @@
           "type": "Num",
           "value": 0.7
         },
+        "displayName": "ki_fbpase_F6P",
         "texName": "ki\\_fbpase\\_F6P"
       },
       "ki_fbpase_Orthophosphate": {
@@ -346,6 +375,7 @@
           "type": "Num",
           "value": 12
         },
+        "displayName": "ki_fbpase_Pi",
         "texName": "ki\\_fbpase\\_Orthophosphate"
       },
       "kre_transketolase_gap_f6p": {
@@ -353,6 +383,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_transketolase_gap_f6p",
         "texName": "kre\\_transketolase\\_gap\\_f6p"
       },
       "keq_transketolase_gap_f6p": {
@@ -360,6 +391,7 @@
           "type": "Num",
           "value": 0.084
         },
+        "displayName": "keq_transketolase_gap_f6p",
         "texName": "keq\\_transketolase\\_gap\\_f6p"
       },
       "kre_transketolase_gap_s7p": {
@@ -367,6 +399,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_transketolase_gap_s7p",
         "texName": "kre\\_transketolase\\_gap\\_s7p"
       },
       "keq_transketolase_gap_s7p": {
@@ -374,6 +407,7 @@
           "type": "Num",
           "value": 0.85
         },
+        "displayName": "keq_transketolase_gap_s7p",
         "texName": "keq\\_transketolase\\_gap\\_s7p"
       },
       "E0_SBPase": {
@@ -381,6 +415,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "E0_SBPase",
         "texName": "E0\\_SBPase"
       },
       "kcat_SBPase": {
@@ -388,6 +423,7 @@
           "type": "Num",
           "value": 0.32
         },
+        "displayName": "kcat_SBPase",
         "texName": "kcat\\_SBPase"
       },
       "km_SBPase_s": {
@@ -395,6 +431,7 @@
           "type": "Num",
           "value": 0.013
         },
+        "displayName": "km_SBPase_s",
         "texName": "km\\_SBPase\\_s"
       },
       "ki_SBPase_Orthophosphate": {
@@ -402,6 +439,7 @@
           "type": "Num",
           "value": 12
         },
+        "displayName": "ki_SBPase_Pi",
         "texName": "ki\\_SBPase\\_Orthophosphate"
       },
       "kre_ribose_phosphate_isomerase": {
@@ -409,6 +447,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_ribose_phosphate_isomerase",
         "texName": "kre\\_ribose\\_phosphate\\_isomerase"
       },
       "keq_ribose_phosphate_isomerase": {
@@ -416,6 +455,7 @@
           "type": "Num",
           "value": 0.4
         },
+        "displayName": "keq_ribose_phosphate_isomerase",
         "texName": "keq\\_ribose\\_phosphate\\_isomerase"
       },
       "kre_ribulose_phosphate_epimerase": {
@@ -423,6 +463,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_ribulose_phosphate_epimerase",
         "texName": "kre\\_ribulose\\_phosphate\\_epimerase"
       },
       "keq_ribulose_phosphate_epimerase": {
@@ -430,6 +471,7 @@
           "type": "Num",
           "value": 0.67
         },
+        "displayName": "keq_ribulose_phosphate_epimerase",
         "texName": "keq\\_ribulose\\_phosphate\\_epimerase"
       },
       "E0_phosphoribulokinase": {
@@ -437,6 +479,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "E0_phosphoribulokinase",
         "texName": "E0\\_phosphoribulokinase"
       },
       "kcat_phosphoribulokinase": {
@@ -444,6 +487,7 @@
           "type": "Num",
           "value": 7.9992
         },
+        "displayName": "kcat_phosphoribulokinase",
         "texName": "kcat\\_phosphoribulokinase"
       },
       "km_phosphoribulokinase_RU5P": {
@@ -451,6 +495,7 @@
           "type": "Num",
           "value": 0.05
         },
+        "displayName": "km_phosphoribulokinase_RU5P",
         "texName": "km\\_phosphoribulokinase\\_RU5P"
       },
       "km_phosphoribulokinase_ATP": {
@@ -458,6 +503,7 @@
           "type": "Num",
           "value": 0.05
         },
+        "displayName": "km_phosphoribulokinase_ATP",
         "texName": "km\\_phosphoribulokinase\\_ATP"
       },
       "ki_phosphoribulokinase_3PGA": {
@@ -465,6 +511,7 @@
           "type": "Num",
           "value": 2
         },
+        "displayName": "ki_phosphoribulokinase_3PGA",
         "texName": "ki\\_phosphoribulokinase\\_3PGA"
       },
       "ki_phosphoribulokinase_RUBP": {
@@ -472,6 +519,7 @@
           "type": "Num",
           "value": 0.7
         },
+        "displayName": "ki_phosphoribulokinase_RUBP",
         "texName": "ki\\_phosphoribulokinase\\_RUBP"
       },
       "ki_phosphoribulokinase_Orthophosphate": {
@@ -479,6 +527,7 @@
           "type": "Num",
           "value": 4
         },
+        "displayName": "ki_phosphoribulokinase_Pi",
         "texName": "ki\\_phosphoribulokinase\\_Orthophosphate"
       },
       "ki_phosphoribulokinase_4": {
@@ -500,6 +549,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_g6pi",
         "texName": "kre\\_g6pi"
       },
       "keq_g6pi": {
@@ -507,6 +557,7 @@
           "type": "Num",
           "value": 2.3
         },
+        "displayName": "keq_g6pi",
         "texName": "keq\\_g6pi"
       },
       "kre_phosphoglucomutase": {
@@ -514,6 +565,7 @@
           "type": "Num",
           "value": 800000000
         },
+        "displayName": "kre_phosphoglucomutase",
         "texName": "kre\\_phosphoglucomutase"
       },
       "keq_phosphoglucomutase": {
@@ -521,6 +573,7 @@
           "type": "Num",
           "value": 0.058
         },
+        "displayName": "keq_phosphoglucomutase",
         "texName": "keq\\_phosphoglucomutase"
       },
       "Orthophosphate_external": {
@@ -584,6 +637,7 @@
           "type": "Num",
           "value": 0.08
         },
+        "displayName": "km_ex_g1p_G1P",
         "texName": "km\\_ex\\_g1p\\_G1P"
       },
       "km_ex_g1p_ATP": {
@@ -591,6 +645,7 @@
           "type": "Num",
           "value": 0.08
         },
+        "displayName": "km_ex_g1p_ATP",
         "texName": "km\\_ex\\_g1p\\_ATP"
       },
       "ki_ex_g1p": {
@@ -598,6 +653,7 @@
           "type": "Num",
           "value": 10
         },
+        "displayName": "ki_ex_g1p",
         "texName": "ki\\_ex\\_g1p"
       },
       "ki_ex_g1p_3PGA": {
@@ -605,6 +661,7 @@
           "type": "Num",
           "value": 0.1
         },
+        "displayName": "ki_ex_g1p_3PGA",
         "texName": "ki\\_ex\\_g1p\\_3PGA"
       },
       "ki_ex_g1p_F6P": {
@@ -612,6 +669,7 @@
           "type": "Num",
           "value": 0.02
         },
+        "displayName": "ki_ex_g1p_F6P",
         "texName": "ki\\_ex\\_g1p\\_F6P"
       },
       "ki_ex_g1p_FBP": {
@@ -619,6 +677,7 @@
           "type": "Num",
           "value": 0.02
         },
+        "displayName": "ki_ex_g1p_FBP",
         "texName": "ki\\_ex\\_g1p\\_FBP"
       },
       "E0_ex_g1p": {
@@ -626,6 +685,7 @@
           "type": "Num",
           "value": 1
         },
+        "displayName": "E0_ex_g1p",
         "texName": "E0\\_ex\\_g1p"
       },
       "kcat_ex_g1p": {
@@ -633,6 +693,7 @@
           "type": "Num",
           "value": 0.32
         },
+        "displayName": "kcat_ex_g1p",
         "texName": "kcat\\_ex\\_g1p"
       },
       "km_atp_synthase_ADP": {
@@ -808,6 +869,7 @@
             "value": 2
           }
         },
+        "displayName": "rubisco carboxylase",
         "texName": "rubisco\\_carboxylase"
       },
       "phosphoglycerate_kinase": {
@@ -879,6 +941,7 @@
             "value": 1
           }
         },
+        "displayName": "phosphoglycerate kinase",
         "texName": "phosphoglycerate\\_kinase"
       },
       "gadph": {
@@ -954,6 +1017,7 @@
             "value": 1
           }
         },
+        "displayName": "GAPDH",
         "texName": "gadph"
       },
       "triose_phosphate_isomerase": {
@@ -1003,6 +1067,7 @@
             "value": 1
           }
         },
+        "displayName": "triose phosphate isomerase",
         "texName": "triose\\_phosphate\\_isomerase"
       },
       "aldolase_dhap_gap": {
@@ -1065,6 +1130,7 @@
             "value": 1
           }
         },
+        "displayName": "aldolase (DHAP+GAP)",
         "texName": "aldolase\\_dhap\\_gap"
       },
       "aldolase_dhap_e4p": {
@@ -1127,6 +1193,7 @@
             "value": 1
           }
         },
+        "displayName": "aldolase (DHAP+E4P)",
         "texName": "aldolase\\_dhap\\_e4p"
       },
       "fbpase": {
@@ -1211,6 +1278,7 @@
             "value": 1
           }
         },
+        "displayName": "FBPase",
         "texName": "fbpase"
       },
       "transketolase_gap_f6p": {
@@ -1286,6 +1354,7 @@
             "value": 1
           }
         },
+        "displayName": "transketolase (GAP+F6P)",
         "texName": "transketolase\\_gap\\_f6p"
       },
       "transketolase_gap_s7p": {
@@ -1361,6 +1430,7 @@
             "value": 1
           }
         },
+        "displayName": "transketolase (GAP+S7P)",
         "texName": "transketolase\\_gap\\_s7p"
       },
       "SBPase": {
@@ -1432,6 +1502,7 @@
             "value": 1
           }
         },
+        "displayName": "SBPase",
         "texName": "SBPase"
       },
       "ribose_phosphate_isomerase": {
@@ -1481,6 +1552,7 @@
             "value": 1
           }
         },
+        "displayName": "ribose phosphate isomerase",
         "texName": "ribose\\_phosphate\\_isomerase"
       },
       "ribulose_phosphate_epimerase": {
@@ -1530,6 +1602,7 @@
             "value": 1
           }
         },
+        "displayName": "ribulose phosphate epimerase",
         "texName": "ribulose\\_phosphate\\_epimerase"
       },
       "phosphoribulokinase": {
@@ -1707,6 +1780,7 @@
             "value": 1
           }
         },
+        "displayName": "phosphoribulokinase",
         "texName": "phosphoribulokinase"
       },
       "g6pi": {
@@ -1756,6 +1830,7 @@
             "value": 1
           }
         },
+        "displayName": "G6P isomerase",
         "texName": "g6pi"
       },
       "phosphoglucomutase": {
@@ -1805,6 +1880,7 @@
             "value": 1
           }
         },
+        "displayName": "phosphoglucomutase",
         "texName": "phosphoglucomutase"
       },
       "ex_pga": {
@@ -2085,6 +2161,7 @@
             "value": -1
           }
         },
+        "displayName": "G1P export",
         "texName": "ex\\_g1p"
       },
       "atp_synthase": {
@@ -2402,6 +2479,7 @@
             }
           ]
         },
+        "displayName": "vmax_rubisco_carboxylase",
         "texName": "vmax\\_rubisco\\_carboxylase"
       },
       "vmax_fbpase": {
@@ -2418,6 +2496,7 @@
             }
           ]
         },
+        "displayName": "vmax_fbpase",
         "texName": "vmax\\_fbpase"
       },
       "vmax_SBPase": {
@@ -2434,6 +2513,7 @@
             }
           ]
         },
+        "displayName": "vmax_SBPase",
         "texName": "vmax\\_SBPase"
       },
       "vmax_phosphoribulokinase": {
@@ -2450,6 +2530,7 @@
             }
           ]
         },
+        "displayName": "vmax_phosphoribulokinase",
         "texName": "vmax\\_phosphoribulokinase"
       },
       "vmax_ex_pga": {
@@ -2578,6 +2659,7 @@
             }
           ]
         },
+        "displayName": "vmax_ex_g1p",
         "texName": "vmax\\_ex\\_g1p"
       },
       "vmax_atp_synthase": {
