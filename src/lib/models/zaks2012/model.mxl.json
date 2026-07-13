@@ -550,6 +550,7 @@
           "type": "Num",
           "value": 8.314
         },
+        "displayName": "R",
         "texName": "Rconst"
       },
       "Fconst": {
@@ -557,6 +558,7 @@
           "type": "Num",
           "value": 96485
         },
+        "displayName": "F",
         "texName": "Fconst"
       },
       "Tconst": {
@@ -564,6 +566,7 @@
           "type": "Num",
           "value": 300
         },
+        "displayName": "T",
         "texName": "Tconst"
       },
       "LumenVolume": {

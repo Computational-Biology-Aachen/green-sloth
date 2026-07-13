@@ -227,14 +227,17 @@ export function initModel(): KineticModelBuilder {
       texName: "StromaKStart",
     })
     .addParameter("Rconst", {
+      displayName: names.gas_constant,
       value: 8.314,
       texName: "Rconst",
     })
     .addParameter("Fconst", {
+      displayName: names.faraday_constant,
       value: 96485.0,
       texName: "Fconst",
     })
     .addParameter("Tconst", {
+      displayName: names.temperature,
       value: 300.0,
       texName: "Tconst",
     })
