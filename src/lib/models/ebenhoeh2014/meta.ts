@@ -15,6 +15,7 @@ export const meta: ModelMeta = {
     ],
     "Model type": ["ODE"],
     "Explains data": ["PAM fluorescence", "ECS (P515)"],
+    Organism: ["Chlamydomonas reinhardtii"],
   },
   analyses: [
     {

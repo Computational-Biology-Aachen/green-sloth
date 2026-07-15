@@ -9,6 +9,7 @@ export const meta: ModelMeta = {
     "Part of Photosynthesis": [],
     "Model type": ["Steady State"],
     "Explains data": ["Gas exchange"],
+    Organism: ["Generic C3 plant"],
   },
   analyses: [
     {

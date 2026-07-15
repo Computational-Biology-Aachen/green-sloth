@@ -19,6 +19,7 @@ export const meta: ModelMeta = {
     ],
     "Model type": ["ODE"],
     "Explains data": ["P700 absorbance", "ECS (P515)"],
+    Organism: ["Arabidopsis thaliana"],
   },
   analyses: [
     {

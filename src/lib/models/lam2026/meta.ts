@@ -9,6 +9,7 @@ export const meta: ModelMeta = {
     "Part of Photosynthesis": ["PSII"],
     "Model type": ["ODE"],
     "Explains data": [],
+    Organism: ["Nicotiana benthamiana"],
   },
   analyses: [
     {

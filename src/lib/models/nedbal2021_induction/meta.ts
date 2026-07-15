@@ -9,6 +9,7 @@ export const meta: ModelMeta = {
     "Part of Photosynthesis": [],
     "Model type": ["ODE"],
     "Explains data": ["OJIP transient"],
+    Organism: ["Chlorella sorokiniana"],
   },
   analyses: [
     {

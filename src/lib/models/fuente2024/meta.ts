@@ -16,6 +16,7 @@ export const meta: ModelMeta = {
     ],
     "Model type": ["ODE"],
     "Explains data": [],
+    Organism: ["Chlamydomonas reinhardtii"],
   },
   analyses: [
     {

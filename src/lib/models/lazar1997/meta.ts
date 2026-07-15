@@ -9,6 +9,7 @@ export const meta: ModelMeta = {
     "Part of Photosynthesis": ["PSII"],
     "Model type": ["ODE"],
     "Explains data": ["OJIP transient"],
+    Organism: ["Hordeum vulgare", "Triticum aestivum"],
   },
   analyses: [
     {

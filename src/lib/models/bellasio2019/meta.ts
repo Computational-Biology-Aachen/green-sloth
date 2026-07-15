@@ -9,6 +9,7 @@ export const meta: ModelMeta = {
     "Part of Photosynthesis": ["PSII", "CBB Cycle", "ATP Synthase", "FNR"],
     "Model type": ["ODE"],
     "Explains data": ["Gas exchange"],
+    Organism: ["Nicotiana tabacum", "Raphanus sativus", "Spinacia oleracea"],
   },
   analyses: [
     {

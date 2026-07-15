@@ -9,6 +9,7 @@ export const meta: ModelMeta = {
     "Part of Photosynthesis": ["Photorespiration"],
     "Model type": ["ODE"],
     "Explains data": [],
+    Organism: ["Generic C3 plant", "Euglena gracilis"],
   },
   analyses: [
     {

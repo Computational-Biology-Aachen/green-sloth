@@ -18,6 +18,7 @@ export const meta: ModelMeta = {
     ],
     "Model type": ["ODE"],
     "Explains data": ["PAM fluorescence", "P700 absorbance", "ECS (P515)"],
+    Organism: ["Theoretical"],
   },
   analyses: [
     {

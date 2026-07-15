@@ -9,6 +9,7 @@ export const meta: ModelMeta = {
     "Part of Photosynthesis": ["CBB Cycle"],
     "Model type": ["ODE"],
     "Explains data": [],
+    Organism: ["Theoretical"],
   },
   analyses: [
     {
