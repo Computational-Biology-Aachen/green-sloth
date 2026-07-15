@@ -8,6 +8,8 @@ export type Part =
   | "FNR"
   | "PSI"
   | "CBB Cycle"
+  | "Proton motive force (pmf)"
+  | "NPQ"
   | "Photorespiration";
 
 export type ModelType = "ODE" | "Steady State";
