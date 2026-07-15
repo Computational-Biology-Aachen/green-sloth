@@ -13,12 +13,11 @@ export const meta: ModelMeta = {
       "PC",
       "FNR",
       "PSI",
-      "CBB Cycle",
       "ATP Synthase",
     ],
     "Model type": ["ODE"],
-    "Explains data": ["P700 absorbance", "ECS (P515)"],
-    Organism: ["Arabidopsis thaliana"],
+    "Explains data": ["PAM fluorescence", "ECS (P515)"],
+    Organism: ["Higher plants"],
   },
   analyses: [
     {
