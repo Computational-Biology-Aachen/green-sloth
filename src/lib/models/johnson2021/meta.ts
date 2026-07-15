@@ -6,7 +6,8 @@ export const meta: ModelMeta = {
   title: "Johnson 2021",
   DOI: "10.1007/s11120-021-00840-4",
   tags: {
-    "Part of Photosynthesis": [],
+    "Part of Photosynthesis": ["PSII", "ATP Synthase", "Cytochrome b6f", "PQ Cycle",
+                              "PC", "PSI", "CBB Cycle", "Photorespiration"],
     "Model type": ["Steady State"],
     "Explains data": ["Gas exchange"],
     Organism: ["Generic C3 plant"],
