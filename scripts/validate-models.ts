@@ -3,21 +3,29 @@
  *
  *   1. Schema-validate it — `mxlJsonToModel` checks the document against the
  *      vendored mxl-schemas v1 schema and throws on any violation.
- *   2. Soundness-check it — the model must be kinetic, have at least one state
- *      variable with finite initial values, and lower cleanly to the WAT/WASM
- *      backend the app actually runs (`buildWat`). Catches structurally broken
- *      contributions before they reach the site.
+ *   2. Soundness-check it, per the backend the app actually runs it through:
+ *      - kinetic models must have at least one state variable with finite
+ *        initial values, and lower cleanly to the WAT/WASM backend
+ *        (`buildWat`, see `src/lib/stores/backends.ts`).
+ *      - steady-state models have no state variables by design; they must
+ *        have at least one output assignment and lower cleanly to the
+ *        derived-quantity backend (`buildJsDerived`, see
+ *        `src/lib/components/Sweep.svelte`).
+ *   Catches structurally broken contributions before they reach the site.
  *
  * Run locally with `npm run validate:models`; wired into PR CI. Exits non-zero
  * if any model fails, listing the offenders.
  *
- * Note: this exercises the WAT codegen path (the only backend greensloth ships).
- * A full headless *numerical* integration would need either the Emscripten WASM
- * runtime (pointer-marshalled, heavy) or the JS backend (not used in production
- * and currently mis-orders intermediates for a couple of models), so it is left
- * out deliberately.
+ * Note: for kinetic models this exercises the WAT codegen path (the only ODE
+ * backend greensloth ships). A full headless *numerical* integration would
+ * need either the Emscripten WASM runtime (pointer-marshalled, heavy) or the
+ * JS backend (not used in production and currently mis-orders intermediates
+ * for a couple of models), so it is left out deliberately.
  */
-import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import {
+  KineticModelBuilder,
+  SteadyStateModelBuilder,
+} from "@computational-biology-aachen/mxlweb-core";
 import { mxlJsonToModel } from "@computational-biology-aachen/mxlweb-core/mxl";
 
 const jsonModules = import.meta.glob<string>(
@@ -28,7 +36,7 @@ const jsonModules = import.meta.glob<string>(
 const slugFromPath = (path: string): string =>
   path.match(/\/models\/([^/]+)\/model\.mxl\.json$/)?.[1] ?? path;
 
-function check(model: KineticModelBuilder): void {
+function checkKinetic(model: KineticModelBuilder): void {
   if (model.getNames().length === 0) {
     throw new Error("model has no state variables");
   }
@@ -40,16 +48,28 @@ function check(model: KineticModelBuilder): void {
   }
 }
 
+function checkSteadyState(model: SteadyStateModelBuilder): void {
+  if (model.assignments.size === 0) {
+    throw new Error("model has no output assignments");
+  }
+  if (model.buildJsDerived().allDerived.trim() === "") {
+    throw new Error("derived codegen produced empty output");
+  }
+}
+
 const failures: string[] = [];
 
 for (const [path, raw] of Object.entries(jsonModules)) {
   const slug = slugFromPath(path);
   try {
     const model = mxlJsonToModel(raw); // throws on schema violation
-    if (!(model instanceof KineticModelBuilder)) {
-      throw new Error(`expected a kinetic model, got ${model.constructor.name}`);
+    if (model instanceof KineticModelBuilder) {
+      checkKinetic(model);
+    } else if (model instanceof SteadyStateModelBuilder) {
+      checkSteadyState(model);
+    } else {
+      throw new Error(`unsupported model type: ${model.constructor.name}`);
     }
-    check(model);
     console.log(`✓ ${slug}`);
   } catch (err) {
     failures.push(slug);
