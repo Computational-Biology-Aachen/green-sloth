@@ -6,9 +6,9 @@ export const meta: ModelMeta = {
   title: "Lam 2026",
   DOI: "10.1038/s41467-026-70414-2",
   tags: {
-    "Part of Photosynthesis": ["PSII"],
+    "Part of Photosynthesis": ["PSII", "NPQ", "qI"],
     "Model type": ["ODE"],
-    "Explains data": [],
+    "Explains data": ["Fluorescence lifetime"],
     Organism: ["Nicotiana benthamiana"],
   },
   analyses: [
