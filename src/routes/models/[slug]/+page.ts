@@ -13,7 +13,7 @@ const mdModules = import.meta.glob("../../../lib/models/*/*.md", {
   query: "?raw",
   import: "default",
 });
-const schemeModules = import.meta.glob("../../../lib/models/*/scheme.svg", {
+const schemeModules = import.meta.glob("../../../lib/models/*/scheme.{svg,png,jpg,jpeg,webp,gif,avif}", {
   query: "?url",
   import: "default",
   eager: true,

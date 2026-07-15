@@ -13,7 +13,7 @@
   import { onMount } from "svelte";
 
   // Optional per-model scheme image, co-located in src/lib/models/<slug>/.
-  const schemeModules = import.meta.glob("$lib/models/*/scheme.svg", {
+  const schemeModules = import.meta.glob("$lib/models/*/scheme.{svg,png,jpg,jpeg,webp,gif,avif}", {
     query: "?url",
     import: "default",
     eager: true,
