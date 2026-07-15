@@ -3,7 +3,7 @@ import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: "zaks2012",
-  title: "Zaks 2012",
+  title: "Zaks 2012, Proc. Natl. Acad. Sci.",
   DOI: "10.1073/pnas.1211017109",
   tags: {
     "Part of Photosynthesis": [
