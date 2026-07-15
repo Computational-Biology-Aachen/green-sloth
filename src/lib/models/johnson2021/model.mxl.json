@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/steady-state-model.schema.json",
   "spec_version": "1.0",
   "kind": "steady-state",
-  "model_id": "Johnson2021",
+  "model_id": "johnson2021",
   "model": {
     "parameters": {
       "PAR": {

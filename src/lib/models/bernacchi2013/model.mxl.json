@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/steady-state-model.schema.json",
   "spec_version": "1.0",
   "kind": "steady-state",
-  "model_id": "Bernacchi2023",
+  "model_id": "bernacchi2013",
   "model": {
     "parameters": {
       "Ci": {
@@ -118,8 +118,8 @@
             }
           ]
         },
-        "texName": "\\text{abs}",
-        "displayName": "absorbed"
+        "displayName": "absorbed",
+        "texName": "\\text{abs}"
       },
       "Ci_safe": {
         "fn": {
@@ -135,8 +135,8 @@
             }
           ]
         },
-        "texName": "C_{i, safe}",
-        "displayName": "Ci_safe"
+        "displayName": "Ci_safe",
+        "texName": "C_{i, safe}"
       },
       "J": {
         "fn": {
