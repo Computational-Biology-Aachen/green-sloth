@@ -46,6 +46,8 @@
   } from "@computational-biology-aachen/mxlweb-core";
   import { modelToSbml } from "@computational-biology-aachen/mxlweb-core/sbml";
   import { error } from "@sveltejs/kit";
+  import rehypeKatex from "rehype-katex";
+  import remarkMath from "remark-math";
   import Markdown, { type Plugin } from "svelte-exmarkdown";
 
   let {
@@ -63,6 +65,10 @@
   // Render model markdown with the corporate-design components in place of the
   // default HTML elements; anything unmapped falls back to plain HTML.
   const mdPlugins: Plugin[] = [
+    {
+      remarkPlugin: remarkMath,
+      rehypePlugin: [rehypeKatex, { output: "html" }],
+    },
     {
       renderer: {
         p: Text,

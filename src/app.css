@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import "@computational-biology-aachen/design/tokens.css";
+@import "katex/dist/katex.min.css";
 
 /* Note: setting height: 100% and overflow: scroll on body / html breaks
 window.scrollTo/window.scrollY as that scrolls via the viewport.
