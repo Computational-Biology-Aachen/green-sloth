@@ -3,7 +3,7 @@ import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: "johnson2021",
-  title: "Johnson 2021",
+  title: "Johnson 2021, Photosynth. Res.",
   DOI: "10.1007/s11120-021-00840-4",
   tags: {
     "Part of Photosynthesis": ["PSII", "ATP Synthase", "Cytochrome b6f", "PQ Cycle",
