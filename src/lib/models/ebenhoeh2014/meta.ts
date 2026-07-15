@@ -12,9 +12,12 @@ export const meta: ModelMeta = {
       "ATP Synthase",
       "Cytochrome b6f",
       "PQ Cycle",
+      "PSI",
+      "PC",
+      "FNR",
     ],
     "Model type": ["ODE"],
-    "Explains data": ["PAM fluorescence", "ECS (P515)"],
+    "Explains data": ["PAM fluorescence"],
     Organism: ["Chlamydomonas reinhardtii"],
   },
   analyses: [
