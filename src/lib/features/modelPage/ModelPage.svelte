@@ -313,6 +313,7 @@
         <Figure
           src={data.schemeUrl}
           alt="{data.meta.title} scheme"
+          styleVars={{ 'margin-bottom': '0px' }}
         />
         {#if data.meta.license}
           <CopyrightOverlay license={data.meta.license} journal={data.meta.journal} />
