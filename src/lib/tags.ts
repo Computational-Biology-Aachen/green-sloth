@@ -24,7 +24,8 @@ export type ExperimentalData =
   | "Gas exchange"
   | "P700 absorbance"
   | "Frequency domain"
-  | "ECS (P515)";
+  | "ECS (P515)"
+  | "Concentration changes";
 
 /**
  * Organism(s) a model was calibrated or validated against. "Generic C3

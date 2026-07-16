@@ -6,9 +6,9 @@ export const meta: ModelMeta = {
   title: "Hahn 1987, Ann. Bot.",
   DOI: "10.1093/oxfordjournals.aob.a087432",
   tags: {
-    "Part of Photosynthesis": ["CBB Cycle"],
+    "Part of Photosynthesis": ["CBB Cycle","Photorespiration"],
     "Model type": ["ODE"],
-    "Explains data": [],
+    "Explains data": ["Concentration changes"],
     Organism: ["Generic C3 plant"],
   },
   analyses: [
