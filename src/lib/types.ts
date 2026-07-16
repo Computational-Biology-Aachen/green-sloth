@@ -128,6 +128,8 @@ export interface ModelMeta {
   slug: string;
   title: string;
   DOI?: string;
+  license: string;
+  journal: string;
   tags: Tags;
   /** Analyses auto-run on the model's dashboard. */
   analyses: ModelAnalysis[];

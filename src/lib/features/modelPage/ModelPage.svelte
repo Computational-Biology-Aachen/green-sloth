@@ -1,5 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import CopyrightOverlay from "$lib/components/CopyrightOverlay.svelte";
   import ModelDashboard from "$lib/components/KineticModelDashboard.svelte";
   import ModelTables from "$lib/components/KineticModelTables.svelte";
   import SSModelDashboard from "$lib/components/SSModelDashboard.svelte";
@@ -240,7 +241,7 @@
 <SectionHeader width="narrow">
   <Row justify="between">
     <div class="hundo">
-      <H1 color="light">{data.meta.title}</H1>
+      <H1 color="light">{data.meta.title}{data.meta.journal ? `, ${data.meta.journal}` : ''}</H1>
     </div>
 
     <Pair justify="end">
@@ -308,10 +309,16 @@
     {/if}
     {#if data.schemeUrl}
       <H2>Scheme</H2>
-      <Figure
-        src={data.schemeUrl}
-        alt="{data.meta.title} scheme"
-      />
+      <div class="scheme-wrapper">
+        <Figure
+          src={data.schemeUrl}
+          alt="{data.meta.title} scheme"
+        />
+        {#if data.meta.license}
+          <CopyrightOverlay license={data.meta.license} journal={data.meta.journal} />
+        {/if}
+      </div>
+      
     {/if}
   </Section>
 {/if}
@@ -474,5 +481,15 @@
 
   .hundo {
     width: 100%;
+  }
+
+
+  .scheme-wrapper {
+    position: relative;
+    width: fit-content;
+    width: -moz-fit-content;
+    margin: 0 auto;
+    display: block;
+    max-width: 100%;
   }
 </style>

@@ -702,7 +702,7 @@
   <div class="grid">
     {#each filtered as [slug, info] (slug)}
       <CardModel
-        name={info.title}
+        name="{info.title}{info.journal ? `, ${info.journal}` : ''}"
         href="{base}/models/{slug}"
         image={schemes[slug]}
       />
