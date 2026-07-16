@@ -3,7 +3,8 @@ import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: "fvcb1980",
-  title: "FvCB 1980, Plant Cell Environ.",
+  title: "FvCB 1980",
+  journal: "Plant Cell Environ.",
   DOI: "10.1007/BF00386231",
   tags: {
     "Part of Photosynthesis": [],

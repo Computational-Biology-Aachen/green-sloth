@@ -3,7 +3,9 @@ import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: "salvatori2022",
-  title: "Salvatori 2022, Front. Plant Sci.",
+  title: "Salvatori 2022",
+  journal: "Front. Plant Sci.",
+  license: "CC BY 4.0",
   DOI: "10.3389/fpls.2021.787877",
   tags: {
     "Part of Photosynthesis": ["PSII", "CBB Cycle"],
