@@ -1,0 +1,1 @@
+The figures from the original 1980 paper have been created, as well as one scheme from the [Lochocki *et al.*](https://doi.org/10.1093/insilicoplants/diaf014) paper. There are minimal discrepancies in some schemes that result in lines being shifted up or down. However, most are consistent; therefore, the validation is deemed successful.
