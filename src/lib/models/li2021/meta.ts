@@ -3,7 +3,8 @@ import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: "li2021",
-  title: "Li 2021, Nat. Plants",
+  title: "Li 2021",
+  journal: "Nat. Plants",
   DOI: "10.1038/s41477-021-00947-5",
   tags: {
     "Part of Photosynthesis": [

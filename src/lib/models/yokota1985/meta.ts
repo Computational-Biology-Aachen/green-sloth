@@ -3,7 +3,8 @@ import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: "yokota1985",
-  title: "Yokota 1985, Planta",
+  title: "Yokota 1985",
+  journal: "Planta",
   DOI: "10.1007/BF00392212",
   tags: {
     "Part of Photosynthesis": ["Photorespiration"],

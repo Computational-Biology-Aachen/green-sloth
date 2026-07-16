@@ -3,7 +3,8 @@ import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: "hahn1987",
-  title: "Hahn 1987, Ann. Bot.",
+  title: "Hahn 1987",
+  journal: "Ann. Bot.",
   DOI: "10.1093/oxfordjournals.aob.a087432",
   tags: {
     "Part of Photosynthesis": ["CBB Cycle","Photorespiration"],

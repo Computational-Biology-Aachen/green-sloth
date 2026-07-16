@@ -4,7 +4,9 @@ import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: "saadat2021",
-  title: "Saadat 2021, Front. Plant Sci.",
+  title: "Saadat 2021",
+  journal: "Front. Plant Sci.",
+  license: "CC BY 4.0",
   DOI: "10.3389/fpls.2021.750580",
   tags: {
     "Part of Photosynthesis": [
