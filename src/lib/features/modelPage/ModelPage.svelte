@@ -59,6 +59,7 @@
       schemeUrl: string | null;
       desc: string | null;
       changes: string | null;
+      curatornotes: string | null;
     };
   } = $props();
 
@@ -391,6 +392,13 @@
           href="https://doi.org/{data.meta.DOI}">original publication</Link
         >.
       </Text>
+      {#if data.curatornotes}
+        <Markdown
+          md={data.curatornotes}
+          plugins={mdPlugins}
+        />
+      {/if}
+      
       <Accordion title="Figures">
         {#each paperFigures as fig (fig.src)}
           <Accordion title={fig.title}>

@@ -42,10 +42,11 @@ export const load: PageLoad = async ({ params }) => {
     return (await mdModules[key]()) as string;
   }
 
-  const [desc, changes] = await Promise.all([
+  const [desc, changes, curatornotes] = await Promise.all([
     loadMd("model.md"),
     loadMd("changes.md"),
+    loadMd("curatornotes.md"),
   ]);
 
-  return { slug, meta, schemeUrl, desc, changes };
+  return { slug, meta, schemeUrl, desc, changes, curatornotes };
 };
