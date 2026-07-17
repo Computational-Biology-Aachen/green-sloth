@@ -19,7 +19,7 @@ export const meta: ModelMeta = {
       "OEC",
     ],
     "Model type": ["ODE"],
-    "Explains data": ["P700 absorbance", "ECS (P515)"],
+    "Explains data": ["P700 absorbance", "ECS (P515)", "PAM fluorescence"],
     Organism: ["Arabidopsis thaliana"],
   },
   analyses: [
