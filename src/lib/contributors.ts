@@ -44,6 +44,11 @@ const contributors: Record<string, Contributor> = {
     name: "Malick Cisse",
     github: "kosmosofmalick-spec",
   },
+  annamatuszynska: {
+    key: "annamatuszynska",
+    name: "Anna Matuszyńska",
+    github: "AnnaMatuszynska",
+  }
 };
 
 export default contributors;
