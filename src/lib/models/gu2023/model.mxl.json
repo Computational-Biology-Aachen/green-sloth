@@ -1,0 +1,503 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/steady-state-model.schema.json",
+  "spec_version": "1.0",
+  "kind": "steady-state",
+  "model_id": "gu2023",
+  "model": {
+    "parameters": {
+      "q": {
+        "value": {
+          "type": "Num",
+          "value": 0.7
+        },
+        "texName": "q"
+      },
+      "U": {
+        "value": {
+          "type": "Num",
+          "value": 250
+        },
+        "texName": "U"
+      },
+      "R1": {
+        "value": {
+          "type": "Num",
+          "value": 0.2
+        },
+        "texName": "R1"
+      },
+      "R2": {
+        "value": {
+          "type": "Num",
+          "value": 0.5
+        },
+        "texName": "R2"
+      },
+      "q_r": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "texName": "q\\_r"
+      },
+      "a_q": {
+        "value": {
+          "type": "Num",
+          "value": 0
+        },
+        "texName": "a\\_q"
+      },
+      "b_s": {
+        "value": {
+          "type": "Num",
+          "value": 0
+        },
+        "texName": "b\\_s"
+      },
+      "c_s": {
+        "value": {
+          "type": "Num",
+          "value": 0
+        },
+        "texName": "c\\_s"
+      },
+      "alpha": {
+        "value": {
+          "type": "Num",
+          "value": 0.85
+        },
+        "texName": "alpha"
+      },
+      "PAR": {
+        "value": {
+          "type": "Num",
+          "value": 588.2352941176471
+        },
+        "texName": "PAR"
+      },
+      "T": {
+        "value": {
+          "type": "Num",
+          "value": 298.15
+        },
+        "texName": "T"
+      },
+      "T0": {
+        "value": {
+          "type": "Num",
+          "value": 298.15
+        },
+        "texName": "T0"
+      },
+      "E_T": {
+        "value": {
+          "type": "Num",
+          "value": 0
+        },
+        "texName": "E\\_T"
+      }
+    },
+    "derived": {
+      "ft": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Sqrt",
+              "child": {
+                "type": "Divide",
+                "children": [
+                  {
+                    "type": "Name",
+                    "value": "T0"
+                  },
+                  {
+                    "type": "Name",
+                    "value": "T"
+                  }
+                ]
+              },
+              "base": {
+                "type": "Num",
+                "value": 2
+              }
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Mul",
+                "children": [
+                  {
+                    "type": "Name",
+                    "value": "E_T"
+                  },
+                  {
+                    "type": "Add",
+                    "children": [
+                      {
+                        "type": "Divide",
+                        "children": [
+                          {
+                            "type": "Num",
+                            "value": 1
+                          },
+                          {
+                            "type": "Name",
+                            "value": "T0"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Divide",
+                            "children": [
+                              {
+                                "type": "Num",
+                                "value": 1
+                              },
+                              {
+                                "type": "Name",
+                                "value": "T"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "texName": "ft"
+      },
+      "fq": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Name",
+                  "value": "a_q"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "a_q"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "q"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "texName": "fq"
+      },
+      "fs": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Num",
+              "value": 1
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "c_s"
+                    },
+                    {
+                      "type": "Exp",
+                      "child": {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Mul",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "PAR"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "alpha"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "b_s"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "texName": "fs"
+      },
+      "J_PSII": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Name",
+                  "value": "U"
+                },
+                {
+                  "type": "Name",
+                  "value": "fq"
+                },
+                {
+                  "type": "Name",
+                  "value": "fs"
+                },
+                {
+                  "type": "Name",
+                  "value": "ft"
+                },
+                {
+                  "type": "Name",
+                  "value": "q"
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "q_r"
+                    },
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "q"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "q_r"
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "q"
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": -1
+                        },
+                        {
+                          "type": "Name",
+                          "value": "R1"
+                        },
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 2
+                            },
+                            {
+                              "type": "Name",
+                              "value": "R2"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "fq"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "fs"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "texName": "J\\_PSII"
+      },
+      "h_cyt": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "q"
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Name",
+                      "value": "a_q"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "a_q"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "q"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "texName": "h\\_cyt"
+      },
+      "h_pqh2": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 0.5
+                },
+                {
+                  "type": "Name",
+                  "value": "J_PSII"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "U"
+                },
+                {
+                  "type": "Name",
+                  "value": "fq"
+                },
+                {
+                  "type": "Name",
+                  "value": "fs"
+                },
+                {
+                  "type": "Name",
+                  "value": "ft"
+                },
+                {
+                  "type": "Name",
+                  "value": "q"
+                }
+              ]
+            }
+          ]
+        },
+        "texName": "h\\_pqh2"
+      },
+      "h_pq": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Num",
+              "value": 1
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "h_pqh2"
+                }
+              ]
+            }
+          ]
+        },
+        "texName": "h\\_pq"
+      }
+    }
+  }
+}
