@@ -16,7 +16,7 @@ export const meta: ModelMeta = {
       "ATP Synthase",
     ],
     "Model type": ["ODE"],
-    "Explains data": [],
+    "Explains data": ["Frequency domain"],
     Organism: ["Chlamydomonas reinhardtii"],
   },
   analyses: [

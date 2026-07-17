@@ -9,7 +9,7 @@ export const meta: ModelMeta = {
   tags: {
     "Part of Photosynthesis": [],
     "Model type": ["ODE"],
-    "Explains data": [],
+    "Explains data": ["Gas exchange", "Concentration changes"],
     Organism: ["Spinacia oleracea"],
   },
   analyses: [
