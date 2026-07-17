@@ -10,7 +10,7 @@ export const meta: ModelMeta = {
   tags: {
     "Part of Photosynthesis": ["PSII", "PQ Cycle", "Cytochrome b6f"],
     "Model type": ["Steady State"],
-    "Explains data": [],
+    "Explains data": ["PAM fluorescence"],
     Organism: ["Generic C3 plant"],
   },
   analyses: [
