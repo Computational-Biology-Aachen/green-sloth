@@ -1,5 +1,6 @@
 import contributors from "$lib/contributors";
 import type { ModelMeta } from "$lib/types";
+import { defaultPamProtocol } from "$lib/models/pamProtocols";
 
 export const meta: ModelMeta = {
   slug: "zaks2012",
@@ -26,9 +27,23 @@ export const meta: ModelMeta = {
       title: "Time course",
       tEnd: 100,
       nTimePoints: 500,
+      variables: ["fluorescenceyield", "pH_lumen", "Zeaxanthin", "ATP", "Fd_ox", "P700r"],
+      showDerived: true,
       // Variables span several orders of magnitude; auto-split them into
       // per-magnitude subplots so small-valued species stay readable.
       plot: { type: "magnitude" },
+    },
+    {
+      type: "pam",
+      title: "PAM fluorescence",
+      ppfdKey: "LightIntensity",
+      fluoKey: "Fluo",
+      pamProtocol: defaultPamProtocol,
+      showDerived: true,
+      variables: ["fluorescenceyield"],
+      normalizedKeys: ["fluorescenceyield"],
+      nTimePoints: 100,
+      timeoutInSeconds: 60,
     },
   ],
   contributors: [
