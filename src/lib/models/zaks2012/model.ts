@@ -330,9 +330,10 @@ export function initModel(): KineticModelBuilder {
       texName: "voltsperlog",
     })
     .addParameter("LightIntensity", {
-      value: 0.0,
+      value: 100,
       texName: "LightIntensity",
       displayName: names.ppfd,
+      slider: { min: "0", max: "1000", step: "100" },
     })
     .addParameter("P680neut", {
       value: 1.0,
