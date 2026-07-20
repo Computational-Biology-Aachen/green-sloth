@@ -5,19 +5,23 @@
   import { fuzzyMatch } from "$lib/utils";
   import {
     ButtonTab,
-    CardModel,
     H1,
     Section,
     SectionHeader,
   } from "@computational-biology-aachen/design";
+
+  import CardModel from "$lib/components/CardModel.svelte";
   import { onMount } from "svelte";
 
   // Optional per-model scheme image, co-located in src/lib/models/<slug>/.
-  const schemeModules = import.meta.glob("$lib/models/*/scheme.{svg,png,jpg,jpeg,webp,gif,avif}", {
-    query: "?url",
-    import: "default",
-    eager: true,
-  }) as Record<string, string>;
+  const schemeModules = import.meta.glob(
+    "$lib/models/*/scheme.{svg,png,jpg,jpeg,webp,gif,avif}",
+    {
+      query: "?url",
+      import: "default",
+      eager: true,
+    },
+  ) as Record<string, string>;
 
   const schemes: Record<string, string> = Object.fromEntries(
     Object.entries(schemeModules).flatMap(([path, url]) => {
@@ -104,6 +108,13 @@
     if (next.has(tag)) next.delete(tag);
     else next.add(tag);
     active = { ...active, [cat]: next };
+  }
+
+  function shortenTo(str: string, maxLen: number): string {
+    if (str.length > maxLen) {
+      return str.substring(0, maxLen - 3) + "...";
+    }
+    return str;
   }
 
   function isActive(cat: string, tag: string): boolean {
@@ -705,6 +716,9 @@
         name="{info.title}{info.journal ? `, ${info.journal}` : ''}"
         href="{base}/models/{slug}"
         image={schemes[slug]}
+        license={info.license
+          ? shortenTo(`${info.license} - ${info.journal}`, 35)
+          : undefined}
       />
     {/each}
     {#if filtered.length === 0}
