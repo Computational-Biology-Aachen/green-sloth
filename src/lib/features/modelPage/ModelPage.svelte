@@ -386,7 +386,7 @@
       {#each curationHistory as entry (entry.date.getTime() + entry.contributor.key)}
         <Li>
           {formatCurationDate(entry.date)}: {entry.desc} by
-          <Link href="{base}/contributors#{entry.contributor.key}"
+          <Link href="{base}/about#{entry.contributor.key}"
             >{entry.contributor.name}</Link
           >
         </Li>
