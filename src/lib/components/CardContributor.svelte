@@ -41,9 +41,11 @@
   class="card"
 >
   <ImageRound
-    path={placeholder}
+    path={contributor.photo ?? placeholder}
     alt={contributor.name}
-    styleVars={{ size: "72px" }}
+    objectFit="cover"
+    objectPosition="top"
+    styleVars={{ size: "136px" }}
   />
   <div class="info">
     <Text><strong>{contributor.name}</strong></Text>
@@ -97,6 +99,11 @@
     background: var(--color-surface);
     padding: var(--space-4);
     scroll-margin-top: var(--space-8);
+  }
+
+  .card :global(img),
+  .card :global(.placeholder) {
+    flex-shrink: 0;
   }
 
   .info {

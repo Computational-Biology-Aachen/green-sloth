@@ -120,6 +120,7 @@ export type Contributor = {
   orcid?: string;
   github?: string;
   gitlab?: string;
+  photo?: string;
 };
 
 export type ModelAnalysis = TimeCourseAnalysis | PamAnalysis | SweepAnalysis;

@@ -92,7 +92,11 @@
 
     .about-photo {
       justify-self: center;
-      max-width: 10rem;
+    }
+
+    .about-photo :global(img) {
+      width: 10rem;
+      height: 10rem;
     }
   }
 
