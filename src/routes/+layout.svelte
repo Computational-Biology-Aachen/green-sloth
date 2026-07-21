@@ -46,7 +46,6 @@
     <NavItem href="{base}/data">Data</NavItem>
     <NavItem href="{base}/compare">Compare</NavItem>
     <NavItem href="{base}/contributing">Contribute</NavItem>
-    <NavItem href="{base}/contributors">Contributors</NavItem>
     <NavItem href="{base}/about">About Us</NavItem>
   </CollapseToBurger>
   <NavGH href="https://github.com/Computational-Biology-Aachen/green-sloth" />

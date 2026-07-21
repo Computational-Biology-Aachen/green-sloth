@@ -7,6 +7,7 @@
     SectionHeader,
     Text,
   } from "@computational-biology-aachen/design";
+  import Contributors from "../contributors/Contributors.svelte";
 </script>
 
 <svelte:head>
@@ -68,6 +69,12 @@
       />
     </div>
   </div>
+</Section>
+<Section
+  variant="light"
+  width="narrow"
+>
+  <Contributors />
 </Section>
 
 <style>
