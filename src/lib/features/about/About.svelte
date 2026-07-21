@@ -25,39 +25,28 @@
   <div class="about-grid">
     <div class="about-text">
       <Text>
-        The idea of GreenSloth has been a dream of the Computational Life
-        Science Group, led by Prof. Dr. rer. nat. Matuszyńska, at the RWTH
-        Aachen. We believe in making all our models ready for use and strive to
-        make them as accessible as possible. To this end, we dedicate entire
-        projects to bringing our field closer to our esteemed scientific
-        colleagues, which is why GreenSloth holds significant importance for us.
+      GreenSloth is developed and maintained by the Computational Biology Group at RWTH Aachen University, led by Prof. Dr. Anna Matuszyńska. 
+      Our research combines mechanistic mathematical modelling, systems biology, machine learning, and plant physiology to understand photosynthesis across biological scales, 
+      from molecular regulation within the thylakoid membrane to whole-leaf carbon assimilation and plant responses to fluctuating environments.
+    </Text>
+      <Text>
+        Our vision is to make mechanistic models reproducible, executable, and reusable. 
+        Rather than leaving published models as equations scattered across manuscripts and supplementary files, 
+        we reconstruct them as validated, documented software that can be explored, compared, and extended by the community. 
+        This philosophy underpins GreenSloth and our broader commitment to open, transparent, and reproducible computational biology.
       </Text>
       <Text>
-        To initiate this project, we have assigned Elouen Corvest (<a
-          href="mailto:elouen.corvest@rwth-aachen.de"
-          >elouen.corvest@rwth-aachen.de</a
-        >) to develop the concept of GreenSloth, as he has gained extensive
-        experience with photosynthesis models during his time in our Group. We
-        are also proud of his work on ComPhot, our teaching tool on
-        computational photosynthesis (<a
-          href="https://doi.org/10.1093/plcell/koae101"
-          target="_blank">https://doi.org/10.1093/plcell/koae101</a
-        >), which he also represented us at the Second European Congress on
-        Photosynthesis (EPS2) and even won a poster award.
+        The first version of GreenSloth was conceived and developed by Elouen Corvest as part of his Master's thesis. 
+Beyond implementing the initial platform, he established many of the curation and validation principles that define GreenSloth today. 
+His work introduced systematic approaches for comparing mechanistic photosynthesis models in a scientifically meaningful way—allowing models to be evaluated not only by their implementation, 
+but also by their biological scope, mathematical formulation, assumptions, parameterisation, supported experimental modalities, and reproducibility. 
+These principles continue to guide the evolution of the database.
       </Text>
       <Text>
-        Therefore, we are confident in his experience and tenacity in creating
-        GreenSloth to meet the expectations of the scientific community. Once
-        his Master's Thesis duties have been completed in this project, we, the
-        Group, will take the reins on the maintenance and improvement of
-        GreenSloth while staying true to the core that Elouen has built.
-      </Text>
-      <Text>
-        We are very enthusiastic about this project and what it represents. If
-        you have any ideas, or even models you wish to be represented here,
-        please write us an email (<a href="mailto:elouen.corvest@rwth-aachen.de"
-          >elouen.corvest@rwth-aachen.de</a
-        >).
+       Today, GreenSloth is a collaborative effort involving researchers, software developers, and students from our laboratory. 
+Every model is independently reconstructed, validated against its original publication, and carefully documented before becoming part of the collection. 
+We view GreenSloth not simply as a database, but as a living knowledge base for mechanistic photosynthesis modelling.
+We hope that the list of contributors will grow beyond the walls of our University and we will collectively preserve the tremendous computational work already done on the dynamics of photosynthesis.
       </Text>
     </div>
     <div class="about-photo">
