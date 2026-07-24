@@ -5,7 +5,7 @@ export const meta: ModelMeta = {
   slug: "johnson2021",
   title: "Johnson 2021",
   DOI: "10.1007/s11120-021-00840-4",
-  license: "CC BY 4.0",
+  license: "© CC BY 4.0",
   journal: "Photosynth. Res.",
   tags: {
     "Part of Photosynthesis": ["PSII", "ATP Synthase", "Cytochrome b6f", "PQ Cycle",

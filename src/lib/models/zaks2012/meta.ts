@@ -6,7 +6,7 @@ export const meta: ModelMeta = {
   slug: "zaks2012",
   title: "Zaks 2012",
   journal: "Proc. Natl. Acad. Sci.",
-  license: " ",
+  license: "© ",
   DOI: "10.1073/pnas.1211017109",
   tags: {
     "Part of Photosynthesis": [

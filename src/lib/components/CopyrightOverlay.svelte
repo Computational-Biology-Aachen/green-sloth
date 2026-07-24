@@ -4,7 +4,7 @@
 
 <div class="copyright-bug">
   <span class="copyright-text">
-    © {license} - {journal}
+    {license} - {journal}
   </span>
 </div>
 

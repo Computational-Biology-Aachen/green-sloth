@@ -5,6 +5,7 @@ export const meta: ModelMeta = {
   slug: "hahn1987",
   title: "Hahn 1987",
   journal: "Ann. Bot.",
+  license: "Recreated",
   DOI: "10.1093/oxfordjournals.aob.a087432",
   tags: {
     "Part of Photosynthesis": ["CBB Cycle","Photorespiration"],

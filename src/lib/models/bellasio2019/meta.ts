@@ -6,6 +6,7 @@ export const meta: ModelMeta = {
   title: "Bellasio 2019",
   DOI: "10.1007/s11120-018-0601-1",
   journal: "Photosynth. Res.",
+  license: "Recreated",
   tags: {
     "Part of Photosynthesis": ["PSII", "CBB Cycle", "ATP Synthase", "FNR"],
     "Model type": ["ODE"],

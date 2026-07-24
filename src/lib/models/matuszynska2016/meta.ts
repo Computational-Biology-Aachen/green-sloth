@@ -6,7 +6,7 @@ export const meta: ModelMeta = {
   slug: "matuszynska2016",
   title: "Matuszynska 2016",
   journal: "BBA Bioenerg.",
-  license: "CC BY 4.0",
+  license: "© CC BY 4.0",
   DOI: "10.1016/j.bbabio.2016.09.003",
   tags: {
     "Part of Photosynthesis": [

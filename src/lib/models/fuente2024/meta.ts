@@ -6,6 +6,7 @@ export const meta: ModelMeta = {
   slug: "fuente2024",
   title: "Fuente 2024",
   journal: "Plant Physiol. Biochem.",
+  license: "Recreated",
   DOI: "10.1016/j.plaphy.2024.109138",
   tags: {
     "Part of Photosynthesis": [
