@@ -69,7 +69,7 @@
     {/if}
     {#if license}
       <span class="copyright">
-        © {license}
+        {license}
       </span>
     {/if}
   </div>

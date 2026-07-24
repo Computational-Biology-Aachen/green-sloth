@@ -1,13 +1,12 @@
 <script lang="ts">
-    let { license, journal }: { license: string; journal: string } = $props();
+    let { license, journal, doi }: { license: string; journal: string; doi: string } = $props();
 </script>
 
-<div class="copyright-bug">
+<a class="copyright-bug" href={doi} target="_blank">
   <span class="copyright-text">
     {license} - {journal}
   </span>
-</div>
-
+</a>
 <style>
   .copyright-bug {
     position: absolute;
@@ -25,6 +24,6 @@
     width: auto;
     max-width: 85%;
 
-    pointer-events: none;
+    pointer-events: auto;
   }
 </style>

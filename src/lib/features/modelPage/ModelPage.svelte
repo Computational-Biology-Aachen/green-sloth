@@ -316,7 +316,7 @@
           styleVars={{ 'margin-bottom': '0px' }}
         />
         {#if data.meta.license}
-          <CopyrightOverlay license={data.meta.license} journal={data.meta.journal} />
+          <CopyrightOverlay license={data.meta.license} journal={data.meta.journal} doi="https://doi.org/{data.meta.DOI}" />
         {/if}
       </div>
       
