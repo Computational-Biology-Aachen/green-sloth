@@ -5,6 +5,7 @@ export const meta: ModelMeta = {
   slug: "fvcb1980",
   title: "FvCB 1980",
   journal: "Plant Cell Environ.",
+  license: "Recreated",
   DOI: "10.1007/BF00386231",
   tags: {
     "Part of Photosynthesis": [],

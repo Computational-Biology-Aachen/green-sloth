@@ -5,7 +5,7 @@ export const meta: ModelMeta = {
   slug: "gu2023",
   title: "Gu 2023",
   DOI: "/10.1111/pce.14563",
-  license: "CC BY-NC 4.0",
+  license: "© CC BY-NC 4.0",
   journal: "Plant, Cell & Environment",
   tags: {
     "Part of Photosynthesis": ["PSII", "PQ Cycle", "Cytochrome b6f"],

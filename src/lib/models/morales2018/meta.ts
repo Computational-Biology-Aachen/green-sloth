@@ -5,7 +5,7 @@ export const meta: ModelMeta = {
   slug: "morales2018",
   title: "Morales 2018",
   journal: "Plant Cell Environ.",
-  license: "CC BY 4.0",
+  license: "© CC BY 4.0",
   DOI: "10.1111/pce.13119",
   tags: {
     "Part of Photosynthesis": ["PSII", "NPQ", "CBB Cycle", "Photorespiration"],

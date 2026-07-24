@@ -5,7 +5,7 @@ export const meta: ModelMeta = {
   slug: "matuszynska2019",
   title: "Matuszynska 2019",
   journal: "Physiol. Plant.",
-  license: "CC BY-NC 4.0",
+  license: "© CC BY-NC 4.0",
   DOI: "10.1111/ppl.12962",
   tags: {
     "Part of Photosynthesis": [
