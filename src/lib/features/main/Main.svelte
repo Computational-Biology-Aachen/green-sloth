@@ -45,7 +45,7 @@
 >
   <Row justify="between">
     <H2>How to cite</H2>
-    <CopyButton text={citationTitle + citationAuthors} />
+    <CopyButton text={citationText} />
   </Row>
   
   <Text>
