@@ -7,8 +7,16 @@
     H2,
     Section,
     Text,
+    Row,
+    Bold
   } from "@computational-biology-aachen/design";
-  import Bold from "@computational-biology-aachen/design/Bold.svelte";
+  import CopyButton from "$lib/components/CopyButton.svelte";
+
+  let citationText = "GreenSloth: a curated database and executable platform for mechanistic photosynthesis models. Elouen Corvest, Marvin van Aalst, Tim Nies, Quang Huy Nguyen, Josha Ebeling, Maja Strauch, El-Hadji Malick Cisse, Tanvir Hassan, Anna Matuszyńska. bioRxiv 2026.07.22.740007; doi: https://doi.org/10.64898/2026.07.22.740007"
+  let citationTitle = "GreenSloth: a curated database and executable platform for mechanistic photosynthesis models";
+  let citationAuthors = "Elouen Corvest, Marvin van Aalst, Tim Nies, Quang Huy Nguyen, Josha Ebeling, Maja Strauch, El-Hadji Malick Cisse, Tanvir Hassan, Anna Matuszyńska";
+  let citationJournal = "bioRxiv 2026.07.22.740007";
+  let citationDOI = "https://doi.org/10.64898/2026.07.22.740007";
 </script>
 
 <svelte:head>
@@ -35,6 +43,16 @@
   variant="light"
   width="narrow"
 >
+  <Row justify="between">
+    <H2>How to cite</H2>
+    <CopyButton text={citationTitle + citationAuthors} />
+  </Row>
+  
+  <Text>
+    <Bold>{citationTitle}.</Bold><br/>
+    {citationAuthors}. <i>{citationJournal}</i>; <a href={citationDOI} target="_blank">{citationDOI}</a>
+  </Text>
+
   <H2>Motivation</H2>
   <Text>
     Photosynthesis is arguably the most crucial process of life on Earth. It
