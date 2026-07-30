@@ -10,8 +10,8 @@
     "prepare": "svelte-kit sync || echo ''",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "format": "prettier --write src/",
-    "lint": "eslint src/",
+    "format": "prettier --write .",
+    "lint": "eslint .",
     "generate:mxl": "vite-node scripts/generate-mxl.ts",
     "validate:models": "vite-node scripts/validate-models.ts",
     "sync:names": "vite-node scripts/sync-names.ts"
