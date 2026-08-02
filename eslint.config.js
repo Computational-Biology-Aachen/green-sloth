@@ -28,6 +28,10 @@ export default ts.config(
       // which already handles the base path. Migrating to SvelteKit's resolve()
       // API would be a deliberate, app-wide change rather than a lint fix.
       "svelte/no-navigation-without-resolve": "off",
+      // Not enabled by svelte.configs.recommended - surfaces the Svelte
+      // compiler's own warnings (including a11y checks like missing alt
+      // text) as lint errors instead of easy-to-miss build output.
+      "svelte/valid-compile": ["error", { ignoreWarnings: false }],
       // allow intentionally-unused placeholder args/vars when prefixed with "_"
       "@typescript-eslint/no-unused-vars": [
         "error",
