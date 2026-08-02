@@ -48,13 +48,6 @@ const jsonBySlug = indexBySlug(jsonModules);
 const sbmlBySlug = indexBySlug(sbmlModules);
 const tsBySlug = indexBySlug(tsModules);
 
-/** Slugs that ship at least one loadable model format. */
-export const buildableSlugs: ReadonlySet<string> = new Set([
-  ...jsonBySlug.keys(),
-  ...sbmlBySlug.keys(),
-  ...tsBySlug.keys(),
-]);
-
 /**
  * Build a model's {@link KineticModelBuilder}, preferring code over data formats.
  * Returns `null` for an unknown slug (no model file in any format).

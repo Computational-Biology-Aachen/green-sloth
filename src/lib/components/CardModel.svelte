@@ -61,6 +61,8 @@
       <img
         src={image}
         alt="{name} scheme"
+        loading="lazy"
+        decoding="async"
       />
     {:else}
       <div class="fallback">

@@ -241,7 +241,11 @@
 <SectionHeader width="narrow">
   <Row justify="between">
     <div class="hundo">
-      <H1 color="light">{data.meta.title}{data.meta.journal ? `, ${data.meta.journal}` : ''}</H1>
+      <H1 color="light"
+        >{data.meta.title}{data.meta.journal
+          ? `, ${data.meta.journal}`
+          : ""}</H1
+      >
     </div>
 
     <Pair justify="end">
@@ -313,13 +317,16 @@
         <Figure
           src={data.schemeUrl}
           alt="{data.meta.title} scheme"
-          styleVars={{ 'margin-bottom': '0px' }}
+          styleVars={{ "margin-bottom": "0px" }}
         />
         {#if data.meta.license}
-          <CopyrightOverlay license={data.meta.license} journal={data.meta.journal} doi="https://doi.org/{data.meta.DOI}" />
+          <CopyrightOverlay
+            license={data.meta.license}
+            journal={data.meta.journal}
+            doi="https://doi.org/{data.meta.DOI}"
+          />
         {/if}
       </div>
-      
     {/if}
   </Section>
 {/if}
@@ -406,13 +413,13 @@
           plugins={mdPlugins}
         />
       {/if}
-      
+
       <Accordion title="Figures">
         {#each paperFigures as fig (fig.src)}
           <Accordion title={fig.title}>
             <Image
               src={fig.src}
-              alt="Page figure"
+              alt={fig.title}
             />
           </Accordion>
         {/each}
@@ -484,13 +491,12 @@
     width: 100%;
   }
 
-
   .scheme-wrapper {
+    display: block;
     position: relative;
+    margin: 0 auto;
     width: fit-content;
     width: -moz-fit-content;
-    margin: 0 auto;
-    display: block;
     max-width: 100%;
   }
 </style>

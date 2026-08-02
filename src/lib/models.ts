@@ -1,4 +1,4 @@
-import { buildableSlugs } from "./loadModel";
+import { buildableSlugs } from "./modelSlugs";
 import type { ModelMeta } from "./types";
 
 // Auto-discover models from their co-located files. A model is only listed when
