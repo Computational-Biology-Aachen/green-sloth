@@ -79,7 +79,8 @@ async function collectOccurrences(): Promise<Occurrence[]> {
     for (const category of CATEGORIES) {
       const map = getMap(model, category);
       if (!map) continue;
-      for (const id of map.keys()) occurrences.push({ model: slug, category, id });
+      for (const id of map.keys())
+        occurrences.push({ model: slug, category, id });
     }
   }
   return occurrences;
@@ -157,9 +158,7 @@ function editModelFile(
     ts.ScriptKind.TS,
   );
 
-  const remaining = new Map(
-    edits.map((e) => [`${e.category}:${e.id}`, e]),
-  );
+  const remaining = new Map(edits.map((e) => [`${e.category}:${e.id}`, e]));
   const insertions: { pos: number; text: string }[] = [];
 
   function visit(node: ts.Node): void {
@@ -169,7 +168,9 @@ function editModelFile(
       node.arguments.length >= 2
     ) {
       const category = CATEGORIES.find(
-        (c) => ADD_METHOD[c] === (node.expression as ts.PropertyAccessExpression).name.text,
+        (c) =>
+          ADD_METHOD[c] ===
+          (node.expression as ts.PropertyAccessExpression).name.text,
       );
       const [firstArg, secondArg] = node.arguments;
       if (
@@ -209,7 +210,8 @@ function editModelFile(
     const importRegex = /^import .*;\n/gm;
     let lastImportEnd = 0;
     let m: RegExpExecArray | null;
-    while ((m = importRegex.exec(source))) lastImportEnd = m.index + m[0].length;
+    while ((m = importRegex.exec(source)))
+      lastImportEnd = m.index + m[0].length;
     source =
       source.slice(0, lastImportEnd) +
       `import names from "$lib/names";\n` +
@@ -226,7 +228,9 @@ function applyGroups(groups: Group[]): void {
     (g) => g.key.trim() !== "" && g.displayName.trim() !== "",
   );
   if (accepted.length === 0) {
-    console.log("no groups with both key and displayName filled in — nothing to do");
+    console.log(
+      "no groups with both key and displayName filled in — nothing to do",
+    );
     return;
   }
   mergeNames(accepted);
@@ -249,7 +253,9 @@ function applyGroups(groups: Group[]): void {
     if (path) touched.push(path);
   }
 
-  execFileSync("npx", ["prettier", "--write", ...touched], { stdio: "inherit" });
+  execFileSync("npx", ["prettier", "--write", ...touched], {
+    stdio: "inherit",
+  });
 }
 
 async function main(): Promise<void> {

@@ -53,7 +53,9 @@ const s = parseSections(body);
 
 const slug = require_(s, "Slug").trim();
 if (!/^[a-z0-9_]+$/.test(slug)) {
-  throw new Error(`invalid slug "${slug}" — use lowercase letters, digits, underscores`);
+  throw new Error(
+    `invalid slug "${slug}" — use lowercase letters, digits, underscores`,
+  );
 }
 
 const format = require_(s, "Model format").toLowerCase();

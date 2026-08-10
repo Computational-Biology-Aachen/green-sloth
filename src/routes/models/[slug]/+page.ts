@@ -13,11 +13,14 @@ const mdModules = import.meta.glob("../../../lib/models/*/*.md", {
   query: "?raw",
   import: "default",
 });
-const schemeModules = import.meta.glob("../../../lib/models/*/scheme.{svg,png,jpg,jpeg,webp,gif,avif}", {
-  query: "?url",
-  import: "default",
-  eager: true,
-}) as Record<string, string>;
+const schemeModules = import.meta.glob(
+  "../../../lib/models/*/scheme.{svg,png,jpg,jpeg,webp,gif,avif}",
+  {
+    query: "?url",
+    import: "default",
+    eager: true,
+  },
+) as Record<string, string>;
 
 function slugOf(path: string): string | undefined {
   return path.match(/\/models\/([^/]+)\//)?.[1];

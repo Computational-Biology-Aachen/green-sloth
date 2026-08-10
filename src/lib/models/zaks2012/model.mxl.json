@@ -727,10 +727,15 @@
       "LightIntensity": {
         "value": {
           "type": "Num",
-          "value": 0
+          "value": 100
         },
         "displayName": "PPFD",
-        "texName": "LightIntensity"
+        "texName": "LightIntensity",
+        "slider": {
+          "min": "0",
+          "max": "1000",
+          "step": "100"
+        }
       },
       "P680neut": {
         "value": {

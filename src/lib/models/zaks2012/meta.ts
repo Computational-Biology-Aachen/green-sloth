@@ -27,7 +27,14 @@ export const meta: ModelMeta = {
       title: "Time course",
       tEnd: 100,
       nTimePoints: 500,
-      variables: ["fluorescenceyield", "pH_lumen", "Zeaxanthin", "ATP", "Fd_ox", "P700r"],
+      variables: [
+        "fluorescenceyield",
+        "pH_lumen",
+        "Zeaxanthin",
+        "ATP",
+        "Fd_ox",
+        "P700r",
+      ],
       showDerived: true,
       // Variables span several orders of magnitude; auto-split them into
       // per-magnitude subplots so small-valued species stay readable.

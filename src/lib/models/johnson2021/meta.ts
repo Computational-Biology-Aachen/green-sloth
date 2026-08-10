@@ -8,8 +8,16 @@ export const meta: ModelMeta = {
   license: "© CC BY 4.0",
   journal: "Photosynth. Res.",
   tags: {
-    "Part of Photosynthesis": ["PSII", "ATP Synthase", "Cytochrome b6f", "PQ Cycle",
-                              "PC", "PSI", "CBB Cycle", "Photorespiration"],
+    "Part of Photosynthesis": [
+      "PSII",
+      "ATP Synthase",
+      "Cytochrome b6f",
+      "PQ Cycle",
+      "PC",
+      "PSI",
+      "CBB Cycle",
+      "Photorespiration",
+    ],
     "Model type": ["Steady State"],
     "Explains data": ["Gas exchange"],
     Organism: ["Generic C3 plant"],
