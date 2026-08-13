@@ -21,7 +21,7 @@ GreenSloth's own build pipeline reproduces.
 ## 3. Rationale
 
 Emscripten is a heavy, non-trivial build dependency (a full LLVM-based toolchain) that
-consumer sites shouldn't need just to run a site that *uses* the solver — only
+consumer sites shouldn't need just to run a site that _uses_ the solver — only
 `mxlweb-core` itself, where the C source lives and changes, needs it. Every site
 built on `mxlweb-core` would otherwise duplicate an Emscripten setup for a build step
 whose output changes only when `mxlweb-core`'s WASM source changes, not per-site.

@@ -39,7 +39,7 @@ actually builds — not an artifact that could silently diverge from a stale com
 The parity gate exists because the whole point of `.mxl.json` is that it's what
 end-user contributions (see [ADR 0003](0003-issue-to-model-contribution-pipeline.md))
 and the runtime loader consume — a silent lossy conversion from `model.ts` to JSON would
-mean the site simulates a *different* model than the one reviewed in the contributor's
+mean the site simulates a _different_ model than the one reviewed in the contributor's
 PR. Byte-identical codegen comparison is a strong, mechanical way to catch that class of
 bug before it's committed, rather than trusting the conversion by inspection.
 
