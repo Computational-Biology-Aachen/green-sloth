@@ -30,7 +30,6 @@ const config = {
       precompress: false,
       strict: true,
     }),
-    },
     version: {
       // Poll for new deploys so long-lived tabs upgrade proactively instead of
       // only recovering reactively after a failed navigation.
