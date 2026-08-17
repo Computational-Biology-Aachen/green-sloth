@@ -30,8 +30,6 @@ const config = {
       precompress: false,
       strict: true,
     }),
-    paths: {
-      base: process.argv.includes("dev") ? "" : "/green-sloth",
     },
     version: {
       // Poll for new deploys so long-lived tabs upgrade proactively instead of
