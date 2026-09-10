@@ -263,15 +263,15 @@
           <Icon>download</Icon> Download
         {/snippet}
         {#if model instanceof KineticModelBuilder}
-          <ButtonMenuItem onclick={saveModel}>SBML</ButtonMenuItem>
-          <ButtonMenuItem onclick={saveMxlpy}>MxlPy</ButtonMenuItem>
+          <ButtonMenuItem onclick={saveModel} --text="var(--color-text)">SBML</ButtonMenuItem>
+          <ButtonMenuItem onclick={saveMxlpy} --text="var(--color-text)">MxlPy</ButtonMenuItem>
         {/if}
         {#if model instanceof SteadyStateModelBuilder}
-          <ButtonMenuItem onclick={saveMxlpy}>MxlPy</ButtonMenuItem>
+          <ButtonMenuItem onclick={saveMxlpy} --text="var(--color-text)">MxlPy</ButtonMenuItem>
         {/if}
-        <ButtonMenuItem onclick={saveMxlJson}>mxl.json</ButtonMenuItem>
-        <ButtonMenuItem onclick={saveMxlweb}>mxlweb</ButtonMenuItem>
-        <ButtonMenuItem onclick={savePython}>Python</ButtonMenuItem>
+        <ButtonMenuItem onclick={saveMxlJson} --text="var(--color-text)">mxl.json</ButtonMenuItem>
+        <ButtonMenuItem onclick={saveMxlweb} --text="var(--color-text)">mxlweb</ButtonMenuItem>
+        <ButtonMenuItem onclick={savePython} --text="var(--color-text)">Python</ButtonMenuItem>
       </ButtonMenu>
     </Pair>
   </Row>
