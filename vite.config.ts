@@ -73,8 +73,12 @@ export default defineConfig({
   optimizeDeps: {
     exclude: [
       "@computational-biology-aachen/design",
-      "@computational-biology-aachen/mxlweb-core",
+      // "@computational-biology-aachen/mxlweb-core",
     ],
+    include: [
+      "ajv",
+      "ajv/dist/2020"
+    ]
   },
   server: {
     port: 5177,
