@@ -23,10 +23,8 @@ const designNodeModules = new URL(
   "../../pkg-js/design/node_modules",
   import.meta.url,
 ).pathname;
-const designSrc = new URL(
-  "../../pkg-js/design/src/lib",
-  import.meta.url,
-).pathname;
+const designSrc = new URL("../../pkg-js/design/src/lib", import.meta.url)
+  .pathname;
 
 const MIME: Record<string, string> = {
   ".js": "application/javascript",
