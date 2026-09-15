@@ -19,9 +19,14 @@ const coreStatic = join(
 // on (e.g. katex, for its fonts) can resolve to ../design's own nested
 // node_modules rather than this project's — which SvelteKit's dev server
 // doesn't allow serving from by default. Allow it explicitly when present.
-const designNodeModules = new URL("../design/node_modules", import.meta.url)
-  .pathname;
-const designSrc = new URL("../design/src/lib", import.meta.url).pathname;
+const designNodeModules = new URL(
+  "../../pkg-js/design/node_modules",
+  import.meta.url,
+).pathname;
+const designSrc = new URL(
+  "../../pkg-js/design/src/lib",
+  import.meta.url,
+).pathname;
 
 const MIME: Record<string, string> = {
   ".js": "application/javascript",
@@ -75,6 +80,13 @@ export default defineConfig({
       "@computational-biology-aachen/design",
       "@computational-biology-aachen/mxlweb-core",
     ],
+    // mxlweb-core statically imports ajv/dist/2020.js (CJS). Because
+    // mxlweb-core itself is excluded above (so live-linked source edits
+    // aren't stale-cached), Vite never crawls into it to auto-discover
+    // that import, so ajv is never pre-bundled/converted to ESM and the
+    // dev server tries to serve raw CJS as a native ES module. Force it
+    // in explicitly instead.
+    include: ["ajv", "ajv/dist/2020.js"],
   },
   server: {
     port: 5177,
