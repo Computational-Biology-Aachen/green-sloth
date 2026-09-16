@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-15T18:42:19Z",
+  "title": "Design System: GreenSloth",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Deep Petrol",
+        "canonical": "rgb(0, 97, 101)",
+        "tonalRamp": [
+          "#00494c",
+          "#00898f",
+          "#00c4cc",
+          "#0af5ff",
+          "#47f8ff",
+          "#85faff",
+          "#b8fcff",
+          "#e5feff"
+        ]
+      },
+      "accent": {
+        "role": "tertiary",
+        "displayName": "Signal Orange",
+        "canonical": "rgb(246, 168, 0)",
+        "tonalRamp": [
+          "#4c3400",
+          "#8f6200",
+          "#cc8b00",
+          "#ffb10a",
+          "#ffc547",
+          "#ffd885",
+          "#ffe8b8",
+          "#fff7e5"
+        ]
+      },
+      "chart-violet": {
+        "role": "chart-series",
+        "displayName": "Chart Violet",
+        "canonical": "rgb(97, 33, 88)"
+      },
+      "chart-blue": {
+        "role": "chart-series",
+        "displayName": "Chart Blue",
+        "canonical": "rgb(0, 84, 159)"
+      },
+      "chart-magenta": {
+        "role": "chart-series",
+        "displayName": "Chart Magenta",
+        "canonical": "rgb(227, 0, 102)"
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "Off-White",
+        "canonical": "#f6f6f8"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#ffffff"
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Hairline Border",
+        "canonical": "#dde1e9"
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Ink Black",
+        "canonical": "#1a1d23"
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Muted Grey",
+        "canonical": "#727682"
+      },
+      "sim-error": {
+        "role": "semantic",
+        "displayName": "Sim Error",
+        "canonical": "#c0392b",
+        "tonalRamp": [
+          "#3a110d",
+          "#6f211a",
+          "#a53228",
+          "#c0392b",
+          "#d16657",
+          "#e0938a",
+          "#efc1bc",
+          "#f8e2df"
+        ]
+      },
+      "sim-warning": {
+        "role": "semantic",
+        "displayName": "Sim Warning",
+        "canonical": "#e07b00",
+        "tonalRamp": [
+          "#442600",
+          "#804700",
+          "#bc6900",
+          "#e07b00",
+          "#eb9c3d",
+          "#f3bd7f",
+          "#f8dcb8",
+          "#fcefde"
+        ]
+      }
+    },
+    "shadows": [
+      {
+        "name": "card-model-hover",
+        "value": "2px 5px 12px 0 rgba(0,0,0,0.15), 2px 2px 6px 0 rgb(0 97 101 / 40%)",
+        "purpose": "CardModel hover — neutral lift shadow combined with the shared brand-glow, distinct from Card's scale-only hover."
+      }
+    ],
+    "motion": [
+      {
+        "name": "card-model-hover-lift",
+        "value": "transform: translateY(-3px); transition: transform 150ms, box-shadow 150ms;",
+        "purpose": "CardModel's hover treatment — a lift, not Card's scale(1.03)."
+      },
+      {
+        "name": "apparatus-filter-fade",
+        "value": "filter: grayscale(1) opacity(0.5); transition: filter 150ms ease;",
+        "purpose": "Apparatus scheme default state; filter: none when selected."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "CardModel",
+      "kind": "card",
+      "refersTo": "card-model",
+      "description": "Model gallery card — scheme image or biotech-icon placeholder, optional license badge, 16px radius, lift-and-glow hover. Local fork of the shared Card, scoped to the model gallery only.",
+      "html": "<a href=\"#\" class=\"ds-card-model\"><div class=\"ds-card-model-media\"><div class=\"ds-card-model-fallback\"><span>⚛</span></div><span class=\"ds-card-model-badge\">© CC BY 4.0 - BBA Bioenerg.</span></div><div class=\"ds-card-model-label\">Matuszynska 2016, BBA Bioenerg.</div></a>",
+      "css": ".ds-card-model { display: flex; flex-direction: column; transition: transform 150ms, box-shadow 150ms; box-shadow: 1px 1px 3px 0 rgba(0,0,0,0.08); border-radius: 1rem; background: #ffffff; overflow: hidden; color: rgb(15 23 42); text-decoration: none; } .ds-card-model:hover { transform: translateY(-3px); box-shadow: 2px 5px 12px 0 rgba(0,0,0,0.15), 2px 2px 6px 0 rgb(0 97 101 / 40%); color: rgb(0, 97, 101); } .ds-card-model-media { position: relative; height: 160px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(100,116,139,0.8) 0%, rgba(15,23,42,0.8) 100%); } .ds-card-model-fallback span { color: rgba(255,255,255,0.85); font-size: 3rem; } .ds-card-model-badge { position: absolute; bottom: 0; left: 0; border-top-right-radius: 12px; background-color: rgba(0,0,0,0.7); padding: 2px 8px; max-width: 85%; color: #fff; font-size: 0.75rem; white-space: nowrap; } .ds-card-model-label { padding: 0.75rem 1rem; font-weight: 500; font-size: 0.875rem; font-family: 'Space Grotesk', system-ui, sans-serif; }"
+    },
+    {
+      "name": "Apparatus Filter Toggle",
+      "kind": "custom",
+      "refersTo": "apparatus-toggle",
+      "description": "One selectable part of the interactive photosynthesis apparatus scheme — greyscale/dimmed by default, full illustration color when its matching tag is active. Illustration colors are one-off per part, not design tokens.",
+      "html": "<svg width=\"120\" height=\"120\" viewBox=\"0 0 120 120\"><g class=\"ds-apparatus\" tabindex=\"0\" role=\"button\" aria-pressed=\"false\"><ellipse cx=\"60\" cy=\"60\" rx=\"40\" ry=\"50\" fill=\"#5fad56\" stroke=\"#fff\" stroke-width=\"3\" /><text x=\"60\" y=\"64\" text-anchor=\"middle\" font-family=\"Arial\" font-size=\"16\" font-weight=\"bold\">PSII</text></g></svg>",
+      "css": ".ds-apparatus { filter: grayscale(1) opacity(0.5); transition: filter 150ms ease; cursor: pointer; } .ds-apparatus:hover { filter: grayscale(0.5) opacity(0.85); } .ds-apparatus[aria-pressed=\"true\"] { filter: none; } .ds-apparatus[aria-pressed=\"true\"]:hover { filter: brightness(0.95); } .ds-apparatus:focus-visible { outline: 2px solid rgb(0, 97, 101); outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Journal Figure (inherited from @computational-biology-aachen/design; see pkg-js/design/.impeccable/design.json for the full system)",
+    "overview": "GreenSloth has no visual identity of its own — it consumes the CPBL Design System's tokens and Svelte components directly. This sidecar records only what's local to GreenSloth: two component extensions (CardModel, the apparatus filter toggle) and two semantic colors (sim-error, sim-warning) that the shared package doesn't define. Everything else — buttons, cards, inputs, nav, sections, charts — renders exactly as specified in the shared package's own DESIGN.md and sidecar.",
+    "keyCharacteristics": [
+      "CardModel: 16px radius + lift-and-glow hover, versus the shared Card's 8px radius + scale(1.03).",
+      "The apparatus scheme is greyscale-until-selected — the one place illustration color, not brand color, carries meaning.",
+      "sim-error/sim-warning are GreenSloth-only semantic colors for simulation failure states, separate from the shared package's single danger color."
+    ],
+    "rules": [
+      {
+        "name": "The Greyscale-Until-Selected Rule",
+        "body": "Any diagram-based filter control defaults to desaturated/dimmed and restores full color only on selection.",
+        "section": "components"
+      },
+      {
+        "name": "The Illustration-Is-Not-Chrome Rule",
+        "body": "The apparatus scheme's per-part fill colors are a biological-illustration palette, not design tokens, and must never be reused as UI chrome.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do use LineChart/LineChartGrid and the shared chart-series colors for every model plot.",
+      "Do keep CardModel scoped to the model gallery grid only.",
+      "Do default any new diagram-based filter control to greyscale, restoring color only on selection (The Greyscale-Until-Selected Rule)."
+    ],
+    "donts": [
+      "Don't promote the apparatus scheme's illustration colors to design tokens or UI chrome (The Illustration-Is-Not-Chrome Rule).",
+      "Don't fork another shared component without a documented, page-specific gap the way CardModel forks Card.",
+      "Don't add a third simulation-status color before checking sim-error/sim-warning."
+    ]
+  }
+}
