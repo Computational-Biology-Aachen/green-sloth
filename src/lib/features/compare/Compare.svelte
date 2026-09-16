@@ -27,24 +27,53 @@
   let slugA = $state(modelNames[0]);
   let slugB = $state(modelNames[1] ?? modelNames[0]);
 
+  // The client router finishes initializing slightly after the component
+  // tree's own onMount hooks fire on the very first load (its readiness
+  // isn't tied to Svelte's own mount/effect flush), so replaceState() below
+  // still throws if called synchronously from onMount. A macrotask delay
+  // guarantees we're scheduled after that startup sequence has resolved.
+  let routerReady = $state(false);
+
   // searchParams is off-limits during prerender, so adopt any ?a/?b selection
   // once we're in the browser.
   onMount(() => {
     slugA = validSlug(page.url.searchParams.get("a"), slugA);
     slugB = validSlug(page.url.searchParams.get("b"), slugB);
+    const timer = setTimeout(() => {
+      routerReady = true;
+    }, 0);
+    return () => clearTimeout(timer);
   });
 
   // Keep the URL in sync so a comparison is shareable, without spamming history.
   $effect(() => {
-    if (!browser) return;
+    if (!browser || !routerReady) return;
     const url = new URL(page.url);
     url.searchParams.set("a", slugA);
     url.searchParams.set("b", slugB);
     if (url.href !== page.url.href) replaceState(url, {});
   });
 
-  const modelA = $derived(buildModel(slugA));
-  const modelB = $derived(buildModel(slugB));
+  // Loaded asynchronously (each model is its own code-split chunk) rather than
+  // via $derived, so switching slugA/slugB doesn't have to wait for every
+  // model in the catalog to already be in the bundle. null while loading;
+  // every downstream read already treats a model as possibly absent.
+  let modelA = $state<ModelBuilderBase | null>(null);
+  let modelB = $state<ModelBuilderBase | null>(null);
+
+  $effect(() => {
+    const slug = slugA;
+    buildModel(slug).then((m) => {
+      if (slug === slugA) modelA = m;
+    });
+  });
+
+  $effect(() => {
+    const slug = slugB;
+    buildModel(slug).then((m) => {
+      if (slug === slugB) modelB = m;
+    });
+  });
 
   // A "shared" pair may have differently-spelled raw ids (e.g. "ATP" vs
   // "atp") that resolve to the same names.ts displayName; both are kept so
@@ -257,6 +286,7 @@
         type="search"
         class="filter"
         placeholder="Filter {detail.label.toLowerCase()}…"
+        aria-label="Filter {detail.label.toLowerCase()}"
         bind:value={queries[detail.key]}
       />
     </Row>
@@ -324,7 +354,7 @@
   .picker span {
     color: var(--color-text-muted);
     font-weight: var(--weight-semibold);
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     letter-spacing: 0.05em;
     text-transform: uppercase;
   }
@@ -348,7 +378,7 @@
     max-width: 320px;
     color: inherit;
     font: inherit;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
   }
 
   .table-wrap {
@@ -358,7 +388,7 @@
   table {
     border-collapse: collapse;
     width: 100%;
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
   }
 
   th,
@@ -393,7 +423,7 @@
   .bucket-head {
     margin: 0 0 var(--space-2);
     font-weight: var(--weight-semibold);
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
   }
 
   .bucket ul {
@@ -406,7 +436,7 @@
   }
 
   .bucket li {
-    font-size: 0.8rem;
+    font-size: var(--text-callout);
     font-family: var(--font-mono);
     word-break: break-all;
   }
@@ -422,6 +452,6 @@
 
   .note {
     color: var(--color-text-muted);
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
   }
 </style>

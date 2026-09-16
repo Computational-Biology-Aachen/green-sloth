@@ -275,7 +275,7 @@
 
   .axis-label {
     fill: var(--color-text-muted);
-    font-size: 12px;
+    font-size: var(--text-callout);
     font-family: var(--font-sans);
   }
 

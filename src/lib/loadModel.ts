@@ -8,8 +8,10 @@
  *      `model.ts` via `npm run generate:mxl`). The format the app normally loads.
  *   3. `model.sbml`     — SBML, for models contributed in the field standard.
  *
- * The globs are eager so a model builds synchronously at call sites (prerender
- * and client alike), matching the previous `model.ts`-only loading.
+ * The globs are lazy: each model's file becomes its own chunk, so building one
+ * model only ever downloads that model's code/data, not the whole catalog.
+ * Callers await `buildModel()` from a place that can wait for it (a route's
+ * `load()`, or an effect) rather than a plain `$derived`.
  */
 import {
   KineticModelBuilder,
@@ -18,19 +20,18 @@ import {
 import { mxlJsonToModel } from "@computational-biology-aachen/mxlweb-core/mxl";
 import { sbmlToModel } from "@computational-biology-aachen/mxlweb-core/sbml";
 
-const jsonModules = import.meta.glob("$lib/models/*/model.mxl.json", {
-  eager: true,
+const jsonLoaders = import.meta.glob("$lib/models/*/model.mxl.json", {
   query: "?raw",
   import: "default",
-}) as Record<string, string>;
-const sbmlModules = import.meta.glob("$lib/models/*/model.sbml", {
-  eager: true,
+}) as Record<string, () => Promise<string>>;
+const sbmlLoaders = import.meta.glob("$lib/models/*/model.sbml", {
   query: "?raw",
   import: "default",
-}) as Record<string, string>;
-const tsModules = import.meta.glob("$lib/models/*/model.ts", {
-  eager: true,
-}) as Record<string, { initModel: () => KineticModelBuilder }>;
+}) as Record<string, () => Promise<string>>;
+const tsLoaders = import.meta.glob("$lib/models/*/model.ts") as Record<
+  string,
+  () => Promise<{ initModel: () => KineticModelBuilder }>
+>;
 
 const slugOf = (path: string): string | undefined =>
   path.match(/\/models\/([^/]+)\//)?.[1];
@@ -44,23 +45,25 @@ function indexBySlug<T>(modules: Record<string, T>): Map<string, T> {
   return out;
 }
 
-const jsonBySlug = indexBySlug(jsonModules);
-const sbmlBySlug = indexBySlug(sbmlModules);
-const tsBySlug = indexBySlug(tsModules);
+const jsonBySlug = indexBySlug(jsonLoaders);
+const sbmlBySlug = indexBySlug(sbmlLoaders);
+const tsBySlug = indexBySlug(tsLoaders);
 
 /**
  * Build a model's {@link KineticModelBuilder}, preferring code over data formats.
- * Returns `null` for an unknown slug (no model file in any format).
+ * Resolves to `null` for an unknown slug (no model file in any format).
  */
-export function buildModel(slug: string): ModelBuilderBase | null {
+export async function buildModel(
+  slug: string,
+): Promise<ModelBuilderBase | null> {
   const ts = tsBySlug.get(slug);
-  if (ts !== undefined) return ts.initModel();
+  if (ts !== undefined) return (await ts()).initModel();
 
   const json = jsonBySlug.get(slug);
-  if (json !== undefined) return mxlJsonToModel(json);
+  if (json !== undefined) return mxlJsonToModel(await json());
 
   const sbml = sbmlBySlug.get(slug);
-  if (sbml !== undefined) return sbmlToModel(sbml);
+  if (sbml !== undefined) return sbmlToModel(await sbml());
 
   return null;
 }

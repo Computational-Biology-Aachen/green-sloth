@@ -65,7 +65,7 @@
     /* border-radius: 0 var(--round, 4px) var(--round, 4px) 0; */
     background: color-mix(in srgb, var(--color-error, #c0392b) 8%, transparent);
     padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
   }
 
   .error-msg {

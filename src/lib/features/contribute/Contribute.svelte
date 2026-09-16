@@ -170,12 +170,14 @@ export const meta: ModelMeta = {
     class="file"
     rows="10"
     bind:value={modelSource}
+    aria-label="Model source"
     placeholder={format === "sbml"
       ? "Paste your SBML (model.sbml) here…"
       : "Paste your model.mxl.json here…"}></textarea>
   <input
     type="file"
     accept=".json,.xml,.sbml"
+    aria-label="Upload model file"
     onchange={onFile}
   />
 
@@ -313,7 +315,7 @@ export const meta: ModelMeta = {
     border-radius: var(--radius-md, 6px);
     padding: var(--space-2, 8px);
     width: 100%;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     font-family: var(--font-mono, monospace);
   }
   .actions {

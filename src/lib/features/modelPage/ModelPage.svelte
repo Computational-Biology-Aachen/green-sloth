@@ -5,7 +5,6 @@
   import ModelTables from "$lib/components/KineticModelTables.svelte";
   import SSModelDashboard from "$lib/components/SSModelDashboard.svelte";
   import SSModelTables from "$lib/components/SSModelTables.svelte";
-  import { buildModel } from "$lib/loadModel";
   import type { ModelMeta } from "$lib/types";
   import {
     Accordion,
@@ -46,7 +45,6 @@
     SteadyStateModelBuilder,
   } from "@computational-biology-aachen/mxlweb-core";
   import { modelToSbml } from "@computational-biology-aachen/mxlweb-core/sbml";
-  import { error } from "@sveltejs/kit";
   import rehypeKatex from "rehype-katex";
   import remarkMath from "remark-math";
   import Markdown, { type Plugin } from "svelte-exmarkdown";
@@ -61,6 +59,7 @@
       desc: string | null;
       changes: string | null;
       curatornotes: string | null;
+      model: ModelBuilderBase;
     };
   } = $props();
 
@@ -131,15 +130,7 @@
   const repo = "https://github.com/Computational-Biology-Aachen/green-sloth";
   const editUrl = $derived(`${repo}/tree/main/src/lib/models/${data.slug}`);
 
-  function initFor(slug: string): ModelBuilderBase {
-    const model = buildModel(slug);
-    if (model === null) {
-      error(404, `Model "${slug}" not found`);
-    }
-    return model;
-  }
-
-  const model = $derived(initFor(data.slug));
+  const model = $derived(data.model);
 
   const curationHistory = $derived(
     [...data.meta.contributors].sort(
@@ -263,15 +254,33 @@
           <Icon>download</Icon> Download
         {/snippet}
         {#if model instanceof KineticModelBuilder}
-          <ButtonMenuItem onclick={saveModel} --text="var(--color-text)">SBML</ButtonMenuItem>
-          <ButtonMenuItem onclick={saveMxlpy} --text="var(--color-text)">MxlPy</ButtonMenuItem>
+          <ButtonMenuItem
+            onclick={saveModel}
+            --text="var(--color-text)">SBML</ButtonMenuItem
+          >
+          <ButtonMenuItem
+            onclick={saveMxlpy}
+            --text="var(--color-text)">MxlPy</ButtonMenuItem
+          >
         {/if}
         {#if model instanceof SteadyStateModelBuilder}
-          <ButtonMenuItem onclick={saveMxlpy} --text="var(--color-text)">MxlPy</ButtonMenuItem>
+          <ButtonMenuItem
+            onclick={saveMxlpy}
+            --text="var(--color-text)">MxlPy</ButtonMenuItem
+          >
         {/if}
-        <ButtonMenuItem onclick={saveMxlJson} --text="var(--color-text)">mxl.json</ButtonMenuItem>
-        <ButtonMenuItem onclick={saveMxlweb} --text="var(--color-text)">mxlweb</ButtonMenuItem>
-        <ButtonMenuItem onclick={savePython} --text="var(--color-text)">Python</ButtonMenuItem>
+        <ButtonMenuItem
+          onclick={saveMxlJson}
+          --text="var(--color-text)">mxl.json</ButtonMenuItem
+        >
+        <ButtonMenuItem
+          onclick={saveMxlweb}
+          --text="var(--color-text)">mxlweb</ButtonMenuItem
+        >
+        <ButtonMenuItem
+          onclick={savePython}
+          --text="var(--color-text)">Python</ButtonMenuItem
+        >
       </ButtonMenu>
     </Pair>
   </Row>
@@ -469,7 +478,7 @@
 
   .doi {
     color: rgba(255, 255, 255, 0.8);
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     word-break: break-all;
   }
 
@@ -479,7 +488,7 @@
     background: rgba(255, 255, 255, 0.15);
     padding: 0.15em 0.6em;
     color: rgba(255, 255, 255, 0.9);
-    font-size: 0.75rem;
+    font-size: var(--text-callout);
     white-space: nowrap;
   }
 

@@ -166,7 +166,7 @@
     max-width: 85%;
     pointer-events: none;
     color: white;
-    font-size: 0.75rem;
+    font-size: var(--text-callout);
     white-space: nowrap;
   }
 </style>

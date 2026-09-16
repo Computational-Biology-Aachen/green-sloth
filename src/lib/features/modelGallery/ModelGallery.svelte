@@ -243,6 +243,15 @@
           onclick={() => toggle(APP_CAT, "OEC")}
           onkeydown={(e) => onApparatusKey(e, "OEC")}
         >
+          <!-- Invisible, oversized hit area: the visible shape below is
+               smaller than a 44px touch target at mobile widths. -->
+          <ellipse
+            cx="34.445"
+            cy="90.412"
+            rx="13.3"
+            ry="13.3"
+            fill="transparent"
+          />
           <ellipse
             cx="34.445"
             cy="90.412"
@@ -403,6 +412,13 @@
           onkeydown={(e) => onApparatusKey(e, "ATP Synthase")}
         >
           <rect
+            x="164.426"
+            y="73.945"
+            width="27"
+            height="38.661"
+            fill="transparent"
+          />
+          <rect
             x="168.08"
             y="73.945"
             width="19.692"
@@ -560,6 +576,13 @@
           <ellipse
             cx="146.73"
             cy="67.026"
+            rx="13.3"
+            ry="13.3"
+            fill="transparent"
+          />
+          <ellipse
+            cx="146.73"
+            cy="67.026"
             rx="8.4889"
             ry="5.2234"
             fill="#f2c14e"
@@ -593,6 +616,13 @@
           onclick={() => toggle(APP_CAT, "PQ Cycle")}
           onkeydown={(e) => onApparatusKey(e, "PQ Cycle")}
         >
+          <rect
+            x="32.166"
+            y="134.348"
+            width="27"
+            height="27"
+            fill="transparent"
+          />
           <rect
             x="37.12"
             y="140.06"
@@ -634,6 +664,13 @@
           onclick={() => toggle(APP_CAT, "PC")}
           onkeydown={(e) => onApparatusKey(e, "PC")}
         >
+          <rect
+            x="32.166"
+            y="134.901"
+            width="27"
+            height="27"
+            fill="transparent"
+          />
           <rect
             x="33.235"
             y="140.26"
@@ -691,6 +728,7 @@
       type="search"
       class="filter"
       placeholder="Filter models…"
+      aria-label="Filter models"
       bind:value={query}
     />
     {#if import.meta.env.DEV}
@@ -738,7 +776,7 @@
     margin: 0;
     color: var(--color-text-muted);
     font-weight: var(--weight-semibold);
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     letter-spacing: 0.05em;
     text-transform: uppercase;
   }

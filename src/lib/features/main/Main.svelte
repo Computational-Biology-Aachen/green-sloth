@@ -1,16 +1,16 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import greenslothLogo from "$lib/assets/greensloth-logo.svg";
+  import CopyButton from "$lib/components/CopyButton.svelte";
   import {
+    Bold,
     Button,
     H1,
     H2,
+    Row,
     Section,
     Text,
-    Row,
-    Bold,
   } from "@computational-biology-aachen/design";
-  import CopyButton from "$lib/components/CopyButton.svelte";
 
   let citationText =
     "GreenSloth: a curated database and executable platform for mechanistic photosynthesis models. Elouen Corvest, Marvin van Aalst, Tim Nies, Quang Huy Nguyen, Josha Ebeling, Maja Strauch, El-Hadji Malick Cisse, Tanvir Hassan, Anna Matuszyńska. bioRxiv 2026.07.22.740007; doi: https://doi.org/10.64898/2026.07.22.740007";
@@ -27,7 +27,7 @@
 </svelte:head>
 
 <!-- Slide 1: Hero -->
-<Section>
+<Section variant="light">
   <div class="hero-inner">
     <img
       src={greenslothLogo}

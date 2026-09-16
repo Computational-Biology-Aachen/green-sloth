@@ -199,7 +199,7 @@
     background-color: transparent;
     padding: 0.35rem 0.5rem;
     width: 100%;
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
   }
   label {
     white-space: nowrap;

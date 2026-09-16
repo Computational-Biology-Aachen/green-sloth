@@ -1,3 +1,4 @@
+import { buildModel } from "$lib/loadModel";
 import { modelNames, models } from "$lib/models";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
@@ -45,11 +46,15 @@ export const load: PageLoad = async ({ params }) => {
     return (await mdModules[key]()) as string;
   }
 
-  const [desc, changes, curatornotes] = await Promise.all([
+  const [desc, changes, curatornotes, model] = await Promise.all([
     loadMd("model.md"),
     loadMd("changes.md"),
     loadMd("curatornotes.md"),
+    buildModel(slug),
   ]);
+  // models only contains slugs with a loadable model file, so this should
+  // never fail, but buildModel's own contract can still return null.
+  if (!model) error(404, `Model "${slug}" not found`);
 
-  return { slug, meta, schemeUrl, desc, changes, curatornotes };
+  return { slug, meta, schemeUrl, desc, changes, curatornotes, model };
 };

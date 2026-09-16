@@ -1,11 +1,10 @@
 /**
  * Enumerates which model slugs ship a loadable file, without loading the
- * files themselves. Deliberately does not import `loadModel.ts`: that module's
- * `buildModel()` needs the actual eager model data (~2MB across all models),
- * and importing anything from that file pulls the whole module — data
- * included — into every chunk that needs it. Pages that only need the slug
- * list (model gallery, about page's contributor list, prerender `entries()`)
- * import `buildableSlugs` from here instead, so they stay free of that data.
+ * files themselves. Deliberately does not import `loadModel.ts`: even though
+ * that module's own globs are lazy, pages that only need the slug list
+ * (model gallery, about page's contributor list, prerender `entries()`)
+ * shouldn't have to pull in `buildModel()` and its per-model loader map just
+ * to ask "which slugs exist" — this file answers that from path keys alone.
  */
 const jsonPaths = import.meta.glob("$lib/models/*/model.mxl.json");
 const sbmlPaths = import.meta.glob("$lib/models/*/model.sbml");

@@ -36,6 +36,13 @@
   />
 </svelte:head>
 
+<a
+  href="#main-content"
+  class="skip-link"
+>
+  Skip to content
+</a>
+
 <Navbar>
   {#snippet brand()}
     <a
@@ -61,9 +68,14 @@
   <NavGH href="https://github.com/Computational-Biology-Aachen/green-sloth" />
 </Navbar>
 
-{@render children()}
+<main id="main-content">
+  {@render children()}
+</main>
 
-<Imprint github="https://github.com/Computational-Biology-Aachen/green-sloth" />
+<Imprint
+  github="https://github.com/Computational-Biology-Aachen/green-sloth"
+  width="narrow"
+/>
 
 <style>
   .brand {
@@ -78,5 +90,24 @@
   .brand-logo {
     width: auto;
     height: 1.8rem;
+  }
+
+  .skip-link {
+    position: absolute;
+    top: 0;
+    left: var(--space-4);
+    transform: translateY(-100%);
+    z-index: 100;
+    transition: transform 150ms ease-out;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    background: var(--color-primary);
+    padding: var(--space-2) var(--space-4);
+    color: var(--color-text-inverse);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
   }
 </style>

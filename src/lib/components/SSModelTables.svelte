@@ -86,7 +86,7 @@
   table {
     border-collapse: collapse;
     width: 100%;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
   }
 
   th,
@@ -105,7 +105,7 @@
 
   .id {
     color: var(--color-text-muted);
-    font-size: 0.8rem;
+    font-size: var(--text-callout);
     font-family: var(--font-mono);
   }
 
