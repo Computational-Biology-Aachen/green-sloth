@@ -46,6 +46,32 @@
     }),
   );
 
+  // The apparatus scheme below selects tags in this category.
+  const APP_CAT = "Part of Photosynthesis";
+
+  // The `/data` page deep-links here with a preselected tag in this category.
+  const DATA_CAT = "Explains data";
+
+  // Tags in APP_CAT that the apparatus diagram already draws as a labeled
+  // region — anything else in that category has no physical location on the
+  // diagram and surfaces instead as the small "Also part of photosynthesis"
+  // chip row next to it, so the category has exactly one filter UI.
+  const APPARATUS_TAGS = new Set([
+    "OEC",
+    "PSII",
+    "Cytochrome b6f",
+    "PSI",
+    "ATP Synthase",
+    "CBB Cycle",
+    "FNR",
+    "PQ Cycle",
+    "PC",
+  ]);
+
+  // Organism mixes real species with non-taxonomic buckets; keep the buckets
+  // out of the alphabetical species run instead of interleaving them.
+  const NON_TAXONOMIC_ORGANISMS = new Set(["Generic C3 plant", "Theoretical"]);
+
   // All tag categories → their distinct tags, across every model.
   const categories: Record<string, string[]> = {};
   for (const info of Object.values(models)) {
@@ -54,12 +80,16 @@
       for (const t of tags) if (!set.includes(t)) set.push(t);
     }
   }
-
-  // The apparatus scheme below selects tags in this category.
-  const APP_CAT = "Part of Photosynthesis";
-
-  // The `/data` page deep-links here with a preselected tag in this category.
-  const DATA_CAT = "Explains data";
+  for (const [cat, tags] of Object.entries(categories)) {
+    tags.sort((a, b) => {
+      if (cat === "Organism") {
+        const aGeneric = NON_TAXONOMIC_ORGANISMS.has(a);
+        const bGeneric = NON_TAXONOMIC_ORGANISMS.has(b);
+        if (aGeneric !== bGeneric) return aGeneric ? 1 : -1;
+      }
+      return a.localeCompare(b);
+    });
+  }
 
   // category → set of active tags
   let active = $state<Record<string, Set<string>>>({});
@@ -109,6 +139,30 @@
     else next.add(tag);
     active = { ...active, [cat]: next };
   }
+
+  function clearTags() {
+    active = {};
+  }
+
+  // Resets every filter axis, used by the empty-state recovery link where the
+  // blocking filter could be a tag, the text query, or the validation toggle.
+  function clearFilters() {
+    active = {};
+    query = "";
+    validation = "all";
+  }
+
+  const activeChips = $derived(
+    Object.entries(active).flatMap(([cat, tags]) =>
+      [...tags].map((tag) => ({ cat, tag })),
+    ),
+  );
+
+  // Tags in APP_CAT the apparatus diagram can't draw (no physical location),
+  // surfaced next to it instead of duplicating the whole category as pills.
+  const extraApparatusTags = $derived(
+    categories[APP_CAT]?.filter((t) => !APPARATUS_TAGS.has(t)) ?? [],
+  );
 
   function shortenTo(str: string, maxLen: number): string {
     if (str.length > maxLen) {
@@ -702,22 +756,42 @@
         </g>
       </g>
     </svg>
+
+    {#if extraApparatusTags.length > 0}
+      <div class="scheme-extra">
+        <p class="facet-label">Also part of photosynthesis</p>
+        <div class="pills">
+          {#each extraApparatusTags as tag (tag)}
+            <ButtonTab
+              selected={isActive(APP_CAT, tag)}
+              aria-pressed={isActive(APP_CAT, tag)}
+              onclick={() => toggle(APP_CAT, tag)}
+            >
+              {tag}
+            </ButtonTab>
+          {/each}
+        </div>
+      </div>
+    {/if}
   </div>
 
   {#each Object.entries(categories) as [cat, tags] (cat)}
-    <div class="facet">
-      <p class="facet-label">{cat}</p>
-      <div class="pills">
-        {#each tags as tag (tag)}
-          <ButtonTab
-            selected={isActive(cat, tag)}
-            onclick={() => toggle(cat, tag)}
-          >
-            {tag}
-          </ButtonTab>
-        {/each}
+    {#if cat !== APP_CAT}
+      <div class="facet">
+        <p class="facet-label">{cat}</p>
+        <div class="pills">
+          {#each tags as tag (tag)}
+            <ButtonTab
+              selected={isActive(cat, tag)}
+              aria-pressed={isActive(cat, tag)}
+              onclick={() => toggle(cat, tag)}
+            >
+              {tag}
+            </ButtonTab>
+          {/each}
+        </div>
       </div>
-    </div>
+    {/if}
   {/each}
 </Section>
 
@@ -740,6 +814,7 @@
         {#each validationOptions as { value, label } (value)}
           <ButtonTab
             selected={validation === value}
+            aria-pressed={validation === value}
             onclick={() => (validation = value)}
           >
             {label}
@@ -748,6 +823,31 @@
       </div>
     {/if}
   </div>
+  {#if activeChips.length > 0}
+    <div
+      class="active-filters"
+      aria-label="Active filters"
+    >
+      {#each activeChips as { cat, tag } (`${cat}:${tag}`)}
+        <button
+          type="button"
+          class="chip"
+          aria-label="Remove {tag} filter"
+          onclick={() => toggle(cat, tag)}
+        >
+          {tag}
+          <span aria-hidden="true">×</span>
+        </button>
+      {/each}
+      <button
+        type="button"
+        class="clear-all"
+        onclick={clearTags}
+      >
+        Clear all
+      </button>
+    </div>
+  {/if}
   <div class="grid">
     {#each filtered as [slug, info] (slug)}
       <CardModel
@@ -760,7 +860,16 @@
       />
     {/each}
     {#if filtered.length === 0}
-      <p class="empty">No models match the current filters.</p>
+      <p class="empty">
+        No models match the current filters.
+        <button
+          type="button"
+          class="clear-all-inline"
+          onclick={clearFilters}
+        >
+          Clear filters
+        </button>
+      </p>
     {/if}
   </div>
 </Section>
@@ -782,8 +891,24 @@
   }
 
   .empty {
+    display: flex;
     grid-column: 1 / -1;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2);
     color: var(--color-text-muted);
+  }
+
+  .clear-all-inline {
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    color: var(--color-primary);
+    font: inherit;
+    font-weight: var(--weight-semibold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   .filter-row {
@@ -820,6 +945,57 @@
     margin: 0 auto;
     width: 100%;
     max-width: 800px;
+  }
+
+  .scheme-extra {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  .active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin: var(--space-4) auto 0;
+    width: 100%;
+    max-width: var(--max-width);
+  }
+
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    cursor: pointer;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    padding: var(--space-1) var(--space-3);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+  }
+
+  .chip:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .clear-all {
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: var(--space-1) var(--space-2);
+    color: var(--color-text-muted);
+    font-weight: var(--weight-semibold);
+    font-size: var(--text-sm);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .clear-all:hover {
+    color: var(--color-primary);
   }
 
   /* Apparatuses are greyed out by default; selecting the matching tag
