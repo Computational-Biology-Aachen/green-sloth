@@ -18,6 +18,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["PAM fluorescence"],
     Organism: ["Arabidopsis thaliana", "Epipremnum aureum"],
+    "PMF description":["Only ΔpH"],
   },
   analyses: [
     {
