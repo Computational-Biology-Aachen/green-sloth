@@ -11,6 +11,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["OJIP transient"],
     Organism: ["Theoretical"],
+    "PMF description" ["None"],
   },
   analyses: [
     {
