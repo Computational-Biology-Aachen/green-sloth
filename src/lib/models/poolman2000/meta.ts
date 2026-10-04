@@ -11,6 +11,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["Gas exchange", "Concentration changes"],
     Organism: ["Spinacia oleracea"],
+    "PMF description": ["None"],
   },
   analyses: [
     {
