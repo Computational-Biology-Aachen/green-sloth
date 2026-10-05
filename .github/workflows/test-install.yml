@@ -34,6 +34,12 @@ jobs:
       - name: lint
         run: npm run lint
 
+      - name: type check
+        run: npm run check
+
+      - name: test
+        run: npm run test
+
       - name: Validate model data files
         run: npm run validate:models
 
