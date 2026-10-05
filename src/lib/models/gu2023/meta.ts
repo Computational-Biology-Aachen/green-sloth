@@ -12,7 +12,6 @@ export const meta: ModelMeta = {
     "Model type": ["Steady State"],
     "Explains data": ["PAM fluorescence"],
     Organism: ["Generic C3 plant"],
-    "PMF description": ["None"],
   },
   analyses: [
     {
