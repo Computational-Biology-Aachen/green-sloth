@@ -12,7 +12,6 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": [],
     Organism: ["Generic C3 plant", "Euglena gracilis"],
-    "PMF description": ["None"],
   },
   analyses: [
     {
