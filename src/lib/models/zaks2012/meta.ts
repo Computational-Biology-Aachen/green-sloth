@@ -20,7 +20,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["PAM fluorescence", "P700 absorbance", "ECS (P515)"],
     Organism: ["Arabidopsis thaliana"],
-    "PMF description" ["Full; ΔpH + Δψ"],
+    "PMF description": ["Full; ΔpH + Δψ"],
   },
   analyses: [
     {
