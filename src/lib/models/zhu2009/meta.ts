@@ -12,6 +12,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": [],
     Organism: ["Theoretical"],
+    "PMF description": ["None"],
   },
   analyses: [
     {
