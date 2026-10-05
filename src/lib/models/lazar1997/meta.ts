@@ -12,7 +12,6 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["OJIP transient"],
     Organism: ["Hordeum vulgare", "Triticum aestivum"],
-    "PMF description": ["None"],
   },
   analyses: [
     {
