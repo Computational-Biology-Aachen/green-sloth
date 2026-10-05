@@ -11,12 +11,11 @@
     type LineChartGridItem,
     type PhaseRegion,
   } from "@computational-biology-aachen/design";
-  import type { ChartData } from "chart.js/auto";
   import type { PlotLayout } from "../types";
   import {
     partitionByGroups,
     partitionByOrderOfMagnitude,
-    type LineDataset,
+    type LineChartData,
   } from "../utils";
 
   let {
@@ -27,7 +26,7 @@
     phases,
     lineDisplay,
   }: {
-    data: ChartData;
+    data: LineChartData;
     plot?: PlotLayout;
     loading: boolean;
     yMax?: number;
@@ -38,17 +37,13 @@
   const grid = $derived.by(() => {
     if (!plot || plot.type === "single") return null;
 
-    const datasets = (data.datasets ?? []) as unknown as LineDataset[];
     const groups =
       plot.type === "magnitude"
-        ? partitionByOrderOfMagnitude(datasets)
-        : partitionByGroups(datasets, plot.groups);
+        ? partitionByOrderOfMagnitude(data.datasets)
+        : partitionByGroups(data.datasets, plot.groups);
 
     const charts: LineChartGridItem[] = groups.map((group) => ({
-      data: {
-        labels: data.labels,
-        datasets: group,
-      } as unknown as ChartData,
+      data: { labels: data.labels, datasets: group },
       ...(yMax !== undefined ? { yMax } : {}),
     }));
 

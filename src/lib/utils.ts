@@ -35,6 +35,12 @@ export interface LineDataset {
   data: number[];
 }
 
+/** Line-chart input: a shared x axis and the series plotted against it. */
+export interface LineChartData {
+  labels: number[];
+  datasets: LineDataset[];
+}
+
 /** Largest absolute finite value of a series; characterises its magnitude. */
 function seriesMagnitude(data: number[]): number {
   let max = 0;
