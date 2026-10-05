@@ -49,6 +49,11 @@ export type Organism =
   | "Generic C3 plant"
   | "Theoretical";
 
+export type PMFdescription =
+  | "Full; ΔpH + Δψ"
+  | "Only ΔpH"
+  | "None"
+  
 // Maps each tag category to its value union. Add a category here (and its
 // value type) to extend the tag system — Tags below follows automatically.
 export type TagValues = {
@@ -56,6 +61,7 @@ export type TagValues = {
   "Model type": Array<ModelType>;
   "Explains data": Array<ExperimentalData>;
   Organism: Array<Organism>;
+  "PMF description": Array<PMFdescription>;
 };
 
 export type Tags = {

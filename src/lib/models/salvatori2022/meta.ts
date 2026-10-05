@@ -12,6 +12,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["Gas exchange", "PAM fluorescence"],
     Organism: ["Glycine max"],
+    "PMF description": ["Only ΔpH"],
   },
   analyses: [
     {

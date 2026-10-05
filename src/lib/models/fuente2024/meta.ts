@@ -19,6 +19,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["Frequency domain"],
     Organism: ["Chlamydomonas reinhardtii"],
+    "PMF description": ["Only ΔpH"],
   },
   analyses: [
     {
