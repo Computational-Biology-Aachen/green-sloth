@@ -52,7 +52,6 @@ export type Organism =
 export type PMFdescription =
   | "Full; ΔpH + Δψ"
   | "Only ΔpH"
-  | "None"
   
 // Maps each tag category to its value union. Add a category here (and its
 // value type) to extend the tag system — Tags below follows automatically.
