@@ -6,6 +6,7 @@ export const meta: ModelMeta = {
   slug: "ebenhoeh2014",
   title: "Ebenhöh 2014",
   journal: "Philos Trans.",
+  license: "© The Authors",
   DOI: "10.1098/rstb.2013.0223",
   tags: {
     "Part of Photosynthesis": [

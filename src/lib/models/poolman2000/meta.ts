@@ -5,6 +5,7 @@ export const meta: ModelMeta = {
   slug: "poolman2000",
   title: "Poolman 2000",
   journal: "Exp. Botany",
+  license: "© OUP",
   DOI: "10.1093/jexbot/51.suppl_1.319",
   tags: {
     "Part of Photosynthesis": [],

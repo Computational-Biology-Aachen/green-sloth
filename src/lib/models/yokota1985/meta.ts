@@ -5,6 +5,7 @@ export const meta: ModelMeta = {
   slug: "yokota1985",
   title: "Yokota 1985",
   journal: "Planta",
+  license: "© Springer",
   DOI: "10.1007/BF00392212",
   tags: {
     "Part of Photosynthesis": ["Photorespiration"],

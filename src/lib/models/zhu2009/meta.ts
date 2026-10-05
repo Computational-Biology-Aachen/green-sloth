@@ -5,6 +5,7 @@ export const meta: ModelMeta = {
   slug: "zhu2009",
   title: "Zhu 2009",
   journal: "Nonlinear Anal.",
+  license: "© Elsevier",
   DOI: "10.1016/j.nonrwa.2008.01.021",
   tags: {
     "Part of Photosynthesis": ["CBB Cycle"],

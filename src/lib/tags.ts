@@ -25,7 +25,8 @@ export type ExperimentalData =
   | "P700 absorbance"
   | "Frequency domain"
   | "ECS (P515)"
-  | "Concentration changes";
+  | "Concentration changes"
+  | "Fluorescence lifetime";
 
 /**
  * Organism(s) a model was calibrated or validated against. "Generic C3

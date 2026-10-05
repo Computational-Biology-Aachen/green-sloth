@@ -5,6 +5,7 @@ export const meta: ModelMeta = {
   slug: "bernacchi2013",
   title: "Bernacchi 2013",
   journal: "Plant Cell Environ.",
+  license: "© Wiley",
   DOI: "10.1111/pce.12118",
   tags: {
     "Part of Photosynthesis": [],
