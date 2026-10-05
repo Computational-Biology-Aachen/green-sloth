@@ -22,7 +22,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["PAM fluorescence", "ECS (P515)"],
     Organism: ["Generic C3 plant"],
-    "PMF description": ["Full; ΔpH + Δψ"];
+    "PMF description": ["Full; ΔpH + Δψ"],
   },
   analyses: [
     {
