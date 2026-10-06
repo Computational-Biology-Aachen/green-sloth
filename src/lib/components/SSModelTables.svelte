@@ -35,7 +35,7 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Symbol</th><th>ID</th><th>Value</th></tr>
+          <tr><th>Symbol</th><th>ID</th><th>Value</th><th>Unit</th></tr>
         </thead>
         <tbody>
           {#each model.parameters as [id, par] (id)}
@@ -43,6 +43,14 @@
               {@render symCell(id)}
               <td class="id">{id}</td>
               <td class="num">{par.value}</td>
+              <td class="unit">
+                {#if par.unit}
+                  <Math
+                    tex={`\\mathrm{${par.unit}}`}
+                    display={false}
+                  />
+                {/if}
+              </td>
             </tr>
           {/each}
         </tbody>
@@ -56,7 +64,7 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Symbol</th><th>ID</th><th>Equation</th></tr>
+          <tr><th>Symbol</th><th>ID</th><th>Equation</th><th>Unit</th></tr>
         </thead>
         <tbody>
           {#each model.assignments as [id, ass] (id)}
@@ -68,6 +76,14 @@
                   tex={`${sym(id)} = ${ass.fn.toTex(texNames)}`}
                   display={false}
                 />
+              </td>
+              <td class="unit">
+                {#if ass.unit}
+                  <Math
+                    tex={`\\mathrm{${ass.unit}}`}
+                    display={false}
+                  />
+                {/if}
               </td>
             </tr>
           {/each}
