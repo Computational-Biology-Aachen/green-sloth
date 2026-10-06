@@ -147,7 +147,11 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Symbol</th><th>ID</th><th>Rate</th><th>Stoichiometry</th><th>Unit</th></tr>
+          <tr
+            ><th>Symbol</th><th>ID</th><th>Rate</th><th>Stoichiometry</th><th
+              >Unit</th
+            ></tr
+          >
         </thead>
         <tbody>
           {#each model.reactions as [id, rxn] (id)}
