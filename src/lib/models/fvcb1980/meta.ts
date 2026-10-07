@@ -12,6 +12,7 @@ export const meta: ModelMeta = {
     "Model type": ["Steady State"],
     "Explains data": ["Gas exchange"],
     Organism: ["Generic C3 plant"],
+    "PMF description": [],
   },
   analyses: [
     {

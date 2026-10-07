@@ -12,6 +12,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["Frequency domain"],
     Organism: ["Chlorella sorokiniana"],
+    "PMF description": [],
   },
   analyses: [
     {

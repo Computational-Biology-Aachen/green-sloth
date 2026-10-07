@@ -12,6 +12,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["Concentration changes"],
     Organism: ["Generic C3 plant"],
+    "PMF description": [],
   },
   analyses: [
     {

@@ -12,6 +12,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["Fluorescence lifetime"],
     Organism: ["Nicotiana benthamiana"],
+    "PMF description": [],
   },
   analyses: [
     {
