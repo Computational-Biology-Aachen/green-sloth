@@ -25,8 +25,11 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.15
           cache: npm
+
+      - name: Upgrade npm
+        run: npm install -g "npm@==12.2.0"
 
       - name: Materialise model folder from the issue
         id: parse
