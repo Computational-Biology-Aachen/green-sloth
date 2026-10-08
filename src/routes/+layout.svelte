@@ -60,6 +60,7 @@
   <CollapseToBurger collapseAt="768px">
     <NavItem href="{base}/">Home</NavItem>
     <NavItem href="{base}/models">Models</NavItem>
+    <NavItem href="{base}/howto">How To</NavItem>
     <NavItem href="{base}/data">Data</NavItem>
     <NavItem href="{base}/compare">Compare</NavItem>
     <NavItem href="{base}/contributing">Contribute</NavItem>
