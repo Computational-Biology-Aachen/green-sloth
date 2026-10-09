@@ -283,7 +283,7 @@
           --text="var(--color-text)">Python</ButtonMenuItem
         >
       </ButtonMenu>
-      <Button href={resolve("/howto?section=use")} variant="inverted" class="info-button">
+      <Button href={resolve("/howto?section=website")} variant="inverted" class="info-button">
         <Icon color="inherit">info</Icon>
       </Button>
     </Pair>

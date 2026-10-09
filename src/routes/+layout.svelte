@@ -1,6 +1,6 @@
 <script lang="ts">
   import { beforeNavigate } from "$app/navigation";
-  import { base } from "$app/paths";
+  import { resolve } from "$app/paths";
   import { updated } from "$app/state";
   import favicon from "$lib/assets/cpbl-favicon.svg";
   import greenslothLogo from "$lib/assets/greensloth-logo.svg";
@@ -46,7 +46,7 @@
 <Navbar>
   {#snippet brand()}
     <a
-      href="{base}/"
+      href={resolve("/")}
       class="brand"
     >
       <img
@@ -58,13 +58,13 @@
     </a>
   {/snippet}
   <CollapseToBurger collapseAt="768px">
-    <NavItem href="{base}/">Home</NavItem>
-    <NavItem href="{base}/models">Models</NavItem>
-    <NavItem href="{base}/howto">How To</NavItem>
-    <NavItem href="{base}/data">Data</NavItem>
-    <NavItem href="{base}/compare">Compare</NavItem>
-    <NavItem href="{base}/contributing">Contribute</NavItem>
-    <NavItem href="{base}/about">About Us</NavItem>
+    <NavItem href={resolve("/")}>Home</NavItem>
+    <NavItem href={resolve("/models")}>Models</NavItem>
+    <NavItem href={resolve("/howto")}>How To</NavItem>
+    <NavItem href={resolve("/data")}>Data</NavItem>
+    <NavItem href={resolve("/compare")}>Compare</NavItem>
+    <NavItem href={resolve("/howto?section=contribute")}>Contribute</NavItem>
+    <NavItem href={resolve("/about")}>About Us</NavItem>
   </CollapseToBurger>
   <NavGH href="https://github.com/Computational-Biology-Aachen/green-sloth" />
 </Navbar>
