@@ -2,6 +2,7 @@
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
   import ModelDashboard from "$lib/components/KineticModelDashboard.svelte";
+  import { AVAILABLE_TAGS } from "$lib/tags";
   import type { ModelAnalysis } from "$lib/types";
   import {
     Button,
@@ -16,6 +17,9 @@
     Section,
     SectionHeader,
     Text,
+    Bold,
+    Ol,
+    Li,
   } from "@computational-biology-aachen/design";
   import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import { mxlJsonToModel } from "@computational-biology-aachen/mxlweb-core/mxl";
@@ -71,18 +75,20 @@
   let slug = $state("");
   let title = $state("");
   let doi = $state("");
-  let tags = $state("");
+  let tags = $state(Object.fromEntries(Object.keys(AVAILABLE_TAGS).map((c) => [c, []])));
+  const categoryCount = Object.keys(AVAILABLE_TAGS).length;
   let modelMd = $state("");
   let commentMd = $state("");
   let schemeSvg = $state("");
 
-  const tagList = $derived(
-    tags
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean),
-  );
-
+  function toggleTag(category: string, tag: string) {
+    if (tags[category]?.includes(tag)) {
+      tags[category] = tags[category].filter((t) => t !== tag);
+    } else {
+      tags[category] = [...(tags[category] || []), tag];
+    }
+  }
+  
   // The typed presentation file the contributor would otherwise hand-write.
   const metaTs = $derived(`import type { ModelMeta } from "$lib/types";
 
@@ -91,8 +97,17 @@ export const meta: ModelMeta = {
   title: ${JSON.stringify(title)},
   DOI: ${JSON.stringify(doi)},
   tags: {
-    "Part of Photosynthesis": [${tagList.map((t) => JSON.stringify(t)).join(", ")}],
-    Demonstrations: [],
+    ${tags
+      ? Object.entries(tags)
+          .map(
+            ([category, tags]) =>
+              `${JSON.stringify(category)}: [${tags
+                .map((t) => JSON.stringify(t))
+                .join(", ")}]`,
+          )
+          .join(",\n    ")
+      : ""
+    }
   },
   analyses: [{ type: "timecourse", tEnd: 100, nTimePoints: 500 }],
 };
@@ -143,8 +158,7 @@ export const meta: ModelMeta = {
 >
   <Text>
     Paste a model below, check it simulates, fill in the details, and open a
-    pre-filled contribution issue — a workflow turns it into a pull request. No
-    clone, no toolchain. Producing the model file (e.g. with
+    pre-filled contribution issue — a workflow turns it into a pull request. No clone, no toolchain. Producing the model file (e.g. with
     <Link href="https://github.com/Computational-Biology-Aachen/mxlpy"
       >mxlpy</Link
     >
@@ -229,11 +243,23 @@ export const meta: ModelMeta = {
     label="DOI"
     bind:value={doi}
   />
-  <InputText
-    id="tags"
-    label="Tags (comma-separated)"
-    bind:value={tags}
-  />
+  <Text>Available tags</Text>
+    <div class="tag-container">
+      {#each Object.entries(AVAILABLE_TAGS) as [category, options] (category)}
+          <div class="tag-category-label">
+            <Bold>{category}:</Bold>
+          </div>
+          <div class="tag-options">
+            {#each options as tag (tag)}
+              <Button
+                class={tags[category]?.includes(tag) ? "primary tag-button" : "inverted tag-button"}
+                onclick={() => toggleTag(category, tag)}>
+                {tag}
+              </Button>
+            {/each}
+          </div>
+      {/each}
+    </div>
   <Text>Generated <Code>meta.ts</Code>:</Text>
   <Pre>{metaTs}</Pre>
 </Section>
@@ -308,6 +334,31 @@ export const meta: ModelMeta = {
 </Section>
 
 <style>
+
+  .tag-container {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: var(--space-2, 8px);
+    row-gap: var(--space-4, 8px);
+    align-items: start;
+  }
+  :global(.tag-header) {
+    grid-column: 1;
+    grid-row: 1 / -1;
+  }
+  .tag-category-label {
+    padding-top: 0.5rem;
+  }
+
+  .tag-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2em;
+  }
+  :global(.tag-button) {
+    border: 0.19em solid var(--color-primary, #ccc) !important;
+  }
+
   .file {
     box-sizing: border-box;
     margin-bottom: var(--space-2, 8px);
