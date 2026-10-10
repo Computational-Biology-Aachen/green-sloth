@@ -2,7 +2,6 @@
     import { page } from "$app/state";
     import { goto } from "$app/navigation";
     import { resolve } from "$app/paths";
-    import greenslothLogo from "$lib/assets/greensloth-logo-inv.svg";
     import {
         H1,
         H2,
@@ -81,10 +80,6 @@ export const meta: ModelMeta = {
     },
   ],
 };`;
-
-  const fromTs = `# Hand-written model.ts is still supported as the authoring source.
-# After writing src/lib/models/<slug>/model.ts, generate the data file:
-npm run generate:mxl     # writes model.mxl.json next to every model.ts`;
 
   const verifyCode = `npm install
 npm run validate:models   # schema-validate + smoke-check every model

@@ -75,11 +75,13 @@
   let slug = $state("");
   let title = $state("");
   let doi = $state("");
+  let journal = $state("");
+  let license = $state("");
   let tags = $state(Object.fromEntries(Object.keys(AVAILABLE_TAGS).map((c) => [c, []])));
-  const categoryCount = Object.keys(AVAILABLE_TAGS).length;
   let modelMd = $state("");
   let commentMd = $state("");
   let schemeSvg = $state("");
+  let analyses = $state(Object())
 
   function toggleTag(category: string, tag: string) {
     if (tags[category]?.includes(tag)) {
@@ -90,12 +92,15 @@
   }
   
   // The typed presentation file the contributor would otherwise hand-write.
-  const metaTs = $derived(`import type { ModelMeta } from "$lib/types";
+  const metaTs = $derived(`import contributors from "$lib/contributors";
+import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: ${JSON.stringify(slug)},
   title: ${JSON.stringify(title)},
   DOI: ${JSON.stringify(doi)},
+  journal: ${JSON.stringify(journal)},
+  license: ${JSON.stringify(license)},
   tags: {
     ${tags
       ? Object.entries(tags)
@@ -109,9 +114,20 @@ export const meta: ModelMeta = {
       : ""
     }
   },
-  analyses: [{ type: "timecourse", tEnd: 100, nTimePoints: 500 }],
-};
-`);
+  analyses: [<analyses>],
+  contributors: [
+    {
+      desc: "Initial implementation",
+      date: <date>,
+      contributor: <contributor>,
+    },
+    {
+      desc: "Maintenance",
+      date: <date>,
+      contributor: <contributor>,
+    },
+  ],
+};`);
 
   // Prefill the small fields of the issue form; the large model file and SVG are
   // copied to the clipboard and pasted into the opened issue (URLs can't carry
@@ -159,10 +175,7 @@ export const meta: ModelMeta = {
   <Text>
     Paste a model below, check it simulates, fill in the details, and open a
     pre-filled contribution issue — a workflow turns it into a pull request. No clone, no toolchain. Producing the model file (e.g. with
-    <Link href="https://github.com/Computational-Biology-Aachen/mxlpy"
-      >mxlpy</Link
-    >
-    or from SBML) is described in
+    <Link href="https://github.com/Computational-Biology-Aachen/mxlpy">mxlpy</Link> or from SBML) is described in
     <Link href="{base}/contributing">the contributing guide</Link>.
   </Text>
 </Section>
@@ -243,25 +256,44 @@ export const meta: ModelMeta = {
     label="DOI"
     bind:value={doi}
   />
+  <InputText
+    id="journal"
+    label="Journal"
+    bind:value={journal}
+  />
+  <InputChoice
+    id="license"
+    label="License"
+    bind:value={license}
+  >
+    <option value="© CC BY">CC BY</option>
+    <option value="© CC BY-SA">CC BY-SA</option>
+    <option value="© CC BY-ND">CC BY-ND</option>
+    <option value="© CC BY-NC">CC BY-NC</option>
+    <option value="© CC BY-NC-SA">CC BY-NC-SA</option>
+    <option value="© CC BY-NC-ND">CC BY-NC-ND</option>
+    <option value="Recreated">Recreated</option>
+  </InputChoice>
   <Text>Available tags</Text>
-    <div class="tag-container">
-      {#each Object.entries(AVAILABLE_TAGS) as [category, options] (category)}
-          <div class="tag-category-label">
-            <Bold>{category}:</Bold>
-          </div>
-          <div class="tag-options">
-            {#each options as tag (tag)}
-              <Button
-                class={tags[category]?.includes(tag) ? "primary tag-button" : "inverted tag-button"}
-                onclick={() => toggleTag(category, tag)}>
-                {tag}
-              </Button>
-            {/each}
-          </div>
-      {/each}
-    </div>
+  <div class="tag-container">
+    {#each Object.entries(AVAILABLE_TAGS) as [category, options] (category)}
+        <div class="tag-category-label">
+          <Bold>{category}:</Bold>
+        </div>
+        <div class="tag-options">
+          {#each options as tag (tag)}
+            <Button
+              class={tags[category]?.includes(tag) ? "primary tag-button" : "inverted tag-button"}
+              onclick={() => toggleTag(category, tag)}>
+              {tag}
+            </Button>
+          {/each}
+        </div>
+    {/each}
+  </div>
   <Text>Generated <Code>meta.ts</Code>:</Text>
   <Pre>{metaTs}</Pre>
+  
 </Section>
 
 <Section
