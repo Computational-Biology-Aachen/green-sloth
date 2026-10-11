@@ -49,10 +49,8 @@ export type Organism =
   | "Generic C3 plant"
   | "Theoretical";
 
-export type PMFdescription =
-  | "Full; ΔpH + Δψ"
-  | "Only ΔpH"
-  
+export type PMFdescription = "Full; ΔpH + Δψ" | "Only ΔpH";
+
 // Maps each tag category to its value union. Add a category here (and its
 // value type) to extend the tag system — Tags below follows automatically.
 export type TagValues = {

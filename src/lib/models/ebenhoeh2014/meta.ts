@@ -21,7 +21,7 @@ export const meta: ModelMeta = {
     "Model type": ["ODE"],
     "Explains data": ["PAM fluorescence"],
     Organism: ["Chlamydomonas reinhardtii"],
-    "PMF description": ["Only ΔpH"], 
+    "PMF description": ["Only ΔpH"],
   },
   analyses: [
     {
