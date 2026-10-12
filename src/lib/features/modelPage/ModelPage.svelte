@@ -36,6 +36,7 @@
     Tr,
     Ul,
   } from "@computational-biology-aachen/design";
+  import Button from "@computational-biology-aachen/design/Button.svelte";
   import Icon from "@computational-biology-aachen/design/Icon.svelte";
   import Pair from "@computational-biology-aachen/design/Pair.svelte";
   import Row from "@computational-biology-aachen/design/Row.svelte";
@@ -96,6 +97,34 @@
       },
     },
   ];
+
+  const validationFiles = import.meta.glob("$lib/models/*/validation.*", {
+    query: "?url",
+    import: "default",
+    eager: true,
+  });
+
+  let validationFile = $derived.by(() => {
+    // We are looking for a path that contains this specific folder and base name
+    const targetPath = `/models/${data.slug}/validation.`;
+
+    for (const [path, url] of Object.entries(validationFiles)) {
+      if (path.includes(targetPath)) {
+        // Extract the full filename (e.g., "validation.py" or "validation.cpp")
+        const filename = path.split("/").pop();
+        return { url, filename };
+      }
+    }
+
+    return null; // No validation file found for this model
+  });
+
+  function downloadValidation() {
+    const a = document.createElement("a");
+    a.href = validationFile?.url || "";
+    a.download = validationFile?.filename || "validation.py";
+    a.click();
+  }
 
   // Eager glob so the KineticModelBuilder is available both at prerender (tables) and
   // on the client (interactive dashboard).
@@ -411,10 +440,18 @@
   {/if}
   {#if paperFigures.length !== 0}
     <InfoBox header="Curator's note">
+      {#if validationFile}
+        <Button
+          variant="inverted"
+          onclick={downloadValidation}
+          ><Icon>download</Icon> Download code</Button
+        >
+      {/if}
       <Text
         >This model was validated by reproducing the following figures of the <Link
           href="https://doi.org/{data.meta.DOI}">original publication</Link
-        >.
+        >. Due to copyright restrictions, a side-by-side comparison of the
+        original figures is not shown here.
       </Text>
       {#if data.curatornotes}
         <Markdown
