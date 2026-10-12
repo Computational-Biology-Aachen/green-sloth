@@ -14,35 +14,42 @@ export function initModel(): KineticModelBuilder {
     .addParameter("CO2_dissolved", {
       displayName: names.co2,
       value: 0.2,
+      unit: "mM",
       texName: "CO2 (dissolved)",
     })
     .addParameter("NADPH", {
       displayName: names.nadph,
       value: 0.21,
+      unit: "mM",
       texName: "NADPH",
     })
     .addParameter("protons", {
       displayName: names.protons,
       value: 1.2589254117941661e-5,
+      unit: "mM",
       texName: "protons",
     })
     .addParameter("A_star_P", {
       displayName: names.atp_tot,
       value: 0.5,
+      unit: "mM",
       texName: "A*P",
     })
     .addParameter("NADP_star", {
       displayName: names.nadp_tot,
       value: 0.5,
+      unit: "mM",
       texName: "NADP*",
     })
     .addParameter("Pi_tot", {
       displayName: names.pi_tot,
       value: 15.0,
+      unit: "mM",
       texName: "Pi\\_tot",
     })
     .addParameter("E0_rubisco_carboxylase", {
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_rubisco\\_carboxylase",
       slider: {
         min: "0.1",
@@ -53,414 +60,498 @@ export function initModel(): KineticModelBuilder {
     .addParameter("kcat_rubisco_carboxylase", {
       displayName: names.kcat_rubisco_carboxylase,
       value: 2.72,
+      unit: "s^{-1}",
       texName: "kcat\\_rubisco\\_carboxylase",
     })
     .addParameter("km_rubisco_carboxylase_RUBP", {
       displayName: names.km_rubisco_carboxylase_rubp,
       value: 0.02,
+      unit: "mM",
       texName: "km\\_rubisco\\_carboxylase\\_RUBP",
     })
     .addParameter("km_rubisco_carboxylase_CO2_dissolved", {
       displayName: names.km_rubisco_carboxylase_co2,
       value: 0.0107,
+      unit: "mM",
       texName: "km\\_rubisco\\_carboxylase\\_CO2 (dissolved)",
     })
     .addParameter("ki_rubisco_carboxylase_3PGA", {
       displayName: names.ki_rubisco_carboxylase_pga,
       value: 0.04,
+      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_3PGA",
     })
     .addParameter("ki_rubisco_carboxylase_FBP", {
       displayName: names.ki_rubisco_carboxylase_fbp,
       value: 0.04,
+      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_FBP",
     })
     .addParameter("ki_rubisco_carboxylase_SBP", {
       displayName: names.ki_rubisco_carboxylase_sbp,
       value: 0.075,
+      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_SBP",
     })
     .addParameter("ki_rubisco_carboxylase_Orthophosphate", {
       displayName: names.ki_rubisco_carboxylase_pi,
       value: 0.9,
+      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_Orthophosphate",
     })
     .addParameter("ki_rubisco_carboxylase_NADPH", {
       displayName: names.ki_rubisco_carboxylase_nadph,
       value: 0.07,
+      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_NADPH",
     })
     .addParameter("kre_phosphoglycerate_kinase", {
       displayName: names.kre_phosphoglycerate_kinase,
       value: 800000000.0,
+      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_phosphoglycerate\\_kinase",
     })
     .addParameter("keq_phosphoglycerate_kinase", {
       displayName: names.keq_phosphoglycerate_kinase,
       value: 0.00031,
+      unit: "1",
       texName: "keq\\_phosphoglycerate\\_kinase",
     })
     .addParameter("kre_gadph", {
       displayName: names.kre_gadph,
       value: 800000000.0,
+      unit: "mM^{-2}\\,s^{-1}",
       texName: "kre\\_gadph",
     })
     .addParameter("keq_gadph", {
       displayName: names.keq_gadph,
       value: 16000000.0,
+      unit: "1",
       texName: "keq\\_gadph",
     })
     .addParameter("kre_triose_phosphate_isomerase", {
       displayName: names.kre_triose_phosphate_isomerase,
       value: 800000000.0,
+      unit: "s^{-1}",
       texName: "kre\\_triose\\_phosphate\\_isomerase",
     })
     .addParameter("keq_triose_phosphate_isomerase", {
       displayName: names.keq_triose_phosphate_isomerase,
       value: 22.0,
+      unit: "1",
       texName: "keq\\_triose\\_phosphate\\_isomerase",
     })
     .addParameter("kre_aldolase_dhap_gap", {
       displayName: names.kre_aldolase_dhap_gap,
       value: 800000000.0,
+      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_aldolase\\_dhap\\_gap",
     })
     .addParameter("keq_aldolase_dhap_gap", {
       displayName: names.keq_aldolase_dhap_gap,
       value: 7.1,
+      unit: "mM^{-1}",
       texName: "keq\\_aldolase\\_dhap\\_gap",
     })
     .addParameter("kre_aldolase_dhap_e4p", {
       displayName: names.kre_aldolase_dhap_e4p,
       value: 800000000.0,
+      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_aldolase\\_dhap\\_e4p",
     })
     .addParameter("keq_aldolase_dhap_e4p", {
       displayName: names.keq_aldolase_dhap_e4p,
       value: 13.0,
+      unit: "mM^{-1}",
       texName: "keq\\_aldolase\\_dhap\\_e4p",
     })
     .addParameter("E0_fbpase", {
       displayName: names.e0_fbpase,
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_fbpase",
     })
     .addParameter("kcat_fbpase", {
       displayName: names.kcat_fbpase,
       value: 1.6,
+      unit: "s^{-1}",
       texName: "kcat\\_fbpase",
     })
     .addParameter("km_fbpase_s", {
       displayName: names.km_fbpase_s,
       value: 0.03,
+      unit: "mM",
       texName: "km\\_fbpase\\_s",
     })
     .addParameter("ki_fbpase_F6P", {
       displayName: names.ki_fbpase_f6p,
       value: 0.7,
+      unit: "mM",
       texName: "ki\\_fbpase\\_F6P",
     })
     .addParameter("ki_fbpase_Orthophosphate", {
       displayName: names.ki_fbpase_pi,
       value: 12.0,
+      unit: "mM",
       texName: "ki\\_fbpase\\_Orthophosphate",
     })
     .addParameter("kre_transketolase_gap_f6p", {
       displayName: names.kre_transketolase_gap_f6p,
       value: 800000000.0,
+      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_transketolase\\_gap\\_f6p",
     })
     .addParameter("keq_transketolase_gap_f6p", {
       displayName: names.keq_transketolase_gap_f6p,
       value: 0.084,
+      unit: "1",
       texName: "keq\\_transketolase\\_gap\\_f6p",
     })
     .addParameter("kre_transketolase_gap_s7p", {
       displayName: names.kre_transketolase_gap_s7p,
       value: 800000000.0,
+      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_transketolase\\_gap\\_s7p",
     })
     .addParameter("keq_transketolase_gap_s7p", {
       displayName: names.keq_transketolase_gap_s7p,
       value: 0.85,
+      unit: "1",
       texName: "keq\\_transketolase\\_gap\\_s7p",
     })
     .addParameter("E0_SBPase", {
       displayName: names.e0_sbpase,
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_SBPase",
     })
     .addParameter("kcat_SBPase", {
       displayName: names.kcat_sbpase,
       value: 0.32,
+      unit: "s^{-1}",
       texName: "kcat\\_SBPase",
     })
     .addParameter("km_SBPase_s", {
       displayName: names.km_sbpase_s,
       value: 0.013,
+      unit: "mM",
       texName: "km\\_SBPase\\_s",
     })
     .addParameter("ki_SBPase_Orthophosphate", {
       displayName: names.ki_sbpase_pi,
       value: 12.0,
+      unit: "mM",
       texName: "ki\\_SBPase\\_Orthophosphate",
     })
     .addParameter("kre_ribose_phosphate_isomerase", {
       displayName: names.kre_ribose_phosphate_isomerase,
       value: 800000000.0,
+      unit: "s^{-1}",
       texName: "kre\\_ribose\\_phosphate\\_isomerase",
     })
     .addParameter("keq_ribose_phosphate_isomerase", {
       displayName: names.keq_ribose_phosphate_isomerase,
       value: 0.4,
+      unit: "1",
       texName: "keq\\_ribose\\_phosphate\\_isomerase",
     })
     .addParameter("kre_ribulose_phosphate_epimerase", {
       displayName: names.kre_ribulose_phosphate_epimerase,
       value: 800000000.0,
+      unit: "s^{-1}",
       texName: "kre\\_ribulose\\_phosphate\\_epimerase",
     })
     .addParameter("keq_ribulose_phosphate_epimerase", {
       displayName: names.keq_ribulose_phosphate_epimerase,
       value: 0.67,
+      unit: "1",
       texName: "keq\\_ribulose\\_phosphate\\_epimerase",
     })
     .addParameter("E0_phosphoribulokinase", {
       displayName: names.e0_phosphoribulokinase,
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_phosphoribulokinase",
     })
     .addParameter("kcat_phosphoribulokinase", {
       displayName: names.kcat_phosphoribulokinase,
       value: 7.9992,
+      unit: "s^{-1}",
       texName: "kcat\\_phosphoribulokinase",
     })
     .addParameter("km_phosphoribulokinase_RU5P", {
       displayName: names.km_phosphoribulokinase_ru5p,
       value: 0.05,
+      unit: "mM",
       texName: "km\\_phosphoribulokinase\\_RU5P",
     })
     .addParameter("km_phosphoribulokinase_ATP", {
       displayName: names.km_phosphoribulokinase_atp,
       value: 0.05,
+      unit: "mM",
       texName: "km\\_phosphoribulokinase\\_ATP",
     })
     .addParameter("ki_phosphoribulokinase_3PGA", {
       displayName: names.ki_phosphoribulokinase_pga,
       value: 2.0,
+      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_3PGA",
     })
     .addParameter("ki_phosphoribulokinase_RUBP", {
       displayName: names.ki_phosphoribulokinase_rubp,
       value: 0.7,
+      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_RUBP",
     })
     .addParameter("ki_phosphoribulokinase_Orthophosphate", {
       displayName: names.ki_phosphoribulokinase_pi,
       value: 4.0,
+      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_Orthophosphate",
     })
     .addParameter("ki_phosphoribulokinase_4", {
       displayName: names.ki_phosphoribulokinase_4,
       value: 2.5,
+      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_4",
     })
     .addParameter("ki_phosphoribulokinase_5", {
       displayName: names.ki_phosphoribulokinase_5,
       value: 0.4,
+      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_5",
     })
     .addParameter("kre_g6pi", {
       displayName: names.kre_g6pi,
       value: 800000000.0,
+      unit: "s^{-1}",
       texName: "kre\\_g6pi",
     })
     .addParameter("keq_g6pi", {
       displayName: names.keq_g6pi,
       value: 2.3,
+      unit: "1",
       texName: "keq\\_g6pi",
     })
     .addParameter("kre_phosphoglucomutase", {
       displayName: names.kre_phosphoglucomutase,
       value: 800000000.0,
+      unit: "s^{-1}",
       texName: "kre\\_phosphoglucomutase",
     })
     .addParameter("keq_phosphoglucomutase", {
       displayName: names.keq_phosphoglucomutase,
       value: 0.058,
+      unit: "1",
       texName: "keq\\_phosphoglucomutase",
     })
     .addParameter("Orthophosphate_external", {
       value: 0.5,
+      unit: "mM",
       texName: "Orthophosphate (external)",
     })
     .addParameter("km_ex_pga", {
       displayName: names.km_ex_pga,
       value: 0.25,
+      unit: "mM",
       texName: "km\\_ex\\_pga",
     })
     .addParameter("km_ex_gap", {
       displayName: names.km_ex_gap,
       value: 0.075,
+      unit: "mM",
       texName: "km\\_ex\\_gap",
     })
     .addParameter("km_ex_dhap", {
       displayName: names.km_ex_dhap,
       value: 0.077,
+      unit: "mM",
       texName: "km\\_ex\\_dhap",
     })
     .addParameter("km_N_translocator_Orthophosphate_external", {
       value: 0.74,
+      unit: "mM",
       texName: "km\\_N\\_translocator\\_Orthophosphate (external)",
     })
     .addParameter("km_N_translocator_Orthophosphate", {
       value: 0.63,
+      unit: "mM",
       texName: "km\\_N\\_translocator\\_Orthophosphate",
     })
     .addParameter("kcat_N_translocator", {
       displayName: names.kcat_n_translocator,
       value: 2.0,
+      unit: "s^{-1}",
       texName: "kcat\\_N\\_translocator",
     })
     .addParameter("E0_N_translocator", {
       displayName: names.e0_n_translocator,
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_N\\_translocator",
     })
     .addParameter("km_ex_g1p_G1P", {
       displayName: names.km_ex_g1p_g1p,
       value: 0.08,
+      unit: "mM",
       texName: "km\\_ex\\_g1p\\_G1P",
     })
     .addParameter("km_ex_g1p_ATP", {
       displayName: names.km_ex_g1p_atp,
       value: 0.08,
+      unit: "mM",
       texName: "km\\_ex\\_g1p\\_ATP",
     })
     .addParameter("ki_ex_g1p", {
       displayName: names.ki_ex_g1p,
       value: 10.0,
+      unit: "mM",
       texName: "ki\\_ex\\_g1p",
     })
     .addParameter("ki_ex_g1p_3PGA", {
       displayName: names.ki_ex_g1p_pga,
       value: 0.1,
+      unit: "1",
       texName: "ki\\_ex\\_g1p\\_3PGA",
     })
     .addParameter("ki_ex_g1p_F6P", {
       displayName: names.ki_ex_g1p_f6p,
       value: 0.02,
+      unit: "1",
       texName: "ki\\_ex\\_g1p\\_F6P",
     })
     .addParameter("ki_ex_g1p_FBP", {
       displayName: names.ki_ex_g1p_fbp,
       value: 0.02,
+      unit: "1",
       texName: "ki\\_ex\\_g1p\\_FBP",
     })
     .addParameter("E0_ex_g1p", {
       displayName: names.e0_ex_g1p,
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_ex\\_g1p",
     })
     .addParameter("kcat_ex_g1p", {
       displayName: names.kcat_ex_g1p,
       value: 0.32,
+      unit: "s^{-1}",
       texName: "kcat\\_ex\\_g1p",
     })
     .addParameter("km_atp_synthase_ADP", {
       value: 0.014,
+      unit: "mM",
       texName: "km\\_atp\\_synthase\\_ADP",
     })
     .addParameter("km_atp_synthase_Orthophosphate", {
       value: 0.3,
+      unit: "mM",
       texName: "km\\_atp\\_synthase\\_Orthophosphate",
     })
     .addParameter("kcat_atp_synthase", {
       value: 2.8,
+      unit: "s^{-1}",
       texName: "kcat\\_atp\\_synthase",
     })
     .addParameter("E0_atp_synthase", {
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_atp\\_synthase",
     })
     .addVariable("_3PGA", {
       displayName: names.pga,
       value: 0.6387788347932627,
+      unit: "mM",
       texName: "3PGA",
     })
     .addVariable("BPGA", {
       displayName: names.bpga,
       value: 0.0013570885908749779,
+      unit: "mM",
       texName: "BPGA",
     })
     .addVariable("GAP", {
       displayName: names.gap,
       value: 0.011259431827358068,
+      unit: "mM",
       texName: "GAP",
     })
     .addVariable("DHAP", {
       displayName: names.dhap,
       value: 0.24770748227012374,
+      unit: "mM",
       texName: "DHAP",
     })
     .addVariable("FBP", {
       displayName: names.fbp,
       value: 0.01980222074817044,
+      unit: "mM",
       texName: "FBP",
     })
     .addVariable("F6P", {
       displayName: names.f6p,
       value: 1.093666906864421,
+      unit: "mM",
       texName: "F6P",
     })
     .addVariable("G6P", {
       displayName: names.g6p,
       value: 2.5154338857582377,
+      unit: "mM",
       texName: "G6P",
     })
     .addVariable("G1P", {
       displayName: names.g1p,
       value: 0.14589516537322303,
+      unit: "mM",
       texName: "G1P",
     })
     .addVariable("SBP", {
       displayName: names.sbp,
       value: 0.09132688566151095,
+      unit: "mM",
       texName: "SBP",
     })
     .addVariable("S7P", {
       displayName: names.s7p,
       value: 0.23281380022778891,
+      unit: "mM",
       texName: "S7P",
     })
     .addVariable("E4P", {
       displayName: names.e4p,
       value: 0.02836065066520614,
+      unit: "mM",
       texName: "E4P",
     })
     .addVariable("X5P", {
       displayName: names.x5p,
       value: 0.03647242425941113,
+      unit: "mM",
       texName: "X5P",
     })
     .addVariable("R5P", {
       displayName: names.r5p,
       value: 0.06109130988031577,
+      unit: "mM",
       texName: "R5P",
     })
     .addVariable("RUBP", {
       displayName: names.rubp,
       value: 0.2672164362349537,
+      unit: "mM",
       texName: "RUBP",
     })
     .addVariable("RU5P", {
       displayName: names.ru5p,
       value: 0.0244365238237522,
+      unit: "mM",
       texName: "RU5P",
     })
     .addVariable("ATP", {
       displayName: names.atp,
       value: 0.43633201706180874,
+      unit: "mM",
       texName: "ATP",
     })
     .addAssignment("ADP", {
