@@ -1,0 +1,1 @@
+The publication did not provide any code, but the differential equations are sufficient to reproduce the model and results. The description of the simulation performed is clearly stated, so the figures were replicated with high accuracy.
