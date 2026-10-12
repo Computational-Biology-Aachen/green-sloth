@@ -43,22 +43,19 @@ export const ORGANISMS = [
   "Theoretical",
 ] as const;
 
-export const PMF_DESCRIPTIONS = [
-  "Full; ΔpH + Δψ",
-  "Only ΔpH",
-] as const;
+export const PMF_DESCRIPTIONS = ["Full; ΔpH + Δψ", "Only ΔpH"] as const;
 
-export type Part = typeof PARTS[number];
-export type ModelType = typeof MODEL_TYPES[number];
-export type ExperimentalData = typeof EXPERIMENTAL_DATA[number];
-export type Organism = typeof ORGANISMS[number];
-export type PMFdescription = typeof PMF_DESCRIPTIONS[number];
+export type Part = (typeof PARTS)[number];
+export type ModelType = (typeof MODEL_TYPES)[number];
+export type ExperimentalData = (typeof EXPERIMENTAL_DATA)[number];
+export type Organism = (typeof ORGANISMS)[number];
+export type PMFdescription = (typeof PMF_DESCRIPTIONS)[number];
 
 export const AVAILABLE_TAGS = {
   "Part of Photosynthesis": PARTS,
   "Model type": MODEL_TYPES,
   "Explains data": EXPERIMENTAL_DATA,
-  "Organism": ORGANISMS,
+  Organism: ORGANISMS,
   "PMF description": PMF_DESCRIPTIONS,
 };
 
@@ -66,7 +63,7 @@ export type TagValues = {
   "Part of Photosynthesis": Array<Part>;
   "Model type": Array<ModelType>;
   "Explains data": Array<ExperimentalData>;
-  "Organism": Array<Organism>;
+  Organism: Array<Organism>;
   "PMF description": Array<PMFdescription>;
 };
 
