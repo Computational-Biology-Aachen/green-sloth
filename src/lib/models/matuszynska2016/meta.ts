@@ -14,6 +14,7 @@ export const meta: ModelMeta = {
       "ATP Synthase",
       "Cytochrome b6f",
       "PQ Cycle",
+      "NPQ",
     ],
     "Model type": ["ODE"],
     "Explains data": ["PAM fluorescence"],
