@@ -1,5 +1,5 @@
 import { browser } from "$app/environment";
-import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import type { ModelBuilderBase } from "@computational-biology-aachen/mxlweb-core";
 import { WorkerPool } from "./workerPool";
 
 import wasmWorkerUrlString from "@computational-biology-aachen/mxlweb-core/backends/wasm/wasmWorker.ts?worker&url";
@@ -17,6 +17,19 @@ function once<T>(factory: () => T): () => T {
 }
 
 const getWasmPool = once(() => new WorkerPool(wasmWorkerUrl, 1));
+
+/**
+ * A fresh, caller-owned WASM worker pool — unlike the singleton above, not
+ * memoized. Ensemble fitting (Fit.svelte, mxl-web ADR 0006 §2.5) needs N
+ * preview trajectories computed in parallel, one per ensemble member, which
+ * the shared `wasmRadau5` pool (hardcoded to size 1) would just serialize;
+ * scoping a dedicated pool to the ensemble run's own lifetime (created when
+ * it starts, `terminate()`d when it finishes or is cancelled) keeps every
+ * other `wasmRadau5` consumer — single-model fitting included — unaffected.
+ */
+export function createWasmPool(size: number): WorkerPool {
+  return new WorkerPool(wasmWorkerUrl, size);
+}
 
 type BuildOpts = {
   userParameters?: string[];
@@ -38,7 +51,7 @@ export interface Backend {
   label: string;
   method: string;
   getPool(): WorkerPool;
-  buildRequest(model: KineticModelBuilder, opts: BuildOpts): BackendRequest;
+  buildRequest(model: ModelBuilderBase, opts: BuildOpts): BackendRequest;
 }
 
 function makeWasmBackend(method: string, label: string): Backend {

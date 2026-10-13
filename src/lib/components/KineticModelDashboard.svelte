@@ -7,11 +7,18 @@
 -->
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { H3, Slider2 as Slider } from "@computational-biology-aachen/design";
+  import {
+    Button,
+    H3,
+    Popover,
+    Slider2 as Slider,
+  } from "@computational-biology-aachen/design";
   import H2 from "@computational-biology-aachen/design/H2.svelte";
   import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+  import { untrack } from "svelte";
   import { backends } from "../stores/backends";
   import type { ModelAnalysis } from "../types";
+  import Fit from "./Fit.svelte";
   import Pam from "./Pam.svelte";
   import TimeCourse from "./TimeCourse.svelte";
 
@@ -94,6 +101,39 @@
     }
     for (const ref of analysisRefs) ref?.runSimulation(model);
   }
+
+  // The model's state as loaded, so "Reset" can undo an applied fit (and any
+  // slider moves). A shallow copy suffices: updateParameter/updateVariable
+  // replace entries rather than mutating them. Covers every parameter, not
+  // just slider ones, since a fit can change parameters without a slider.
+  const originals = $derived.by(() => {
+    const m = model;
+    return untrack(() => ({
+      parameters: new Map(m.parameters),
+      variables: new Map(m.variables),
+    }));
+  });
+
+  function syncSlidersAndRerun() {
+    for (const def of sliderDefs) {
+      const value =
+        def.kind === "parameter"
+          ? model.parameters.get(def.id)?.value
+          : model.variables.get(def.id)?.value;
+      if (typeof value === "number") values[def.key] = value;
+    }
+    for (const ref of analysisRefs) ref?.runSimulation(model);
+  }
+
+  function resetParameters() {
+    for (const [id, par] of originals.parameters) {
+      model.updateParameter(id, par);
+    }
+    for (const [id, vari] of originals.variables) {
+      model.updateVariable(id, vari);
+    }
+    syncSlidersAndRerun();
+  }
 </script>
 
 {#if browser}
@@ -121,6 +161,8 @@
         type="checkbox"
         bind:checked={displayReference}
       />
+      <Button popovertarget="fit-editor">Fit to data</Button>
+      <Button onclick={resetParameters}>Reset</Button>
     </div>
     {#each analyses as analysis, i (i)}
       <div class="analysis">
@@ -164,6 +206,17 @@
       </div>
     {/each}
   </div>
+
+  <Popover
+    size="lg"
+    popovertarget="fit-editor"
+  >
+    <Fit
+      model={model}
+      popovertarget="fit-editor"
+      onApply={syncSlidersAndRerun}
+    />
+  </Popover>
 {/if}
 
 <style>
