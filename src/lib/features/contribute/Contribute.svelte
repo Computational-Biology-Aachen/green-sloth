@@ -6,7 +6,6 @@
   import {
     Button,
     Code,
-    H1,
     H2,
     InfoBox,
     InputChoice,
@@ -15,7 +14,6 @@
     Section,
     Text,
     Bold,
-    SectionHeader,
   } from "@computational-biology-aachen/design";
   import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import { mxlJsonToModel } from "@computational-biology-aachen/mxlweb-core/mxl";
@@ -159,14 +157,6 @@ export const meta: ModelMeta = {
     setTimeout(() => (copied = null), 1500);
   }
 </script>
-
-<svelte:head>
-  <title>Contribute a model - GreenSloth</title>
-</svelte:head>
-
-<SectionHeader width="narrow">
-  <H1 color="light">Submit a model</H1>
-</SectionHeader>
 
 <Section
   variant="light"

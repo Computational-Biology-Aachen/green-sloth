@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
-  import { base } from "$app/paths";
+  import Contribute from "$lib/features/contribute/Contribute.svelte";
   import {
     H1,
     H2,
@@ -93,6 +93,11 @@ npm run dev               # open the model page, confirm the analyses run`;
         class={section === "contribute" ? "inverted active-tab" : "inverted"}
         onclick={() => setSection("contribute")}>Contribute</Button
       >
+      <Button
+        variant="inverted"
+        class={section === "submit" ? "inverted active-tab" : "inverted"}
+        onclick={() => setSection("submit")}>Submit</Button
+      >
     </Pair>
   </Row>
 </SectionHeader>
@@ -139,10 +144,13 @@ npm run dev               # open the model page, confirm the analyses run`;
     <Ol>
       <Li>
         <Bold>From the browser, no setup.</Bold> Use the
-        <Link href="{base}/contribute">in-app builder</Link>: paste your model,
-        confirm it simulates in the live preview, fill in the metadata, and open
-        a pre-filled issue. A workflow validates it and opens the pull request
-        for you.
+        <button
+          type="button"
+          class="link-button"
+          onclick={() => setSection("submit")}>in-app builder</button
+        >: paste your model, confirm it simulates in the live preview, fill in
+        the metadata, and open a pre-filled issue. A workflow validates it and
+        opens the pull request for you.
       </Li>
       <Li>
         <Bold>As a pull request yourself.</Bold> Clone the repo, drop a
@@ -279,11 +287,26 @@ npm run dev               # open the model page, confirm the analyses run`;
       re-runs <Code>validate:models</Code> and a build on every PR.
     </Text>
   </Section>
+{:else if section === "submit"}
+  <Contribute />
 {/if}
 
 <style>
   :global(H1) {
     width: 100%;
+  }
+
+  .link-button {
+    display: inline;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    color: var(--color-primary, blue); /* Use your theme's link color */
+    font: inherit;
+  }
+  .link-button:hover {
+    text-decoration: underline;
   }
   :global(button.inverted) {
     border: 0.2em solid var(--color-primary);
