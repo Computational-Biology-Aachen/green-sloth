@@ -12,6 +12,7 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("kf_phosphoglycolate_phosphatase", {
       value: 60.0,
+      unit: "mM\\,s^{-1}",
       texName: "kf\\_phosphoglycolate\\_phosphatase",
       slider: {
         min: "0.1",
@@ -21,103 +22,128 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("E0_glycolate_oxidase", {
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_glycolate\\_oxidase",
     })
     .addParameter("kcat_glycolate_oxidase", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "kcat\\_glycolate\\_oxidase",
     })
     .addParameter("km_glycolate_oxidase_s", {
       value: 0.06,
+      unit: "mM",
       texName: "km\\_glycolate\\_oxidase\\_s",
     })
     .addParameter("E0_glycine_transaminase", {
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_glycine\\_transaminase",
     })
     .addParameter("kcat_glycine_transaminase", {
       value: 143.0,
+      unit: "s^{-1}",
       texName: "kcat\\_glycine\\_transaminase",
     })
     .addParameter("km_glycine_transaminase_s", {
       value: 3.0,
+      unit: "mM",
       texName: "km\\_glycine\\_transaminase\\_s",
     })
     .addParameter("E0_glycine_decarboxylase", {
       value: 0.5,
+      unit: "mM",
       texName: "E0\\_glycine\\_decarboxylase",
     })
     .addParameter("kcat_glycine_decarboxylase", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "kcat\\_glycine\\_decarboxylase",
     })
     .addParameter("km_glycine_decarboxylase_s", {
       value: 6.0,
+      unit: "mM",
       texName: "km\\_glycine\\_decarboxylase\\_s",
     })
     .addParameter("E0_serine_glyoxylate_transaminase", {
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_serine\\_glyoxylate\\_transaminase",
     })
     .addParameter("kcat_serine_glyoxylate_transaminase", {
       value: 159.0,
+      unit: "s^{-1}",
       texName: "kcat\\_serine\\_glyoxylate\\_transaminase",
     })
     .addParameter("km_serine_glyoxylate_transaminase_glyoxylate", {
       value: 0.15,
+      unit: "mM",
       texName: "km\\_serine\\_glyoxylate\\_transaminase\\_glyoxylate",
     })
     .addParameter("km_serine_glyoxylate_transaminase_serine", {
       value: 2.72,
+      unit: "mM",
       texName: "km\\_serine\\_glyoxylate\\_transaminase\\_serine",
     })
     .addParameter("E0_glycerate_dehydrogenase", {
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_glycerate\\_dehydrogenase",
     })
     .addParameter("kcat_glycerate_dehydrogenase", {
       value: 398.0,
+      unit: "s^{-1}",
       texName: "kcat\\_glycerate\\_dehydrogenase",
     })
     .addParameter("km_glycerate_dehydrogenase_s", {
       value: 0.12,
+      unit: "mM",
       texName: "km\\_glycerate\\_dehydrogenase\\_s",
     })
     .addParameter("E0_catalase", {
       value: 1.0,
+      unit: "mM",
       texName: "E0\\_catalase",
     })
     .addParameter("kcat_catalase", {
       value: 760500.0,
+      unit: "s^{-1}",
       texName: "kcat\\_catalase",
     })
     .addParameter("km_catalase_s", {
       value: 137.9,
+      unit: "mM",
       texName: "km\\_catalase\\_s",
     })
     .addVariable("glycolate", {
       value: 0.09,
+      unit: "mM",
       texName: "glycolate",
     })
     .addVariable("glyoxylate", {
       value: 0.7964601770483386,
+      unit: "mM",
       texName: "glyoxylate",
     })
     .addVariable("glycine", {
       value: 8.999999999424611,
+      unit: "mM",
       texName: "glycine",
     })
     .addVariable("serine", {
       value: 2.5385608670239126,
+      unit: "mM",
       texName: "serine",
     })
     .addVariable("hydroxypyruvate", {
       value: 0.009782608695111009,
+      unit: "mM",
       texName: "hydroxypyruvate",
     })
     .addVariable("H2O2", {
       displayName: names.h2o2,
       value: 0.010880542843616855,
+      unit: "mM",
       texName: "H2O2",
     })
     .addAssignment("vmax_glycolate_oxidase", {
