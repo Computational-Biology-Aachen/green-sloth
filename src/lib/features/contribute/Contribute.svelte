@@ -1,7 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { base } from "$app/paths";
   import ModelDashboard from "$lib/components/KineticModelDashboard.svelte";
+  import { AVAILABLE_TAGS } from "$lib/tags";
   import type { ModelAnalysis } from "$lib/types";
   import {
     Button,
@@ -11,11 +11,11 @@
     InfoBox,
     InputChoice,
     InputText,
-    Link,
     Pre,
     Section,
-    SectionHeader,
     Text,
+    Bold,
+    SectionHeader,
   } from "@computational-biology-aachen/design";
   import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import { mxlJsonToModel } from "@computational-biology-aachen/mxlweb-core/mxl";
@@ -71,32 +71,62 @@
   let slug = $state("");
   let title = $state("");
   let doi = $state("");
-  let tags = $state("");
+  let journal = $state("");
+  let license = $state("");
+  let tags = $state<Record<string, string[]>>(
+    Object.fromEntries(Object.keys(AVAILABLE_TAGS).map((c) => [c, []])),
+  );
   let modelMd = $state("");
   let commentMd = $state("");
   let schemeSvg = $state("");
+  let curatorNotesMd = $state("");
 
-  const tagList = $derived(
-    tags
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean),
-  );
+  function toggleTag(category: string, tag: string) {
+    if (tags[category]?.includes(tag)) {
+      tags[category] = tags[category].filter((t) => t !== tag);
+    } else {
+      tags[category] = [...(tags[category] || []), tag];
+    }
+  }
 
   // The typed presentation file the contributor would otherwise hand-write.
-  const metaTs = $derived(`import type { ModelMeta } from "$lib/types";
+  const metaTs = $derived(`import contributors from "$lib/contributors";
+import type { ModelMeta } from "$lib/types";
 
 export const meta: ModelMeta = {
   slug: ${JSON.stringify(slug)},
   title: ${JSON.stringify(title)},
   DOI: ${JSON.stringify(doi)},
+  journal: ${JSON.stringify(journal)},
+  license: ${JSON.stringify(license)},
   tags: {
-    "Part of Photosynthesis": [${tagList.map((t) => JSON.stringify(t)).join(", ")}],
-    Demonstrations: [],
+    ${
+      tags
+        ? Object.entries(tags)
+            .map(
+              ([category, tags]) =>
+                `${JSON.stringify(category)}: [${tags
+                  .map((t) => JSON.stringify(t))
+                  .join(", ")}]`,
+            )
+            .join(",\n    ")
+        : ""
+    }
   },
-  analyses: [{ type: "timecourse", tEnd: 100, nTimePoints: 500 }],
-};
-`);
+  analyses: [<analyses>],
+  contributors: [
+    {
+      desc: "Initial implementation",
+      date: <date>,
+      contributor: <contributor>,
+    },
+    {
+      desc: "Maintenance",
+      date: <date>,
+      contributor: <contributor>,
+    },
+  ],
+};`);
 
   // Prefill the small fields of the issue form; the large model file and SVG are
   // copied to the clipboard and pasted into the opened issue (URLs can't carry
@@ -110,6 +140,7 @@ export const meta: ModelMeta = {
       meta_ts: metaTs,
       model_md: modelMd,
       comment_md: commentMd,
+      curatornotes_md: curatorNotesMd,
     });
     return `${repo}/issues/new?${p.toString()}`;
   });
@@ -142,22 +173,17 @@ export const meta: ModelMeta = {
   width="narrow"
 >
   <Text>
-    Paste a model below, check it simulates, fill in the details, and open a
-    pre-filled contribution issue — a workflow turns it into a pull request. No
-    clone, no toolchain. Producing the model file (e.g. with
-    <Link href="https://github.com/Computational-Biology-Aachen/mxlpy"
-      >mxlpy</Link
-    >
-    or from SBML) is described in
-    <Link href="{base}/contributing">the contributing guide</Link>.
+    Here is a step-by-step workflow to contribute a model to GreenSloth. Most of
+    the mandatory infromation needed for submission is collected here, and then
+    with justa press of a button, a pre-filled is opened on GitHub. Some things
+    will need to be added manually, but the workflow is designed to minimize the
+    amount of manual work needed.
   </Text>
-</Section>
-
-<Section
-  variant="light"
-  width="narrow"
->
-  <H2>1. Model</H2>
+  <H2>1. The Model</H2>
+  <Text>
+    Import the model you want to contribute and if you are doing this in a
+    desktop browser, you will see a live timecourse simulation of the model.
+  </Text>
   <InputChoice
     id="format"
     label="Format"
@@ -180,7 +206,6 @@ export const meta: ModelMeta = {
     aria-label="Upload model file"
     onchange={onFile}
   />
-
   {#if built.error}
     <InfoBox
       header="Invalid model"
@@ -194,26 +219,15 @@ export const meta: ModelMeta = {
       {built.model.getParameterNames().length} parameters.
     </Text>
   {/if}
-</Section>
-
-{#if browser && built.model}
-  <Section
-    variant="light"
-    width="narrow"
-  >
+  {#if browser && built.model}
     <H2>Live preview</H2>
     <ModelDashboard
       model={built.model}
       analyses={previewAnalyses}
     />
-  </Section>
-{/if}
+  {/if}
 
-<Section
-  variant="light"
-  width="narrow"
->
-  <H2>2. Metadata</H2>
+  <H2>2. The Metadata</H2>
   <InputText
     id="slug"
     label="Slug"
@@ -230,45 +244,89 @@ export const meta: ModelMeta = {
     bind:value={doi}
   />
   <InputText
-    id="tags"
-    label="Tags (comma-separated)"
-    bind:value={tags}
+    id="journal"
+    label="Journal"
+    bind:value={journal}
   />
+  <InputChoice
+    id="license"
+    label="License"
+    bind:value={license}
+  >
+    <option value="© CC BY">CC BY</option>
+    <option value="© CC BY-SA">CC BY-SA</option>
+    <option value="© CC BY-ND">CC BY-ND</option>
+    <option value="© CC BY-NC">CC BY-NC</option>
+    <option value="© CC BY-NC-SA">CC BY-NC-SA</option>
+    <option value="© CC BY-NC-ND">CC BY-NC-ND</option>
+    <option value="Recreated">Recreated</option>
+  </InputChoice>
+  <Text>Available tags</Text>
+  <div class="tag-container">
+    {#each Object.entries(AVAILABLE_TAGS) as [category, options] (category)}
+      <div class="tag-category-label">
+        <Bold>{category}:</Bold>
+      </div>
+      <div class="tag-options">
+        {#each options as tag (tag)}
+          <Button
+            class={tags[category]?.includes(tag)
+              ? "primary tag-button"
+              : "inverted tag-button"}
+            onclick={() => toggleTag(category, tag)}
+          >
+            {tag}
+          </Button>
+        {/each}
+      </div>
+    {/each}
+  </div>
   <Text>Generated <Code>meta.ts</Code>:</Text>
   <Pre>{metaTs}</Pre>
-</Section>
 
-<Section
-  variant="light"
-  width="narrow"
->
-  <H2>3. Description</H2>
+  <H2>3. The Description</H2>
   <Text
-    ><Code>model.md</Code> — what the model describes, organism, reference:</Text
+    ><Code>model.md</Code> — Short description/summary of the model and what it describes.</Text
   >
   <textarea
     class="file"
     rows="5"
     bind:value={modelMd}></textarea>
-  <Text><Code>comment.md</Code> — one line on validation (optional):</Text>
+  <Text
+    ><Code>comment.md</Code> (Optional) — Short comment on the model implementation.</Text
+  >
   <textarea
     class="file"
     rows="2"
     bind:value={commentMd}></textarea>
   <Text
-    ><Code>scheme.svg</Code> — reaction-scheme diagram markup (optional):</Text
+    ><Code>scheme.svg</Code> (Optional) — Model Scheme in an <Code>svg</Code> format.
+    Please paste the SVG code here. If it works, a preview will be shown.</Text
   >
   <textarea
     class="file"
     rows="4"
     bind:value={schemeSvg}></textarea>
-</Section>
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+  <div class="center">{@html schemeSvg}</div>
 
-<Section
-  variant="light"
-  width="narrow"
->
-  <H2>4. Submit</H2>
+  <H2>4. The validation</H2>
+  <Text>
+    The model implementation is validated by the recreation of the figures from
+    the publication. As the figures are too big to be included in the submission
+    form, you can only add the optional curator notes here. You should add the
+    figures and the validation code file to the GitHub issue yourself.
+  </Text>
+  <textarea
+    class="file"
+    rows="2"
+    bind:value={curatorNotesMd}></textarea>
+  <Text
+    ><Code>curatornotes.md</Code> (Optional) — A short note on the model validation
+    by the recreation of the publication figures.</Text
+  >
+
+  <H2>5. Submit</H2>
   <Text>
     Opening the issue pre-fills the slug, metadata and description. The model
     file{schemeSvg.trim() ? " and SVG are" : " is"} too large for a URL — copy
@@ -308,6 +366,30 @@ export const meta: ModelMeta = {
 </Section>
 
 <style>
+  .tag-container {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: var(--space-2, 8px);
+    row-gap: var(--space-4, 8px);
+    align-items: start;
+  }
+  :global(.tag-header) {
+    grid-row: 1 / -1;
+    grid-column: 1;
+  }
+  .tag-category-label {
+    padding-top: 0.5rem;
+  }
+
+  .tag-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2em;
+  }
+  :global(.tag-button) {
+    border: 0.19em solid var(--color-primary, #ccc) !important;
+  }
+
   .file {
     box-sizing: border-box;
     margin-bottom: var(--space-2, 8px);
