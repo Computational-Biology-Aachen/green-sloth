@@ -311,6 +311,9 @@
           --text="var(--color-text)">Python</ButtonMenuItem
         >
       </ButtonMenu>
+      <Button href="{base}/howto?section=website" variant="inverted" class="info-button">
+        <Icon color="inherit">info</Icon>
+      </Button>
     </Pair>
   </Row>
   {#if data.meta.DOI}
@@ -501,9 +504,26 @@
     white-space: nowrap;
   }
 
-  .edit-button:hover {
+  .edit-button:hover, :global(.info-button):hover {
     opacity: 0.85;
     background-color: var(--color-surface);
+  }
+
+  :global(.info-button) {
+    display: inline;
+    flex-shrink: 0;
+    transition: var(--transition);
+    box-shadow: var(--shadow-primary);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    padding: var(--space-2) var(--space-2);
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    font-family: var(--font-sans);
+    text-decoration: none;
+    white-space: nowrap;
   }
 
   .doi-row {
