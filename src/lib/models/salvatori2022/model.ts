@@ -63,7 +63,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("Qc", {
       value: 0.07,
-      units: "1μmol m^{-2}",
+      units: "μmol m^{-2}",
       texName: "Qc",
     })
     .addParameter("v_NPQ", {
