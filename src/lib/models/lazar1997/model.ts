@@ -13,170 +13,212 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("k1", {
       value: 1666.0,
+      unit: "s^{-1}",
       texName: "k1",
     })
     .addParameter("k2", {
       value: 1250.0,
+      unit: "s^{-1}",
       texName: "k2",
     })
     .addParameter("k3", {
       value: 500.0,
+      unit: "s^{-1}",
       texName: "k3",
     })
     .addParameter("k4", {
       value: 20000.0,
+      unit: "s^{-1}",
       texName: "k4",
     })
     .addParameter("k5", {
       value: 1666.0,
+      unit: "s^{-1}",
       texName: "k5",
     })
     .addParameter("k6", {
       value: 3500.0,
+      unit: "s^{-1}",
       texName: "k6",
     })
     .addParameter("k7", {
       value: 175.0,
+      unit: "s^{-1}",
       texName: "k7",
     })
     .addParameter("k8", {
       value: 1750.0,
+      unit: "s^{-1}",
       texName: "k8",
     })
     .addParameter("k9", {
       value: 35.0,
+      unit: "s^{-1}",
       texName: "k9",
     })
     .addParameter("k10", {
       value: 5000.0,
+      unit: "s^{-1}",
       texName: "k10",
     })
     .addParameter("k11", {
       value: 5000.0,
+      unit: "s^{-1}",
       texName: "k11",
     })
     .addParameter("k12", {
       value: 150.0,
+      unit: "s^{-1}",
       texName: "k12",
     })
     .addParameter("k13", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "k13",
     })
     .addParameter("k14", {
       value: 150.0,
+      unit: "s^{-1}",
       texName: "k14",
     })
     .addParameter("k15", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "k15",
     })
     .addParameter("k16", {
       value: 150.0,
+      unit: "s^{-1}",
       texName: "k16",
     })
     .addParameter("k17", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "k17",
     })
     .addParameter("k18", {
       value: 150.0,
+      unit: "s^{-1}",
       texName: "k18",
     })
     .addParameter("k19", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "k19",
     })
     .addParameter("k20", {
       value: 150.0,
+      unit: "s^{-1}",
       texName: "k20",
     })
     .addParameter("k21", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "k21",
     })
     .addParameter("k22", {
       value: 150.0,
+      unit: "s^{-1}",
       texName: "k22",
     })
     .addParameter("k23", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "k23",
     })
     .addParameter("k24", {
       value: 1.0,
+      unit: "s^{-1}",
       texName: "k24",
     })
     .addParameter("k25", {
       value: 1.0,
+      unit: "s^{-1}",
       texName: "k25",
     })
     .addParameter("k6n", {
       value: 3500.0,
+      unit: "s^{-1}",
       texName: "k6n",
     })
     .addParameter("p", {
       value: 0.55,
+      unit: "1",
       texName: "p",
     })
     .addVariable("y1", {
       value: 0.66,
+      unit: "1",
       texName: "y1",
     })
     .addVariable("y2", {
       value: 0.0,
+      unit: "1",
       texName: "y2",
     })
     .addVariable("y3", {
       value: 0.0,
+      unit: "1",
       texName: "y3",
     })
     .addVariable("y4", {
       value: 0.0,
+      unit: "1",
       texName: "y4",
     })
     .addVariable("y5", {
       value: 0.0,
+      unit: "1",
       texName: "y5",
     })
     .addVariable("y6", {
       value: 0.0,
+      unit: "1",
       texName: "y6",
     })
     .addVariable("y7", {
       value: 0.0,
+      unit: "1",
       texName: "y7",
     })
     .addVariable("y8", {
       value: 0.0,
+      unit: "1",
       texName: "y8",
     })
     .addVariable("y9", {
       value: 7.0,
+      unit: "1",
       texName: "y9",
     })
     .addVariable("y10", {
       value: 0.0,
+      unit: "1",
       texName: "y10",
     })
     .addVariable("y11", {
       value: 0.0,
+      unit: "1",
       texName: "y11",
     })
     .addVariable("y12", {
       value: 0.0,
+      unit: "1",
       texName: "y12",
     })
     .addVariable("y13", {
       value: 0.22,
+      unit: "1",
       texName: "y13",
     })
     .addVariable("y14", {
       value: 0.0,
+      unit: "1",
       texName: "y14",
     })
     .addVariable("y15", {
       value: 0.12,
+      unit: "1",
       texName: "y15",
     })
     .addAssignment("eprime", {
