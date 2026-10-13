@@ -311,7 +311,11 @@
           --text="var(--color-text)">Python</ButtonMenuItem
         >
       </ButtonMenu>
-      <Button href="{base}/howto?section=website" variant="inverted" class="info-button">
+      <Button
+        href="{base}/howto?section=website"
+        variant="inverted"
+        class="info-button"
+      >
         <Icon color="inherit">info</Icon>
       </Button>
     </Pair>
@@ -504,7 +508,8 @@
     white-space: nowrap;
   }
 
-  .edit-button:hover, :global(.info-button):hover {
+  .edit-button:hover,
+  :global(.info-button):hover {
     opacity: 0.85;
     background-color: var(--color-surface);
   }
