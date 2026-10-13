@@ -33,7 +33,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("PAR", {
       value: 0.0,
       texName: "PAR",
-      units: "μmol m^{-2} s^{-1}",
+      units: "\\mu mol\\,m^{-2}\\,s^{-1}",
       displayName: names.ppfd,
     })
     .addParameter("alpha", {
@@ -48,7 +48,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("Ec_PSII", {
       value: 157.56,
-      units: "μmol m^{-2}",
+      units: "\\mu mol\\,m^{-2}",
       texName: "Ec\\_PSII",
     })
     .addParameter("v_ETR", {
@@ -63,7 +63,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("Qc", {
       value: 0.07,
-      units: "μmol m^{-2}",
+      units: "\\mu mol\\,m^{-2}",
       texName: "Qc",
     })
     .addParameter("v_NPQ", {
@@ -108,7 +108,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addVariable("E_PSII", {
       value: 0.0,
-      units: "μmol m^{-2}",
+      units: "\\mu mol\\,m^{-2}",
       texName: "E\\_PSII",
     })
     .addVariable("Q", {
@@ -141,21 +141,22 @@ export function initModel(): KineticModelBuilder {
     .addAssignment("pH", {
       displayName: names.ph,
       fn: new Divide([new Name("NADPH"), new Name("NADP")]),
-      units:"1",
+      units: "1",
       texName: "pH",
     })
     .addAssignment("ETR", {
       fn: new Mul([new Name("E_PSII"), new Name("NADP"), new Name("v_ETR")]),
-      units:"μmol m^{-2} s^{-1}",
+      units: "\\mu mol\\,m^{-2}\\,s^{-1}",
       texName: "ETR",
     })
     .addAssignment("A", {
       displayName: names.net_assimilation_rate,
       fn: new Mul([new Name("NADPH"), new Name("R"), new Name("v_C")]),
-      units:"μmol m^{-2} s^{-1}",
+      units: "\\mu mol\\,m^{-2}\\,s^{-1}",
       texName: "A",
     })
     .addReaction("Energy_input", {
+      units: "\\mu mol\\,m^{-2}\\,s^{-1}",
       fn: new Mul([
         new Name("PAR"),
         new Name("alpha"),
@@ -169,11 +170,13 @@ export function initModel(): KineticModelBuilder {
       texName: "Energy\\_input",
     })
     .addReaction("ETR_out", {
+      units: "\\mu mol\\,m^{-2}\\,s^{-1}",
       fn: new Mul([new Name("E_PSII"), new Name("NADP"), new Name("v_ETR")]),
       stoichiometry: [{ name: "E_PSII", value: new Num(-1.0) }],
       texName: "ETR\\_out",
     })
     .addReaction("ETR_in", {
+      units: "\\mu mol\\,m^{-2}\\,s^{-1}",
       fn: new Mul([
         new Name("E_PSII"),
         new Name("NADP"),
@@ -187,6 +190,7 @@ export function initModel(): KineticModelBuilder {
       texName: "ETR\\_in",
     })
     .addReaction("energy_dissipation", {
+      units: "\\mu mol\\,m^{-2}\\,s^{-1}",
       fn: new Mul([
         new Name("E_PSII"),
         new Name("P_NPQ"),
@@ -203,12 +207,14 @@ export function initModel(): KineticModelBuilder {
       texName: "energy\\_dissipation",
     })
     .addReaction("NPQ", {
+      units: "\\mu mol\\,m^{-2}\\,s^{-1}",
       displayName: names.npq,
       fn: new Mul([new Name("Q"), new Name("v_NPQ")]),
       stoichiometry: [{ name: "Q", value: new Num(-1.0) }],
       texName: "NPQ",
     })
     .addReaction("NPQ_activation", {
+      units: "s^{-1}",
       fn: new Piecewise([
         new Mul([
           new Name("v_p"),
@@ -243,6 +249,7 @@ export function initModel(): KineticModelBuilder {
       texName: "NPQ\\_activation",
     })
     .addReaction("Carbon_assimilation", {
+      units: "\\mu mol\\,m^{-2}\\,s^{-1}",
       fn: new Mul([
         new Name("NADPH"),
         new Name("R"),
@@ -256,6 +263,7 @@ export function initModel(): KineticModelBuilder {
       texName: "Carbon\\_assimilation",
     })
     .addReaction("RuBisCO_activation", {
+      units: "s^{-1}",
       fn: new Mul([
         new Name("d"),
         new Name("v_R"),
