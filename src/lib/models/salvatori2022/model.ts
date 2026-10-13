@@ -33,102 +33,126 @@ export function initModel(): KineticModelBuilder {
     .addParameter("PAR", {
       value: 0.0,
       texName: "PAR",
+      units: "μmol m^{-2} s^{-1}",
       displayName: names.ppfd,
     })
     .addParameter("alpha", {
       value: 0.78,
+      units: "1",
       texName: "alpha",
     })
     .addParameter("c_in", {
       value: 0.23,
+      units: "1",
       texName: "c\\_in",
     })
     .addParameter("Ec_PSII", {
       value: 157.56,
+      units: "μmol m^{-2}",
       texName: "Ec\\_PSII",
     })
     .addParameter("v_ETR", {
       value: 0.78,
+      units: "s^{-1}",
       texName: "v\\_ETR",
     })
     .addParameter("v_d", {
       value: 0.08,
+      units: "s^{-1}",
       texName: "v\\_d",
     })
     .addParameter("Qc", {
       value: 0.07,
+      units: "1μmol m^{-2}",
       texName: "Qc",
     })
     .addParameter("v_NPQ", {
       value: 70.58,
+      units: "s^{-1}",
       texName: "v\\_NPQ",
     })
     .addParameter("v_p", {
       value: 0.07,
+      units: "s^{-1}",
       texName: "v\\_p",
     })
     .addParameter("v_C", {
       value: 11.75,
+      units: "s^{-1}",
       texName: "v\\_C",
     })
     .addParameter("eta_NADPH", {
       value: 5.07,
+      units: "1",
       texName: "eta\\_NADPH",
     })
     .addParameter("eta_NADP", {
       value: 0.89,
+      units: "1",
       texName: "eta\\_NADP",
     })
     .addParameter("v_R", {
       value: 0.00089,
+      units: "s^{-1}",
       texName: "v\\_R",
     })
     .addParameter("d", {
       value: 8.4,
+      units: "1",
       texName: "d",
     })
     .addParameter("c_y", {
       value: -4.0,
+      units: "1",
       texName: "c\\_y",
     })
     .addVariable("E_PSII", {
       value: 0.0,
+      units: "μmol m^{-2}",
       texName: "E\\_PSII",
     })
     .addVariable("Q", {
       value: 0.0,
+      units: "μmol m^{-2}",
       texName: "Q",
     })
     .addVariable("P_NPQ", {
       value: 0.0,
+      units: "1",
       texName: "P\\_NPQ",
     })
     .addVariable("NADP", {
       displayName: names.nadp,
       value: 5.0,
+      units: "1",
       texName: "NADP",
     })
     .addVariable("NADPH", {
       displayName: names.nadph,
       value: 5.0,
+      units: "1", 
       texName: "NADPH",
     })
     .addVariable("R", {
       value: 0.001,
+      units: "1", 
       texName: "R",
     })
     .addAssignment("pH", {
       displayName: names.ph,
       fn: new Divide([new Name("NADPH"), new Name("NADP")]),
+      units:"1",
       texName: "pH",
     })
     .addAssignment("ETR", {
       fn: new Mul([new Name("E_PSII"), new Name("NADP"), new Name("v_ETR")]),
+      units:"μmol m^{-2} s^{-1}",
       texName: "ETR",
     })
     .addAssignment("A", {
       displayName: names.net_assimilation_rate,
       fn: new Mul([new Name("NADPH"), new Name("R"), new Name("v_C")]),
+      units:"μmol m^{-2} s^{-1}",
       texName: "A",
     })
     .addReaction("Energy_input", {
