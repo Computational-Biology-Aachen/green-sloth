@@ -199,7 +199,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Name("Vc_j"), new Num(2), new Name("gammas")]),
         new Name("C"),
       ]),
-      unit: "mol\\,O_2\\,m^{-2}\\,s^{-1} ",
+      unit: "mol\\,O_2\\,m^{-2}\\,s^{-1}",
       displayName: "Vo_j",
     })
     .addAssignment("Ag_j", {
