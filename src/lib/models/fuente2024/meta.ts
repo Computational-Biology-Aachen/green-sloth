@@ -10,11 +10,11 @@ export const meta: ModelMeta = {
   DOI: "10.1016/j.plaphy.2024.109138",
   tags: {
     "Part of Photosynthesis": [
-      "OEC",
       "PQ Cycle",
       "PSII",
       "PSI",
       "ATP Synthase",
+      "NPQ",
     ],
     "Model type": ["ODE"],
     "Explains data": ["Frequency domain"],

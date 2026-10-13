@@ -18,10 +18,11 @@ export const meta: ModelMeta = {
       "FNR",
       "PSI",
       "CBB Cycle",
+      "NPQ",
     ],
     "Model type": ["ODE"],
     "Explains data": ["PAM fluorescence", "P700 absorbance"],
-    Organism: ["Arabidopsis thaliana"],
+    Organism: ["Arabidopsis thaliana", "Generic C3 plant"],
     "PMF description": ["Only ΔpH"],
   },
   analyses: [
