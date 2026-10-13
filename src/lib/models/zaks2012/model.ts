@@ -27,522 +27,664 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("crosssection", {
       value: 0.25,
+      unit: "m^{2}\\,\\mu mol^{-1}",
       texName: "crosssection",
     })
     .addParameter("kEETLHP680QAox", {
       value: 5000000000.0,
+      unit: "s^{-1}",
       texName: "kEETLHP680QAox",
     })
     .addParameter("kEETLHP680QAred", {
       value: 850000000.0,
+      unit: "s^{-1}",
       texName: "kEETLHP680QAred",
     })
     .addParameter("kQ", {
       value: 3000000000.0,
+      unit: "s^{-1}",
       texName: "kQ",
     })
     .addParameter("kEETLHP680revQAox", {
       value: 10000000000.0,
+      unit: "s^{-1}",
       texName: "kEETLHP680revQAox",
     })
     .addParameter("kEETLHP680revQAred", {
       value: 10000000000.0,
+      unit: "s^{-1}",
       texName: "kEETLHP680revQAred",
     })
     .addParameter("kquenchP680plus", {
       value: 500000000.0,
+      unit: "s^{-1}",
       texName: "kquenchP680plus",
     })
     .addParameter("kNRantenna", {
       value: 500000000.0,
+      unit: "s^{-1}",
       texName: "kNRantenna",
     })
     .addParameter("kNRP680", {
       value: 100000000.0,
+      unit: "s^{-1}",
       texName: "kNRP680",
     })
     .addParameter("PsbSDose", {
       value: 0.6,
+      unit: "1",
       texName: "PsbSDose",
     })
     .addParameter("kF", {
       displayName: names.fluorescence_rate_constant,
       value: 70000000.0,
+      unit: "s^{-1}",
       texName: "kF",
     })
     .addParameter("alphaRC", {
       value: 0.4,
+      unit: "1",
       texName: "alphaRC",
     })
     .addParameter("alphaQ", {
       value: 0.1,
+      unit: "1",
       texName: "alphaQ",
     })
     .addParameter("kETP680PheOpenRC", {
       value: 3000000000000.0,
+      unit: "s^{-1}",
       texName: "kETP680PheOpenRC",
     })
     .addParameter("kETP680PheClosedRC", {
       value: 10000000000.0,
+      unit: "s^{-1}",
       texName: "kETP680PheClosedRC",
     })
     .addParameter("kETPheToQA", {
       value: 3000000000.0,
+      unit: "s^{-1}",
       texName: "kETPheToQA",
     })
     .addParameter("kETWaterOxidation", {
       value: 30000000.0,
+      unit: "s^{-1}",
       texName: "kETWaterOxidation",
     })
     .addParameter("kP680Pherecombination", {
       value: 500000000.0,
+      unit: "s^{-1}",
       texName: "kP680Pherecombination",
     })
     .addParameter("kP680QArecombination", {
       value: 30.0,
+      unit: "s^{-1}",
       texName: "kP680QArecombination",
     })
     .addParameter("kP680QArecombinationClosedRC", {
       value: 580.0,
+      unit: "s^{-1}",
       texName: "kP680QArecombinationClosedRC",
     })
     .addParameter("kETQAtoQB1", {
       value: 3500.0,
+      unit: "s^{-1}",
       texName: "kETQAtoQB1",
     })
     .addParameter("kETQB1toQA", {
       value: 350.0,
+      unit: "s^{-1}",
       texName: "kETQB1toQA",
     })
     .addParameter("kETQAtoQB2", {
       value: 1600.0,
+      unit: "s^{-1}",
       texName: "kETQAtoQB2",
     })
     .addParameter("kETQB2toQA", {
       value: 1600.0,
+      unit: "s^{-1}",
       texName: "kETQB2toQA",
     })
     .addParameter("PQH2undock", {
       value: 800.0,
+      unit: "s^{-1}",
       texName: "PQH2undock",
     })
     .addParameter("QReoxidationRate", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "QReoxidationRate",
     })
     .addParameter("PQdockingrate", {
       value: 500.0,
+      unit: "s^{-1}",
       texName: "PQdockingrate",
     })
     .addParameter("QuinonePoolSize", {
       value: 10.0,
+      unit: "1",
       texName: "QuinonePoolSize",
     })
     .addParameter("pKaC", {
       value: 5.8,
+      unit: "1",
       texName: "pKaC",
     })
     .addParameter("nC", {
       value: 1.2,
+      unit: "1",
       texName: "nC",
     })
     .addParameter("pHStromaStart", {
       value: 7.2,
+      unit: "1",
       texName: "pHStromaStart",
     })
     .addParameter("pHLumenStart", {
       value: 7.2,
+      unit: "1",
       texName: "pHLumenStart",
     })
     .addParameter("StromaProtonsStart", {
       value: 1e-10,
+      unit: "M",
       texName: "StromaProtonsStart",
     })
     .addParameter("bufferCapacityStroma", {
       value: 0.1,
+      unit: "M",
       texName: "bufferCapacityStroma",
     })
     .addParameter("bufferCapacityLumen", {
       value: 0.03,
+      unit: "M",
       texName: "bufferCapacityLumen",
     })
     .addParameter("ATPConductivity", {
       value: 6e-10,
+      unit: "mol\\,cm^{-2}\\,V^{-1}\\,s^{-1}",
       texName: "ATPConductivity",
     })
     .addParameter("kATPsActivate", {
       value: 0.25,
+      unit: "s^{-1}",
       texName: "kATPsActivate",
     })
     .addParameter("kATPsInactivate", {
       value: 0.003,
+      unit: "s^{-1}",
       texName: "kATPsInactivate",
     })
     .addParameter("thresholdpmf", {
       value: 0.001,
+      unit: "V",
       texName: "thresholdpmf",
     })
     .addParameter("leakpmf", {
       value: 0.8,
+      unit: "V",
       texName: "leakpmf",
     })
     .addParameter("leakConductivity", {
       value: 1e-7,
+      unit: "mol\\,cm^{-2}\\,V^{-1}\\,s^{-1}",
       texName: "leakConductivity",
     })
     .addParameter("PCl", {
       value: 1.8e-8,
+      unit: "L\\,cm^{-2}\\,s^{-1}",
       texName: "PCl",
     })
     .addParameter("PMg", {
       value: 3.6e-8,
+      unit: "L\\,cm^{-2}\\,s^{-1}",
       texName: "PMg",
     })
     .addParameter("PK", {
       value: 1.8e-8,
+      unit: "L\\,cm^{-2}\\,s^{-1}",
       texName: "PK",
     })
     .addParameter("zCl", {
       value: -1.0,
+      unit: "1",
       texName: "zCl",
     })
     .addParameter("zMg", {
       value: 2.0,
+      unit: "1",
       texName: "zMg",
     })
     .addParameter("zK", {
       value: 1.0,
+      unit: "1",
       texName: "zK",
     })
     .addParameter("StromaClStart", {
       value: 0.01,
+      unit: "M",
       texName: "StromaClStart",
     })
     .addParameter("StromaMgStart", {
       value: 0.01,
+      unit: "M",
       texName: "StromaMgStart",
     })
     .addParameter("StromaKStart", {
       value: 0.01,
+      unit: "M",
       texName: "StromaKStart",
     })
     .addParameter("Rconst", {
       displayName: names.gas_constant,
       value: 8.314,
+      unit: "J\\,mol^{-1}\\,K^{-1}",
       texName: "Rconst",
     })
     .addParameter("Fconst", {
       displayName: names.faraday_constant,
       value: 96485.0,
+      unit: "C\\,mol^{-1}",
       texName: "Fconst",
     })
     .addParameter("Tconst", {
       displayName: names.temperature,
       value: 300.0,
+      unit: "K",
       texName: "Tconst",
     })
     .addParameter("LumenVolume", {
       value: 6.7e-21,
+      unit: "L",
       texName: "LumenVolume",
     })
     .addParameter("StromaVolume", {
       value: 5.36e-20,
+      unit: "L",
       texName: "StromaVolume",
     })
     .addParameter("lumenVolumePerArea", {
       value: 8e-10,
+      unit: "L\\,cm^{-2}",
       texName: "lumenVolumePerArea",
     })
     .addParameter("MembraneCapacitance", {
       value: 1e-6,
+      unit: "C\\,cm^{-2}\\,V^{-1}",
       texName: "MembraneCapacitance",
     })
     .addParameter("Na", {
       value: 6.022e23,
+      unit: "mol^{-1}",
       texName: "Na",
     })
     .addParameter("VDErateVioToAnth", {
       value: 0.04,
+      unit: "s^{-1}",
       texName: "VDErateVioToAnth",
     })
     .addParameter("VDErateAnthToZea", {
       value: 0.02,
+      unit: "s^{-1}",
       texName: "VDErateAnthToZea",
     })
     .addParameter("ZErate", {
       value: 0.0004,
+      unit: "s^{-1}",
       texName: "ZErate",
     })
     .addParameter("TotalXanthophyll", {
       value: 1.0,
+      unit: "1",
       texName: "TotalXanthophyll",
     })
     .addParameter("VDEpKa", {
       value: 6.0,
+      unit: "1",
       texName: "VDEpKa",
     })
     .addParameter("nVDE", {
       value: 6.0,
+      unit: "1",
       texName: "nVDE",
     })
     .addParameter("PsbSpKa", {
       value: 6.4,
+      unit: "1",
       texName: "PsbSpKa",
     })
     .addParameter("nPsbS", {
       value: 3.0,
+      unit: "1",
       texName: "nPsbS",
     })
     .addParameter("zfrac", {
       value: 0.8,
+      unit: "1",
       texName: "zfrac",
     })
     .addParameter("PsbSConvertRate", {
       value: 0.1,
+      unit: "s^{-1}",
       texName: "PsbSConvertRate",
     })
     .addParameter("PSIcrossSection", {
       value: 0.35,
+      unit: "m^{2}\\,\\mu mol^{-1}",
       texName: "PSIcrossSection",
     })
     .addParameter("kETPCP700", {
       value: 6000.0,
+      unit: "s^{-1}",
       texName: "kETPCP700",
     })
     .addParameter("kETP700Fdx", {
       value: 10.0,
+      unit: "1",
       texName: "kETP700Fdx",
     })
     .addParameter("PCperPSI", {
       value: 3.0,
+      unit: "1",
       texName: "PCperPSI",
     })
     .addParameter("ElectronsPerPC", {
       value: 1.0,
+      unit: "1",
       texName: "ElectronsPerPC",
     })
     .addParameter("fracIntactRC", {
       value: 1.0,
+      unit: "1",
       texName: "fracIntactRC",
     })
     .addParameter("voltsperlog", {
       value: 0.02585065036015961,
+      unit: "V",
       texName: "voltsperlog",
     })
     .addParameter("LightIntensity", {
       value: 100,
+      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
       texName: "LightIntensity",
       displayName: names.ppfd,
       slider: { min: "0", max: "1000", step: "100" },
     })
     .addParameter("P680neut", {
       value: 1.0,
+      unit: "1",
       texName: "P680neut",
     })
     .addParameter("qtrigg1", {
       value: 1.0,
+      unit: "1",
       texName: "qtrigg1",
     })
     .addParameter("qtrigg2", {
       value: 0.0,
+      unit: "1",
       texName: "qtrigg2",
     })
     .addParameter("qtrigg3", {
       value: 1.0,
+      unit: "1",
       texName: "qtrigg3",
     })
     .addParameter("ATPConductivityReverse", {
       value: 1e-10,
+      unit: "mol\\,cm^{-2}\\,V^{-1}\\,s^{-1}",
       texName: "ATPConductivityReverse",
     })
     .addParameter("ATPperPSI", {
       value: 600.0,
+      unit: "1",
       texName: "ATPperPSI",
     })
     .addParameter("CytRegulateYesNO", {
       value: 1.0,
+      unit: "1",
       texName: "CytRegulateYesNO",
     })
     .addParameter("F_PsbS", {
       value: 0.6,
+      unit: "1",
       texName: "F\\_PsbS",
     })
     .addParameter("NADPperPSI", {
       value: 15.0,
+      unit: "1",
       texName: "NADPperPSI",
     })
     .addParameter("PsbSperPSII", {
       value: 1.0,
+      unit: "1",
       texName: "PsbSperPSII",
     })
     .addParameter("damageyesno", {
       value: 0.0,
+      unit: "1",
       texName: "damageyesno",
     })
     .addParameter("electronsPerNADPH", {
       value: 2.0,
+      unit: "1",
       texName: "electronsPerNADPH",
     })
     .addParameter("kEETP700", {
       value: 14000000000.0,
+      unit: "s^{-1}",
       texName: "kEETP700",
     })
     .addParameter("kETFdxMV", {
       value: 1000.0,
+      unit: "s^{-1}",
       texName: "kETFdxMV",
     })
     .addParameter("kETFdxPQ", {
       value: 0.005,
+      unit: "s^{-1}",
       texName: "kETFdxPQ",
     })
     .addParameter("kETFdxThrdx", {
       value: 1000.0,
+      unit: "s^{-1}",
       texName: "kETFdxThrdx",
     })
     .addParameter("kETNADPHPQ", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "kETNADPHPQ",
     })
     .addParameter("kETThrdxOx", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "kETThrdxOx",
     })
     .addParameter("kP680PherecombinationClosedRC", {
       value: 500.0,
+      unit: "s^{-1}",
       texName: "kP680PherecombinationClosedRC",
     })
     .addParameter("kP680PherecombinationOpenRC", {
       value: 200000000.0,
+      unit: "s^{-1}",
       texName: "kP680PherecombinationOpenRC",
     })
     .addParameter("kPheQArecombination", {
       value: 500.0,
+      unit: "s^{-1}",
       texName: "kPheQArecombination",
     })
     .addParameter("kQuenchDamage", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "kQuenchDamage",
     })
     .addParameter("repairyesno", {
       value: 0.0,
+      unit: "1",
       texName: "repairyesno",
     })
     .addParameter("tF", {
       value: 1.5e-9,
+      unit: "s",
       texName: "tF",
     })
     .addParameter("tHop", {
       value: 1.7e-11,
+      unit: "s",
       texName: "tHop",
     })
     .addParameter("tauCS", {
       value: 5.5e-12,
+      unit: "s",
       texName: "tauCS",
     })
     .addParameter("tauqE", {
       value: 1e-11,
+      unit: "s",
       texName: "tauqE",
     })
     .addParameter("ATPperProton", {
       value: 0.25,
+      unit: "1",
       texName: "ATPperProton",
     })
-    .addVariable("ATP", { displayName: names.atp, value: 2.0, texName: "ATP" })
+    .addVariable("ATP", {
+      displayName: names.atp,
+      value: 2.0,
+      unit: "1",
+      texName: "ATP",
+    })
     .addVariable("ActiveATPs", {
       value: 0.05,
+      unit: "1",
       texName: "ActiveATPs",
     })
     .addVariable("Antheraxanthin", {
       value: 1e-14,
+      unit: "1",
       texName: "Antheraxanthin",
     })
     .addVariable("Fdxox", {
       displayName: names.fd_ox,
       value: 1.0,
+      unit: "1",
       texName: "Fdxox",
     })
     .addVariable("Fdxr", {
       displayName: names.fd_red,
       value: 1e-14,
+      unit: "1",
       texName: "Fdxr",
     })
     .addVariable("LumenCl", {
       value: 0.01,
+      unit: "M",
       texName: "LumenCl",
     })
     .addVariable("LumenK", {
       value: 0.01,
+      unit: "M",
       texName: "LumenK",
     })
     .addVariable("LumenMg", {
       value: 0.01,
+      unit: "M",
       texName: "LumenMg",
     })
     .addVariable("LumenProtons", {
       value: 1e-14,
+      unit: "M",
       texName: "LumenProtons",
     })
     .addVariable("P680ex", {
       value: 1e-14,
+      unit: "1",
       texName: "P680ex",
     })
     .addVariable("P680plus", {
       value: 1e-14,
+      unit: "1",
       texName: "P680plus",
     })
     .addVariable("P700ox", {
       value: 1e-14,
+      unit: "1",
       texName: "P700ox",
     })
     .addVariable("P700r", {
       value: 1.0,
+      unit: "1",
       texName: "P700r",
     })
     .addVariable("PCr", {
       value: 0.2,
+      unit: "1",
       texName: "PCr",
     })
-    .addVariable("PQ", { displayName: names.pq, value: 8.999, texName: "PQ" })
+    .addVariable("PQ", {
+      displayName: names.pq,
+      value: 8.999,
+      unit: "1",
+      texName: "PQ",
+    })
     .addVariable("PQH2", {
       displayName: names.pqh2,
       value: 0.001,
+      unit: "1",
       texName: "PQH2",
     })
     .addVariable("PSIIChlEx", {
       value: 1e-14,
+      unit: "1",
       texName: "PSIIChlEx",
     })
     .addVariable("PheAnion", {
       value: 1e-14,
+      unit: "1",
       texName: "PheAnion",
     })
     .addVariable("PsbSQ", {
       value: 1e-14,
+      unit: "1",
       texName: "PsbSQ",
     })
-    .addVariable("QAox", { displayName: names.qa, value: 1.0, texName: "QAox" })
+    .addVariable("QAox", {
+      displayName: names.qa,
+      value: 1.0,
+      unit: "1",
+      texName: "QAox",
+    })
     .addVariable("QBneut", {
       value: 1.0,
+      unit: "1",
       texName: "QBneut",
     })
     .addVariable("QBred1", {
       value: 1e-7,
+      unit: "1",
       texName: "QBred1",
     })
     .addVariable("QBred2", {
       value: 1e-7,
+      unit: "1",
       texName: "QBred2",
     })
     .addVariable("Thrdx", {
       value: 1e-14,
+      unit: "1",
       texName: "Thrdx",
     })
     .addVariable("TotalLEF", {
       value: 1e-14,
+      unit: "1",
       texName: "TotalLEF",
     })
     .addVariable("Zeaxanthin", {
       value: 1e-14,
+      unit: "1",
       texName: "Zeaxanthin",
     })
     .addAssignment("pH_stroma", {
