@@ -24,17 +24,17 @@ export function initModel(): SteadyStateModelBuilder {
       unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
       slider: { min: "0", max: "2400", step: "10" },
     })
-    .addParameter("Temp", { value: 25, texName: "T" })
+    .addParameter("Temp", { value: 25, texName: "T", unit: "^{\\circ}C" })
     .addParameter("CO2", {
       value: 200,
       displayName: "CO2",
-      unit: "^{\\circ}C",
+      unit: "\\mu bar",
       texName: "\\mathrm{CO_2}",
     })
     .addParameter("O2", {
       value: 209,
       displayName: "O2",
-      unit: "\\mu bar",
+      unit: "mbar",
       texName: "\\mathrm{O_2}",
     })
     .addParameter("Abs", { value: 0.85, texName: "\\mathrm{Abs}", unit: "mol\\,mol^{-1}"})
