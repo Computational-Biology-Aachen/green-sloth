@@ -18,270 +18,326 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("PPFD", {
       value: 50.0,
+      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
       texName: "PPFD",
       displayName: names.ppfd,
     })
     .addParameter("k_recomb", {
       displayName: names.k_recomb,
       value: 0.33,
+      unit: "s^{-1}",
       texName: "k\\_recomb",
     })
     .addParameter("phi_triplet", {
       displayName: names.phi_triplet,
       value: 0.45,
+      unit: "1",
       texName: "phi\\_triplet",
     })
     .addParameter("phi_1O2", {
       displayName: names.phi_1o2,
       value: 1.0,
+      unit: "1",
       texName: "phi\\_1O2",
     })
     .addParameter("sigma0_II", {
       displayName: names.sigma0_ii,
       value: 0.5,
+      unit: "1",
       texName: "sigma0\\_II",
     })
     .addParameter("c_b6f", {
       displayName: names.c_b6f,
       value: 0.433,
+      unit: "1",
       texName: "c\\_b6f",
     })
     .addParameter("pKa_reg", {
       displayName: names.pka_reg,
       value: 6.2,
+      unit: "1",
       texName: "pKa\\_reg",
     })
     .addParameter("Em_PC_pH7", {
       displayName: names.em_pc_ph7,
       value: 0.37,
+      unit: "V",
       texName: "Em\\_PC\\_pH7",
     })
     .addParameter("Em_PQH2_pH7", {
       displayName: names.em_pqh2_ph7,
       value: 0.11,
+      unit: "V",
       texName: "Em\\_PQH2\\_pH7",
     })
     .addParameter("Vmax_b6f", {
       displayName: names.vmax_b6f,
       value: 300.0,
+      unit: "s^{-1}",
       texName: "Vmax\\_b6f",
     })
     .addParameter("pKa_PsbS", {
       displayName: names.pka_psbs,
       value: 6.2,
+      unit: "1",
       texName: "pKa\\_PsbS",
     })
     .addParameter("NPQ_max", {
       displayName: names.npq_max,
       value: 3.0,
+      unit: "1",
       texName: "NPQ\\_max",
     })
     .addParameter("pH_st", {
       displayName: names.ph,
       value: 7.8,
+      unit: "1",
       texName: "pH\\_st",
     })
     .addParameter("Em_Fd", {
       value: -0.42,
+      unit: "V",
       texName: "Em\\_Fd",
     })
     .addParameter("k_NDH1", {
       value: 1000.0,
+      unit: "s^{-1}",
       texName: "k\\_NDH1",
     })
     .addParameter("Vmax_PGR", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "Vmax\\_PGR",
     })
     .addParameter("sigma0_I", {
       value: 0.5,
+      unit: "1",
       texName: "sigma0\\_I",
     })
     .addParameter("k_QA", {
       displayName: names.k_qa,
       value: 1000.0,
+      unit: "s^{-1}",
       texName: "k\\_QA",
     })
     .addParameter("Keq_QA", {
       displayName: names.keq_qa,
       value: 200.0,
+      unit: "1",
       texName: "Keq\\_QA",
     })
     .addParameter("k_PCtoP700", {
       displayName: names.k_pctop700,
       value: 5000.0,
+      unit: "s^{-1}",
       texName: "k\\_PCtoP700",
     })
     .addParameter("k_FdtoNADP", {
       displayName: names.k_fdtonadp,
       value: 1000.0,
+      unit: "s^{-1}",
       texName: "k\\_FdtoNADP",
     })
     .addParameter("K_st", {
       displayName: names.k_st,
       value: 0.1,
+      unit: "M",
       texName: "K\\_st",
     })
     .addParameter("k_KEA3", {
       displayName: names.k_kea3,
       value: 2500000.0,
+      unit: "M^{-2}\\,s^{-1}",
       texName: "k\\_KEA3",
     })
     .addParameter("P_K", {
       displayName: names.p_k,
       value: 150.0,
+      unit: "M^{-1}\\,V^{-1}\\,s^{-1}",
       texName: "P\\_K",
     })
     .addParameter("ipt_lu", {
       value: 0.000587,
+      unit: "M",
       texName: "ipt\\_lu",
     })
     .addParameter("k_VCCN1", {
       value: 12.0,
+      unit: "M^{-1}\\,s^{-1}",
       texName: "k\\_VCCN1",
     })
     .addParameter("k_ClCe", {
       value: 800000.0,
+      unit: "M^{-2}\\,V^{-1}\\,s^{-1}",
       texName: "k\\_ClCe",
     })
     .addParameter("HPR", {
       displayName: names.hpr,
       value: 4.666666666666667,
+      unit: "1",
       texName: "HPR",
     })
     .addParameter("Vmax_ATPsynth", {
       displayName: names.vmax_atpsynth,
       value: 200.0,
+      unit: "s^{-1}",
       texName: "Vmax\\_ATPsynth",
     })
     .addParameter("b_H", {
       displayName: names.b_h,
       value: 0.014,
+      unit: "M",
       texName: "b\\_H",
     })
     .addParameter("vpc", {
       value: 0.047,
+      unit: "V",
       texName: "vpc",
     })
     .addParameter("k_EZ", {
       displayName: names.k_ez,
       value: 0.004,
+      unit: "s^{-1}",
       texName: "k\\_EZ",
     })
     .addParameter("nh_VDE", {
       displayName: names.nh_vde,
       value: 4.0,
+      unit: "1",
       texName: "nh\\_VDE",
     })
     .addParameter("pKa_VDE", {
       displayName: names.pka_vde,
       value: 5.65,
+      unit: "1",
       texName: "pKa\\_VDE",
     })
     .addParameter("Vmax_VDE", {
       displayName: names.vmax_vde,
       value: 0.08,
+      unit: "s^{-1}",
       texName: "Vmax\\_VDE",
     })
     .addParameter("k_leak", {
       value: 30000000.0,
+      unit: "M^{-1}\\,V^{-1}\\,s^{-1}",
       texName: "k\\_leak",
     })
     .addParameter("QA_total", {
       displayName: names.qa_tot,
       value: 1.0,
+      unit: "1",
       texName: "QA\\_total",
     })
     .addParameter("PQ_tot", {
       displayName: names.pq_tot,
       value: 7.0,
+      unit: "1",
       texName: "PQ\\_tot",
     })
     .addParameter("P700_total", {
       displayName: names.p700_tot,
       value: 0.667,
+      unit: "1",
       texName: "P700\\_total",
     })
     .addParameter("PC_tot", {
       displayName: names.pc_tot,
       value: 2.0,
+      unit: "1",
       texName: "PC\\_tot",
     })
     .addParameter("Fd_tot", {
       displayName: names.fd_tot,
       value: 1.0,
+      unit: "1",
       texName: "Fd\\_tot",
     })
     .addParameter("NADP_tot", {
       displayName: names.nadp_tot,
       value: 5.0,
+      unit: "1",
       texName: "NADP\\_tot",
     })
     .addParameter("Carotenoids_tot", {
       displayName: names.carotenoids_tot,
       value: 1.0,
+      unit: "1",
       texName: "Carotenoids\\_tot",
     })
     .addVariable("QA_red", {
       displayName: names.qa_red,
       value: 0.0,
+      unit: "1",
       texName: "QA\\_red",
     })
     .addVariable("PQH_2", {
       displayName: names.pqh2,
       value: 0.0,
+      unit: "1",
       texName: "PQH\\_2",
     })
     .addVariable("pH_lumen", {
       displayName: names.ph_lumen,
       value: 7.8,
+      unit: "1",
       texName: "pH\\_lumen",
     })
     .addVariable("Dpsi", {
       displayName: names.dpsi,
       value: 0.0,
+      unit: "V",
       texName: "Dpsi",
     })
     .addVariable("K_lu", {
       displayName: names.k_lu,
       value: 0.1,
+      unit: "M",
       texName: "K\\_lu",
     })
     .addVariable("PC_ox", {
       displayName: names.pc_ox,
       value: 0.0,
+      unit: "1",
       texName: "PC\\_ox",
     })
     .addVariable("Y2", {
       value: 0.0,
+      unit: "1",
       texName: "Y2",
     })
     .addVariable("Zx", {
       displayName: names.zeaxanthin_fraction,
       value: 0.0,
+      unit: "1",
       texName: "Zx",
     })
     .addVariable("singO2", {
       displayName: names.single_oxygen,
       value: 0.0,
+      unit: "1",
       texName: "singO2",
     })
     .addVariable("Fd_red", {
       displayName: names.fd_red,
       value: 0.0,
+      unit: "1",
       texName: "Fd\\_red",
     })
     .addVariable("NADPH_st", {
       displayName: names.nadph,
       value: 1.5,
+      unit: "1",
       texName: "NADPH\\_st",
     })
     .addVariable("Cl_lu", {
       value: 0.04,
+      unit: "M",
       texName: "Cl\\_lu",
     })
     .addVariable("Cl_st", {
       value: 0.04,
+      unit: "M",
       texName: "Cl\\_st",
     })
     .addAssignment("QA", {
@@ -320,6 +376,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addAssignment("light_per_L", {
       fn: new Mul([new Num(1.2), new Name("PPFD")]),
+      unit: "s^{-1}",
       texName: "light\\_per\\_L",
     })
     .addAssignment("driving_force_Cl", {
@@ -333,6 +390,7 @@ export function initModel(): KineticModelBuilder {
           new Ln(new Num(10.0)),
         ]),
       ]),
+      unit: "V",
       texName: "driving\\_force\\_Cl",
     })
     .addAssignment("PsbSP", {
@@ -389,6 +447,7 @@ export function initModel(): KineticModelBuilder {
         new Num(10.0),
         new Minus([new Mul([new Num(1.0), new Name("pH_lumen")])]),
       ),
+      unit: "M",
       texName: "H\\_lumen",
     })
     .addAssignment("H_st", {
@@ -397,6 +456,7 @@ export function initModel(): KineticModelBuilder {
         new Num(10.0),
         new Minus([new Mul([new Num(1.0), new Name("pH_st")])]),
       ),
+      unit: "M",
       texName: "H\\_st",
     })
     .addAssignment("pmf", {
@@ -406,6 +466,7 @@ export function initModel(): KineticModelBuilder {
         new Mul([new Num(0.06), new Name("pH_st")]),
         new Minus([new Mul([new Num(0.06), new Name("pH_lumen")])]),
       ]),
+      unit: "V",
       texName: "pmf",
     })
     .addAssignment("kCBB", {
@@ -414,6 +475,7 @@ export function initModel(): KineticModelBuilder {
         new Mul([new Num(60.0), new Name("PPFD")]),
         new Add([new Num(250.0), new Name("PPFD")]),
       ]),
+      unit: "s^{-1}",
       texName: "kCBB",
     })
     .addAssignment("delta_pH", {
@@ -424,6 +486,7 @@ export function initModel(): KineticModelBuilder {
     .addAssignment("delta_pH_inVolts", {
       displayName: names.delta_ph_involts,
       fn: new Mul([new Num(0.06), new Name("delta_pH")]),
+      unit: "V",
       texName: "delta\\_pH\\_inVolts",
     })
     .addAssignment("qL_act", {
