@@ -22,6 +22,7 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("Ib", {
       value: 100.0,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "Ib",
       slider: {
         min: "50.0",
@@ -31,6 +32,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("Ig", {
       value: 0.0,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "Ig",
       slider: {
         min: "0.0",
@@ -40,6 +42,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("Ir", {
       value: 900.0,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "Ir",
       slider: {
         min: "450.0",
@@ -49,494 +52,617 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("Ta", {
       value: 298.15,
+      unit: "K",
       texName: "Ta",
     })
     .addParameter("Tl", {
       value: 298.15,
+      unit: "K",
       texName: "Tl",
     })
     .addParameter("H2OR", {
       value: 0.015,
+      unit: "1",
       texName: "H2OR",
     })
     .addParameter("CO2R", {
       value: 0.00038,
+      unit: "1",
       texName: "CO2R",
     })
     .addParameter("sigma2", {
       value: 0.5,
+      unit: "1",
       texName: "sigma2",
     })
     .addParameter("Jmax25", {
       value: 0.00013928,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "Jmax25",
     })
     .addParameter("DHaJmax", {
       value: 36210000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaJmax",
     })
     .addParameter("DHdJmax", {
       value: 215900000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHdJmax",
     })
     .addParameter("DsJmax", {
       value: 690000.0,
+      unit: "J\\,kmol^{-1}\\,K^{-1}",
       texName: "DsJmax",
     })
     .addParameter("kD0", {
       value: 455000000.0,
+      unit: "s^{-1}",
       texName: "kD0",
     })
     .addParameter("kDinh", {
       value: 5000000000.0,
+      unit: "s^{-1}",
       texName: "kDinh",
     })
     .addParameter("kf", {
       value: 56000000.0,
+      unit: "s^{-1}",
       texName: "kf",
     })
     .addParameter("kp", {
       value: 2654000000.0,
+      unit: "s^{-1}",
       texName: "kp",
     })
     .addParameter("fcyc", {
       value: 0.1,
+      unit: "1",
       texName: "fcyc",
     })
     .addParameter("fpseudo", {
       value: 0.1,
+      unit: "1",
       texName: "fpseudo",
     })
     .addParameter("theta", {
       value: 0.7,
+      unit: "1",
       texName: "theta",
     })
     .addParameter("gamma1", {
       value: 0.2,
+      unit: "1",
       texName: "gamma1",
     })
     .addParameter("gamma2", {
       value: 0.6,
+      unit: "1",
       texName: "gamma2",
     })
     .addParameter("gamma3", {
       value: 0.2,
+      unit: "1",
       texName: "gamma3",
     })
     .addParameter("PhiqEmax", {
       value: 0.2,
+      unit: "1",
       texName: "PhiqEmax",
     })
     .addParameter("KiqEp", {
       value: 0.0187,
+      unit: "s^{-1}",
       texName: "KiqEp",
     })
     .addParameter("KdqEp", {
       value: 0.0239,
+      unit: "s^{-1}",
       texName: "KdqEp",
     })
     .addParameter("KiqEz", {
       value: 0.00187,
+      unit: "s^{-1}",
       texName: "KiqEz",
     })
     .addParameter("KdqEz", {
       value: 0.00239,
+      unit: "s^{-1}",
       texName: "KdqEz",
     })
     .addParameter("Kinh0", {
       value: 0.1,
+      unit: "m^{2}\\,mol^{-1}",
       texName: "Kinh0",
     })
     .addParameter("fprot", {
       value: 0.1,
+      unit: "m^{2}\\,mol^{-1}",
       texName: "fprot",
     })
     .addParameter("Krep25", {
       value: 0.000192,
+      unit: "s^{-1}",
       texName: "Krep25",
     })
     .addParameter("DHaKrep", {
       value: 160800000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaKrep",
     })
     .addParameter("DHdKrep", {
       value: 233230000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHdKrep",
     })
     .addParameter("DsKrep", {
       value: 780000.0,
+      unit: "J\\,kmol^{-1}\\,K^{-1}",
       texName: "DsKrep",
     })
     .addParameter("alphar_alpha25", {
       value: 6550.0,
+      unit: "m^{2}\\,s\\,mol^{-1}",
       texName: "alphar\\_alpha25",
     })
     .addParameter("DHaAlphar", {
       value: 67320000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaAlphar",
     })
     .addParameter("DHaKalpha", {
       value: 90500000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaKalpha",
     })
     .addParameter("DsKalpha", {
       value: 1080000.0,
+      unit: "J\\,kmol^{-1}\\,K^{-1}",
       texName: "DsKalpha",
     })
     .addParameter("DHdKalpha", {
       value: 328000000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHdKalpha",
     })
     .addParameter("Iac", {
       value: 1.6e-6,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "Iac",
     })
     .addParameter("alpharac", {
       value: 0.05,
+      unit: "1",
       texName: "alpharac",
     })
     .addParameter("alpharav", {
       value: 0.25,
+      unit: "1",
       texName: "alpharav",
     })
     .addParameter("thetaalphar", {
       value: 0.36,
+      unit: "1",
       texName: "thetaalphar",
     })
     .addParameter("Kialpha25", {
       value: 0.00149,
+      unit: "s^{-1}",
       texName: "Kialpha25",
     })
     .addParameter("Kdalpha25", {
       value: 0.00186,
+      unit: "s^{-1}",
       texName: "Kdalpha25",
     })
     .addParameter("fR0", {
       value: 0.04,
+      unit: "1",
       texName: "fR0",
     })
     .addParameter("alphafR", {
       value: 2500.0,
+      unit: "m^{2}\\,s\\,mol^{-1}",
       texName: "alphafR",
     })
     .addParameter("thetafR", {
       value: 0.96,
+      unit: "1",
       texName: "thetafR",
     })
     .addParameter("KiR", {
       value: 0.00628,
+      unit: "s^{-1}",
       texName: "KiR",
     })
     .addParameter("KdR", {
       value: 0.0075,
+      unit: "s^{-1}",
       texName: "KdR",
     })
     .addParameter("Vrmax", {
       value: 0.00011865,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "Vrmax",
     })
     .addParameter("KmPGA", {
       value: 5e-6,
+      unit: "mol\\,m^{-2}",
       texName: "KmPGA",
     })
     .addParameter("RB", {
       value: 1.59e-5,
+      unit: "mol\\,m^{-2}",
       texName: "RB",
     })
     .addParameter("Kc25", {
       value: 4.16,
+      unit: "s^{-1}",
       texName: "Kc25",
     })
     .addParameter("DHaKc", {
       value: 41820000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaKc",
     })
     .addParameter("Ko25", {
       value: 1.26,
+      unit: "s^{-1}",
       texName: "Ko25",
     })
     .addParameter("DHaKo", {
       value: 55150000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaKo",
     })
     .addParameter("Kmc25", {
       value: 0.0002617,
+      unit: "1",
       texName: "Kmc25",
     })
     .addParameter("DHaKmc", {
       value: 49430000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaKmc",
     })
     .addParameter("Kmo25", {
       value: 0.1985,
+      unit: "1",
       texName: "Kmo25",
     })
     .addParameter("DHaKmo", {
       value: 29080000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaKmo",
     })
     .addParameter("KaRCA", {
       value: 0.0102,
+      unit: "g\\,m^{-2}",
       texName: "KaRCA",
     })
     .addParameter("ac", {
       value: 0.27,
+      unit: "1",
       texName: "ac",
     })
     .addParameter("bc", {
       value: 14000.0,
+      unit: "1",
       texName: "bc",
     })
     .addParameter("KdRB", {
       value: 0.00068,
+      unit: "s^{-1}",
       texName: "KdRB",
     })
     .addParameter("Krca", {
       value: 0.0863,
+      unit: "m^{2}\\,g^{-1}\\,s^{-1}",
       texName: "Krca",
     })
     .addParameter("fRBmin", {
       value: 0.48,
+      unit: "1",
       texName: "fRBmin",
     })
     .addParameter("O2", {
       value: 0.21,
+      unit: "1",
       texName: "O2",
     })
     .addParameter("RCA", {
       value: 0.11737,
+      unit: "g\\,m^{-2}",
       texName: "RCA",
     })
     .addParameter("DHdRCA", {
       value: 290200000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHdRCA",
     })
     .addParameter("ToRCA", {
       value: 300.4,
+      unit: "K",
       texName: "ToRCA",
     })
     .addParameter("DHaRCA", {
       value: 30000000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaRCA",
     })
     .addParameter("KmRuBP", {
       value: 0.02,
+      unit: "mol\\,m^{-3}",
       texName: "KmRuBP",
     })
     .addParameter("Vch", {
       value: 1e-5,
+      unit: "m",
       texName: "Vch",
     })
     .addParameter("KiPGA", {
       value: 0.84,
+      unit: "mol\\,m^{-3}",
       texName: "KiPGA",
     })
     .addParameter("TPU25", {
       value: 7.47e-6,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "TPU25",
     })
     .addParameter("DHaTPU", {
       value: 57500000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaTPU",
     })
     .addParameter("DHdTPU", {
       value: 246700000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHdTPU",
     })
     .addParameter("DsTPU", {
       value: 790000.0,
+      unit: "J\\,kmol^{-1}\\,K^{-1}",
       texName: "DsTPU",
     })
     .addParameter("DHaGc", {
       value: 70200000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaGc",
     })
     .addParameter("DHdGc", {
       value: 94000000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHdGc",
     })
     .addParameter("DsGc", {
       value: 320000.0,
+      unit: "J\\,kmol^{-1}\\,K^{-1}",
       texName: "DsGc",
     })
     .addParameter("DHaGw", {
       value: 70200000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaGw",
     })
     .addParameter("DHdGw", {
       value: 94000000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHdGw",
     })
     .addParameter("DsGw", {
       value: 320000.0,
+      unit: "J\\,kmol^{-1}\\,K^{-1}",
       texName: "DsGw",
     })
     .addParameter("Rm25", {
       value: 9.9e-7,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "Rm25",
     })
     .addParameter("DHaRm", {
       value: 56200000.0,
+      unit: "J\\,kmol^{-1}",
       texName: "DHaRm",
     })
     .addParameter("kPR", {
       value: 0.024,
+      unit: "s^{-1}",
       texName: "kPR",
     })
     .addParameter("Vref", {
       value: 0.000155,
+      unit: "m",
       texName: "Vref",
     })
     .addParameter("Scm", {
       value: 7.1,
+      unit: "1",
       texName: "Scm",
     })
     .addParameter("Sm", {
       value: 9.8,
+      unit: "1",
       texName: "Sm",
     })
     .addParameter("falphaSc", {
       value: 0.93,
+      unit: "1",
       texName: "falphaSc",
     })
     .addParameter("gcm25", {
       value: 0.39,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gcm25",
     })
     .addParameter("gw25", {
       value: 0.75,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gw25",
     })
     .addParameter("D0", {
       value: 740000.0,
+      unit: "mPa",
       texName: "D0",
     })
     .addParameter("fI0", {
       value: 0.39,
+      unit: "1",
       texName: "fI0",
     })
     .addParameter("gswm", {
       value: 0.48,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gswm",
     })
     .addParameter("alphafI", {
       value: 767.0,
+      unit: "m^{2}\\,s\\,mol^{-1}",
       texName: "alphafI",
     })
     .addParameter("thetafI", {
       value: 0.88,
+      unit: "1",
       texName: "thetafI",
     })
     .addParameter("Kgsi", {
       value: 0.00114,
+      unit: "s^{-1}",
       texName: "Kgsi",
     })
     .addParameter("Kgsd", {
       value: 0.00114,
+      unit: "s^{-1}",
       texName: "Kgsd",
     })
     .addParameter("gbw", {
       value: 9.2,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gbw",
     })
     .addParameter("volume_chamber", {
       value: 8e-5,
+      unit: "m^{3}",
       texName: "volume\\_chamber",
     })
     .addParameter("leaf_surface", {
       value: 0.0002,
+      unit: "m^{2}",
       texName: "leaf\\_surface",
     })
     .addParameter("Flow", {
       value: 0.0005,
+      unit: "mol\\,s^{-1}",
       texName: "Flow",
     })
     .addParameter("alphab", {
       value: 0.92,
+      unit: "1",
       texName: "alphab",
     })
     .addParameter("alphag", {
       value: 0.72,
+      unit: "1",
       texName: "alphag",
     })
     .addParameter("alphared", {
       value: 0.83,
+      unit: "1",
       texName: "alphared",
     })
     .addParameter("alphabp", {
       value: 0.66,
+      unit: "1",
       texName: "alphabp",
     })
     .addParameter("alphagp", {
       value: 0.6,
+      unit: "1",
       texName: "alphagp",
     })
     .addParameter("alpharp", {
       value: 0.8,
+      unit: "1",
       texName: "alpharp",
     })
     .addVariable("PGA", {
       value: 5e-5,
+      unit: "mol\\,m^{-2}",
       texName: "PGA",
     })
     .addVariable("RuBP", {
       value: 5e-5,
+      unit: "mol\\,m^{-2}",
       texName: "RuBP",
     })
     .addVariable("fRB", {
       value: 0.25,
+      unit: "1",
       texName: "fRB",
     })
     .addVariable("fP", {
       value: 0.0,
+      unit: "1",
       texName: "fP",
     })
     .addVariable("fZ", {
       value: 0.0,
+      unit: "1",
       texName: "fZ",
     })
     .addVariable("alphar", {
       value: 1.0,
+      unit: "1",
       texName: "alphar",
     })
     .addVariable("PSIId", {
       value: 0.0,
+      unit: "1",
       texName: "PSIId",
     })
     .addVariable("fR", {
       value: 0.0,
+      unit: "1",
       texName: "fR",
     })
     .addVariable("PR", {
       value: 0.0,
+      unit: "mol\\,m^{-2}",
       texName: "PR",
     })
     .addVariable("Cc", {
       value: 0.00038,
+      unit: "1",
       texName: "Cc",
     })
     .addVariable("Ccyt", {
       value: 0.00038,
+      unit: "1",
       texName: "Ccyt",
     })
     .addVariable("Ci", {
       value: 0.00038,
+      unit: "1",
       texName: "Ci",
     })
     .addVariable("Ca", {
       value: 0.00038,
+      unit: "1",
       texName: "Ca",
     })
     .addVariable("H2OS", {
       value: 0.02,
+      unit: "1",
       texName: "H2OS",
     })
     .addVariable("gsw", {
       value: 0.09,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gsw",
     })
     .addVariable("sumA", {
       value: 0.0,
+      unit: "mol\\,m^{-2}",
       texName: "sumA",
     })
     .addAssignment("PAR", {
@@ -1743,10 +1869,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addAssignment("Mv", {
       fn: new Mul([new Num(8.231683168316833e-5), new Name("Ta")]),
+      unit: "m^{3}\\,mol^{-1}",
       texName: "Mv",
     })
     .addAssignment("ea", {
       fn: new Mul([new Num(101000000.0), new Name("H2OR")]),
+      unit: "mPa",
       texName: "ea",
     })
     .addAssignment("Photo", {
@@ -1785,6 +1913,7 @@ export function initModel(): KineticModelBuilder {
           ]),
         ),
       ]),
+      unit: "mPa",
       texName: "es\\_leaf",
     })
     .addAssignment("VPDleaf", {
@@ -1816,6 +1945,7 @@ export function initModel(): KineticModelBuilder {
         ]),
         new Name("VPDleaf"),
       ]),
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gtw",
     })
     .addAssignment("transpiration", {
@@ -1833,6 +1963,7 @@ export function initModel(): KineticModelBuilder {
           ]),
         ]),
       ]),
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "transpiration",
     })
     .addAssignment("fI", {
