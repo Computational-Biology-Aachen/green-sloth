@@ -15,150 +15,190 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("stoic_PSII", {
       value: 1.0,
+      unit: "1",
       texName: "stoic\\_PSII",
     })
     .addParameter("stoic_PSI", {
       value: 1.0,
+      unit: "1",
       texName: "stoic\\_PSI",
     })
     .addParameter("PQ_tot", {
       displayName: names.pq_tot,
       value: 7.0,
+      unit: "1",
       texName: "PQ\\_tot",
     })
     .addParameter("H_stroma", {
       value: 0.015848931924611134,
+      unit: "\\mu M",
       texName: "H\\_stroma",
     })
     .addParameter("AP_tot", {
       displayName: names.atp_tot,
       value: 1000.0,
+      unit: "\\mu M",
       texName: "AP\\_tot",
     })
     .addParameter("V_lumen", {
       value: 2.62e-21,
+      unit: "L",
       texName: "V\\_lumen",
     })
     .addParameter("V_stroma", {
       value: 2.09e-20,
+      unit: "L",
       texName: "V\\_stroma",
     })
     .addParameter("sigma_PSI_0", {
       value: 1.0,
+      unit: "1",
       texName: "sigma\\_PSI\\_0",
     })
     .addParameter("k1p", {
       value: 25000.0,
+      unit: "s^{-1}",
       texName: "k1p",
     })
     .addParameter("k1m", {
       value: 2500.0,
+      unit: "s^{-1}",
       texName: "k1m",
     })
     .addParameter("k2p", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "k2p",
     })
     .addParameter("k2m", {
       value: 10.0,
+      unit: "s^{-1}",
       texName: "k2m",
     })
     .addParameter("k3", {
       value: 0.05,
+      unit: "s^{-1}",
       texName: "k3",
     })
     .addParameter("k4", {
       value: 0.004,
+      unit: "s^{-1}",
       texName: "k4",
     })
     .addParameter("k5", {
       value: 100.0,
+      unit: "s^{-1}",
       texName: "k5",
     })
     .addParameter("k6", {
       value: 10.0,
+      unit: "s^{-1}",
       texName: "k6",
     })
     .addParameter("k7", {
       value: 500.0,
+      unit: "s^{-1}",
       texName: "k7",
     })
     .addParameter("k_X", {
       value: 1.0,
+      unit: "s^{-1}",
       texName: "k\\_X",
     })
     .addParameter("L_PSI", {
       value: 10000.0,
+      unit: "s^{-1}",
       texName: "L\\_PSI",
     })
-    .addParameter("bH", { displayName: names.b_h, value: 0.01, texName: "bH" })
+    .addParameter("bH", {
+      displayName: names.b_h,
+      value: 0.01,
+      unit: "1",
+      texName: "bH",
+    })
     .addParameter("NPQ_max", {
       displayName: names.npq_max,
       value: 0.6,
+      unit: "1",
       texName: "NPQ\\_max",
     })
     .addParameter("cEqP", {
       value: 4.3e-8,
+      unit: "1",
       texName: "cEqP",
     })
     .addParameter("keq_NPQ", {
       value: 1.0,
+      unit: "\\mu M",
       texName: "keq\\_NPQ",
     })
     .addParameter("n_NPQ", {
       value: 5.3,
+      unit: "1",
       texName: "n\\_NPQ",
     })
     .addParameter("N_A", {
       value: 6.02214076e17,
+      unit: "\\mu mol^{-1}",
       texName: "N\\_A",
     })
     .addParameter("PPFD", {
       value: 50.0,
       displayName: names.ppfd,
+      unit: "s^{-1}",
       texName: "PPFD",
     })
     .addParameter("PPFD_add", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "PPFD\\_add",
     })
     .addParameter("f", {
       value: 1.0,
+      unit: "s^{-1}",
       texName: "f",
     })
     .addParameter("PSI_total", {
       displayName: names.psi_tot,
       value: 1.0,
+      unit: "1",
       texName: "PSI\\_total",
     })
     .addParameter("Fluo_0", {
       value: 0.25,
+      unit: "1",
       texName: "Fluo\\_0",
     })
     .addParameter("Q_total", {
       value: 1.0,
+      unit: "1",
       texName: "Q\\_total",
     })
     .addVariable("Q_active", {
       value: 1.6044277821745498e-23,
+      unit: "1",
       texName: "Q\\_active",
     })
     .addVariable("PQ", {
       displayName: names.pq,
       value: 3.537090541057567,
+      unit: "1",
       texName: "PQ",
     })
     .addVariable("PSI_ox", {
       value: 0.197310072778891,
+      unit: "1",
       texName: "PSI\\_ox",
     })
     .addVariable("H_lumen", {
       value: 0.4120700665522831,
+      unit: "\\mu M",
       texName: "H\\_lumen",
     })
     .addVariable("ATP_st", {
       displayName: names.atp,
       value: 144.95412072145785,
+      unit: "\\mu M",
       texName: "ATP\\_st",
     })
     .addAssignment("Q_inactive", {
