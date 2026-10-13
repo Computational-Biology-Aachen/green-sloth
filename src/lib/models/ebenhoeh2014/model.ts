@@ -15,10 +15,16 @@ import {
 
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
-    .addParameter("pH", { displayName: names.ph, value: 7.8, texName: "pH" })
+    .addParameter("pH", {
+      displayName: names.ph,
+      value: 7.8,
+      unit: "1",
+      texName: "pH",
+    })
     .addParameter("PPFD", {
       value: 100.0,
       displayName: names.ppfd,
+      unit: "s^{-1}",
       texName: "PPFD",
     })
     .addParameter("cPPFD", {
@@ -28,267 +34,331 @@ export function initModel(): KineticModelBuilder {
     .addParameter("PSII_total", {
       displayName: names.psii_tot,
       value: 2.5,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PSII\\_total",
     })
     .addParameter("PSI_total", {
       displayName: names.psi_tot,
       value: 2.5,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PSI\\_total",
     })
     .addParameter("PQ_tot", {
       displayName: names.pq_tot,
       value: 17.5,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PQ\\_tot",
     })
     .addParameter("PC_tot", {
       displayName: names.pc_tot,
       value: 4.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PC\\_tot",
     })
     .addParameter("Fd_star", {
       displayName: names.fd_tot,
       value: 5.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "Fd*",
     })
     .addParameter("NADP_star", {
       displayName: names.nadp_tot,
       value: 25.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "NADP*",
     })
     .addParameter("A_star_P", {
       displayName: names.atp_tot,
       value: 60.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "A*P",
     })
     .addParameter("LHC_tot", {
       displayName: names.lhc_tot,
       value: 1.0,
+      unit: "1",
       texName: "LHC\\_tot",
     })
     .addParameter("F", {
       displayName: names.faraday_constant,
       value: 96.485,
+      unit: "kJ\\,mol^{-1}\\,V^{-1}",
       texName: "F",
     })
     .addParameter("R", {
       displayName: names.gas_constant,
       value: 0.0083,
+      unit: "kJ\\,mol^{-1}\\,K^{-1}",
       texName: "R",
     })
     .addParameter("T", {
       displayName: names.temperature,
       value: 298.0,
+      unit: "K",
       texName: "T",
     })
-    .addParameter("bH", { displayName: names.b_h, value: 100.0, texName: "bH" })
+    .addParameter("bH", {
+      displayName: names.b_h,
+      value: 100.0,
+      unit: "1",
+      texName: "bH",
+    })
     .addParameter("E0_QA", {
       displayName: names.e0_qa,
       value: -0.14,
+      unit: "V",
       texName: "E^0\\_QA",
     })
     .addParameter("E0_PQ", {
       displayName: names.e0_pq,
       value: 0.354,
+      unit: "V",
       texName: "E^0\\_PQ",
     })
     .addParameter("E0_PC", {
       displayName: names.e0_pc,
       value: 0.38,
+      unit: "V",
       texName: "E^0\\_PC",
     })
     .addParameter("E0_P700", {
       displayName: names.e0_p700,
       value: 0.48,
+      unit: "V",
       texName: "E^0\\_P700",
     })
     .addParameter("E0_FA", {
       displayName: names.e0_fa,
       value: -0.55,
+      unit: "V",
       texName: "E^0\\_FA",
     })
     .addParameter("E0_Fd", {
       displayName: names.e0_fd,
       value: -0.43,
+      unit: "V",
       texName: "E^0\\_Fd",
     })
     .addParameter("E0_NADP", {
       displayName: names.e0_nadp,
       value: -0.113,
+      unit: "V",
       texName: "E^0\\_NADP",
     })
     .addParameter("kH0", {
       displayName: names.base_heat_dissipation_rate,
       value: 500000000.0,
+      unit: "s^{-1}",
       texName: "kH0",
     })
     .addParameter("kH", {
       displayName: names.npq_heat_dissipation_rate,
       value: 0.0,
+      unit: "s^{-1}",
       texName: "kH",
     })
     .addParameter("kF", {
       displayName: names.fluorescence_rate_constant,
       value: 62500000.0,
+      unit: "s^{-1}",
       texName: "kF",
     })
     .addParameter("k2", {
       displayName: names.psii_rate_constant,
       value: 1200000000.0,
+      unit: "s^{-1}",
       texName: "k2",
     })
     .addParameter("Q", {
       displayName: names.npq_coefficient,
       value: 0.0,
+      unit: "1",
       texName: "Q",
     })
     .addParameter("staticAntI", {
       displayName: names.static_antenna_i,
       value: 0.2,
+      unit: "1",
       texName: "staticAntI",
     })
     .addParameter("staticAntII", {
       displayName: names.static_antenna_ii,
       value: 0.0,
+      unit: "1",
       texName: "staticAntII",
     })
     .addParameter("kf_atp_synthase", {
       displayName: names.kf_atp_synthase,
       value: 20.0,
+      unit: "s^{-1}",
       texName: "kf\\_atp\\_synthase",
     })
     .addParameter("kf_atp_consumption", {
       value: 10.0,
+      unit: "s^{-1}",
       texName: "kf\\_atp\\_consumption",
     })
     .addParameter("Pi_mol", {
       displayName: names.pi_mol,
       value: 0.01,
+      unit: "1",
       texName: "Pi\\_mol",
     })
     .addParameter("DeltaG0_ATP", {
       displayName: names.delta_g0_atp,
       value: 30.6,
+      unit: "kJ\\,mol^{-1}",
       texName: "DeltaG0\\_ATP",
     })
     .addParameter("HPR", {
       displayName: names.hpr,
       value: 4.666666666666667,
+      unit: "1",
       texName: "HPR",
     })
     .addParameter("kf_nadph_consumption", {
       value: 15.0,
+      unit: "s^{-1}",
       texName: "kf\\_nadph\\_consumption",
     })
     .addParameter("kf_proton_leak", {
       displayName: names.kf_proton_leak,
       value: 0.01,
+      unit: "s^{-1}",
       texName: "kf\\_proton\\_leak",
     })
     .addParameter("kPQred", {
       displayName: names.k_pq_red,
       value: 250.0,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPQred",
     })
     .addParameter("kcat_b6f", {
       displayName: names.kcat_b6f,
       value: 2.5,
+      unit: "(mol\\,Chl)^{2}\\,mmol^{-2}\\,s^{-1}",
       texName: "kcat\\_b6f",
     })
     .addParameter("kPTOX", {
       displayName: names.k_ptox,
       value: 0.01,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPTOX",
     })
     .addParameter("kPCox", {
       displayName: names.k_pc_ox,
       value: 2500.0,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPCox",
     })
     .addParameter("kFdred", {
       displayName: names.k_fd_red,
       value: 250000.0,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kFdred",
     })
     .addParameter("kcat_fnr", {
       displayName: names.kcat_fnr,
       value: 500.0,
+      unit: "s^{-1}",
       texName: "kcat\\_fnr",
     })
     .addParameter("E0_fnr", {
       displayName: names.e0_fnr,
       value: 3.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "E0\\_fnr",
     })
     .addParameter("km_fnr_Ferredoxine_reduced", {
       value: 1.56,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "km\\_fnr\\_Ferredoxine (reduced)",
     })
     .addParameter("km_fnr_NADP", {
       displayName: names.km_fnr_nadp,
       value: 0.22,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "km\\_fnr\\_NADP",
     })
     .addParameter("kf_cyclic_electron_flow", {
       displayName: names.kf_cyclic_electron_flow,
       value: 1.0,
+      unit: "(mol\\,Chl)^{2}\\,mmol^{-2}\\,s^{-1}",
       texName: "kf\\_cyclic\\_electron\\_flow",
     })
     .addParameter("O2_dissolved_lumen", {
       value: 8.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "O2 (dissolved)\\_lumen",
     })
     .addParameter("kf_ndh", {
       displayName: names.kf_ndh,
       value: 0.004,
+      unit: "s^{-1}",
       texName: "kf\\_ndh",
     })
     .addParameter("kStt7", {
       displayName: names.k_stt7,
       value: 0.0035,
+      unit: "s^{-1}",
       texName: "kStt7",
     })
     .addParameter("kPph1", {
       displayName: names.k_pph1,
       value: 0.0013,
+      unit: "s^{-1}",
       texName: "kPph1",
     })
     .addParameter("km_lhc_state_transition_12", {
       displayName: names.km_lhc_state_transition_12,
       value: 0.2,
+      unit: "1",
       texName: "km\\_lhc\\_state\\_transition\\_12",
     })
     .addParameter("n_ST", {
       displayName: names.n_st,
       value: 2.0,
+      unit: "1",
       texName: "n\\_ST",
     })
     .addVariable("Plastoquinone_oxidised", {
       displayName: names.pq,
       value: 17.5,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "Plastoquinone (oxidised)",
     })
     .addVariable("Plastocyanine_oxidised", {
       value: 0.0202,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "Plastocyanine (oxidised)",
     })
     .addVariable("Ferredoxine_oxidised", {
       displayName: names.fd_ox,
       value: 5.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "Ferredoxine (oxidised)",
     })
-    .addVariable("ATP", { displayName: names.atp, value: 0.0, texName: "ATP" })
+    .addVariable("ATP", {
+      displayName: names.atp,
+      value: 0.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      texName: "ATP",
+    })
     .addVariable("NADPH", {
       displayName: names.nadph,
       value: 0.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "NADPH",
     })
     .addVariable("protons_lumen", {
       displayName: names.protons_lumen,
       value: 0.00025238293779207717,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "protons\\_lumen",
     })
     .addVariable("Light_minus_harvesting_complex", {
       value: 0.9,
+      unit: "1",
       texName: "Light-harvesting complex",
     })
     .addAssignment("RT", {
