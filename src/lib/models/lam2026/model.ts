@@ -14,220 +14,274 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("k_L_VA", {
       value: 2.47,
+      unit: "s^{-1}",
       texName: "k\\_L\\_VA",
     })
     .addParameter("k_D_VA", {
       value: 0.014,
+      unit: "s^{-1}",
       texName: "k\\_D\\_VA",
     })
     .addParameter("k_L_AZ", {
       value: 0.5,
+      unit: "s^{-1}",
       texName: "k\\_L\\_AZ",
     })
     .addParameter("k_AV", {
       value: 1.12,
+      unit: "s^{-1}",
       texName: "k\\_AV",
     })
     .addParameter("k_ZA", {
       value: 0.07,
+      unit: "s^{-1}",
       texName: "k\\_ZA",
     })
     .addParameter("k_PV_f", {
       value: 2.18,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "k\\_PV\\_f",
     })
     .addParameter("k_PV_b", {
       value: 9.43,
+      unit: "s^{-1}",
       texName: "k\\_PV\\_b",
     })
     .addParameter("k_PA_f", {
       value: 130.0,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "k\\_PA\\_f",
     })
     .addParameter("k_PA_b", {
       value: 254.0,
+      unit: "s^{-1}",
       texName: "k\\_PA\\_b",
     })
     .addParameter("k_PZ_f", {
       value: 295.0,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "k\\_PZ\\_f",
     })
     .addParameter("k_PZ_b", {
       value: 126.0,
+      unit: "s^{-1}",
       texName: "k\\_PZ\\_b",
     })
     .addParameter("k_L_QV_f", {
       value: 0.027,
+      unit: "s^{-1}",
       texName: "k\\_L\\_QV\\_f",
     })
     .addParameter("k_D_QV_f", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "k\\_D\\_QV\\_f",
     })
     .addParameter("k_QV_b", {
       value: 0.066,
+      unit: "s^{-1}",
       texName: "k\\_QV\\_b",
     })
     .addParameter("k_L_QA_f", {
       value: 0.66,
+      unit: "s^{-1}",
       texName: "k\\_L\\_QA\\_f",
     })
     .addParameter("k_D_QA_f", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "k\\_D\\_QA\\_f",
     })
     .addParameter("k_QA_b", {
       value: 8.57,
+      unit: "s^{-1}",
       texName: "k\\_QA\\_b",
     })
     .addParameter("k_L_QZ_f", {
       value: 0.56,
+      unit: "s^{-1}",
       texName: "k\\_L\\_QZ\\_f",
     })
     .addParameter("k_D_QZ_f", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "k\\_D\\_QZ\\_f",
     })
     .addParameter("k_QZ_b", {
       value: 1.22,
+      unit: "s^{-1}",
       texName: "k\\_QZ\\_b",
     })
     .addParameter("k_L_QL_f", {
       value: 0.056,
+      unit: "s^{-1}",
       texName: "k\\_L\\_QL\\_f",
     })
     .addParameter("k_QL_b", {
       value: 3.68,
+      unit: "s^{-1}",
       texName: "k\\_QL\\_b",
     })
     .addParameter("k_D_QX_f", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "k\\_D\\_QX\\_f",
     })
     .addParameter("k_L_damage", {
       value: 0.0222,
+      unit: "s^{-2}",
       texName: "k\\_L\\_damage",
     })
     .addParameter("k_D_damage", {
       value: 0.0161,
+      unit: "s^{-2}",
       texName: "k\\_D\\_damage",
     })
     .addParameter("k_D_VDE", {
       value: 0.24,
+      unit: "s^{-1}",
       texName: "k\\_D\\_VDE",
     })
     .addParameter("k_L_VDE", {
       value: 0.28,
+      unit: "s^{-1}",
       texName: "k\\_L\\_VDE",
     })
     .addParameter("k_AV_aba1", {
       value: 0.006,
+      unit: "s^{-1}",
       texName: "k\\_AV\\_aba1",
     })
     .addParameter("k_ZA_aba1", {
       value: 0.038,
+      unit: "s^{-1}",
       texName: "k\\_ZA\\_aba1",
     })
     .addParameter("k_PV_f_lut2", {
       value: 1.43,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "k\\_PV\\_f\\_lut2",
     })
     .addParameter("k_PV_b_lut2", {
       value: 13.1,
+      unit: "s^{-1}",
       texName: "k\\_PV\\_b\\_lut2",
     })
     .addParameter("k_PA_f_lut2", {
       value: 34.4,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "k\\_PA\\_f\\_lut2",
     })
     .addParameter("k_PA_b_lut2", {
       value: 294.0,
+      unit: "s^{-1}",
       texName: "k\\_PA\\_b\\_lut2",
     })
     .addParameter("k_PZ_f_lut2", {
       value: 74.1,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "k\\_PZ\\_f\\_lut2",
     })
     .addParameter("k_PZ_b_lut2", {
       value: 168.0,
+      unit: "s^{-1}",
       texName: "k\\_PZ\\_b\\_lut2",
     })
     .addParameter("V_tot_npq1", {
       value: 49.8,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "V\\_tot\\_npq1",
     })
     .addParameter("V_tot_lut2", {
       value: 71.2,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "V\\_tot\\_lut2",
     })
     .addParameter("V_tot_npq4", {
       value: 40.6,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "V\\_tot\\_npq4",
     })
     .addParameter("V_tot_aba1", {
       value: 10.7,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "V\\_tot\\_aba1",
     })
     .addParameter("V_tot_WT", {
       value: 35.9,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "V\\_tot\\_WT",
     })
     .addParameter("P_tot", {
       value: 45.4,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "P\\_tot",
     })
     .addParameter("P_tot_lut2", {
       value: 49.9,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "P\\_tot\\_lut2",
     })
     .addParameter("kappa_QV", {
       value: 0.04,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kappa\\_QV",
     })
     .addParameter("kappa_QA", {
       value: 0.174,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kappa\\_QA",
     })
     .addParameter("kappa_QZ", {
       value: 0.177,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kappa\\_QZ",
     })
     .addParameter("kappa_QL", {
       value: 0.262,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kappa\\_QL",
     })
     .addParameter("kappa_qZ", {
       value: 0.03,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kappa\\_qZ",
     })
     .addParameter("kappa_qI", {
       value: 3.86,
+      unit: "s^{-1}",
       texName: "kappa\\_qI",
     })
     .addParameter("kappa_qI_double_mut", {
       value: 7.05,
+      unit: "s^{-1}",
       texName: "kappa\\_qI\\_double\\_mut",
     })
     .addParameter("ppfd", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
       texName: "ppfd",
       displayName: names.ppfd,
     })
     .addParameter("tau_0", {
       value: 1.730890791,
+      unit: "s",
       texName: "tau\\_0",
     })
     .addParameter("PSII_tot", {
       displayName: names.psii_tot,
       value: 1.0,
+      unit: "1",
       texName: "PSII\\_tot",
     })
     .addVariable("V", {
       value: new Name("V_tot_WT"),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "V",
     })
     .addVariable("A", {
       value: new Mul([new Name("Keq_a"), new Name("V_tot_WT")]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "A",
     })
     .addVariable("Z", {
@@ -236,6 +290,7 @@ export function initModel(): KineticModelBuilder {
         new Name("Keq_z"),
         new Name("V_tot_WT"),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "Z",
     })
     .addVariable("PV", {
@@ -244,6 +299,7 @@ export function initModel(): KineticModelBuilder {
         new Name("P0"),
         new Name("V_tot_WT"),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PV",
     })
     .addVariable("PA", {
@@ -253,6 +309,7 @@ export function initModel(): KineticModelBuilder {
         new Name("P0"),
         new Name("V_tot_WT"),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PA",
     })
     .addVariable("PZ", {
@@ -263,6 +320,7 @@ export function initModel(): KineticModelBuilder {
         new Name("P0"),
         new Name("V_tot_WT"),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PZ",
     })
     .addVariable("QV", {
@@ -272,6 +330,7 @@ export function initModel(): KineticModelBuilder {
         new Name("P0"),
         new Name("V_tot_WT"),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "QV",
     })
     .addVariable("QA", {
@@ -282,6 +341,7 @@ export function initModel(): KineticModelBuilder {
         new Name("P0"),
         new Name("V_tot_WT"),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "QA",
     })
     .addVariable("QZ", {
@@ -293,22 +353,27 @@ export function initModel(): KineticModelBuilder {
         new Name("P0"),
         new Name("V_tot_WT"),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "QZ",
     })
     .addVariable("QL", {
       value: 0.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "QL",
     })
     .addVariable("PL", {
       value: 165.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PL",
     })
     .addVariable("PSIId", {
       value: 0.0,
+      unit: "1",
       texName: "PSIId",
     })
     .addVariable("alpha_VDE", {
       value: new Divide([new Name("k_D_VA"), new Name("k_L_VA")]),
+      unit: "1",
       texName: "alpha\\_VDE",
     })
     .addAssignment("gamma", {
@@ -514,6 +579,7 @@ export function initModel(): KineticModelBuilder {
           ]),
         ]),
       ]),
+      unit: "s",
       texName: "tau\\_Fluo",
     })
     .addReaction("VA", {
