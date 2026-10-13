@@ -20,348 +20,430 @@ export function initModel(): KineticModelBuilder {
     .addParameter("AP_tot", {
       value: 1.5,
       displayName: names.atp_tot,
+      unit: "mM",
       texName: "AP\\_tot",
     })
     .addParameter("Pi_tot", {
       value: 15.0,
       displayName: names.pi_tot,
+      unit: "mM",
       texName: "Pi\\_tot",
     })
     .addParameter("p_o2", {
       value: 210000.0,
+      unit: "\\mu mol\\,mol^{-1}",
       texName: "p\\_o2",
     })
     .addParameter("Kh_o2", {
       value: 833300.0,
+      unit: "\\mu mol\\,mol^{-1}\\,mM^{-1}",
       texName: "Kh\\_o2",
     })
     .addParameter("V_m", {
       value: 0.03,
+      unit: "L\\,m^{-2}",
       texName: "V\\_m",
     })
     .addParameter("PPFD", {
       value: 1500.0,
       displayName: names.ppfd,
+      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
       texName: "PPFD",
       slider: { min: "100", max: "2000", step: "10" },
     })
     .addParameter("RLight", {
       value: 0.001,
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "RLight",
     })
     .addParameter("s", {
       value: 0.43,
+      unit: "1",
       texName: "s",
     })
     .addParameter("PhiPSII_LL", {
       value: 0.72,
+      unit: "1",
       texName: "PhiPSII\\_LL",
     })
     .addParameter("PhiPSI_LL", {
       value: 1.0,
+      unit: "1",
       texName: "PhiPSI\\_LL",
     })
     .addParameter("alpha_ppfd_PhiPSII", {
       value: 0.00125,
+      unit: "m^{2}\\,s\\,\\mu mol^{-1}",
       texName: "alpha\\_ppfd\\_PhiPSII",
     })
     .addParameter("V0_ppfd_PhiPSII", {
       value: -0.8,
+      unit: "1",
       texName: "V0\\_ppfd\\_PhiPSII",
     })
     .addParameter("theta_ppfd_PhiPSII", {
       value: 0.7,
+      unit: "1",
       texName: "theta\\_ppfd\\_PhiPSII",
     })
     .addParameter("f_pseudocycNR", {
       value: 0.01,
+      unit: "1",
       texName: "f\\_pseudocycNR",
     })
     .addParameter("fq", {
       value: 1.0,
+      unit: "1",
       texName: "fq",
     })
     .addParameter("f_ndh", {
       value: 0.0,
+      unit: "1",
       texName: "f\\_ndh",
     })
     .addParameter("h", {
       value: 4.0,
+      unit: "1",
       texName: "h",
     })
     .addParameter("Ca", {
       value: 350.0,
+      unit: "\\mu mol\\,mol^{-1}",
       texName: "Ca",
     })
     .addParameter("alpha_ppfd_rub", {
       value: 0.0018,
+      unit: "m^{2}\\,s\\,\\mu mol^{-1}",
       texName: "alpha\\_ppfd\\_rub",
     })
     .addParameter("V0_ppfd_rub", {
       value: 0.16,
+      unit: "1",
       texName: "V0\\_ppfd\\_rub",
     })
     .addParameter("theta_ppfd_rub", {
       value: 0.95,
+      unit: "1",
       texName: "theta\\_ppfd\\_rub",
     })
     .addParameter("alpha_co2", {
       value: 400.0,
+      unit: "mM^{-1}",
       texName: "alpha\\_co2",
     })
     .addParameter("V0_co2", {
       value: -0.2,
+      unit: "1",
       texName: "V0\\_co2",
     })
     .addParameter("theta_co2", {
       value: 0.98,
+      unit: "1",
       texName: "theta\\_co2",
     })
     .addParameter("tau_i", {
       value: 360.0,
+      unit: "s",
       texName: "tau\\_i",
     })
     .addParameter("tau_d", {
       value: 1200.0,
+      unit: "s",
       texName: "tau\\_d",
     })
     .addParameter("km_v_RuBisCO_c_CO2", {
       displayName: names.km_rubisco_carboxylase_co2,
       value: 0.014,
+      unit: "mM",
       texName: "km\\_v\\_RuBisCO\\_c\\_CO2",
     })
     .addParameter("km_v_RuBisCO_c_RUBP", {
       displayName: names.km_rubisco_carboxylase_rubp,
       value: 0.02,
+      unit: "mM",
       texName: "km\\_v\\_RuBisCO\\_c\\_RUBP",
     })
     .addParameter("km_v_RuBisCO_c_O2", {
       value: 0.222,
+      unit: "mM",
       texName: "km\\_v\\_RuBisCO\\_c\\_O2",
     })
     .addParameter("ki_v_RuBisCO_c_PGA", {
       displayName: names.ki_rubisco_carboxylase_pga,
       value: 2.52,
+      unit: "mM",
       texName: "ki\\_v\\_RuBisCO\\_c\\_PGA",
     })
     .addParameter("ki_v_RuBisCO_c_NADP_st", {
       value: 0.21,
+      unit: "mM",
       texName: "ki\\_v\\_RuBisCO\\_c\\_NADP\\_st",
     })
     .addParameter("ki_v_RuBisCO_c_ADP_st", {
       value: 0.2,
+      unit: "mM",
       texName: "ki\\_v\\_RuBisCO\\_c\\_ADP\\_st",
     })
     .addParameter("ki_v_RuBisCO_c_Pi_st", {
       displayName: names.ki_rubisco_carboxylase_pi,
       value: 3.6,
+      unit: "mM",
       texName: "ki\\_v\\_RuBisCO\\_c\\_Pi\\_st",
     })
     .addParameter("vmax_v_RuBisCO_c", {
       displayName: names.vmax_rubisco_carboxylase,
       value: 0.2,
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "vmax\\_v\\_RuBisCO\\_c",
     })
     .addParameter("kcat_v_RuBisCO_c", {
       displayName: names.kcat_rubisco_carboxylase,
       value: 4.7,
+      unit: "s^{-1}",
       texName: "kcat\\_v\\_RuBisCO\\_c",
     })
     .addParameter("S_co_gas", {
       value: 2200.0,
+      unit: "1",
       texName: "S\\_co\\_gas",
     })
     .addParameter("vmax_v_PRKase", {
       displayName: names.vmax_phosphoribulokinase,
       value: 1.17,
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "vmax\\_v\\_PRKase",
     })
     .addParameter("keq_v_PRKase", {
       value: 6846.0,
+      unit: "1",
       texName: "keq\\_v\\_PRKase",
     })
     .addParameter("km_v_PRKase_ATP_st", {
       displayName: names.km_phosphoribulokinase_atp,
       value: 0.625,
+      unit: "mM",
       texName: "km\\_v\\_PRKase\\_ATP\\_st",
     })
     .addParameter("ki_v_PRKase_ADP_st", {
       value: 0.1,
+      unit: "mM",
       texName: "ki\\_v\\_PRKase\\_ADP\\_st",
     })
     .addParameter("km_v_PRKase_RU5P", {
       displayName: names.km_phosphoribulokinase_ru5p,
       value: 0.034,
+      unit: "mM",
       texName: "km\\_v\\_PRKase\\_RU5P",
     })
     .addParameter("ki_v_PRKase_PGA", {
       displayName: names.ki_phosphoribulokinase_pga,
       value: 2.0,
+      unit: "mM",
       texName: "ki\\_v\\_PRKase\\_PGA",
     })
     .addParameter("ki_v_PRKase_RUBP", {
       displayName: names.ki_phosphoribulokinase_rubp,
       value: 0.7,
+      unit: "mM",
       texName: "ki\\_v\\_PRKase\\_RUBP",
     })
     .addParameter("ki_v_PRKase_Pi_st", {
       displayName: names.ki_phosphoribulokinase_pi,
       value: 4.0,
+      unit: "mM",
       texName: "ki\\_v\\_PRKase\\_Pi\\_st",
     })
     .addParameter("vmax_v_pgareduction", {
       value: 0.4,
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "vmax\\_v\\_pgareduction",
     })
     .addParameter("km_v_pgareduction_ATP_st", {
       value: 0.3,
+      unit: "mM",
       texName: "km\\_v\\_pgareduction\\_ATP\\_st",
     })
     .addParameter("km_v_pgareduction_PGA", {
       value: 10.0,
+      unit: "mM",
       texName: "km\\_v\\_pgareduction\\_PGA",
     })
     .addParameter("km_v_pgareduction_NADPH_st", {
       value: 0.05,
+      unit: "mM",
       texName: "km\\_v\\_pgareduction\\_NADPH\\_st",
     })
     .addParameter("ki_v_pgareduction_ADP_st", {
       value: 0.89,
+      unit: "mM",
       texName: "ki\\_v\\_pgareduction\\_ADP\\_st",
     })
     .addParameter("vmax_v_carbohydrate_synthesis", {
       value: 0.2235,
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "vmax\\_v\\_carbohydrate\\_synthesis",
     })
     .addParameter("keq_v_carbohydrate_synthesis", {
       value: 0.8,
+      unit: "mM\\,mmol\\,m^{-2}\\,s^{-1}",
       texName: "keq\\_v\\_carbohydrate\\_synthesis",
     })
     .addParameter("km_v_carbohydrate_synthesis_DHAP", {
       value: 22.0,
+      unit: "mM",
       texName: "km\\_v\\_carbohydrate\\_synthesis\\_DHAP",
     })
     .addParameter("ki_v_carbohydrate_synthesis_ADP_st", {
       value: 1.0,
+      unit: "mM",
       texName: "ki\\_v\\_carbohydrate\\_synthesis\\_ADP\\_st",
     })
     .addParameter("vmax_v_rpp", {
       value: 0.0585,
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "vmax\\_v\\_rpp",
     })
     .addParameter("keq_v_rpp", {
       value: 0.06,
+      unit: "1",
       texName: "keq\\_v\\_rpp",
     })
     .addParameter("km_v_rpp_DHAP", {
       value: 0.5,
+      unit: "mM",
       texName: "km\\_v\\_rpp\\_DHAP",
     })
     .addParameter("H", {
       value: 5.012e-5,
+      unit: "mM",
       texName: "H",
     })
     .addParameter("vmax_v_co2_hydration", {
       value: 200.0,
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "vmax\\_v\\_co2\\_hydration",
     })
     .addParameter("keq_v_co2_hydration", {
       value: 0.00056,
+      unit: "mM",
       texName: "keq\\_v\\_co2\\_hydration",
     })
     .addParameter("km_v_co2_hydration_CO2", {
       value: 2.8,
+      unit: "mM",
       texName: "km\\_v\\_co2\\_hydration\\_CO2",
     })
     .addParameter("km_v_co2_hydration_HCO3", {
       value: 34.0,
+      unit: "mM",
       texName: "km\\_v\\_co2\\_hydration\\_HCO3",
     })
     .addParameter("keq_v_FNR", {
       value: 502.0,
+      unit: "1",
       texName: "keq\\_v\\_FNR",
     })
     .addParameter("km_v_FNR_NADP_st", {
       displayName: names.km_fnr_nadp,
       value: 0.0072,
+      unit: "mM",
       texName: "km\\_v\\_FNR\\_NADP\\_st",
     })
     .addParameter("km_v_FNR_NADPH_st", {
       value: 0.036,
+      unit: "mM",
       texName: "km\\_v\\_FNR\\_NADPH\\_st",
     })
     .addParameter("Kj_NADPH", {
       value: 200.0,
+      unit: "s",
       texName: "Kj\\_NADPH",
     })
     .addParameter("keq_v_ATPsynth", {
       displayName: names.keq_atp_synthase,
       value: 5734.0,
+      unit: "mM^{-1}",
       texName: "keq\\_v\\_ATPsynth",
     })
     .addParameter("km_v_ATPsynth_ADP_st", {
       value: 0.014,
+      unit: "mM",
       texName: "km\\_v\\_ATPsynth\\_ADP\\_st",
     })
     .addParameter("km_v_ATPsynth_Pi_st", {
       value: 0.3,
+      unit: "mM",
       texName: "km\\_v\\_ATPsynth\\_Pi\\_st",
     })
     .addParameter("km_v_ATPsynth_ATP_st", {
       value: 0.3,
+      unit: "mM",
       texName: "km\\_v\\_ATPsynth\\_ATP\\_st",
     })
     .addParameter("Kj_ATP", {
       value: 200.0,
+      unit: "s",
       texName: "Kj\\_ATP",
     })
     .addParameter("gm", {
       value: 0.5,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gm",
     })
     .addParameter("Kh_co2", {
       value: 30303.0303030303,
+      unit: "\\mu mol\\,mol^{-1}\\,mM^{-1}",
       texName: "Kh\\_co2",
     })
     .addParameter("Kd", {
       value: 150.0,
+      unit: "s",
       texName: "Kd",
     })
     .addParameter("Ki", {
       value: 900.0,
+      unit: "s",
       texName: "Ki",
     })
     .addParameter("tau0", {
       value: -0.1,
+      unit: "1",
       texName: "tau0",
     })
     .addParameter("chi_beta", {
       value: 0.5,
+      unit: "mol\\,m^{-2}\\,MPa^{-1}\\,s^{-1}",
       texName: "chi\\_beta",
     })
     .addParameter("phi", {
       value: 0.0,
+      unit: "MPa",
       texName: "phi",
     })
     .addParameter("pi_e", {
       value: 1.2,
+      unit: "MPa",
       texName: "pi\\_e",
     })
     .addParameter("Kh", {
       value: 12.0,
+      unit: "mmol\\,m^{-2}\\,MPa^{-1}\\,s^{-1}",
       texName: "Kh",
     })
     .addParameter("Ds", {
       value: 10.0,
+      unit: "mmol\\,mol^{-1}",
       texName: "Ds",
     })
     .addParameter("gs0", {
       value: 0.01,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gs0",
     })
     .addParameter("NADP_tot", {
       displayName: names.nadp_tot,
       value: 0.5,
+      unit: "mM",
       texName: "NADP\\_tot",
     })
     .addVariable("CO2", {
@@ -370,57 +452,74 @@ export function initModel(): KineticModelBuilder {
         new Mul([new Num(0.3), new Name("Ca")]),
         new Name("Kh_co2"),
       ]),
+      unit: "mM",
       texName: "CO2",
     })
     .addVariable("HCO3", {
       value: 0.1327,
+      unit: "mM",
       texName: "HCO3",
     })
     .addVariable("RUBP", {
       displayName: names.rubp,
       value: 2.0,
+      unit: "mM",
       texName: "RUBP",
     })
-    .addVariable("PGA", { displayName: names.pga, value: 4.0, texName: "PGA" })
+    .addVariable("PGA", {
+      displayName: names.pga,
+      value: 4.0,
+      unit: "mM",
+      texName: "PGA",
+    })
     .addVariable("DHAP", {
       displayName: names.dhap,
       value: 4.0,
+      unit: "mM",
       texName: "DHAP",
     })
     .addVariable("ATP_st", {
       displayName: names.atp,
       value: 0.68,
+      unit: "mM",
       texName: "ATP\\_st",
     })
     .addVariable("NADPH_st", {
       displayName: names.nadph,
       value: 0.21,
+      unit: "mM",
       texName: "NADPH\\_st",
     })
     .addVariable("RU5P", {
       displayName: names.ru5p,
       value: 0.34,
+      unit: "mM",
       texName: "RU5P",
     })
     .addVariable("Ract", {
       value: 1.0,
+      unit: "1",
       texName: "Ract",
     })
     .addVariable("J_NADPH", {
       value: 0.1,
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "J\\_NADPH",
     })
     .addVariable("J_ATP", {
       value: 0.16,
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "J\\_ATP",
     })
     .addVariable("Ci", {
       displayName: names.co2_intercellular,
       value: new Mul([new Num(0.65), new Name("Ca")]),
+      unit: "\\mu mol\\,mol^{-1}",
       texName: "Ci",
     })
     .addVariable("gs", {
       value: 0.334934046786077,
+      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gs",
     })
     .addAssignment("ADP_st", {
@@ -755,6 +854,7 @@ export function initModel(): KineticModelBuilder {
           new Minus([new Name("f_pseudocyc")]),
         ]),
       ]),
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "J\\_NADPH\\_steady",
     })
     .addAssignment("J_ATP_steady", {
@@ -776,6 +876,7 @@ export function initModel(): KineticModelBuilder {
         ]),
         new Name("h"),
       ]),
+      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "J\\_ATP\\_steady",
     })
     .addAssignment("gs_steady", {
