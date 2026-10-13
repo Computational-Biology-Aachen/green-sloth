@@ -17,358 +17,447 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("Iin", {
       value: 3000.0,
+      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
       texName: "Iin",
     })
     .addParameter("x", {
       value: 0.0,
+      unit: "1",
       texName: "x",
     })
     .addParameter("p", {
       value: 0.5,
+      unit: "1",
       texName: "p",
     })
     .addParameter("c_light", {
       value: 300000000.0,
+      unit: "m\\,s^{-1}",
       texName: "c\\_light",
     })
     .addParameter("h", {
       value: 6.62e-34,
+      unit: "J\\,s",
       texName: "h",
     })
     .addParameter("k_boltzmann", {
       value: 1.38e-23,
+      unit: "J\\,K^{-1}",
       texName: "k\\_boltzmann",
     })
     .addParameter("temperature", {
       value: 298.0,
+      unit: "K",
       texName: "temperature",
     })
     .addParameter("lambda_chl", {
       value: 6.73e-7,
+      unit: "m",
       texName: "lambda\\_chl",
     })
     .addParameter("lambda_p680", {
       value: 6.8e-7,
+      unit: "m",
       texName: "lambda\\_p680",
     })
     .addParameter("n_psi_psii", {
       value: 1.0,
+      unit: "1",
       texName: "n\\_psi\\_psii",
     })
     .addParameter("n_core_chl", {
       value: 70.0,
+      unit: "1",
       texName: "n\\_core\\_chl",
     })
     .addParameter("n_nonreducing_peripheral_chl", {
       value: 220.0,
+      unit: "1",
       texName: "n\\_nonreducing\\_peripheral\\_chl",
     })
     .addParameter("n_nonreducing_core_chl", {
       value: 35.0,
+      unit: "1",
       texName: "n\\_nonreducing\\_core\\_chl",
     })
     .addParameter("n_nonreducing_detached_chl", {
       value: 35.0,
+      unit: "1",
       texName: "n\\_nonreducing\\_detached\\_chl",
     })
     .addParameter("P680Pheo_total", {
       value: 1.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "P680Pheo\\_total",
     })
     .addParameter("PQ_total", {
       value: 6.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "PQ\\_total",
     })
     .addParameter("k2", {
       value: 2000000000.0,
+      unit: "s^{-1}",
       texName: "k2",
     })
     .addParameter("k3", {
       value: 800.0,
+      unit: "s^{-1}",
       texName: "k3",
     })
     .addParameter("kr3", {
       value: 80.0,
+      unit: "s^{-1}",
       texName: "kr3",
     })
     .addParameter("kAB1", {
       value: 2500.0,
+      unit: "s^{-1}",
       texName: "kAB1",
     })
     .addParameter("kAB2", {
       value: 3300.0,
+      unit: "s^{-1}",
       texName: "kAB2",
     })
     .addParameter("kBA1", {
       value: 175.0,
+      unit: "s^{-1}",
       texName: "kBA1",
     })
     .addParameter("kBA2", {
       value: 250.0,
+      unit: "s^{-1}",
       texName: "kBA2",
     })
     .addParameter("kAd", {
       value: 100000000.0,
+      unit: "s^{-1}",
       texName: "kAd",
     })
     .addParameter("kAf", {
       value: 30000000.0,
+      unit: "s^{-1}",
       texName: "kAf",
     })
     .addParameter("kAU", {
       value: 10000000000.0,
+      unit: "s^{-1}",
       texName: "kAU",
     })
     .addParameter("kUA", {
       value: 10000000000.0,
+      unit: "s^{-1}",
       texName: "kUA",
     })
     .addParameter("kUd_closed", {
       value: 100000000.0,
+      unit: "s^{-1}",
       texName: "kUd\\_closed",
     })
     .addParameter("kUd_open", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "kUd\\_open",
     })
     .addParameter("kUf", {
       value: 30000000.0,
+      unit: "s^{-1}",
       texName: "kUf",
     })
     .addParameter("k_c", {
       value: 1000000000.0,
+      unit: "m^{2}\\,\\mu mol^{-1}\\,s^{-1}",
       texName: "k\\_c",
     })
     .addParameter("kminus1_closed", {
       value: 900000000.0,
+      unit: "s^{-1}",
       texName: "kminus1\\_closed",
     })
     .addParameter("kminus1_open", {
       value: 300000000.0,
+      unit: "s^{-1}",
       texName: "kminus1\\_open",
     })
     .addParameter("k1_closed", {
       value: 4000000000.0,
+      unit: "s^{-1}",
       texName: "k1\\_closed",
     })
     .addParameter("k1_open", {
       value: 25000000000.0,
+      unit: "s^{-1}",
       texName: "k1\\_open",
     })
     .addParameter("Ke", {
       value: 1000000.0,
+      unit: "1",
       texName: "Ke",
     })
     .addParameter("k01", {
       value: 50.0,
+      unit: "s^{-1}",
       texName: "k01",
     })
     .addParameter("k12", {
       value: 30000.0,
+      unit: "s^{-1}",
       texName: "k12",
     })
     .addParameter("k23", {
       value: 10000.0,
+      unit: "s^{-1}",
       texName: "k23",
     })
     .addParameter("k30", {
       value: 3000.0,
+      unit: "s^{-1}",
       texName: "k30",
     })
     .addParameter("kox", {
       value: 250.0,
+      unit: "s^{-1}",
       texName: "kox",
     })
     .addParameter("kz", {
       value: 5000000.0,
+      unit: "s^{-1}",
       texName: "kz",
     })
     .addParameter("P680Pheo_total_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "P680Pheo\\_total\\_i",
     })
     .addParameter("kAB1_i", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "kAB1\\_i",
     })
     .addParameter("kAB2_i", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "kAB2\\_i",
     })
     .addParameter("kBA1_i", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "kBA1\\_i",
     })
     .addParameter("kBA2_i", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "kBA2\\_i",
     })
     .addParameter("k3_i", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "k3\\_i",
     })
     .addParameter("kr3_i", {
       value: 0.0,
+      unit: "s^{-1}",
       texName: "kr3\\_i",
     })
     .addVariable("Ap", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "Ap",
     })
     .addVariable("U", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "U",
     })
     .addVariable("P680plus_Pheominus", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "P680plus\\_Pheominus",
     })
     .addVariable("P680plus_Pheo", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "P680plus\\_Pheo",
     })
     .addVariable("P680_Pheominus", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "P680\\_Pheominus",
     })
     .addVariable("S0T", {
       value: 0.2,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S0T",
     })
     .addVariable("S1T", {
       value: 0.8,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S1T",
     })
     .addVariable("S2T", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S2T",
     })
     .addVariable("S3T", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S3T",
     })
     .addVariable("S0Tp", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S0Tp",
     })
     .addVariable("S1Tp", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S1Tp",
     })
     .addVariable("S2Tp", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S2Tp",
     })
     .addVariable("S3Tp", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S3Tp",
     })
     .addVariable("QA_QB", {
       value: 1.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QA\\_QB",
     })
     .addVariable("QAred_QB", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QAred\\_QB",
     })
     .addVariable("QA_QBred", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QA\\_QBred",
     })
     .addVariable("QAred_QBred", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QAred\\_QBred",
     })
     .addVariable("QA_QB2red", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QA\\_QB2red",
     })
     .addVariable("QAred_QB2red", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QAred\\_QB2red",
     })
     .addVariable("PQH2", {
       value: 3.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "PQH2",
     })
     .addVariable("Aip", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "Aip",
     })
     .addVariable("Ui", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "Ui",
     })
     .addVariable("Uifc", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "Uifc",
     })
     .addVariable("P680plus_Pheominus_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "P680plus\\_Pheominus\\_i",
     })
     .addVariable("P680plus_Pheo_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "P680plus\\_Pheo\\_i",
     })
     .addVariable("P680_Pheominus_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "P680\\_Pheominus\\_i",
     })
     .addVariable("S0T_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S0T\\_i",
     })
     .addVariable("S1T_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S1T\\_i",
     })
     .addVariable("S2T_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S2T\\_i",
     })
     .addVariable("S3T_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S3T\\_i",
     })
     .addVariable("S0Tp_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S0Tp\\_i",
     })
     .addVariable("S1Tp_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S1Tp\\_i",
     })
     .addVariable("S2Tp_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S2Tp\\_i",
     })
     .addVariable("S3Tp_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "S3Tp\\_i",
     })
     .addVariable("QA_QB_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QA\\_QB\\_i",
     })
     .addVariable("QAred_QB_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QAred\\_QB\\_i",
     })
     .addVariable("QA_QBred_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QA\\_QBred\\_i",
     })
     .addVariable("QAred_QBred_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QAred\\_QBred\\_i",
     })
     .addVariable("QA_QB2red_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QA\\_QB2red\\_i",
     })
     .addVariable("QAred_QB2red_i", {
       value: 0.0,
+      unit: "\\mu mol\\,m^{-2}",
       texName: "QAred\\_QB2red\\_i",
     })
     .addAssignment("P680_Pheo", {
@@ -585,6 +674,7 @@ export function initModel(): KineticModelBuilder {
           new Add([new Num(1.0), new Name("equilibrium_ratio")]),
         ]),
       ]),
+      unit: "\\mu mol\\,m^{-2}",
       texName: "P680\\_excited",
     })
     .addAssignment("k_q", {
@@ -726,6 +816,7 @@ export function initModel(): KineticModelBuilder {
           new Add([new Num(1.0), new Name("equilibrium_ratio")]),
         ]),
       ]),
+      unit: "\\mu mol\\,m^{-2}",
       texName: "P680\\_excited\\_i",
     })
     .addAssignment("P680plus_fraction_i", {
