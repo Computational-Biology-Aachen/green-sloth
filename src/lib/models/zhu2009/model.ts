@@ -12,6 +12,7 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("V1_max", {
       value: 3.78,
+      unit: "mM\\,s^{-1}",
       texName: "V1\\_max",
       slider: {
         min: "1.9",
@@ -21,6 +22,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V2_max", {
       value: 11.75,
+      unit: "mM\\,s^{-1}",
       texName: "V2\\_max",
       slider: {
         min: "5.9",
@@ -30,6 +32,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V3_max", {
       value: 5.04,
+      unit: "mM\\,s^{-1}",
       texName: "V3\\_max",
       slider: {
         min: "2.5",
@@ -39,6 +42,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V4_max", {
       value: 3.05,
+      unit: "mM\\,s^{-1}",
       texName: "V4\\_max",
       slider: {
         min: "1.5",
@@ -48,6 +52,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V5_max", {
       value: 3.0,
+      unit: "mM\\,s^{-1}",
       texName: "V5\\_max",
       slider: {
         min: "1.5",
@@ -57,6 +62,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V6_max", {
       value: 0.1,
+      unit: "mM\\,s^{-1}",
       texName: "V6\\_max",
       slider: {
         min: "0.1",
@@ -66,6 +72,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V13_max", {
       value: 8.0,
+      unit: "mM\\,s^{-1}",
       texName: "V13\\_max",
       slider: {
         min: "4.0",
@@ -75,47 +82,58 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("K_m1", {
       value: 1.0,
+      unit: "mM",
       texName: "K\\_m1",
     })
     .addParameter("K_m21", {
       value: 0.24,
+      unit: "mM",
       texName: "K\\_m21",
     })
     .addParameter("K_m22", {
       value: 0.39,
+      unit: "mM",
       texName: "K\\_m22",
     })
     .addParameter("K_m3", {
       value: 0.5,
+      unit: "mM",
       texName: "K\\_m3",
     })
     .addParameter("K_m4", {
       value: 0.84,
+      unit: "mM",
       texName: "K\\_m4",
     })
     .addParameter("K_m51", {
       value: 0.75,
+      unit: "mM",
       texName: "K\\_m51",
     })
     .addParameter("K_m52", {
       value: 0.275,
+      unit: "mM",
       texName: "K\\_m52",
     })
     .addParameter("K_m6", {
       value: 5.0,
+      unit: "mM",
       texName: "K\\_m6",
     })
     .addParameter("K_m131", {
       value: 0.15,
+      unit: "mM",
       texName: "K\\_m131",
     })
     .addParameter("K_m132", {
       value: 0.059,
+      unit: "mM",
       texName: "K\\_m132",
     })
     .addParameter("ATP", {
       displayName: names.atp,
       value: 0.2,
+      unit: "mM",
       texName: "ATP",
       slider: {
         min: "0.1",
@@ -126,20 +144,33 @@ export function initModel(): KineticModelBuilder {
     .addVariable("RuBP", {
       displayName: names.rubp,
       value: 2.0,
+      unit: "mM",
       texName: "RuBP",
     })
-    .addVariable("PGA", { displayName: names.pga, value: 2.4, texName: "PGA" })
+    .addVariable("PGA", {
+      displayName: names.pga,
+      value: 2.4,
+      unit: "mM",
+      texName: "PGA",
+    })
     .addVariable("DPGA", {
       displayName: names.bpga,
       value: 1.0,
+      unit: "mM",
       texName: "DPGA",
     })
     .addVariable("Ru5P", {
       displayName: names.ru5p,
       value: 1.0,
+      unit: "mM",
       texName: "Ru5P",
     })
-    .addVariable("GAP", { displayName: names.gap, value: 1.0, texName: "GAP" })
+    .addVariable("GAP", {
+      displayName: names.gap,
+      value: 1.0,
+      unit: "mM",
+      texName: "GAP",
+    })
     .addReaction("v1", {
       fn: new Divide([
         new Mul([new Name("RuBP"), new Name("V1_max")]),
