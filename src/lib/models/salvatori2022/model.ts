@@ -113,7 +113,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addVariable("Q", {
       value: 0.0,
-      unit: "μmol m^{-2}",
+      unit: "\\mu mol\\,m^{-2}",
       texName: "Q",
     })
     .addVariable("P_NPQ", {
@@ -130,12 +130,12 @@ export function initModel(): KineticModelBuilder {
     .addVariable("NADPH", {
       displayName: names.nadph,
       value: 5.0,
-      unit: "1", 
+      unit: "1",
       texName: "NADPH",
     })
     .addVariable("R", {
       value: 0.001,
-      unit: "1", 
+      unit: "1",
       texName: "R",
     })
     .addAssignment("pH", {
