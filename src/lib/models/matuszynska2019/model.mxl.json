@@ -1497,29 +1497,8 @@
                 {
                   "type": "Pow",
                   "left": {
-                    "type": "Mul",
-                    "children": [
-                      {
-                        "type": "Num",
-                        "value": 4000
-                      },
-                      {
-                        "type": "Pow",
-                        "left": {
-                          "type": "Num",
-                          "value": 10
-                        },
-                        "right": {
-                          "type": "Minus",
-                          "children": [
-                            {
-                              "type": "Name",
-                              "value": "ksat_lhc_protonation"
-                            }
-                          ]
-                        }
-                      }
-                    ]
+                    "type": "Name",
+                    "value": "ksat_lhc_protonation_protons"
                   },
                   "right": {
                     "type": "Name",
@@ -1645,29 +1624,8 @@
                 {
                   "type": "Pow",
                   "left": {
-                    "type": "Mul",
-                    "children": [
-                      {
-                        "type": "Num",
-                        "value": 4000
-                      },
-                      {
-                        "type": "Pow",
-                        "left": {
-                          "type": "Num",
-                          "value": 10
-                        },
-                        "right": {
-                          "type": "Minus",
-                          "children": [
-                            {
-                              "type": "Name",
-                              "value": "ksat_violaxanthin_deepoxidase"
-                            }
-                          ]
-                        }
-                      }
-                    ]
+                    "type": "Name",
+                    "value": "ksat_violaxanthin_deepoxidase_protons"
                   },
                   "right": {
                     "type": "Name",
@@ -2138,29 +2096,8 @@
                   "type": "Minus",
                   "children": [
                     {
-                      "type": "Mul",
-                      "children": [
-                        {
-                          "type": "Num",
-                          "value": 4000
-                        },
-                        {
-                          "type": "Pow",
-                          "left": {
-                            "type": "Num",
-                            "value": 10
-                          },
-                          "right": {
-                            "type": "Minus",
-                            "children": [
-                              {
-                                "type": "Name",
-                                "value": "pH"
-                              }
-                            ]
-                          }
-                        }
-                      ]
+                      "type": "Name",
+                      "value": "protons_stroma_chl"
                     }
                   ]
                 }
@@ -3832,6 +3769,90 @@
         },
         "displayName": "pH_lumen",
         "texName": "pH\\_lumen"
+      },
+      "protons_stroma_chl": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Num",
+              "value": 4000
+            },
+            {
+              "type": "Pow",
+              "left": {
+                "type": "Num",
+                "value": 10
+              },
+              "right": {
+                "type": "Minus",
+                "children": [
+                  {
+                    "type": "Name",
+                    "value": "pH"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "texName": "protons\\_stroma\\_chl"
+      },
+      "ksat_lhc_protonation_protons": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Num",
+              "value": 4000
+            },
+            {
+              "type": "Pow",
+              "left": {
+                "type": "Num",
+                "value": 10
+              },
+              "right": {
+                "type": "Minus",
+                "children": [
+                  {
+                    "type": "Name",
+                    "value": "ksat_lhc_protonation"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "texName": "ksat\\_lhc\\_protonation\\_protons"
+      },
+      "ksat_violaxanthin_deepoxidase_protons": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Num",
+              "value": 4000
+            },
+            {
+              "type": "Pow",
+              "left": {
+                "type": "Num",
+                "value": 10
+              },
+              "right": {
+                "type": "Minus",
+                "children": [
+                  {
+                    "type": "Name",
+                    "value": "ksat_violaxanthin_deepoxidase"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "texName": "ksat\\_violaxanthin\\_deepoxidase\\_protons"
       },
       "Zeaxanthin": {
         "fn": {
@@ -9351,6 +9372,7 @@
         "texName": "Fluo"
       }
     },
-    "readouts": {}
+    "readouts": {},
+    "nn_blocks": {}
   }
 }

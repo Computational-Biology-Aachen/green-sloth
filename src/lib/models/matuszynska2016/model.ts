@@ -31,137 +31,210 @@ export function initModel(): KineticModelBuilder {
     .addParameter("PSII_tot", {
       displayName: names.psii_tot,
       value: 2.5,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PSII\\_tot",
     })
     .addParameter("PQ_tot", {
       displayName: names.pq_tot,
       value: 20,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PQ\\_tot",
     })
     .addParameter("AP_tot", {
       displayName: names.atp_tot,
       value: 50,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "AP\\_tot",
     })
     .addParameter("PsbS_tot", {
       displayName: names.psbs_tot,
       value: 1,
+      unit: "1",
       texName: "PsbS\\_tot",
     })
-    .addParameter("X_tot", { value: 1, texName: "X\\_tot" })
-    .addParameter("O2_ex", { value: 8, texName: "O2\\_ex" })
-    .addParameter("Pi", { displayName: names.pi, value: 0.01, texName: "Pi" })
-    .addParameter("k_Cytb6f", { value: 0.104, texName: "k\\_Cytb6f" })
-    .addParameter("k_ActATPase", { value: 0.01, texName: "k\\_ActATPase" })
+    .addParameter("X_tot", { value: 1, unit: "1", texName: "X\\_tot" })
+    .addParameter("O2_ex", {
+      value: 8,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      texName: "O2\\_ex",
+    })
+    .addParameter("Pi", {
+      displayName: names.pi,
+      value: 0.01,
+      unit: "1",
+      texName: "Pi",
+    })
+    .addParameter("k_Cytb6f", {
+      value: 0.104,
+      unit: "1",
+      texName: "k\\_Cytb6f",
+    })
+    .addParameter("k_ActATPase", {
+      value: 0.01,
+      unit: "s^{-1}",
+      texName: "k\\_ActATPase",
+    })
     .addParameter("k_DeactATPase", {
       value: 0.002,
+      unit: "s^{-1}",
       texName: "k\\_DeactATPase",
     })
-    .addParameter("k_ATPsynth", { value: 20.0, texName: "k\\_ATPsynth" })
-    .addParameter("k_ATPconsum", { value: 10.0, texName: "k\\_ATPconsum" })
-    .addParameter("k_PQH2", { value: 250.0, texName: "k\\_PQH2" })
+    .addParameter("k_ATPsynth", {
+      value: 20.0,
+      unit: "s^{-1}",
+      texName: "k\\_ATPsynth",
+    })
+    .addParameter("k_ATPconsum", {
+      value: 10.0,
+      unit: "s^{-1}",
+      texName: "k\\_ATPconsum",
+    })
+    .addParameter("k_PQH2", {
+      value: 250.0,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
+      texName: "k\\_PQH2",
+    })
     .addParameter("k_H", {
       displayName: names.npq_heat_dissipation_rate,
       value: 5000000000.0,
+      unit: "s^{-1}",
       texName: "k\\_H",
     })
     .addParameter("k_F", {
       displayName: names.fluorescence_rate_constant,
       value: 625000000.0,
+      unit: "s^{-1}",
       texName: "k\\_F",
     })
     .addParameter("k_P", {
       displayName: names.psii_rate_constant,
       value: 5000000000.0,
+      unit: "s^{-1}",
       texName: "k\\_P",
     })
     .addParameter("k_PTOX", {
       displayName: names.k_ptox,
       value: 0.01,
+      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "k\\_PTOX",
     })
     .addParameter("pH_st", {
       displayName: names.ph,
       value: 7.8,
+      unit: "1",
       texName: "pH\\_st",
     })
-    .addParameter("k_leak", { value: 1000, texName: "k\\_leak" })
+    .addParameter("k_leak", {
+      value: 1000,
+      unit: "s^{-1}",
+      texName: "k\\_leak",
+    })
     .addParameter("b_H", {
       displayName: names.b_h,
       value: 100,
+      unit: "1",
       texName: "b\\_H",
     })
     .addParameter("hpr", {
       displayName: names.hpr,
       value: 4.666666666666667,
+      unit: "1",
       texName: "hpr",
     })
-    .addParameter("k_DV", { value: 0.0024, texName: "k\\_DV" })
-    .addParameter("k_EZ", { value: 0.00024, texName: "k\\_EZ" })
-    .addParameter("K_pHSat", { value: 5.8, texName: "K\\_pHSat" })
-    .addParameter("nhx", { value: 5.0, texName: "nhx" })
+    .addParameter("k_DV", { value: 0.0024, unit: "s^{-1}", texName: "k\\_DV" })
+    .addParameter("k_EZ", { value: 0.00024, unit: "s^{-1}", texName: "k\\_EZ" })
+    .addParameter("K_pHSat", { value: 5.8, unit: "1", texName: "K\\_pHSat" })
+    .addParameter("nhx", { value: 5.0, unit: "1", texName: "nhx" })
     .addParameter("K_ZSat", {
       displayName: names.k_zsat,
       value: 0.12,
+      unit: "1",
       texName: "K\\_ZSat",
     })
-    .addParameter("nhl", { value: 3, texName: "nhl" })
-    .addParameter("k_deprot", { value: 0.0096, texName: "k\\_deprot" })
-    .addParameter("k_prot", { value: 0.0096, texName: "k\\_prot" })
-    .addParameter("K_pHSatLHC", { value: 5.8, texName: "K\\_pHSatLHC" })
+    .addParameter("nhl", { value: 3, unit: "1", texName: "nhl" })
+    .addParameter("k_deprot", {
+      value: 0.0096,
+      unit: "s^{-1}",
+      texName: "k\\_deprot",
+    })
+    .addParameter("k_prot", {
+      value: 0.0096,
+      unit: "s^{-1}",
+      texName: "k\\_prot",
+    })
+    .addParameter("K_pHSatLHC", {
+      value: 5.8,
+      unit: "1",
+      texName: "K\\_pHSatLHC",
+    })
     .addParameter("gamma_0", {
       displayName: names.gamma0,
       value: 0.1,
+      unit: "1",
       texName: "gamma\\_0",
     })
     .addParameter("gamma_1", {
       displayName: names.gamma1,
       value: 0.25,
+      unit: "1",
       texName: "gamma\\_1",
     })
     .addParameter("gamma_2", {
       displayName: names.gamma2,
       value: 0.6,
+      unit: "1",
       texName: "gamma\\_2",
     })
     .addParameter("gamma_3", {
       displayName: names.gamma3,
       value: 0.15,
+      unit: "1",
       texName: "gamma\\_3",
     })
     .addParameter("F", {
       displayName: names.faraday_constant,
       value: 96.485,
+      unit: "kJ\\,mol^{-1}\\,V^{-1}",
       texName: "F",
     })
     .addParameter("R", {
       displayName: names.gas_constant,
       value: 0.0083,
+      unit: "kJ\\,mol^{-1}\\,K^{-1}",
       texName: "R",
     })
     .addParameter("T", {
       displayName: names.temperature,
       value: 298,
+      unit: "K",
       texName: "T",
     })
     .addParameter("E0_QA", {
       displayName: names.e0_qa,
       value: -0.14,
+      unit: "V",
       texName: "E0\\_QA",
     })
     .addParameter("E0_PQ", {
       displayName: names.e0_pq,
       value: 0.354,
+      unit: "V",
       texName: "E0\\_PQ",
     })
     .addParameter("E0_PC", {
       displayName: names.e0_pc,
       value: 0.38,
+      unit: "V",
       texName: "E0\\_PC",
     })
-    .addParameter("DG_ATP", { value: 30.6, texName: "DG\\_ATP" })
+    .addParameter("DG_ATP", {
+      value: 30.6,
+      unit: "kJ\\,mol^{-1}",
+      texName: "DG\\_ATP",
+    })
     .addParameter("PPFD", {
       value: 100,
+      unit: "s^{-1}",
       texName: "PPFD",
       displayName: names.ppfd,
       slider: {
@@ -173,26 +246,36 @@ export function initModel(): KineticModelBuilder {
     .addVariable("pq_red", {
       displayName: names.pqh2,
       value: 0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "pq\\_red",
     })
     .addVariable("protons", {
       displayName: names.protons,
       value: 6.32975752e-5,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "protons",
     })
     .addVariable("vmax_atp_synthase", {
       value: 0,
+      unit: "1",
       texName: "vmax\\_atp\\_synthase",
     })
-    .addVariable("atp", { displayName: names.atp, value: 25.0, texName: "atp" })
+    .addVariable("atp", {
+      displayName: names.atp,
+      value: 25.0,
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      texName: "atp",
+    })
     .addVariable("psbs_de", {
       displayName: names.psbs_deepoxidized,
       value: 1,
+      unit: "1",
       texName: "psbs\\_de",
     })
     .addVariable("vx", {
       displayName: names.violaxanthin_fraction,
       value: 1,
+      unit: "1",
       texName: "vx",
     })
     .addAssignment("pH_lu", {
@@ -210,6 +293,7 @@ export function initModel(): KineticModelBuilder {
         new Num(32000.0),
         new Pow(new Num(10.0), new Minus([new Name("pH_st")])),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "H\\_st",
     })
     .addAssignment("K_pHSat_inv", {
@@ -217,6 +301,7 @@ export function initModel(): KineticModelBuilder {
         new Num(32000.0),
         new Pow(new Num(10.0), new Minus([new Name("K_pHSat")])),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "K\\_pHSat\\_inv",
     })
     .addAssignment("K_pHSatLHC_inv", {
@@ -224,6 +309,7 @@ export function initModel(): KineticModelBuilder {
         new Num(32000.0),
         new Pow(new Num(10.0), new Minus([new Name("K_pHSatLHC")])),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "K\\_pHSatLHC\\_inv",
     })
     .addAssignment("K_QAPQ", {
@@ -526,6 +612,7 @@ export function initModel(): KineticModelBuilder {
           ]),
         ]),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "ps2states",
     })
     .addAssignment("B1", {
@@ -663,6 +750,7 @@ export function initModel(): KineticModelBuilder {
           ]),
         ]),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "ps2states",
     })
     .addAssignment("B2", {
@@ -842,6 +930,7 @@ export function initModel(): KineticModelBuilder {
           ]),
         ]),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "ps2states",
     })
     .addAssignment("B3", {
@@ -986,6 +1075,7 @@ export function initModel(): KineticModelBuilder {
           ]),
         ]),
       ]),
+      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "ps2states",
     })
     .addReaction("v_PSII", {
