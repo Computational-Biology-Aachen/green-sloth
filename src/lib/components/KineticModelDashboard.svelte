@@ -14,6 +14,7 @@
     Slider2 as Slider,
   } from "@computational-biology-aachen/design";
   import H2 from "@computational-biology-aachen/design/H2.svelte";
+  import Row from "@computational-biology-aachen/design/Row.svelte";
   import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import { untrack } from "svelte";
   import { backends } from "../stores/backends";
@@ -137,6 +138,17 @@
 </script>
 
 {#if browser}
+  <Row
+    justify="between"
+    wrap
+  >
+    <H2>Dashboard</H2>
+    <Row justify="end">
+      <Button popovertarget="fit-editor">Fit to data</Button>
+      <Button onclick={resetParameters}>Reset</Button>
+    </Row>
+  </Row>
+
   <div class="dashboard">
     {#if sliderDefs.length > 0}
       <div class="sliders">
@@ -161,8 +173,6 @@
         type="checkbox"
         bind:checked={displayReference}
       />
-      <Button popovertarget="fit-editor">Fit to data</Button>
-      <Button onclick={resetParameters}>Reset</Button>
     </div>
     {#each analyses as analysis, i (i)}
       <div class="analysis">

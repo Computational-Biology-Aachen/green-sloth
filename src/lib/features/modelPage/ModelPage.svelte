@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { resolve } from "$app/paths";
   import CopyrightOverlay from "#lib/components/CopyrightOverlay.svelte";
-  import ModelDashboard from "#lib/components/KineticModelDashboard.svelte";
-  import ModelTables from "#lib/components/KineticModelTables.svelte";
+  import KineticModelDashboard from "#lib/components/KineticModelDashboard.svelte";
+  import KineticModelTables from "#lib/components/KineticModelTables.svelte";
   import SSModelDashboard from "#lib/components/SSModelDashboard.svelte";
   import SSModelTables from "#lib/components/SSModelTables.svelte";
   import type { ModelMeta } from "#lib/types.js";
+  import { resolve } from "$app/paths";
   import {
     Accordion,
     Bold,
@@ -381,10 +381,8 @@
   variant="surface"
   width="narrow"
 >
-  <H2>Analysis</H2>
-
   {#if model instanceof KineticModelBuilder}
-    <ModelDashboard
+    <KineticModelDashboard
       model={model}
       analyses={data.meta.analyses}
     />
@@ -394,6 +392,7 @@
       analyses={data.meta.analyses}
     />
   {:else}
+    <H2>Dashboard</H2>
     <Text>Model could not be loaded.</Text>
   {/if}
 </Section>
@@ -406,7 +405,7 @@
   >
     <H2>Model definition</H2>
     {#if model instanceof KineticModelBuilder}
-      <ModelTables model={model} />
+      <KineticModelTables model={model} />
     {:else if model instanceof SteadyStateModelBuilder}
       <SSModelTables model={model} />
     {:else}

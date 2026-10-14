@@ -92,6 +92,8 @@
 </script>
 
 {#if browser}
+  <H2>Dashboard</H2>
+
   <div class="dashboard">
     {#if sliderDefs.length > 0}
       <div class="sliders">
