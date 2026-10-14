@@ -8,7 +8,6 @@ export const PARTS = [
   "FNR",
   "PSI",
   "CBB Cycle",
-  "Proton motive force (pmf)",
   "NPQ",
   "Photorespiration",
 ] as const;
