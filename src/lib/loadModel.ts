@@ -20,15 +20,15 @@ import {
 import { mxlJsonToModel } from "@computational-biology-aachen/mxlweb-core/mxl";
 import { sbmlToModel } from "@computational-biology-aachen/mxlweb-core/sbml";
 
-const jsonLoaders = import.meta.glob("$lib/models/*/model.mxl.json", {
+const jsonLoaders = import.meta.glob("#lib/models/*/model.mxl.json", {
   query: "?raw",
   import: "default",
 }) as Record<string, () => Promise<string>>;
-const sbmlLoaders = import.meta.glob("$lib/models/*/model.sbml", {
+const sbmlLoaders = import.meta.glob("#lib/models/*/model.sbml", {
   query: "?raw",
   import: "default",
 }) as Record<string, () => Promise<string>>;
-const tsLoaders = import.meta.glob("$lib/models/*/model.ts") as Record<
+const tsLoaders = import.meta.glob("#lib/models/*/model.ts") as Record<
   string,
   () => Promise<{ initModel: () => KineticModelBuilder }>
 >;

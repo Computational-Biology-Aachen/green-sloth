@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { base } from "$app/paths";
-  import type { ExperimentalData } from "$lib/types";
+  import { resolve } from "$app/paths";
+  import type { ExperimentalData } from "#lib/types.js";
   import {
     Button,
     H1,
@@ -80,7 +80,7 @@
   ];
 
   const modelsHref = (tag: ExperimentalData): string =>
-    `${base}/models?data=${encodeURIComponent(tag)}`;
+    `${resolve("/models")}?data=${encodeURIComponent(tag)}`;
 </script>
 
 <svelte:head>

@@ -6,7 +6,7 @@
  re-runs all analyses. Client-only (runs a Web Worker).
 -->
 <script lang="ts">
-  import { browser } from "$app/environment";
+  import { browser } from "$app/env";
   import { H3, Slider2 as Slider } from "@computational-biology-aachen/design";
   import H2 from "@computational-biology-aachen/design/H2.svelte";
   import type { SteadyStateModelBuilder } from "@computational-biology-aachen/mxlweb-core";

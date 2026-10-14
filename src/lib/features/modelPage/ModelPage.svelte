@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { base } from "$app/paths";
-  import CopyrightOverlay from "$lib/components/CopyrightOverlay.svelte";
-  import ModelDashboard from "$lib/components/KineticModelDashboard.svelte";
-  import ModelTables from "$lib/components/KineticModelTables.svelte";
-  import SSModelDashboard from "$lib/components/SSModelDashboard.svelte";
-  import SSModelTables from "$lib/components/SSModelTables.svelte";
-  import type { ModelMeta } from "$lib/types";
+  import { resolve } from "$app/paths";
+  import CopyrightOverlay from "#lib/components/CopyrightOverlay.svelte";
+  import ModelDashboard from "#lib/components/KineticModelDashboard.svelte";
+  import ModelTables from "#lib/components/KineticModelTables.svelte";
+  import SSModelDashboard from "#lib/components/SSModelDashboard.svelte";
+  import SSModelTables from "#lib/components/SSModelTables.svelte";
+  import type { ModelMeta } from "#lib/types.js";
   import {
     Accordion,
     Bold,
@@ -98,7 +98,7 @@
     },
   ];
 
-  const validationFiles = import.meta.glob("$lib/models/*/validation.*", {
+  const validationFiles = import.meta.glob("/src/lib/models/*/validation.*", {
     query: "?url",
     import: "default",
     eager: true,
@@ -129,7 +129,7 @@
   // Eager glob so the KineticModelBuilder is available both at prerender (tables) and
   // on the client (interactive dashboard).
   const modelPaperFigs = import.meta.glob(
-    "$lib/models/*/figs/*.{png,jpg,svg,jpeg}",
+    "/src/lib/models/*/figs/*.{png,jpg,svg,jpeg}",
     {
       eager: true,
       query: "?url",
@@ -312,7 +312,7 @@
         >
       </ButtonMenu>
       <Button
-        href="{base}/howto?section=website"
+        href="{resolve('/howto')}?section=website"
         variant="inverted"
         class="info-button"
       >
@@ -438,7 +438,7 @@
       {#each curationHistory as entry (entry.date.getTime() + entry.contributor.key)}
         <Li>
           {formatCurationDate(entry.date)}: {entry.desc} by
-          <Link href="{base}/about#{entry.contributor.key}"
+          <Link href="{resolve('/about')}#{entry.contributor.key}"
             >{entry.contributor.name}</Link
           >
         </Li>

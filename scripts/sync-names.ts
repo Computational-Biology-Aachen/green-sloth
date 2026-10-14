@@ -206,7 +206,7 @@ function editModelFile(
     source = source.slice(0, pos) + text + source.slice(pos);
   }
 
-  if (!/from ["']\$lib\/names["']/.test(source)) {
+  if (!/from ["']#lib\/names(\.js)?["']/.test(source)) {
     const importRegex = /^import .*;\n/gm;
     let lastImportEnd = 0;
     let m: RegExpExecArray | null;
@@ -214,7 +214,7 @@ function editModelFile(
       lastImportEnd = m.index + m[0].length;
     source =
       source.slice(0, lastImportEnd) +
-      `import names from "$lib/names";\n` +
+      `import names from "#lib/names.js";\n` +
       source.slice(lastImportEnd);
   }
 

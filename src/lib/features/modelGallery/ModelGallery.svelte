@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { base } from "$app/paths";
+  import { resolve } from "$app/paths";
   import { page } from "$app/state";
-  import { models } from "$lib/models";
-  import { fuzzyMatch } from "$lib/utils";
+  import { models } from "#lib/models.js";
+  import { fuzzyMatch } from "#lib/utils.js";
   import {
     ButtonTab,
     H1,
@@ -10,12 +10,12 @@
     SectionHeader,
   } from "@computational-biology-aachen/design";
 
-  import CardModel from "$lib/components/CardModel.svelte";
+  import CardModel from "#lib/components/CardModel.svelte";
   import { onMount } from "svelte";
 
   // Optional per-model scheme image, co-located in src/lib/models/<slug>/.
   const schemeModules = import.meta.glob(
-    "$lib/models/*/scheme.{svg,png,jpg,jpeg,webp,gif,avif}",
+    "/src/lib/models/*/scheme.{svg,png,jpg,jpeg,webp,gif,avif}",
     {
       query: "?url",
       import: "default",
@@ -33,7 +33,7 @@
   // A model is "validated" once it has at least one paper-reproduction figure
   // co-located in src/lib/models/<slug>/figs/ — same rule as ModelPage.svelte.
   const modelFigs = import.meta.glob(
-    "$lib/models/*/figs/*.{png,jpg,svg,jpeg}",
+    "/src/lib/models/*/figs/*.{png,jpg,svg,jpeg}",
     {
       eager: true,
     },
@@ -852,7 +852,7 @@
     {#each filtered as [slug, info] (slug)}
       <CardModel
         name="{info.title}{info.journal ? `, ${info.journal}` : ''}"
-        href="{base}/models/{slug}"
+        href={resolve("/models/[slug]", { slug })}
         image={schemes[slug]}
         license={info.license
           ? shortenTo(`${info.license} - ${info.journal}`, 35)

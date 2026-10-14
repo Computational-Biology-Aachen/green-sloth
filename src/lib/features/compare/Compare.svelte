@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
-  import { replaceState } from "$app/navigation";
-  import { base } from "$app/paths";
+  import { browser } from "$app/env";
+  import { goto } from "$app/navigation";
+  import { resolve } from "$app/paths";
   import { page } from "$app/state";
-  import { buildModel } from "$lib/loadModel";
-  import { modelNames, models } from "$lib/models";
+  import { buildModel } from "#lib/loadModel.js";
+  import { modelNames, models } from "#lib/models.js";
   import {
     Bold,
     H1,
@@ -29,7 +29,7 @@
 
   // The client router finishes initializing slightly after the component
   // tree's own onMount hooks fire on the very first load (its readiness
-  // isn't tied to Svelte's own mount/effect flush), so replaceState() below
+  // isn't tied to Svelte's own mount/effect flush), so the shallow goto() below
   // still throws if called synchronously from onMount. A macrotask delay
   // guarantees we're scheduled after that startup sequence has resolved.
   let routerReady = $state(false);
@@ -48,10 +48,11 @@
   // Keep the URL in sync so a comparison is shareable, without spamming history.
   $effect(() => {
     if (!browser || !routerReady) return;
-    const url = new URL(page.url);
+    const url = new URL(page.url.href);
     url.searchParams.set("a", slugA);
     url.searchParams.set("b", slugB);
-    if (url.href !== page.url.href) replaceState(url, {});
+    if (url.href !== page.url.href)
+      goto(url, { state: {}, shallow: true, replaceState: true });
   });
 
   // Loaded asynchronously (each model is its own code-split chunk) rather than
@@ -254,9 +255,15 @@
       <thead>
         <tr>
           <th><Bold>Category</Bold></th>
-          <th class="num"><Link href="{base}/models/{slugA}">{titleA}</Link></th
+          <th class="num"
+            ><Link href={resolve("/models/[slug]", { slug: slugA })}
+              >{titleA}</Link
+            ></th
           >
-          <th class="num"><Link href="{base}/models/{slugB}">{titleB}</Link></th
+          <th class="num"
+            ><Link href={resolve("/models/[slug]", { slug: slugB })}
+              >{titleB}</Link
+            ></th
           >
           <th class="num">Shared</th>
         </tr>
@@ -294,8 +301,9 @@
     <div class="buckets">
       <div class="bucket">
         <p class="bucket-head">
-          Only in <Link href="{base}/models/{slugA}">{titleA}</Link> ({detail
-            .bucket.aOnly.length})
+          Only in <Link href={resolve("/models/[slug]", { slug: slugA })}
+            >{titleA}</Link
+          > ({detail.bucket.aOnly.length})
         </p>
         <ul>
           {#each filtered(detail.bucket.aOnly, queries[detail.key], (id) => id) as id (id)}
@@ -322,8 +330,9 @@
       </div>
       <div class="bucket">
         <p class="bucket-head">
-          Only in <Link href="{base}/models/{slugB}">{titleB}</Link> ({detail
-            .bucket.bOnly.length})
+          Only in <Link href={resolve("/models/[slug]", { slug: slugB })}
+            >{titleB}</Link
+          > ({detail.bucket.bOnly.length})
         </p>
         <ul>
           {#each filtered(detail.bucket.bOnly, queries[detail.key], (id) => id) as id (id)}

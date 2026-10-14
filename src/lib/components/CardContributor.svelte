@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { base } from "$app/paths";
-  import placeholder from "$lib/assets/contributor-placeholder.svg";
-  import { models } from "$lib/models";
-  import type { Contributor } from "$lib/types";
+  import { resolve } from "$app/paths";
+  import placeholder from "#lib/assets/contributor-placeholder.svg";
+  import { models } from "#lib/models.js";
+  import type { Contributor } from "#lib/types.js";
   import {
     Accordion,
     Li,
@@ -82,7 +82,11 @@
     >
       <Ul>
         {#each contributedModels as m (m.slug)}
-          <Li><Link href="{base}/models/{m.slug}">{m.title}</Link></Li>
+          <Li
+            ><Link href={resolve("/models/[slug]", { slug: m.slug })}
+              >{m.title}</Link
+            ></Li
+          >
         {/each}
       </Ul>
     </Accordion>

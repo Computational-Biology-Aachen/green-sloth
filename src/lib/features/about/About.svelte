@@ -1,5 +1,5 @@
 <script lang="ts">
-  import greenslothLogo from "$lib/assets/greensloth-logo-inv.svg";
+  import greenslothLogo from "#lib/assets/greensloth-logo-inv.svg";
   import {
     H1,
     Section,

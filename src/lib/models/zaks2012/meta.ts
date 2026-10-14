@@ -1,6 +1,6 @@
-import contributors from "$lib/contributors";
-import type { ModelMeta } from "$lib/types";
-import { defaultPamProtocol } from "$lib/models/pamProtocols";
+import contributors from "#lib/contributors.js";
+import type { ModelMeta } from "#lib/types.js";
+import { defaultPamProtocol } from "#lib/models/pamProtocols.js";
 
 export const meta: ModelMeta = {
   slug: "zaks2012",

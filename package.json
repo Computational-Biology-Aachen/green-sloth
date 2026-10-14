@@ -20,8 +20,8 @@
   "devDependencies": {
     "@eslint/compat": "^2.1.1",
     "@eslint/js": ">=10.0.0",
-    "@sveltejs/adapter-static": ">=3.0.10",
-    "@sveltejs/kit": ">=2.65.0",
+    "@sveltejs/kit": "^3.0.1",
+    "@sveltejs/load-config": ">=0.2.2",
     "@sveltejs/vite-plugin-svelte": ">=7.3.1",
     "@types/node": "^26.6.4",
     "@types/papaparse": "^5.5.2",
@@ -34,7 +34,7 @@
     "prettier-plugin-css-order": ">=2.2.0",
     "prettier-plugin-svelte": ">=4.1.1",
     "svelte": ">=5.57.1",
-    "svelte-check": ">=4.7.4",
+    "svelte-check": ">=4.7.5",
     "typescript": ">=6.0.0",
     "typescript-eslint": ">=8.71.0",
     "vite": ">=8.3.2",
@@ -47,7 +47,7 @@
     "@computational-biology-aachen/mxlweb-core": "github:Computational-Biology-Aachen/mxlweb-core",
     "@fortawesome/free-brands-svg-icons": ">=7.2.0",
     "@fortawesome/free-solid-svg-icons": ">=7.2.0",
-    "@sveltejs/adapter-static": ">=3.0.10",
+    "@sveltejs/adapter-static": ">=4.0.0",
     "ajv": ">=8.18",
     "chart.js": "^4.5.1",
     "chroma-js": "^3.1.2",
@@ -57,5 +57,9 @@
     "remark-math": "^6.0.0",
     "svelte-exmarkdown": "^5.0.2",
     "wat-compiler": "^1.1.1"
+  },
+  "imports": {
+    "#lib": "./src/lib/index.js",
+    "#lib/*": "./src/lib/*"
   }
 }

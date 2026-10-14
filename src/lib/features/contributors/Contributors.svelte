@@ -1,6 +1,6 @@
 <script lang="ts">
-  import CardContributor from "$lib/components/CardContributor.svelte";
-  import contributors from "$lib/contributors";
+  import CardContributor from "#lib/components/CardContributor.svelte";
+  import contributors from "#lib/contributors.js";
 
   const sorted = Object.keys(contributors)
     .sort()

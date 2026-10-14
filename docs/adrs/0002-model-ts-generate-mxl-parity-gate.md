@@ -2,7 +2,7 @@
 
 **Status:** Implemented
 **Scope:** `scripts/generate-mxl.ts`, `src/lib/models/*/model.ts`,
-`src/lib/models/*/model.mxl.json`, `$lib/loadModel`
+`src/lib/models/*/model.mxl.json`, `#lib/loadModel.js`
 
 ---
 
@@ -10,7 +10,7 @@
 
 Each model has a hand-authored `model.ts` (using `mxlweb-core`'s builder API) and a
 committed, generated `model.mxl.json` sitting next to it. The app loads the `.mxl.json`
-at runtime (`$lib/loadModel`), not `model.ts` directly. `generate-mxl.ts` regenerates
+at runtime (`#lib/loadModel`), not `model.ts` directly. `generate-mxl.ts` regenerates
 the JSON from the TypeScript source and must be re-run whenever `model.ts` changes.
 
 Critically, `generate-mxl.ts` runs under `vite-node` so `mxlweb-core` resolves via its

@@ -1,5 +1,5 @@
-import { buildModel } from "$lib/loadModel";
-import { modelNames, models } from "$lib/models";
+import { buildModel } from "#lib/loadModel.js";
+import { modelNames, models } from "#lib/models.js";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
 

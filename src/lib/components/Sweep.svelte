@@ -5,7 +5,7 @@
 -->
 
 <script lang="ts">
-  import type { SweepAnalysis } from "$lib/types";
+  import type { SweepAnalysis } from "#lib/types.js";
   import { LineChart } from "@computational-biology-aachen/design";
   import type { SteadyStateModelBuilder } from "@computational-biology-aachen/mxlweb-core";
 

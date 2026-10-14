@@ -3,7 +3,7 @@
  *
  * `model.ts` stays the authoring source; this script lowers each one to the
  * canonical mxl-schemas `.mxl.json` that the app loads at runtime (see
- * `$lib/loadModel`). Run it whenever a `model.ts` changes:
+ * `#lib/loadModel`). Run it whenever a `model.ts` changes:
  *
  *   npm run generate:mxl
  *

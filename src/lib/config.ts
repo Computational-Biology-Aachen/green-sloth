@@ -1,4 +1,4 @@
-import { dev } from "$app/environment";
+import { dev } from "$app/env";
 
 export const title = "GreenSloth";
 export const description = "Green Sloth";

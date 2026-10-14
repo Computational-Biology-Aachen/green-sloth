@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
-  import Contribute from "$lib/features/contribute/Contribute.svelte";
+  import Contribute from "#lib/features/contribute/Contribute.svelte";
   import {
     H1,
     H2,
@@ -25,9 +25,9 @@
     const urlSection = page.url.searchParams.get("section");
     if (urlSection) {
       section = urlSection;
-      const url = new URL(page.url);
+      const url = new URL(page.url.href);
       url.searchParams.delete("section");
-      goto(url, { replaceState: true, keepFocus: true, noScroll: true });
+      goto(url, { replaceState: true, reset: false });
     }
   });
   function setSection(newSection: string) {
@@ -41,8 +41,8 @@
   figs/             # directory for the validation figures
   validation.*ipynb    # scripts for the validation figures (does not need to be Python)
   curatornotes.md   # notes for the validation      (optional)`;
-  const metaTs = `import contributors from "$lib/contributors";
-import type { ModelMeta } from "$lib/types";
+  const metaTs = `import contributors from "#lib/contributors.js";
+import type { ModelMeta } from "#lib/types.js";
 export const meta: ModelMeta = {
   slug: "<autoryear>",
   title: "<Author> <Year>",

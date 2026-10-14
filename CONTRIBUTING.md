@@ -51,8 +51,8 @@ Writing all the MathML AST by hand is the tedious part. **If you already have th
 ## 2. `meta.ts` — presentation metadata
 
 ```ts
-import { defaultPamProtocol } from "$lib/models/pamProtocols";
-import type { ModelMeta } from "$lib/types";
+import { defaultPamProtocol } from "#lib/models/pamProtocols.js";
+import type { ModelMeta } from "#lib/types.js";
 
 export const meta: ModelMeta = {
   slug: "authoryear",

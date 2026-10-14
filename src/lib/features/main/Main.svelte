@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { base } from "$app/paths";
-  import greenslothLogo from "$lib/assets/greensloth-logo.svg";
-  import CopyButton from "$lib/components/CopyButton.svelte";
+  import { resolve } from "$app/paths";
+  import greenslothLogo from "#lib/assets/greensloth-logo.svg";
+  import CopyButton from "#lib/components/CopyButton.svelte";
   import {
     Bold,
     Button,
@@ -36,7 +36,7 @@
     />
     <H1 color="light">Photosynthesis Models at your Pace</H1>
     <div class="hero-actions">
-      <Button href="{base}/models">Browse Models</Button>
+      <Button href={resolve("models")}>Browse Models</Button>
     </div>
   </div>
 </Section>
@@ -110,10 +110,10 @@
     already curated and popular models.
   </Text>
   <Text>
-    GreenSloth shows its curated models in a <a href="{base}/models">list</a> with
-    the model's name and scheme. Furthermore, GreenSloth introduces manually curated
-    categories to see where the chosen models overlap. These categories are separated
-    into a tag system to facilitate selecting the right model.
+    GreenSloth shows its curated models in a <a href={resolve("models")}>list</a
+    > with the model's name and scheme. Furthermore, GreenSloth introduces manually
+    curated categories to see where the chosen models overlap. These categories are
+    separated into a tag system to facilitate selecting the right model.
   </Text>
   <H2>Summary</H2>
   <Text>

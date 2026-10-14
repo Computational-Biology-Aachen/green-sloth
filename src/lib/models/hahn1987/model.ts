@@ -1,5 +1,5 @@
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
-import names from "$lib/names";
+import names from "#lib/names.js";
 import {
   Add,
   Minus,

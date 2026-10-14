@@ -1,13 +1,13 @@
-import anna from "$lib/assets/people/anna.png";
-import elouen from "$lib/assets/people/elouen.png";
-import huy from "$lib/assets/people/huy.png";
-import josha from "$lib/assets/people/josha.png";
-import maja from "$lib/assets/people/maja.png";
-import malick from "$lib/assets/people/malick.png";
-import marvin from "$lib/assets/people/marvin.png";
-import tanvir from "$lib/assets/people/tanvir.png";
-import tim from "$lib/assets/people/tim.png";
-import type { Contributor } from "$lib/types";
+import anna from "#lib/assets/people/anna.png";
+import elouen from "#lib/assets/people/elouen.png";
+import huy from "#lib/assets/people/huy.png";
+import josha from "#lib/assets/people/josha.png";
+import maja from "#lib/assets/people/maja.png";
+import malick from "#lib/assets/people/malick.png";
+import marvin from "#lib/assets/people/marvin.png";
+import tanvir from "#lib/assets/people/tanvir.png";
+import tim from "#lib/assets/people/tim.png";
+import type { Contributor } from "#lib/types.js";
 
 const contributors: Record<string, Contributor> = {
   elouencorvest: {

@@ -6,7 +6,7 @@
  re-runs all analyses. Client-only (runs a Web Worker).
 -->
 <script lang="ts">
-  import { browser } from "$app/environment";
+  import { browser } from "$app/env";
   import {
     Button,
     H3,

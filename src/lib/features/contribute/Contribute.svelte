@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
-  import ModelDashboard from "$lib/components/KineticModelDashboard.svelte";
-  import { AVAILABLE_TAGS } from "$lib/tags";
-  import type { ModelAnalysis } from "$lib/types";
+  import { browser } from "$app/env";
+  import ModelDashboard from "#lib/components/KineticModelDashboard.svelte";
+  import { AVAILABLE_TAGS } from "#lib/tags.js";
+  import type { ModelAnalysis } from "#lib/types.js";
   import {
     Button,
     Code,
@@ -88,8 +88,8 @@
   }
 
   // The typed presentation file the contributor would otherwise hand-write.
-  const metaTs = $derived(`import contributors from "$lib/contributors";
-import type { ModelMeta } from "$lib/types";
+  const metaTs = $derived(`import contributors from "#lib/contributors.js";
+import type { ModelMeta } from "#lib/types.js";
 
 export const meta: ModelMeta = {
   slug: ${JSON.stringify(slug)},

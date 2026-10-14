@@ -1,5 +1,5 @@
-import contributors from "$lib/contributors";
-import type { ModelMeta } from "$lib/types";
+import contributors from "#lib/contributors.js";
+import type { ModelMeta } from "#lib/types.js";
 
 // No code-gen yet — model.ts pending. Listed for tag/filter purposes only.
 export const meta: ModelMeta = {

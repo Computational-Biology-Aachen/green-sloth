@@ -6,9 +6,9 @@
  * shouldn't have to pull in `buildModel()` and its per-model loader map just
  * to ask "which slugs exist" — this file answers that from path keys alone.
  */
-const jsonPaths = import.meta.glob("$lib/models/*/model.mxl.json");
-const sbmlPaths = import.meta.glob("$lib/models/*/model.sbml");
-const tsPaths = import.meta.glob("$lib/models/*/model.ts");
+const jsonPaths = import.meta.glob("#lib/models/*/model.mxl.json");
+const sbmlPaths = import.meta.glob("#lib/models/*/model.sbml");
+const tsPaths = import.meta.glob("#lib/models/*/model.ts");
 
 const slugOf = (path: string): string | undefined =>
   path.match(/\/models\/([^/]+)\//)?.[1];

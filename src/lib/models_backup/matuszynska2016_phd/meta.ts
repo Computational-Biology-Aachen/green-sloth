@@ -1,5 +1,5 @@
-import contributors from "$lib/contributors";
-import type { ModelMeta } from "$lib/types";
+import contributors from "#lib/contributors.js";
+import type { ModelMeta } from "#lib/types.js";
 
 // Dissertation (Heinrich-Heine-Universität Düsseldorf, 2016) — no DOI assigned.
 export const meta: ModelMeta = {

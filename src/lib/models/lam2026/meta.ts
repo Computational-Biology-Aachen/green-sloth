@@ -1,5 +1,5 @@
-import contributors from "$lib/contributors";
-import type { ModelMeta } from "$lib/types";
+import contributors from "#lib/contributors.js";
+import type { ModelMeta } from "#lib/types.js";
 
 export const meta: ModelMeta = {
   slug: "lam2026",

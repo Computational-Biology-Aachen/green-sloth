@@ -1,4 +1,4 @@
-import names from "$lib/names";
+import names from "#lib/names.js";
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
 import {
   Abs,
