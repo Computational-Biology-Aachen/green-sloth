@@ -8,7 +8,7 @@ export const meta: ModelMeta = {
   license: "© Springer",
   DOI: "10.1007/s00425-005-0064-4",
   tags: {
-    "Part of Photosynthesis": ["PSII"],
+    "Part of Photosynthesis": ["PSII", "OEC", "PQ Cycle", "Cytochrome b6f"],
     "Model type": ["ODE"],
     "Explains data": ["OJIP transient"],
     Organism: ["Theoretical"],

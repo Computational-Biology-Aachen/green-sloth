@@ -8,7 +8,7 @@ export const meta: ModelMeta = {
   license: "Recreated",
   DOI: "10.1007/BF00386231",
   tags: {
-    "Part of Photosynthesis": [],
+    "Part of Photosynthesis": ["CBB Cycle", "Photorespiration"],
     "Model type": ["Steady State"],
     "Explains data": ["Gas exchange"],
     Organism: ["Generic C3 plant"],
