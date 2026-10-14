@@ -10,7 +10,7 @@ export const meta: ModelMeta = {
   tags: {
     "Part of Photosynthesis": ["Photorespiration"],
     "Model type": ["ODE"],
-    "Explains data": [],
+    "Explains data": ["Concentration changes"],
     Organism: ["Generic C3 plant", "Euglena gracilis"],
     "PMF description": [],
   },

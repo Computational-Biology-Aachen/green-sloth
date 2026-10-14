@@ -11,6 +11,7 @@ export const meta: ModelMeta = {
   tags: {
     "Part of Photosynthesis": [
       "PSII",
+      "NPQ",
       "ATP Synthase",
       "Cytochrome b6f",
       "PQ Cycle",

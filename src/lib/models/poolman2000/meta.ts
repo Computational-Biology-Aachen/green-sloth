@@ -8,10 +8,10 @@ export const meta: ModelMeta = {
   license: "© OUP",
   DOI: "10.1093/jexbot/51.suppl_1.319",
   tags: {
-    "Part of Photosynthesis": [],
+    "Part of Photosynthesis": ["CBB Cycle"],
     "Model type": ["ODE"],
     "Explains data": ["Gas exchange", "Concentration changes"],
-    Organism: ["Spinacia oleracea"],
+    Organism: ["Generic C3 plant"],
     "PMF description": [],
   },
   analyses: [

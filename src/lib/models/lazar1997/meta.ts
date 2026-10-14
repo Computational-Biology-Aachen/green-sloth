@@ -8,7 +8,7 @@ export const meta: ModelMeta = {
   license: "Recreated",
   DOI: "10.1006/pest.1997.2277",
   tags: {
-    "Part of Photosynthesis": ["PSII"],
+    "Part of Photosynthesis": ["PSII", "OEC", "PQ Cycle"],
     "Model type": ["ODE"],
     "Explains data": ["OJIP transient"],
     Organism: ["Hordeum vulgare", "Triticum aestivum"],
