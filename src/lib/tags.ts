@@ -58,6 +58,27 @@ export const AVAILABLE_TAGS = {
   "PMF description": PMF_DESCRIPTIONS,
 };
 
+export const ORGANISM_GROUPS: Record<string, string[]> = {
+  "Higher Plants": [
+    "Arabidopsis thaliana",
+    "Epipremnum aureum",
+    "Glycine max",
+    "Hordeum vulgare",
+    "Nicotiana benthamiana",
+    "Nicotiana tabacum",
+    "Raphanus sativus",
+    "Spinacia oleracea",
+    "Triticum aestivum",
+    "Generic C3 plant",
+  ],
+  Microalgae: [
+    "Chlamydomonas reinhardtii",
+    "Chlorella sorokiniana",
+    "Euglena gracilis",
+  ],
+  Cyanobacteria: [],
+};
+
 export type TagValues = {
   "Part of Photosynthesis": Array<Part>;
   "Model type": Array<ModelType>;
