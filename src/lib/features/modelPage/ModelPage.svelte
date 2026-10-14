@@ -318,6 +318,13 @@
       >
         <Icon color="inherit">info</Icon>
       </Button>
+      <Button
+        href="{resolve("compare")}?a={data.slug}"
+        variant="inverted"
+        class="info-button"
+      >
+        Compare
+      </Button>
     </Pair>
   </Row>
   {#if data.meta.DOI}
