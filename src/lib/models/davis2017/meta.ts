@@ -16,7 +16,6 @@ export const meta: ModelMeta = {
       "FNR",
       "PSI",
       "ATP Synthase",
-      "Proton motive force (pmf)",
       "NPQ",
     ],
     "Model type": ["ODE"],
