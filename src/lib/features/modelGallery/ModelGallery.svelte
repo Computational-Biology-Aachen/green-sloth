@@ -4,6 +4,7 @@
   import { models } from "#lib/models.js";
   import { fuzzyMatch } from "#lib/utils.js";
   import {
+    Accordion,
     ButtonTab,
     H1,
     Section,
@@ -12,6 +13,7 @@
 
   import CardModel from "#lib/components/CardModel.svelte";
   import { onMount } from "svelte";
+  import { ORGANISM_GROUPS } from "$lib/tags";
 
   // Optional per-model scheme image, co-located in src/lib/models/<slug>/.
   const schemeModules = import.meta.glob(
@@ -68,10 +70,6 @@
     "PC",
   ]);
 
-  // Organism mixes real species with non-taxonomic buckets; keep the buckets
-  // out of the alphabetical species run instead of interleaving them.
-  const NON_TAXONOMIC_ORGANISMS = new Set(["Generic C3 plant", "Theoretical"]);
-
   // All tag categories → their distinct tags, across every model.
   const categories: Record<string, string[]> = {};
   for (const info of Object.values(models)) {
@@ -80,16 +78,23 @@
       for (const t of tags) if (!set.includes(t)) set.push(t);
     }
   }
-  for (const [cat, tags] of Object.entries(categories)) {
+  for (const tags of Object.values(categories)) {
     tags.sort((a, b) => {
-      if (cat === "Organism") {
-        const aGeneric = NON_TAXONOMIC_ORGANISMS.has(a);
-        const bGeneric = NON_TAXONOMIC_ORGANISMS.has(b);
-        if (aGeneric !== bGeneric) return aGeneric ? 1 : -1;
-      }
       return a.localeCompare(b);
     });
   }
+
+  const organismGroups = Object.entries(ORGANISM_GROUPS)
+    .map(([name, groupTags]) => ({
+      name,
+      tags: groupTags
+        .filter((tag) => categories.Organism?.includes(tag))
+        .sort((a, b) => a.localeCompare(b)),
+    }))
+    .filter(({ tags }) => tags.length > 0);
+  const groupedOrganisms = new Set(organismGroups.flatMap(({ tags }) => tags));
+  const ungroupedOrganisms =
+    categories.Organism?.filter((tag) => !groupedOrganisms.has(tag)) ?? [];
 
   // category → set of active tags
   let active = $state<Record<string, Set<string>>>({});
@@ -779,17 +784,54 @@
     {#if cat !== APP_CAT}
       <div class="facet">
         <p class="facet-label">{cat}</p>
-        <div class="pills">
-          {#each tags as tag (tag)}
-            <ButtonTab
-              selected={isActive(cat, tag)}
-              aria-pressed={isActive(cat, tag)}
-              onclick={() => toggle(cat, tag)}
-            >
-              {tag}
-            </ButtonTab>
+        {#if cat === "Organism"}
+          {#each organismGroups as { name, tags: groupTags } (name)}
+            <div class="organism-group">
+              <Accordion title={name}>
+                <div class="pills">
+                  {#each groupTags as tag (tag)}
+                    <ButtonTab
+                      selected={isActive(cat, tag)}
+                      aria-pressed={isActive(cat, tag)}
+                      onclick={() => toggle(cat, tag)}
+                    >
+                      {tag}
+                    </ButtonTab>
+                  {/each}
+                </div>
+              </Accordion>
+            </div>
           {/each}
-        </div>
+          {#if ungroupedOrganisms.length > 0}
+            <div class="organism-group">
+              <Accordion title="Other">
+                <div class="pills">
+                  {#each ungroupedOrganisms as tag (tag)}
+                    <ButtonTab
+                      selected={isActive(cat, tag)}
+                      aria-pressed={isActive(cat, tag)}
+                      onclick={() => toggle(cat, tag)}
+                    >
+                      {tag}
+                    </ButtonTab>
+                  {/each}
+                </div>
+              </Accordion>
+            </div>
+          {/if}
+        {:else}
+          <div class="pills">
+            {#each tags as tag (tag)}
+              <ButtonTab
+                selected={isActive(cat, tag)}
+                aria-pressed={isActive(cat, tag)}
+                onclick={() => toggle(cat, tag)}
+              >
+                {tag}
+              </ButtonTab>
+            {/each}
+          </div>
+        {/if}
       </div>
     {/if}
   {/each}
@@ -888,6 +930,11 @@
     font-size: var(--text-sm);
     letter-spacing: 0.05em;
     text-transform: uppercase;
+  }
+
+  .organism-group {
+    display: inline-block;
+    margin-right: var(--space-2);
   }
 
   .empty {
