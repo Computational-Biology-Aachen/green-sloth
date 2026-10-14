@@ -13,7 +13,7 @@
 
   import CardModel from "#lib/components/CardModel.svelte";
   import { onMount } from "svelte";
-  import { ORGANISM_GROUPS } from "$lib/tags";
+  import { ORGANISM_GROUPS } from "#lib/tags.js";
 
   // Optional per-model scheme image, co-located in src/lib/models/<slug>/.
   const schemeModules = import.meta.glob(
