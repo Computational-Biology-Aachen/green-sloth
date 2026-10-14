@@ -319,7 +319,7 @@
         <Icon color="inherit">info</Icon>
       </Button>
       <Button
-        href="{resolve("compare")}?a={data.slug}"
+        href="{resolve('compare')}?a={data.slug}"
         variant="inverted"
         class="info-button"
       >
