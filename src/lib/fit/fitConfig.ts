@@ -98,7 +98,7 @@ export function buildFitConfig(params: {
     hasTrainedNNBlock,
   } = params;
 
-  if (!csv || !timeColumn || targets.length === 0) {
+  if (!csv || timeColumn === undefined || targets.length === 0) {
     return {
       ok: false,
       error: "Upload a data file and map at least one column first.",

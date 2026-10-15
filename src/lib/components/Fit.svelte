@@ -150,7 +150,7 @@
 
   function autoMapColumns() {
     if (!csv) return;
-    if (!timeColumn) {
+    if (timeColumn === undefined) {
       const guess = csv.headers.find((h) => /^t(ime)?$/i.test(h));
       timeColumn = guess ?? csv.headers[0];
     }
@@ -324,7 +324,7 @@
   // scale before any data is loaded; existing stage cutoffs get reinterpreted
   // against the real range once it is, via resolveCutoffT's own clamping.
   let curriculumTEnd = $derived.by(() => {
-    if (!csv || !timeColumn) return 100;
+    if (!csv || timeColumn === undefined) return 100;
     const values = (csv.columns[timeColumn] ?? []).filter((t) =>
       Number.isFinite(t),
     );
@@ -1291,7 +1291,7 @@
     });
 
     const dataDatasets =
-      csv && timeColumn
+      csv && timeColumn !== undefined
         ? targets.map((t) => ({
             label: `${displayNames.get(t.key) ?? t.key} (data)`,
             data: csv!.columns[timeColumn!].map((x, i) => ({
@@ -1393,7 +1393,7 @@
     });
 
     const dataDatasets =
-      csv && timeColumn
+      csv && timeColumn !== undefined
         ? targets.map((t, ti) => ({
             label: `${displayNames.get(t.key) ?? t.key} (data)`,
             data: csv!.columns[timeColumn!].map((x, i) => ({
@@ -1431,7 +1431,8 @@
   // (and so every point on the line) visibly rescale on each progress tick —
   // the "jumping" a live-updating fit chart must not do.
   let dataYMax = $derived.by(() => {
-    if (!csv || !timeColumn || targets.length === 0) return undefined;
+    if (!csv || timeColumn === undefined || targets.length === 0)
+      return undefined;
     const values = targets.flatMap((t) => csv!.columns[t.column] ?? []);
     if (values.length === 0) return undefined;
     return Math.max(...values) * 1.2;

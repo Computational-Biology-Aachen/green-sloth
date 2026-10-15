@@ -10,14 +10,21 @@ export interface ParsedCsv {
   rowCount: number;
 }
 
+/** Header given to an unnamed column — e.g. the index pandas' `to_csv()`
+ * writes with an empty header, which would otherwise be a falsy, invisible
+ * column name. */
+export const UNNAMED_COLUMN = "(index)";
+
 /** Parses a CSV/TSV file (delimiter auto-detected) with a header row.
  * Rejects on a fundamentally malformed file (e.g. no header row detected). */
-export function parseCsvFile(file: File): Promise<ParsedCsv> {
+export function parseCsvFile(file: File | string): Promise<ParsedCsv> {
   return new Promise((resolve, reject) => {
     Papa.parse<Record<string, string>>(file, {
       header: true,
       dynamicTyping: false,
       skipEmptyLines: true,
+      transformHeader: (header) =>
+        header.trim() === "" ? UNNAMED_COLUMN : header,
       complete: (results) => {
         const headers = results.meta.fields ?? [];
         if (headers.length === 0) {
