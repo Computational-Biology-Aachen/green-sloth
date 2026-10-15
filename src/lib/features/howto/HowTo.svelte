@@ -2,6 +2,12 @@
   import { page } from "$app/state";
   import { goto } from "$app/navigation";
   import Contribute from "#lib/features/contribute/Contribute.svelte";
+  import IMG_FIT_BUTTON from "#lib/assets/fitting_button.png";
+  import IMG_FIT_SETINGS from "#lib/assets/fitting_settings.png";
+  import IMG_FIT_DATA from "#lib/assets/fitting_data.png";
+  import IMG_FIT_PARAMS from "#lib/assets/fitting_params.png";
+  import IMG_FIT_GRAPHS from "#lib/assets/fitting_graphs.png";
+  import IMG_FIT_DONE from "#lib/assets/fitting_done.png";
   import {
     H1,
     H2,
@@ -90,6 +96,11 @@ npm run dev               # open the model page, confirm the analyses run`;
       >
       <Button
         variant="inverted"
+        class={section === "use" ? "inverted active-tab" : "inverted"}
+        onclick={() => setSection("use")}>Use</Button
+      >
+      <Button
+        variant="inverted"
         class={section === "contribute" ? "inverted active-tab" : "inverted"}
         onclick={() => setSection("contribute")}>Contribute</Button
       >
@@ -134,6 +145,45 @@ npm run dev               # open the model page, confirm the analyses run`;
         target="_blank">MxlPy documentation</a
       > for more information on how to use the package and the models.
     </Text>
+  </Section>
+{:else if section === "use"}
+  <Section
+    variant="light"
+    width="narrow"
+  >
+    <Text>
+      When using a model, the first step is often fitting the model to experimental data. Using GreenSloth, there two definite ways to do this. One on the website itself, and one using your own programming kowledge. Fitting is simple in theory, but the experiences can vary depending on many factors. The model itself, the type of data, the quality of the data, and the fitting algorithm. Even these factors can be very complex, so there is sadly no one-size-fits-all solution. This section will however, try to give you an idea on how to start on the fitting journey.
+    </Text>
+    <Accordion title="Fitting on the website">
+      <Text>
+        The website has a built-in fitting tool, which can be used to fit the model to experimental data, you upload. Here is a step-by-step guide on how to use the tool.
+      </Text>
+      <H2>Choose your model and enter the fitting process</H2>
+      <Text>
+        Each model has a "Fit" button on its model page, which will take you to the fitting modal. It is to be noted, that the fitting routine on the website can only fit to variables provided inside of the model itself. Calculations doen after the fact, like how NPQ is often done, can not me fitted here. For that, the fitting needs to be done manually.
+      </Text>
+      <img src={IMG_FIT_BUTTON} alt="The live simulation of the Li2021 model, showcasing the 'Fit' button" />
+      <Text>
+        The modal has a lot of information, and makes it possible to change several settings for the fitting process. On the left, you can change the fitting routine's parameters. From which routine to use, to the number of evaluations to be done. Additionally you can also choose to do an ensemble fit, which skews the data provided by a percentage and can therefore create several fitting routines. On the right, you can upload your own experimental data. 
+      </Text>
+      <img src={IMG_FIT_SETINGS} alt="The fitting modal with various settings" />
+      <Text>
+        This data needs to be in a csv format, with the variable name as a column and each row beeing the data points. It is best practice to have the data variables follow the names used in the model, however, the website auto detects the names and gives the possibility to map them to the corresponding model variable. Once these settings are set, the most important part of fitting can now be tackled.
+      </Text>
+      <img src={IMG_FIT_DATA} alt="The fitting modal with various settings" />
+      <Text>
+        Choosing the right parameters to fit is not only crucial, but also the most difficult part of the process. With experience on the system being modelled and the model itself, it is easier to create bridges between the model and the data. Knowing which parameters affect what part of the model, and which parameters are more important than others, is crucial to a successful fitting. However, getting to that point is a challenge, and often requires a lot of trial and error. This is where the website truly shines, as you can easily change the parameters to fit, and quickly see how the fitting routine performs. The initial guesses of each parameter are the ones provided inside the model itself. Check the boxes of the parameters you wish to fit. After, you scroll down to find two graphs.
+      </Text>
+      <img src={IMG_FIT_PARAMS} alt="The parameters of the to-be fit model" />
+      <Text>
+        These two graphs will represent the fitting process. The first graph shows the model's simulation results, while the second the residual norm per evaluation performed. Right now, as no fitting has been done, only the uploaded data is shown on the left. Once the "Run fit" button is pressed, the live simulation will start.
+      </Text>
+      <img src={IMG_FIT_GRAPHS} alt="The graphs of the fitting modal" />
+      <Text>
+        Depending on the task at hand, it may take a while to finish. But you should be able to see the fitting process in real-time, as the model's simulation will change with each evaluation. The residual norm graph will also show how well the fitting is performing, and if it is converging or not. Once the fitting is done, you can see the fitted values in the parameters section, where you chose them. Then at the top of the modal, you can find a "Apply fitted parameters" button, to apply the parameters to the model on the page under the modal. Then you can use the sliders to play with your newly fitted model, and see how it performs.
+      </Text>
+      <img src={IMG_FIT_DONE} alt="The fit of the model" />
+    </Accordion>
   </Section>
 {:else if section === "contribute"}
   <Section
