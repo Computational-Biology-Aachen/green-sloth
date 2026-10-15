@@ -1,0 +1,1 @@
+The model shows discrepancies between the paper's description and the provided MATLAB code. However, the overall structure of the model is valid, and the overall behaviours of all genotypes mentioned can be mostly replicated across all figures. Note: Slight adjustment of the parmeter values, compared to the orginal from the paper, has been taken to reproduce better the figures.
