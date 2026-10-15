@@ -20,11 +20,11 @@
     WorkerManager,
     type SimulationError,
     type SimulationResult,
-  } from "../stores/workerStore";
+  } from "@computational-biology-aachen/mxlweb-core/workers";
   import type { PlotLayout } from "../types";
   import { arrayColumn } from "../utils";
   import AnalysisChart from "./AnalysisChart.svelte";
-  import SimErrDisplay from "./SimErrDisplay.svelte";
+  import { SimErrDisplay } from "@computational-biology-aachen/mxlweb-core/fit";
 
   let {
     model,

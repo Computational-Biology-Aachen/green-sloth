@@ -17,9 +17,9 @@
   import Row from "@computational-biology-aachen/design/Row.svelte";
   import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import { untrack } from "svelte";
-  import { backends } from "../stores/backends";
+  import { Fit } from "@computational-biology-aachen/mxlweb-core/fit";
+  import { backends, createWasmPool } from "../stores/backends";
   import type { ModelAnalysis } from "../types";
-  import Fit from "./Fit.svelte";
   import Pam from "./Pam.svelte";
   import TimeCourse from "./TimeCourse.svelte";
 
@@ -223,6 +223,8 @@
   >
     <Fit
       model={model}
+      backend={backends.wasmRadau5}
+      createPool={createWasmPool}
       popovertarget="fit-editor"
       onApply={syncSlidersAndRerun}
     />
