@@ -9,7 +9,9 @@
     Bold,
     H1,
     H2,
+    H3,
     Link,
+    Math as Tex,
     Row,
     Section,
     SectionHeader,
@@ -208,6 +210,63 @@
     return items.filter((item) => fuzzyMatch(text(item), query));
   }
 
+  // Side-by-side values/units for parameters both models share, so a reader
+  // can see whether a "shared" parameter actually agrees.
+  type ParamRow = SharedEntry & {
+    a?: { value: number; unit?: string };
+    b?: { value: number; unit?: string };
+    valueDiffers: boolean;
+    unitDiffers: boolean;
+  };
+
+  // Relative tolerance, so float noise from unit conversions in model.ts
+  // (e.g. 1/3 written two ways) doesn't count as a difference.
+  function sameValue(x: number, y: number): boolean {
+    return Math.abs(x - y) <= 1e-9 * Math.max(Math.abs(x), Math.abs(y));
+  }
+
+  function normUnit(unit: string | undefined): string {
+    return (unit ?? "").replace(/\s+/g, "");
+  }
+
+  // Exponent notation outside [1e-3, 1e5) — rate constants like 5e9 are
+  // unreadable as plain digits.
+  function formatValue(value: number): string {
+    const rounded = Number(value.toPrecision(6));
+    const magnitude = Math.abs(rounded);
+    return magnitude !== 0 && (magnitude >= 1e5 || magnitude < 1e-3)
+      ? rounded.toExponential().replace("e+", "e")
+      : String(rounded);
+  }
+
+  const sharedParams = $derived.by<ParamRow[]>(() => {
+    const shared =
+      details.find((d) => d.key === "parameters")?.bucket.shared ?? [];
+    return shared.map((entry) => {
+      const a = modelA?.parameters.get(entry.aId);
+      const b = modelB?.parameters.get(entry.bId);
+      return {
+        ...entry,
+        a,
+        b,
+        valueDiffers: !!a && !!b && !sameValue(a.value, b.value),
+        unitDiffers: !!a && !!b && normUnit(a.unit) !== normUnit(b.unit),
+      };
+    });
+  });
+
+  let onlyDifferences = $state(false);
+  const visibleParams = $derived(
+    filtered(
+      sharedParams,
+      queries.parameters,
+      (e) => `${e.label} ${e.aId} ${e.bId}`,
+    ).filter((r) => !onlyDifferences || r.valueDiffers || r.unitDiffers),
+  );
+  const nDiffering = $derived(
+    sharedParams.filter((r) => r.valueDiffers || r.unitDiffers).length,
+  );
+
   const titleA = $derived(models[slugA]?.title ?? slugA);
   const titleB = $derived(models[slugB]?.title ?? slugB);
 </script>
@@ -343,6 +402,69 @@
         </ul>
       </div>
     </div>
+
+    {#if detail.key === "parameters" && sharedParams.length > 0}
+      <Row justify="between">
+        <H3>Shared parameter values</H3>
+        <label class="toggle">
+          <input
+            type="checkbox"
+            bind:checked={onlyDifferences}
+          />
+          Only show differences ({nDiffering} of {sharedParams.length})
+        </label>
+      </Row>
+      <div class="table-wrap param-values">
+        <table>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th class="num">{titleA}</th>
+              <th>Unit</th>
+              <th class="num">{titleB}</th>
+              <th>Unit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {#each visibleParams as row (row.label)}
+              <tr>
+                <td>
+                  {row.label}
+                  {#if row.aId !== row.bId}
+                    <span class="aka">({row.aId} / {row.bId})</span>
+                  {/if}
+                </td>
+                {#each [row.a, row.b] as side, i (i)}
+                  <td
+                    class="num"
+                    class:differs={row.valueDiffers}
+                    >{side ? formatValue(side.value) : "—"}</td
+                  >
+                  <td
+                    class="unit"
+                    class:differs={row.unitDiffers}
+                  >
+                    {#if side?.unit}
+                      <Tex
+                        tex={`\\mathrm{${side.unit}}`}
+                        display={false}
+                      />
+                    {/if}
+                  </td>
+                {/each}
+              </tr>
+            {:else}
+              <tr>
+                <td
+                  colspan="5"
+                  class="empty">No matching parameters.</td
+                >
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      </div>
+    {/if}
   {/each}
 </Section>
 
@@ -457,6 +579,41 @@
   .bucket li.empty {
     color: var(--color-text-muted);
     font-family: inherit;
+  }
+
+  .param-values {
+    margin-bottom: var(--space-6);
+    max-height: 32rem;
+    overflow-y: auto;
+  }
+
+  .param-values th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--color-surface);
+  }
+
+  .param-values td:first-child {
+    font-size: var(--text-callout);
+    font-family: var(--font-mono);
+    word-break: break-all;
+  }
+
+  /* Disagreeing value/unit pairs stand out against the matching ones. */
+  td.differs {
+    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  }
+
+  td.empty {
+    color: var(--color-text-muted);
+  }
+
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
   }
 
   .note {
