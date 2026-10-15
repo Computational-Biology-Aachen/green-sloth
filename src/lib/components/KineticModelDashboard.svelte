@@ -2,8 +2,9 @@
  @component
  Interactive-lite analysis dashboard: auto-runs every analysis declared in the
  model's meta (time courses and PAM protocols) on mount and exposes sliders for
- any parameter/variable that declares one in its model.ts. Moving a slider
- re-runs all analyses. Client-only (runs a Web Worker).
+ any parameter/variable that declares one in its model.ts — or that the user
+ picks in the "Sliders" popover (session-only). Moving a slider re-runs all
+ analyses. Client-only (runs a Web Worker).
 -->
 <script lang="ts">
   import { browser } from "$app/env";
@@ -18,9 +19,15 @@
   import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import { untrack } from "svelte";
   import { Fit } from "@computational-biology-aachen/mxlweb-core/fit";
+  import {
+    effectiveSlider,
+    type SliderCandidate,
+    type SliderOverride,
+  } from "../sliders";
   import { backends, createWasmPool } from "../stores/backends";
   import type { ModelAnalysis } from "../types";
   import Pam from "./Pam.svelte";
+  import SliderChooser from "./SliderChooser.svelte";
   import TimeCourse from "./TimeCourse.svelte";
 
   let {
@@ -49,46 +56,86 @@
     desc?: string;
   };
 
-  // Static slider config for params/vars that declare a slider in model.ts.
-  const sliderDefs = $derived.by<SliderDef[]>(() => {
-    const out: SliderDef[] = [];
+  // Everything that *could* get a slider: every parameter (except an NN
+  // block's own scale, which is never an individual row — ADR 0005 §2.1.3)
+  // and every numeric initial value.
+  const sliderCandidates = $derived.by<SliderCandidate[]>(() => {
+    const nnScale = model.nnBlockScaleParameterNames();
+    const out: SliderCandidate[] = [];
     for (const [id, par] of model.parameters) {
-      if (par.slider) {
-        out.push({
-          key: `p:${id}`,
-          id,
-          kind: "parameter",
-          name: par.displayName ?? id,
-          initial: par.value,
-          ...par.slider,
-        });
-      }
+      if (nnScale.has(id)) continue;
+      out.push({
+        key: `p:${id}`,
+        id,
+        kind: "parameter",
+        name: par.displayName ?? id,
+        value: par.value,
+        declared: par.slider,
+      });
     }
     for (const [id, vari] of model.variables) {
-      if (vari.slider && typeof vari.value === "number") {
-        out.push({
-          key: `v:${id}`,
-          id,
-          kind: "variable",
-          name: vari.displayName ?? id,
-          initial: vari.value,
-          ...vari.slider,
-        });
-      }
+      if (typeof vari.value !== "number") continue;
+      out.push({
+        key: `v:${id}`,
+        id,
+        kind: "variable",
+        name: vari.displayName ?? id,
+        value: vari.value,
+        declared: vari.slider,
+      });
     }
     return out;
   });
+
+  // The user's picks from the "Sliders" popover, keyed like SliderDef.key —
+  // absent keys fall back to whatever model.ts declares.
+  let sliderOverrides = $state<Record<string, SliderOverride>>({});
+
+  const sliderDefs = $derived.by<SliderDef[]>(() =>
+    sliderCandidates.flatMap((c) => {
+      const slider = effectiveSlider(c, sliderOverrides[c.key]);
+      if (!slider.enabled) return [];
+      return [
+        {
+          key: c.key,
+          id: c.id,
+          kind: c.kind,
+          name: c.name,
+          initial: c.value,
+          min: slider.min,
+          max: slider.max,
+          step: slider.step,
+          desc: c.declared?.desc,
+        },
+      ];
+    }),
+  );
 
   // Whether to overlay the previous run as a dashed reference line.
   let displayReference = $state(true);
   const lineDisplay = $derived(displayReference ? "last" : "current");
 
-  // Current slider values, seeded from the defs.
+  // Current slider values, seeded from the defs. A slider switched off is
+  // dropped, so switching it back on reseeds from the model's current value.
   let values = $state<Record<string, number>>({});
   $effect(() => {
+    const keys = new Set(sliderDefs.map((def) => def.key));
     for (const def of sliderDefs) {
       if (!(def.key in values)) values[def.key] = def.initial;
     }
+    for (const key of Object.keys(values)) {
+      if (!keys.has(key)) delete values[key];
+    }
+  });
+
+  // Slider picks and values belong to one model — this component is reused
+  // when navigating between model pages, so start over on a new one.
+  $effect.pre(() => {
+    void model;
+    untrack(() => {
+      sliderOverrides = {};
+      values = {};
+    });
   });
 
   function onSlide(def: SliderDef) {
@@ -144,6 +191,7 @@
   >
     <H2>Dashboard</H2>
     <Row justify="end">
+      <Button popovertarget="slider-editor">Sliders</Button>
       <Button popovertarget="fit-editor">Fit to data</Button>
       <Button onclick={resetParameters}>Reset</Button>
     </Row>
@@ -216,6 +264,17 @@
       </div>
     {/each}
   </div>
+
+  <Popover
+    size="md"
+    popovertarget="slider-editor"
+  >
+    <SliderChooser
+      candidates={sliderCandidates}
+      bind:overrides={sliderOverrides}
+      popovertarget="slider-editor"
+    />
+  </Popover>
 
   <Popover
     size="lg"
