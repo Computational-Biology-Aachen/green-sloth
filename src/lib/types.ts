@@ -136,5 +136,3 @@ export interface ModelMeta {
   analyses: ModelAnalysis[];
   contributors: Array<{ desc: string; date: Date; contributor: Contributor }>;
 }
-
-
