@@ -20,11 +20,7 @@ export const meta: ModelMeta = {
       "NPQ",
     ],
     "Model type": ["ODE"],
-    "Explains data": [
-      "ECS (P515)",
-      "PAM fluorescence",
-      "Concentration changes",
-    ],
+    "Explains data": ["ECS (P515)", "PAM fluorescence"],
     Organism: ["Arabidopsis thaliana"],
     "PMF description": ["Full; ΔpH + Δψ"],
   },

@@ -18,7 +18,7 @@ export const meta: ModelMeta = {
       "Photorespiration",
     ],
     "Model type": ["ODE"],
-    "Explains data": ["Gas exchange", "Concentration changes"],
+    "Explains data": ["Gas exchange"],
     Organism: ["Nicotiana tabacum", "Raphanus sativus", "Spinacia oleracea"],
     "PMF description": [],
   },
