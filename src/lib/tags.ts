@@ -21,7 +21,6 @@ export const EXPERIMENTAL_DATA = [
   "P700 absorbance",
   "Frequency domain",
   "ECS (P515)",
-  "Concentration changes",
   "Fluorescence lifetime",
 ] as const;
 

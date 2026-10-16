@@ -10,7 +10,7 @@ export const meta: ModelMeta = {
   tags: {
     "Part of Photosynthesis": ["CBB Cycle"],
     "Model type": ["ODE"],
-    "Explains data": ["Gas exchange", "Concentration changes"],
+    "Explains data": ["Gas exchange"],
     Organism: ["Generic C3 plant"],
     "PMF description": [],
   },
