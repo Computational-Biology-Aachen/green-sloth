@@ -4,6 +4,7 @@
   import KineticModelTables from "#lib/components/KineticModelTables.svelte";
   import SSModelDashboard from "#lib/components/SSModelDashboard.svelte";
   import SSModelTables from "#lib/components/SSModelTables.svelte";
+  import InfoButton from "#lib/components/InfoButton.svelte";
   import type { ModelMeta } from "#lib/types.js";
   import { resolve } from "$app/paths";
   import {
@@ -311,13 +312,10 @@
           --text="var(--color-text)">Python</ButtonMenuItem
         >
       </ButtonMenu>
-      <Button
-        href="{resolve('/howto')}?section=website"
+      <InfoButton
+        url="{resolve('/howto')}?section=website"
         variant="inverted"
-        class="info-button"
-      >
-        <Icon color="inherit">info</Icon>
-      </Button>
+      />
       <Button
         href="{resolve('compare')}?a={data.slug}"
         variant="inverted"

@@ -8,6 +8,7 @@
 -->
 <script lang="ts">
   import { browser } from "$app/env";
+  import { resolve } from "$app/paths";
   import {
     Button,
     H3,
@@ -29,6 +30,7 @@
   import Pam from "./Pam.svelte";
   import SliderChooser from "./SliderChooser.svelte";
   import TimeCourse from "./TimeCourse.svelte";
+  import InfoButton from "./InfoButton.svelte";
 
   let {
     model,
@@ -193,6 +195,7 @@
     <Row justify="end">
       <Button popovertarget="slider-editor">Sliders</Button>
       <Button popovertarget="fit-editor">Fit to data</Button>
+      <InfoButton url="{resolve('/howto')}?section=use" />
       <Button onclick={resetParameters}>Reset</Button>
     </Row>
   </Row>
