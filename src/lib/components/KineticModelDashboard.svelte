@@ -40,6 +40,19 @@
     analyses: ModelAnalysis[];
   } = $props();
 
+  // The model's own PAM analyses double as ready-made fit protocols, so a
+  // measured trace of the same experiment can be fit without re-entering
+  // its light protocol.
+  let pamProtocolPresets = $derived(
+    analyses
+      .filter((a) => a.type === "pam")
+      .map((a) => ({
+        label: `${a.title ?? "PAM protocol"} (this model)`,
+        groups: a.pamProtocol,
+        ppfdKey: a.ppfdKey,
+      })),
+  );
+
   const DEFAULT_TIMEOUT = 30;
   const DEFAULT_N_TIME_POINTS = 500;
 
@@ -289,6 +302,7 @@
       createPool={createWasmPool}
       popovertarget="fit-editor"
       onApply={syncSlidersAndRerun}
+      protocolPresets={pamProtocolPresets}
     />
   </Popover>
 {/if}
