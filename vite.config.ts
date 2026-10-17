@@ -129,7 +129,7 @@ export default defineConfig({
     // that import, so ajv is never pre-bundled/converted to ESM and the
     // dev server tries to serve raw CJS as a native ES module. Force it
     // in explicitly instead.
-    include: ["ajv", "ajv/dist/2020.js"],
+    include: ["ajv", "ajv/dist/2020.js", "papaparse"],
   },
   server: {
     port: 5177,
