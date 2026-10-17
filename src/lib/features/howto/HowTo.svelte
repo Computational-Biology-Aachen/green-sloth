@@ -120,27 +120,26 @@ npm run dev               # open the model page, confirm the analyses run`;
   >
     <H1>1. Find a model</H1>
     <Text>
-      Using the website find a model that you are interested in. With he help of
-      the tags, the live simulation, and the model comparisions, you should find
+      Use the website to find a model you are interested in. With the help of
+      the tags, the live simulation, and the model comparisons, you should find
       a model that you may want to use for your own research or educational
       purposes.
     </Text>
     <H1>2. Download the model</H1>
     <Text>
-      Once a model is chosen, you can download it in several formats. Suggested
-      is the usage of MxlPy, yet if you wish to use the model in another
-      programming language, you can also download it in an SBML format, or also
-      a raw Python file. Please keep in mind to repsect the license of the model
-      and the work of the original authors. GreenSloth is meant as a repository
-      of models, and does not own the rights to the models.
+      Once a model is chosen, you can download it in several formats. We suggest
+      using MxlPy, but if you want to use the model in another programming
+      language, you can also download it in SBML format or as a raw Python file.
+      Please respect the model's license and the original authors' work.
+      GreenSloth is a repository of models and does not own the rights to them.
     </Text>
     <H1>3. Using the MxlPy version</H1>
     <Text>
-      We recommend using the MxlPy version of each model, as the python package
-      is great for ODE models. Additionally, the creators of GreenSloth are also
-      the creators of MxlPy, and thus most of the models have been built using
-      the Python package. All the models are barebones ODE models, therefore
-      only needing the MxlPy package to run. Look at the <a
+      We recommend using the MxlPy version of each model, as the Python package
+      is great for ODE models. Additionally, the creators of GreenSloth also
+      created MxlPy, so most of the models were built using the Python package.
+      All the models are barebones ODE models, so they only need the MxlPy
+      package to run. Look at the <a
         href="https://cpbl.rwth-aachen.de/MxlPy/latest/"
         target="_blank">MxlPy documentation</a
       > for more information on how to use the package and the models.
