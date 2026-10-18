@@ -4,7 +4,13 @@
 -->
 
 <script lang="ts">
-  import { type PhaseRegion } from "@computational-biology-aachen/design";
+  import {
+    type PhaseRegion,
+    Icon,
+    Ol,
+    Li,
+    Accordion,
+  } from "@computational-biology-aachen/design";
   import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import {
     computeNpq,
@@ -236,6 +242,26 @@
 </script>
 
 <div>
+  <p style="color: var(--color-text-muted); font-style: italic">
+    <Icon style="color: var(--color-text-muted)">info</Icon>
+    This is a simulated PAM scan using a generic protocol. It should not be interpreted
+    as a prediction of the actual behavior of the system. The default protocol looks
+    as follows:
+  </p>
+  <Accordion title="Protocol">
+    <Ol>
+      {#each pamProtocol as phase (phase)}
+        {@const minPfd = Math.min(...phase.steps.map((step) => step.pfd))}
+        {@const maxPfd = Math.max(...phase.steps.map((step) => step.pfd))}
+        <Li>
+          <p style="color: var(--color-text-muted); font-style: italic">
+            Light used: {minPfd} | Saturating Pulse: {maxPfd} | Repitions: {phase.repetitions}
+          </p>
+        </Li>
+      {/each}
+    </Ol>
+  </Accordion>
+
   {#if err}
     <SimErrDisplay err={err} />
   {:else}
