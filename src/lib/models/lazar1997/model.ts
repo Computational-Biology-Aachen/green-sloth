@@ -143,82 +143,82 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("p", {
       value: 0.55,
-      unit: "1",
+      unit: "–",
       texName: "p",
     })
     .addVariable("y1", {
       value: 0.66,
-      unit: "1",
+      unit: "–",
       texName: "y1",
     })
     .addVariable("y2", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y2",
     })
     .addVariable("y3", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y3",
     })
     .addVariable("y4", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y4",
     })
     .addVariable("y5", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y5",
     })
     .addVariable("y6", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y6",
     })
     .addVariable("y7", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y7",
     })
     .addVariable("y8", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y8",
     })
     .addVariable("y9", {
       value: 7.0,
-      unit: "1",
+      unit: "–",
       texName: "y9",
     })
     .addVariable("y10", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y10",
     })
     .addVariable("y11", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y11",
     })
     .addVariable("y12", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y12",
     })
     .addVariable("y13", {
       value: 0.22,
-      unit: "1",
+      unit: "–",
       texName: "y13",
     })
     .addVariable("y14", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "y14",
     })
     .addVariable("y15", {
       value: 0.12,
-      unit: "1",
+      unit: "–",
       texName: "y15",
     })
     .addAssignment("eprime", {

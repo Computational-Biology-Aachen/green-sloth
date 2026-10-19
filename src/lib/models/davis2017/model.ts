@@ -29,31 +29,31 @@ export function initModel(): KineticModelBuilder {
     .addParameter("phi_triplet", {
       displayName: names.phi_triplet,
       value: 0.45,
-      unit: "1",
+      unit: "–",
       texName: "phi\\_triplet",
     })
     .addParameter("phi_1O2", {
       displayName: names.phi_1o2,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "phi\\_1O2",
     })
     .addParameter("sigma0_II", {
       displayName: names.sigma0_ii,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "sigma0\\_II",
     })
     .addParameter("c_b6f", {
       displayName: names.c_b6f,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "c\\_b6f",
     })
     .addParameter("pKa_reg", {
       displayName: names.pka_reg,
       value: 6.5,
-      unit: "1",
+      unit: "–",
       texName: "pKa\\_reg",
     })
     .addParameter("Em_PC_pH7", {
@@ -77,23 +77,23 @@ export function initModel(): KineticModelBuilder {
     .addParameter("pKa_PsbS", {
       displayName: names.pka_psbs,
       value: 6.4,
-      unit: "1",
+      unit: "–",
       texName: "pKa\\_PsbS",
     })
     .addParameter("NPQ_max", {
       displayName: names.npq_max,
       value: 5.0,
-      unit: "1",
+      unit: "–",
       texName: "NPQ\\_max",
     })
     .addParameter("pH_stroma", {
       value: 7.8,
-      unit: "1",
+      unit: "–",
       texName: "pH\\_stroma",
     })
     .addParameter("PSI_antenna_size", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "PSI\\_antenna\\_size",
     })
     .addParameter("k_QA", {
@@ -105,7 +105,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("Keq_QA", {
       displayName: names.keq_qa,
       value: 200.0,
-      unit: "1",
+      unit: "–",
       texName: "Keq\\_QA",
     })
     .addParameter("k_PCtoP700", {
@@ -145,7 +145,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("n", {
       value: 4.666666666666667,
-      unit: "1",
+      unit: "–",
       texName: "n",
     })
     .addParameter("DeltaGATP", {
@@ -179,13 +179,13 @@ export function initModel(): KineticModelBuilder {
     .addParameter("nh_VDE", {
       displayName: names.nh_vde,
       value: 4.0,
-      unit: "1",
+      unit: "–",
       texName: "nh\\_VDE",
     })
     .addParameter("pKa_VDE", {
       displayName: names.pka_vde,
       value: 5.8,
-      unit: "1",
+      unit: "–",
       texName: "pKa\\_VDE",
     })
     .addParameter("Vmax_VDE", {
@@ -197,42 +197,42 @@ export function initModel(): KineticModelBuilder {
     .addParameter("QA_total", {
       displayName: names.qa_tot,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "QA\\_total",
     })
     .addParameter("PQ_tot", {
       displayName: names.pq_tot,
       value: 6.0,
-      unit: "1",
+      unit: "–",
       texName: "PQ\\_tot",
     })
     .addParameter("P700_total", {
       displayName: names.p700_tot,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "P700\\_total",
     })
     .addParameter("PC_tot", {
       displayName: names.pc_tot,
       value: 2.0,
-      unit: "1",
+      unit: "–",
       texName: "PC\\_tot",
     })
     .addParameter("Fd_tot", {
       displayName: names.fd_tot,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "Fd\\_tot",
     })
     .addParameter("NADP_tot", {
       displayName: names.nadp_tot,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "NADP\\_tot",
     })
     .addParameter("Xanthophyll_tot", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "Xanthophyll\\_tot",
     })
     .addParameter("k_CBB", {
@@ -244,19 +244,19 @@ export function initModel(): KineticModelBuilder {
     .addVariable("QA_red", {
       displayName: names.qa_red,
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "QA\\_red",
     })
     .addVariable("PQH_2", {
       displayName: names.pqh2,
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "PQH\\_2",
     })
     .addVariable("pH_lumen", {
       displayName: names.ph_lumen,
       value: 7.0,
-      unit: "1",
+      unit: "–",
       texName: "pH\\_lumen",
     })
     .addVariable("Dpsi", {
@@ -274,46 +274,46 @@ export function initModel(): KineticModelBuilder {
     .addVariable("PC_ox", {
       displayName: names.pc_ox,
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "PC\\_ox",
     })
     .addVariable("Zx", {
       displayName: names.zeaxanthin_fraction,
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "Zx",
     })
     .addVariable("singO2", {
       displayName: names.single_oxygen,
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "singO2",
     })
     .addVariable("P700_ox", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "P700\\_ox",
     })
     .addVariable("Fd_red", {
       displayName: names.fd_red,
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "Fd\\_red",
     })
     .addVariable("NADPH_st", {
       displayName: names.nadph,
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "NADPH\\_st",
     })
     .addVariable("LEF", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "LEF",
     })
     .addVariable("ATP_made", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "ATP\\_made",
     })
     .addAssignment("QA", {

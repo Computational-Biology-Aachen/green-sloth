@@ -114,7 +114,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_phosphoglycerate_kinase", {
       displayName: names.keq_phosphoglycerate_kinase,
       value: 0.00031,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_phosphoglycerate\\_kinase",
     })
     .addParameter("kre_gadph", {
@@ -126,7 +126,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_gadph", {
       displayName: names.keq_gadph,
       value: 16000000.0,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_gadph",
     })
     .addParameter("kre_triose_phosphate_isomerase", {
@@ -138,7 +138,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_triose_phosphate_isomerase", {
       displayName: names.keq_triose_phosphate_isomerase,
       value: 22.0,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_triose\\_phosphate\\_isomerase",
     })
     .addParameter("kre_aldolase_dhap_gap", {
@@ -204,7 +204,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_transketolase_gap_f6p", {
       displayName: names.keq_transketolase_gap_f6p,
       value: 0.084,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_transketolase\\_gap\\_f6p",
     })
     .addParameter("kre_transketolase_gap_s7p", {
@@ -216,7 +216,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_transketolase_gap_s7p", {
       displayName: names.keq_transketolase_gap_s7p,
       value: 0.85,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_transketolase\\_gap\\_s7p",
     })
     .addParameter("E0_SBPase", {
@@ -252,7 +252,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_ribose_phosphate_isomerase", {
       displayName: names.keq_ribose_phosphate_isomerase,
       value: 0.4,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_ribose\\_phosphate\\_isomerase",
     })
     .addParameter("kre_ribulose_phosphate_epimerase", {
@@ -264,7 +264,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_ribulose_phosphate_epimerase", {
       displayName: names.keq_ribulose_phosphate_epimerase,
       value: 0.67,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_ribulose\\_phosphate\\_epimerase",
     })
     .addParameter("E0_phosphoribulokinase", {
@@ -330,7 +330,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_g6pi", {
       displayName: names.keq_g6pi,
       value: 2.3,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_g6pi",
     })
     .addParameter("kre_phosphoglucomutase", {
@@ -342,7 +342,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_phosphoglucomutase", {
       displayName: names.keq_phosphoglucomutase,
       value: 0.058,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_phosphoglucomutase",
     })
     .addParameter("Orthophosphate_external", {
@@ -411,19 +411,19 @@ export function initModel(): KineticModelBuilder {
     .addParameter("ki_ex_g1p_3PGA", {
       displayName: names.ki_ex_g1p_pga,
       value: 0.1,
-      unit: "1",
+      unit: "–",
       texName: "ki\\_ex\\_g1p\\_3PGA",
     })
     .addParameter("ki_ex_g1p_F6P", {
       displayName: names.ki_ex_g1p_f6p,
       value: 0.02,
-      unit: "1",
+      unit: "–",
       texName: "ki\\_ex\\_g1p\\_F6P",
     })
     .addParameter("ki_ex_g1p_FBP", {
       displayName: names.ki_ex_g1p_fbp,
       value: 0.02,
-      unit: "1",
+      unit: "–",
       texName: "ki\\_ex\\_g1p\\_FBP",
     })
     .addParameter("E0_ex_g1p", {

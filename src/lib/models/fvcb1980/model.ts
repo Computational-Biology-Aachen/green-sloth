@@ -36,7 +36,7 @@ export function initModel(): SteadyStateModelBuilder {
       unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
       texName: "R_d",
     })
-    .addParameter("alpha", { value: 0, unit: "1", texName: "\\alpha" })
+    .addParameter("alpha", { value: 0, unit: "–", texName: "\\alpha" })
     .addParameter("o", {
       value: 210,
       displayName: "O₂",

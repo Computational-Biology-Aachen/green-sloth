@@ -58,17 +58,17 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("s", {
       value: 0.43,
-      unit: "1",
+      unit: "–",
       texName: "s",
     })
     .addParameter("PhiPSII_LL", {
       value: 0.72,
-      unit: "1",
+      unit: "–",
       texName: "PhiPSII\\_LL",
     })
     .addParameter("PhiPSI_LL", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "PhiPSI\\_LL",
     })
     .addParameter("alpha_ppfd_PhiPSII", {
@@ -78,32 +78,32 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V0_ppfd_PhiPSII", {
       value: -0.8,
-      unit: "1",
+      unit: "–",
       texName: "V0\\_ppfd\\_PhiPSII",
     })
     .addParameter("theta_ppfd_PhiPSII", {
       value: 0.7,
-      unit: "1",
+      unit: "–",
       texName: "theta\\_ppfd\\_PhiPSII",
     })
     .addParameter("f_pseudocycNR", {
       value: 0.01,
-      unit: "1",
+      unit: "–",
       texName: "f\\_pseudocycNR",
     })
     .addParameter("fq", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "fq",
     })
     .addParameter("f_ndh", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "f\\_ndh",
     })
     .addParameter("h", {
       value: 4.0,
-      unit: "1",
+      unit: "–",
       texName: "h",
     })
     .addParameter("Ca", {
@@ -118,12 +118,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V0_ppfd_rub", {
       value: 0.16,
-      unit: "1",
+      unit: "–",
       texName: "V0\\_ppfd\\_rub",
     })
     .addParameter("theta_ppfd_rub", {
       value: 0.95,
-      unit: "1",
+      unit: "–",
       texName: "theta\\_ppfd\\_rub",
     })
     .addParameter("alpha_co2", {
@@ -133,12 +133,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V0_co2", {
       value: -0.2,
-      unit: "1",
+      unit: "–",
       texName: "V0\\_co2",
     })
     .addParameter("theta_co2", {
       value: 0.98,
-      unit: "1",
+      unit: "–",
       texName: "theta\\_co2",
     })
     .addParameter("tau_i", {
@@ -204,7 +204,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("S_co_gas", {
       value: 2200.0,
-      unit: "1",
+      unit: "–",
       texName: "S\\_co\\_gas",
     })
     .addParameter("vmax_v_PRKase", {
@@ -215,7 +215,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("keq_v_PRKase", {
       value: 6846.0,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_v\\_PRKase",
     })
     .addParameter("km_v_PRKase_ATP_st", {
@@ -305,7 +305,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("keq_v_rpp", {
       value: 0.06,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_v\\_rpp",
     })
     .addParameter("km_v_rpp_DHAP", {
@@ -340,7 +340,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("keq_v_FNR", {
       value: 502.0,
-      unit: "1",
+      unit: "–",
       texName: "keq\\_v\\_FNR",
     })
     .addParameter("km_v_FNR_NADP_st", {
@@ -407,7 +407,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("tau0", {
       value: -0.1,
-      unit: "1",
+      unit: "–",
       texName: "tau0",
     })
     .addParameter("chi_beta", {
@@ -498,7 +498,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addVariable("Ract", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "Ract",
     })
     .addVariable("J_NADPH", {

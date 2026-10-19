@@ -14,7 +14,7 @@ export function initModel(): SteadyStateModelBuilder {
   return new SteadyStateModelBuilder()
     .addParameter("q", {
       value: 0.7,
-      unit: "1",
+      unit: "–",
       texName: "q",
     })
     .addParameter("U", {
@@ -24,22 +24,22 @@ export function initModel(): SteadyStateModelBuilder {
     })
     .addParameter("R1", {
       value: 0.2,
-      unit: "1",
+      unit: "–",
       texName: "R1",
     })
     .addParameter("R2", {
       value: 0.5,
-      unit: "1",
+      unit: "–",
       texName: "R2",
     })
     .addParameter("q_r", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "q\\_r",
     })
     .addParameter("a_q", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "a\\_q",
     })
     .addParameter("b_s", {
@@ -49,12 +49,12 @@ export function initModel(): SteadyStateModelBuilder {
     })
     .addParameter("c_s", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "c\\_s",
     })
     .addParameter("alpha", {
       value: 0.85,
-      unit: "1",
+      unit: "–",
       texName: "alpha",
     })
     .addParameter("PAR", {
@@ -90,7 +90,7 @@ export function initModel(): SteadyStateModelBuilder {
           ]),
         ),
       ]),
-      unit: "1",
+      unit: "–",
       texName: "ft",
     })
     .addAssignment("fq", {
@@ -98,7 +98,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Add([new Num(1.0), new Name("a_q")]),
         new Add([new Num(1.0), new Mul([new Name("a_q"), new Name("q")])]),
       ]),
-      unit: "1",
+      unit: "–",
       texName: "fq",
     })
     .addAssignment("fs", {
@@ -116,7 +116,7 @@ export function initModel(): SteadyStateModelBuilder {
           ]),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       texName: "fs",
     })
     .addAssignment("J_PSII", {
@@ -155,7 +155,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Name("q"), new Add([new Num(1.0), new Name("a_q")])]),
         new Add([new Num(1.0), new Mul([new Name("a_q"), new Name("q")])]),
       ]),
-      unit: "1",
+      unit: "–",
       texName: "h\\_cyt",
     })
     .addAssignment("h_pqh2", {
@@ -169,12 +169,12 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("q"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       texName: "h\\_pqh2",
     })
     .addAssignment("h_pq", {
       fn: new Add([new Num(1.0), new Minus([new Name("h_pqh2")])]),
-      unit: "1",
+      unit: "–",
       texName: "h\\_pq",
     });
 }

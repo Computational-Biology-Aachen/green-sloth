@@ -15,18 +15,18 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("stoic_PSII", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "stoic\\_PSII",
     })
     .addParameter("stoic_PSI", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "stoic\\_PSI",
     })
     .addParameter("PQ_tot", {
       displayName: names.pq_tot,
       value: 7.0,
-      unit: "1",
+      unit: "–",
       texName: "PQ\\_tot",
     })
     .addParameter("H_stroma", {
@@ -52,7 +52,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("sigma_PSI_0", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "sigma\\_PSI\\_0",
     })
     .addParameter("k1p", {
@@ -113,18 +113,18 @@ export function initModel(): KineticModelBuilder {
     .addParameter("bH", {
       displayName: names.b_h,
       value: 0.01,
-      unit: "1",
+      unit: "–",
       texName: "bH",
     })
     .addParameter("NPQ_max", {
       displayName: names.npq_max,
       value: 0.6,
-      unit: "1",
+      unit: "–",
       texName: "NPQ\\_max",
     })
     .addParameter("cEqP", {
       value: 4.3e-8,
-      unit: "1",
+      unit: "–",
       texName: "cEqP",
     })
     .addParameter("keq_NPQ", {
@@ -134,7 +134,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("n_NPQ", {
       value: 5.3,
-      unit: "1",
+      unit: "–",
       texName: "n\\_NPQ",
     })
     .addParameter("N_A", {
@@ -161,33 +161,33 @@ export function initModel(): KineticModelBuilder {
     .addParameter("PSI_total", {
       displayName: names.psi_tot,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "PSI\\_total",
     })
     .addParameter("Fluo_0", {
       value: 0.25,
-      unit: "1",
+      unit: "–",
       texName: "Fluo\\_0",
     })
     .addParameter("Q_total", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "Q\\_total",
     })
     .addVariable("Q_active", {
       value: 1.6044277821745498e-23,
-      unit: "1",
+      unit: "–",
       texName: "Q\\_active",
     })
     .addVariable("PQ", {
       displayName: names.pq,
       value: 3.537090541057567,
-      unit: "1",
+      unit: "–",
       texName: "PQ",
     })
     .addVariable("PSI_ox", {
       value: 0.197310072778891,
-      unit: "1",
+      unit: "–",
       texName: "PSI\\_ox",
     })
     .addVariable("H_lumen", {

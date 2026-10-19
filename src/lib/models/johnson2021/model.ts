@@ -57,9 +57,9 @@ export function initModel(): SteadyStateModelBuilder {
       unit: "mol\\,sites\\,m^{-2}",
       texName: "\\mathrm{RUB}",
     })
-    .addParameter("Rds", { value: 0.01, texName: "R_{ds}", unit: "1" })
+    .addParameter("Rds", { value: 0.01, texName: "R_{ds}", unit: "–" })
     .addParameter("Ku2", { value: 0, texName: "K_{u2}", unit: "s^{-1}" })
-    .addParameter("theta1", { value: 1, texName: "\\theta_1", unit: "1" })
+    .addParameter("theta1", { value: 1, texName: "\\theta_1", unit: "–" })
     .addParameter("eps1", {
       value: 0,
       texName: "\\epsilon_1",
@@ -184,7 +184,7 @@ export function initModel(): SteadyStateModelBuilder {
           ]),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "eta",
       texName: "\\eta",
     })
@@ -193,7 +193,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("Kp1"),
         new Add([new Name("Kp1"), new Name("Kd"), new Name("Kf")]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi1P_max",
     })
     .addAssignment("a2", {
@@ -544,11 +544,11 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("JP700_a"),
         new Mul([new Name("Q"), new Name("a1")]),
       ]),
-      unit: "1",
+      unit: "–",
     })
     .addAssignment("q1_a", {
       fn: new Divide([new Name("phi1P_a0"), new Name("phi1P_max")]),
-      unit: "1",
+      unit: "–",
       displayName: "q1_a",
     })
     .addAssignment("phi2P_a0", {
@@ -556,7 +556,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("JP680_a"),
         new Mul([new Name("Q"), new Name("a2")]),
       ]),
-      unit: "1",
+      unit: "–",
     })
     .addAssignment("CB6F_a", {
       fn: new Divide([new Name("JP700_j"), new Name("kq")]),
@@ -574,7 +574,7 @@ export function initModel(): SteadyStateModelBuilder {
         ]),
         new Num(1),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "q2_a",
     })
     .addAssignment("num_kn", {
@@ -674,7 +674,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Name("q2_a"), new Name("Kp2")]),
         new Name("denom2"),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi2p_a",
     })
     .addAssignment("phi2n_a", {
@@ -691,7 +691,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom2c"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi2n_a",
     })
     .addAssignment("phi2d_a", {
@@ -705,7 +705,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom2c"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi2d_a",
     })
     .addAssignment("phi2f_a", {
@@ -719,7 +719,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom2c"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi2f_a",
     })
     .addAssignment("phi2u_a", {
@@ -733,7 +733,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom2c"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi2u_a",
     })
     .addAssignment("phi2P_a", {
@@ -741,7 +741,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("phi2p_a"),
         new Minus([new Num(1), new Name("phi2u_a")]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi2P_a",
     })
     .addAssignment("phi2N_a", {
@@ -749,7 +749,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("phi2n_a"),
         new Minus([new Num(1), new Name("phi2u_a")]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi2N_a",
     })
     .addAssignment("phi2D_a", {
@@ -757,7 +757,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("phi2d_a"),
         new Minus([new Num(1), new Name("phi2u_a")]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi2D_a",
     })
     .addAssignment("phi2F_a", {
@@ -765,7 +765,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("phi2f_a"),
         new Minus([new Num(1), new Name("phi2u_a")]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi2F_a",
     })
     .addAssignment("denom1_open", {
@@ -781,7 +781,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Name("q1_a"), new Name("Kp1")]),
         new Name("denom1_open"),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi1P_a",
     })
     .addAssignment("phi1N_a", {
@@ -789,7 +789,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Minus([new Num(1), new Name("q1_a")]), new Name("Kn1")]),
         new Name("denom1_closed"),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi1N_a",
     })
     .addAssignment("phi1D_a", {
@@ -803,7 +803,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom1_closed"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi1D_a",
     })
     .addAssignment("phi1F_a", {
@@ -817,7 +817,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom1_closed"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "phi1F_a",
     })
     .addAssignment("Fm_a", {
@@ -837,7 +837,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("eps1"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "Fm_a",
     })
     .addAssignment("Fo_a", {
@@ -857,7 +857,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("eps1"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "Fo_a",
     })
     .addAssignment("Fmp_a", {
@@ -877,7 +877,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("eps1"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "Fmp_a",
     })
     .addAssignment("Fop_a", {
@@ -902,7 +902,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("eps1"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "Fop_a",
     })
     .addAssignment("Fs_a", {
@@ -910,7 +910,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Name("a2"), new Name("phi2F_a"), new Name("eps2")]),
         new Mul([new Name("a1"), new Name("phi1F_a"), new Name("eps1")]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "Fs_a",
     })
     .addAssignment("PAM1_a", {
@@ -918,7 +918,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Num(1),
         new Divide([new Name("Fs_a"), new Name("Fmp_a")]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "PAM1_a",
     })
     .addAssignment("PAM2_a", {
@@ -929,12 +929,12 @@ export function initModel(): SteadyStateModelBuilder {
           new Divide([new Num(1), new Name("Fm_a")]),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "PAM2_a",
     })
     .addAssignment("PAM3_a", {
       fn: new Divide([new Name("Fs_a"), new Name("Fm_a")]),
-      unit: "1",
+      unit: "–",
       displayName: "PAM3_a",
     })
     .addAssignment("ETR", {
@@ -950,7 +950,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Minus([new Name("Fmp_a"), new Name("Fs_a")]),
         new Minus([new Name("Fmp_a"), new Name("Fop_a")]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "qP",
     })
     .addAssignment("qL", {
@@ -964,7 +964,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("Fs_a"),
         ]),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "qL",
     })
     .addAssignment("kPuddle", {
@@ -988,7 +988,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Divide([new Name("Fm_a"), new Name("Fmp_a")]),
         new Num(1),
       ]),
-      unit: "1",
+      unit: "–",
       displayName: "NPQ",
     })
     .addAssignment("active_cb6f", {

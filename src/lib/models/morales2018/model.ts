@@ -62,17 +62,17 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("H2OR", {
       value: 0.015,
-      unit: "1",
+      unit: "–",
       texName: "H2OR",
     })
     .addParameter("CO2R", {
       value: 0.00038,
-      unit: "1",
+      unit: "–",
       texName: "CO2R",
     })
     .addParameter("sigma2", {
       value: 0.5,
-      unit: "1",
+      unit: "–",
       texName: "sigma2",
     })
     .addParameter("Jmax25", {
@@ -117,37 +117,37 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("fcyc", {
       value: 0.1,
-      unit: "1",
+      unit: "–",
       texName: "fcyc",
     })
     .addParameter("fpseudo", {
       value: 0.1,
-      unit: "1",
+      unit: "–",
       texName: "fpseudo",
     })
     .addParameter("theta", {
       value: 0.7,
-      unit: "1",
+      unit: "–",
       texName: "theta",
     })
     .addParameter("gamma1", {
       value: 0.2,
-      unit: "1",
+      unit: "–",
       texName: "gamma1",
     })
     .addParameter("gamma2", {
       value: 0.6,
-      unit: "1",
+      unit: "–",
       texName: "gamma2",
     })
     .addParameter("gamma3", {
       value: 0.2,
-      unit: "1",
+      unit: "–",
       texName: "gamma3",
     })
     .addParameter("PhiqEmax", {
       value: 0.2,
-      unit: "1",
+      unit: "–",
       texName: "PhiqEmax",
     })
     .addParameter("KiqEp", {
@@ -232,17 +232,17 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("alpharac", {
       value: 0.05,
-      unit: "1",
+      unit: "–",
       texName: "alpharac",
     })
     .addParameter("alpharav", {
       value: 0.25,
-      unit: "1",
+      unit: "–",
       texName: "alpharav",
     })
     .addParameter("thetaalphar", {
       value: 0.36,
-      unit: "1",
+      unit: "–",
       texName: "thetaalphar",
     })
     .addParameter("Kialpha25", {
@@ -257,7 +257,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("fR0", {
       value: 0.04,
-      unit: "1",
+      unit: "–",
       texName: "fR0",
     })
     .addParameter("alphafR", {
@@ -267,7 +267,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("thetafR", {
       value: 0.96,
-      unit: "1",
+      unit: "–",
       texName: "thetafR",
     })
     .addParameter("KiR", {
@@ -317,7 +317,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("Kmc25", {
       value: 0.0002617,
-      unit: "1",
+      unit: "–",
       texName: "Kmc25",
     })
     .addParameter("DHaKmc", {
@@ -327,7 +327,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("Kmo25", {
       value: 0.1985,
-      unit: "1",
+      unit: "–",
       texName: "Kmo25",
     })
     .addParameter("DHaKmo", {
@@ -342,12 +342,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("ac", {
       value: 0.27,
-      unit: "1",
+      unit: "–",
       texName: "ac",
     })
     .addParameter("bc", {
       value: 14000.0,
-      unit: "1",
+      unit: "–",
       texName: "bc",
     })
     .addParameter("KdRB", {
@@ -362,12 +362,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("fRBmin", {
       value: 0.48,
-      unit: "1",
+      unit: "–",
       texName: "fRBmin",
     })
     .addParameter("O2", {
       value: 0.21,
-      unit: "1",
+      unit: "–",
       texName: "O2",
     })
     .addParameter("RCA", {
@@ -477,17 +477,17 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("Scm", {
       value: 7.1,
-      unit: "1",
+      unit: "–",
       texName: "Scm",
     })
     .addParameter("Sm", {
       value: 9.8,
-      unit: "1",
+      unit: "–",
       texName: "Sm",
     })
     .addParameter("falphaSc", {
       value: 0.93,
-      unit: "1",
+      unit: "–",
       texName: "falphaSc",
     })
     .addParameter("gcm25", {
@@ -507,7 +507,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("fI0", {
       value: 0.39,
-      unit: "1",
+      unit: "–",
       texName: "fI0",
     })
     .addParameter("gswm", {
@@ -522,7 +522,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("thetafI", {
       value: 0.88,
-      unit: "1",
+      unit: "–",
       texName: "thetafI",
     })
     .addParameter("Kgsi", {
@@ -557,32 +557,32 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("alphab", {
       value: 0.92,
-      unit: "1",
+      unit: "–",
       texName: "alphab",
     })
     .addParameter("alphag", {
       value: 0.72,
-      unit: "1",
+      unit: "–",
       texName: "alphag",
     })
     .addParameter("alphared", {
       value: 0.83,
-      unit: "1",
+      unit: "–",
       texName: "alphared",
     })
     .addParameter("alphabp", {
       value: 0.66,
-      unit: "1",
+      unit: "–",
       texName: "alphabp",
     })
     .addParameter("alphagp", {
       value: 0.6,
-      unit: "1",
+      unit: "–",
       texName: "alphagp",
     })
     .addParameter("alpharp", {
       value: 0.8,
-      unit: "1",
+      unit: "–",
       texName: "alpharp",
     })
     .addVariable("PGA", {
@@ -597,32 +597,32 @@ export function initModel(): KineticModelBuilder {
     })
     .addVariable("fRB", {
       value: 0.25,
-      unit: "1",
+      unit: "–",
       texName: "fRB",
     })
     .addVariable("fP", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "fP",
     })
     .addVariable("fZ", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "fZ",
     })
     .addVariable("alphar", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "alphar",
     })
     .addVariable("PSIId", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "PSIId",
     })
     .addVariable("fR", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "fR",
     })
     .addVariable("PR", {
@@ -632,27 +632,27 @@ export function initModel(): KineticModelBuilder {
     })
     .addVariable("Cc", {
       value: 0.00038,
-      unit: "1",
+      unit: "–",
       texName: "Cc",
     })
     .addVariable("Ccyt", {
       value: 0.00038,
-      unit: "1",
+      unit: "–",
       texName: "Ccyt",
     })
     .addVariable("Ci", {
       value: 0.00038,
-      unit: "1",
+      unit: "–",
       texName: "Ci",
     })
     .addVariable("Ca", {
       value: 0.00038,
-      unit: "1",
+      unit: "–",
       texName: "Ca",
     })
     .addVariable("H2OS", {
       value: 0.02,
-      unit: "1",
+      unit: "–",
       texName: "H2OS",
     })
     .addVariable("gsw", {

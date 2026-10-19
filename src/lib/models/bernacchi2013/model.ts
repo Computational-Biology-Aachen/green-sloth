@@ -74,7 +74,7 @@ export function initModel(): SteadyStateModelBuilder {
       unit: "mol\\,e^{-}\\,(mol\\,photons)^{-1}",
       texName: "\\alpha",
     })
-    .addParameter("theta", { value: 0.7, unit: "1", texName: "\\theta" })
+    .addParameter("theta", { value: 0.7, unit: "–", texName: "\\theta" })
     .addAssignment("absorbed", {
       fn: new Mul([new Name("alpha"), new Name("PPFD")]),
       displayName: "absorbed",

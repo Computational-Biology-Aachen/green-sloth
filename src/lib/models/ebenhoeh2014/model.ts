@@ -18,7 +18,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("pH", {
       displayName: names.ph,
       value: 7.8,
-      unit: "1",
+      unit: "–",
       texName: "pH",
     })
     .addParameter("PPFD", {
@@ -76,7 +76,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("LHC_tot", {
       displayName: names.lhc_tot,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "LHC\\_tot",
     })
     .addParameter("F", {
@@ -100,7 +100,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("bH", {
       displayName: names.b_h,
       value: 100.0,
-      unit: "1",
+      unit: "–",
       texName: "bH",
     })
     .addParameter("E0_QA", {
@@ -172,19 +172,19 @@ export function initModel(): KineticModelBuilder {
     .addParameter("Q", {
       displayName: names.npq_coefficient,
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "Q",
     })
     .addParameter("staticAntI", {
       displayName: names.static_antenna_i,
       value: 0.2,
-      unit: "1",
+      unit: "–",
       texName: "staticAntI",
     })
     .addParameter("staticAntII", {
       displayName: names.static_antenna_ii,
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "staticAntII",
     })
     .addParameter("kf_atp_synthase", {
@@ -201,7 +201,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("Pi_mol", {
       displayName: names.pi_mol,
       value: 0.01,
-      unit: "1",
+      unit: "–",
       texName: "Pi\\_mol",
     })
     .addParameter("DeltaG0_ATP", {
@@ -213,7 +213,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("HPR", {
       displayName: names.hpr,
       value: 4.666666666666667,
-      unit: "1",
+      unit: "–",
       texName: "HPR",
     })
     .addParameter("kf_nadph_consumption", {
@@ -312,13 +312,13 @@ export function initModel(): KineticModelBuilder {
     .addParameter("km_lhc_state_transition_12", {
       displayName: names.km_lhc_state_transition_12,
       value: 0.2,
-      unit: "1",
+      unit: "–",
       texName: "km\\_lhc\\_state\\_transition\\_12",
     })
     .addParameter("n_ST", {
       displayName: names.n_st,
       value: 2.0,
-      unit: "1",
+      unit: "–",
       texName: "n\\_ST",
     })
     .addVariable("Plastoquinone_oxidised", {
@@ -358,7 +358,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addVariable("Light_minus_harvesting_complex", {
       value: 0.9,
-      unit: "1",
+      unit: "–",
       texName: "Light-harvesting complex",
     })
     .addAssignment("RT", {

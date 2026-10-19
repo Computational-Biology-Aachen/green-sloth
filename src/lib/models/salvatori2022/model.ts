@@ -38,12 +38,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("alpha", {
       value: 0.78,
-      unit: "1",
+      unit: "–",
       texName: "alpha",
     })
     .addParameter("c_in", {
       value: 0.23,
-      unit: "1",
+      unit: "–",
       texName: "c\\_in",
     })
     .addParameter("Ec_PSII", {
@@ -83,12 +83,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("eta_NADPH", {
       value: 5.07,
-      unit: "1",
+      unit: "–",
       texName: "eta\\_NADPH",
     })
     .addParameter("eta_NADP", {
       value: 0.89,
-      unit: "1",
+      unit: "–",
       texName: "eta\\_NADP",
     })
     .addParameter("v_R", {
@@ -98,12 +98,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("d", {
       value: 8.4,
-      unit: "1",
+      unit: "–",
       texName: "d",
     })
     .addParameter("c_y", {
       value: -4.0,
-      unit: "1",
+      unit: "–",
       texName: "c\\_y",
     })
     .addVariable("E_PSII", {
@@ -118,30 +118,30 @@ export function initModel(): KineticModelBuilder {
     })
     .addVariable("P_NPQ", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "P\\_NPQ",
     })
     .addVariable("NADP", {
       displayName: names.nadp,
       value: 5.0,
-      unit: "1",
+      unit: "–",
       texName: "NADP",
     })
     .addVariable("NADPH", {
       displayName: names.nadph,
       value: 5.0,
-      unit: "1",
+      unit: "–",
       texName: "NADPH",
     })
     .addVariable("R", {
       value: 0.001,
-      unit: "1",
+      unit: "–",
       texName: "R",
     })
     .addAssignment("pH", {
       displayName: names.ph,
       fn: new Divide([new Name("NADPH"), new Name("NADP")]),
-      unit: "1",
+      unit: "–",
       texName: "pH",
     })
     .addAssignment("ETR", {

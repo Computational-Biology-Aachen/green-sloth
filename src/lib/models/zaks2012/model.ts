@@ -72,7 +72,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("PsbSDose", {
       value: 0.6,
-      unit: "1",
+      unit: "–",
       texName: "PsbSDose",
     })
     .addParameter("kF", {
@@ -83,12 +83,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("alphaRC", {
       value: 0.4,
-      unit: "1",
+      unit: "–",
       texName: "alphaRC",
     })
     .addParameter("alphaQ", {
       value: 0.1,
-      unit: "1",
+      unit: "–",
       texName: "alphaQ",
     })
     .addParameter("kETP680PheOpenRC", {
@@ -163,27 +163,27 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("QuinonePoolSize", {
       value: 10.0,
-      unit: "1",
+      unit: "–",
       texName: "QuinonePoolSize",
     })
     .addParameter("pKaC", {
       value: 5.8,
-      unit: "1",
+      unit: "–",
       texName: "pKaC",
     })
     .addParameter("nC", {
       value: 1.2,
-      unit: "1",
+      unit: "–",
       texName: "nC",
     })
     .addParameter("pHStromaStart", {
       value: 7.2,
-      unit: "1",
+      unit: "–",
       texName: "pHStromaStart",
     })
     .addParameter("pHLumenStart", {
       value: 7.2,
-      unit: "1",
+      unit: "–",
       texName: "pHLumenStart",
     })
     .addParameter("StromaProtonsStart", {
@@ -248,17 +248,17 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("zCl", {
       value: -1.0,
-      unit: "1",
+      unit: "–",
       texName: "zCl",
     })
     .addParameter("zMg", {
       value: 2.0,
-      unit: "1",
+      unit: "–",
       texName: "zMg",
     })
     .addParameter("zK", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "zK",
     })
     .addParameter("StromaClStart", {
@@ -336,32 +336,32 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("TotalXanthophyll", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "TotalXanthophyll",
     })
     .addParameter("VDEpKa", {
       value: 6.0,
-      unit: "1",
+      unit: "–",
       texName: "VDEpKa",
     })
     .addParameter("nVDE", {
       value: 6.0,
-      unit: "1",
+      unit: "–",
       texName: "nVDE",
     })
     .addParameter("PsbSpKa", {
       value: 6.4,
-      unit: "1",
+      unit: "–",
       texName: "PsbSpKa",
     })
     .addParameter("nPsbS", {
       value: 3.0,
-      unit: "1",
+      unit: "–",
       texName: "nPsbS",
     })
     .addParameter("zfrac", {
       value: 0.8,
-      unit: "1",
+      unit: "–",
       texName: "zfrac",
     })
     .addParameter("PsbSConvertRate", {
@@ -381,22 +381,22 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("kETP700Fdx", {
       value: 10.0,
-      unit: "1",
+      unit: "–",
       texName: "kETP700Fdx",
     })
     .addParameter("PCperPSI", {
       value: 3.0,
-      unit: "1",
+      unit: "–",
       texName: "PCperPSI",
     })
     .addParameter("ElectronsPerPC", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "ElectronsPerPC",
     })
     .addParameter("fracIntactRC", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "fracIntactRC",
     })
     .addParameter("voltsperlog", {
@@ -413,22 +413,22 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("P680neut", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "P680neut",
     })
     .addParameter("qtrigg1", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "qtrigg1",
     })
     .addParameter("qtrigg2", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "qtrigg2",
     })
     .addParameter("qtrigg3", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "qtrigg3",
     })
     .addParameter("ATPConductivityReverse", {
@@ -438,37 +438,37 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("ATPperPSI", {
       value: 600.0,
-      unit: "1",
+      unit: "–",
       texName: "ATPperPSI",
     })
     .addParameter("CytRegulateYesNO", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "CytRegulateYesNO",
     })
     .addParameter("F_PsbS", {
       value: 0.6,
-      unit: "1",
+      unit: "–",
       texName: "F\\_PsbS",
     })
     .addParameter("NADPperPSI", {
       value: 15.0,
-      unit: "1",
+      unit: "–",
       texName: "NADPperPSI",
     })
     .addParameter("PsbSperPSII", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "PsbSperPSII",
     })
     .addParameter("damageyesno", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "damageyesno",
     })
     .addParameter("electronsPerNADPH", {
       value: 2.0,
-      unit: "1",
+      unit: "–",
       texName: "electronsPerNADPH",
     })
     .addParameter("kEETP700", {
@@ -523,7 +523,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("repairyesno", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "repairyesno",
     })
     .addParameter("tF", {
@@ -548,35 +548,35 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("ATPperProton", {
       value: 0.25,
-      unit: "1",
+      unit: "–",
       texName: "ATPperProton",
     })
     .addVariable("ATP", {
       displayName: names.atp,
       value: 2.0,
-      unit: "1",
+      unit: "–",
       texName: "ATP",
     })
     .addVariable("ActiveATPs", {
       value: 0.05,
-      unit: "1",
+      unit: "–",
       texName: "ActiveATPs",
     })
     .addVariable("Antheraxanthin", {
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "Antheraxanthin",
     })
     .addVariable("Fdxox", {
       displayName: names.fd_ox,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "Fdxox",
     })
     .addVariable("Fdxr", {
       displayName: names.fd_red,
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "Fdxr",
     })
     .addVariable("LumenCl", {
@@ -601,90 +601,90 @@ export function initModel(): KineticModelBuilder {
     })
     .addVariable("P680ex", {
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "P680ex",
     })
     .addVariable("P680plus", {
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "P680plus",
     })
     .addVariable("P700ox", {
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "P700ox",
     })
     .addVariable("P700r", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "P700r",
     })
     .addVariable("PCr", {
       value: 0.2,
-      unit: "1",
+      unit: "–",
       texName: "PCr",
     })
     .addVariable("PQ", {
       displayName: names.pq,
       value: 8.999,
-      unit: "1",
+      unit: "–",
       texName: "PQ",
     })
     .addVariable("PQH2", {
       displayName: names.pqh2,
       value: 0.001,
-      unit: "1",
+      unit: "–",
       texName: "PQH2",
     })
     .addVariable("PSIIChlEx", {
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "PSIIChlEx",
     })
     .addVariable("PheAnion", {
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "PheAnion",
     })
     .addVariable("PsbSQ", {
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "PsbSQ",
     })
     .addVariable("QAox", {
       displayName: names.qa,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "QAox",
     })
     .addVariable("QBneut", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "QBneut",
     })
     .addVariable("QBred1", {
       value: 1e-7,
-      unit: "1",
+      unit: "–",
       texName: "QBred1",
     })
     .addVariable("QBred2", {
       value: 1e-7,
-      unit: "1",
+      unit: "–",
       texName: "QBred2",
     })
     .addVariable("Thrdx", {
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "Thrdx",
     })
     .addVariable("TotalLEF", {
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "TotalLEF",
     })
     .addVariable("Zeaxanthin", {
       value: 1e-14,
-      unit: "1",
+      unit: "–",
       texName: "Zeaxanthin",
     })
     .addAssignment("pH_stroma", {

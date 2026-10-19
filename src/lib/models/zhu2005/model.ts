@@ -22,12 +22,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("x", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "x",
     })
     .addParameter("p", {
       value: 0.5,
-      unit: "1",
+      unit: "–",
       texName: "p",
     })
     .addParameter("c_light", {
@@ -62,27 +62,27 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("n_psi_psii", {
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "n\\_psi\\_psii",
     })
     .addParameter("n_core_chl", {
       value: 70.0,
-      unit: "1",
+      unit: "–",
       texName: "n\\_core\\_chl",
     })
     .addParameter("n_nonreducing_peripheral_chl", {
       value: 220.0,
-      unit: "1",
+      unit: "–",
       texName: "n\\_nonreducing\\_peripheral\\_chl",
     })
     .addParameter("n_nonreducing_core_chl", {
       value: 35.0,
-      unit: "1",
+      unit: "–",
       texName: "n\\_nonreducing\\_core\\_chl",
     })
     .addParameter("n_nonreducing_detached_chl", {
       value: 35.0,
-      unit: "1",
+      unit: "–",
       texName: "n\\_nonreducing\\_detached\\_chl",
     })
     .addParameter("P680Pheo_total", {
@@ -192,7 +192,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("Ke", {
       value: 1000000.0,
-      unit: "1",
+      unit: "–",
       texName: "Ke",
     })
     .addParameter("k01", {

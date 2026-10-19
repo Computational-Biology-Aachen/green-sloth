@@ -271,7 +271,7 @@ export function initModel(): KineticModelBuilder {
     .addParameter("PSII_tot", {
       displayName: names.psii_tot,
       value: 1.0,
-      unit: "1",
+      unit: "–",
       texName: "PSII\\_tot",
     })
     .addVariable("V", {
@@ -368,12 +368,12 @@ export function initModel(): KineticModelBuilder {
     })
     .addVariable("PSIId", {
       value: 0.0,
-      unit: "1",
+      unit: "–",
       texName: "PSIId",
     })
     .addVariable("alpha_VDE", {
       value: new Divide([new Name("k_D_VA"), new Name("k_L_VA")]),
-      unit: "1",
+      unit: "–",
       texName: "alpha\\_VDE",
     })
     .addAssignment("gamma", {
