@@ -32,3 +32,7 @@ npm run lint         # ESLint check
 - [MxlModels](https://github.com/Computational-Biology-Aachen/mxl-models) — flat single-file model versions for easy inspection
 - [pysbml](https://github.com/Computational-Biology-Aachen/pysbml) — SBML import/export for MxlPy
 - [Parameteriser](https://gitlab.com/marvin.vanaalst/parameteriser) — kinetic parameter lookup from BRENDA and other databases
+  
+## How to cite
+
+**GreenSloth: a curated database and executable platform for mechanistic photosynthesis models.** Elouen Corvest, Marvin van Aalst, Tim Nies, Quang Huy Nguyen, Josha Ebeling, Maja Strauch, El-Hadji Malick Cisse, Tanvir Hassan, Anna Matuszyńska. *bioRxiv* (2026), 2026.07.22.740007. https://doi.org/10.64898/2026.07.22.740007
