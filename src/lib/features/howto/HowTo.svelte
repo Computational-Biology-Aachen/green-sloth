@@ -96,8 +96,8 @@ npm run dev               # open the model page, confirm the analyses run`;
       >
       <Button
         variant="inverted"
-        class={section === "use" ? "inverted active-tab" : "inverted"}
-        onclick={() => setSection("use")}>Use</Button
+        class={section === "fittodata" ? "inverted active-tab" : "inverted"}
+        onclick={() => setSection("fittodata")}>Fit to Data</Button
       >
       <Button
         variant="inverted"
@@ -145,7 +145,7 @@ npm run dev               # open the model page, confirm the analyses run`;
       > for more information on how to use the package and the models.
     </Text>
   </Section>
-{:else if section === "use"}
+{:else if section === "fittodata"}
   <Section
     variant="light"
     width="narrow"

@@ -208,7 +208,7 @@
     <Row justify="end">
       <Button popovertarget="slider-editor">Sliders</Button>
       <Button popovertarget="fit-editor">Fit to data</Button>
-      <InfoButton url="{resolve('/howto')}?section=use" />
+      <InfoButton url="{resolve('/howto')}?section=fittodata" />
       <Button onclick={resetParameters}>Reset</Button>
     </Row>
   </Row>
