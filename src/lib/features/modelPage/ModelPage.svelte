@@ -123,7 +123,8 @@
   function downloadValidation() {
     const a = document.createElement("a");
     a.href = validationFile?.url || "";
-    a.download = data.slug + "_" + (validationFile?.filename || "validation.py");
+    a.download =
+      data.slug + "_" + (validationFile?.filename || "validation.py");
     a.click();
   }
 

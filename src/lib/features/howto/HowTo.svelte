@@ -451,13 +451,12 @@ npm run dev               # open the model page, confirm the analyses run`;
           target="_blank"
           href="{resolve('/models')}/matuszynska2016">Matuszynska2016</a
         >
-        model. The snippets shown here are part of a Jupyter Notebook using
-        Python and the MxlPy package. The latter has built-in fitting functions,
-        but because we are addressing a more complex problem, we will use a
-        custom-built fitting routine. We will use MxlPy only to simulate the
-        model. To ensure the integration runs smoothly, we will use the <Code
-          >Assimulo</Code
-        > solver, so make sure your MxlPy installation includes it.
+        model. The snippets shown here are part of a Jupyter Notebook using Python
+        and the MxlPy package. The latter has built-in fitting functions, but because
+        we are addressing a more complex problem, we will use a custom-built fitting
+        routine. We will use MxlPy only to simulate the model. To ensure the integration
+        runs smoothly, we will use the <Code>Assimulo</Code> solver, so make sure
+        your MxlPy installation includes it.
       </Text>
       <H3>0. Finding the model</H3>
       <Text>
