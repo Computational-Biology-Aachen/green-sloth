@@ -68,6 +68,8 @@
     "FNR",
     "PQ Cycle",
     "PC",
+    "NPQ",
+    "Photorespiration",
   ]);
 
   // All tag categories → their distinct tags, across every model.
@@ -226,12 +228,12 @@
     <svg
       id="photosynthesis-scheme"
       width="100%"
-      viewBox="0 0 216.05 125.18"
+      viewBox="0 0 223.64552 126.0437"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g
         id="g26"
-        transform="translate(0.52825439,-33.1908)"
+        transform="translate(0.52825439,-24.378699)"
       >
         <rect
           id="rect1"
@@ -291,7 +293,7 @@
           >
         </g>
       </g>
-      <g transform="translate(10.661354,15.9242)">
+      <g>
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "OEC")}
@@ -305,15 +307,15 @@
           <!-- Invisible, oversized hit area: the visible shape below is
                smaller than a 44px touch target at mobile widths. -->
           <ellipse
-            cx="34.445"
-            cy="90.412"
+            cx="45.106354"
+            cy="115.1483"
             rx="13.3"
             ry="13.3"
             fill="transparent"
           />
           <ellipse
-            cx="34.445"
-            cy="90.412"
+            cx="45.106354"
+            cy="115.1483"
             rx="11.573"
             ry="9.3954"
             fill="#bbdef0"
@@ -325,23 +327,23 @@
             style="paint-order:markers stroke fill"
           />
           <text
-            x="27.536812"
-            y="96.907669"
+            x="38.198166"
+            y="121.64397"
             font-family="Arial"
             font-size="6.3989px"
             stroke-width=".15997"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="27.536812"
-              y="96.907669"
+              x="38.198166"
+              y="121.64397"
               font-weight="bold"
               stroke-width=".15997">OEC</tspan
             ></text
           >
         </g>
       </g>
-      <g transform="translate(10.661454,-7.6023302)">
+      <g>
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "PSII")}
@@ -353,8 +355,8 @@
           onkeydown={(e) => onApparatusKey(e, "PSII")}
         >
           <ellipse
-            cx="34.445"
-            cy="93.275"
+            cx="45.106453"
+            cy="94.484772"
             rx="14.445"
             ry="19.33"
             fill="#5fad56"
@@ -366,16 +368,16 @@
             style="paint-order:markers stroke fill"
           />
           <text
-            x="24.404585"
-            y="96.725319"
+            x="35.06604"
+            y="97.935089"
             font-family="Arial"
             font-size="10.583px"
             stroke-width=".26458"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="24.404585"
-              y="96.725319"
+              x="35.06604"
+              y="97.935089"
               font-weight="bold"
               stroke-width=".26458">PSII</tspan
             ></text
@@ -392,8 +394,8 @@
           onkeydown={(e) => onApparatusKey(e, "Cytochrome b6f")}
         >
           <ellipse
-            cx="83.335"
-            cy="93.275"
+            cx="93.996452"
+            cy="94.484772"
             rx="14.445"
             ry="19.33"
             fill="#63c7b2"
@@ -405,16 +407,16 @@
             style="paint-order:markers stroke fill"
           />
           <text
-            x="70.920174"
-            y="95.290581"
+            x="81.581627"
+            y="96.500351"
             font-family="Arial"
             font-size="7.7885px"
             stroke-width=".19471"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="70.920174"
-              y="95.290581"
+              x="81.581627"
+              y="96.500351"
               font-weight="bold"
               stroke-width=".19471">Cytb6f</tspan
             ></text
@@ -431,8 +433,8 @@
           onkeydown={(e) => onApparatusKey(e, "PSI")}
         >
           <ellipse
-            cx="132.23"
-            cy="93.275"
+            cx="142.89145"
+            cy="94.484772"
             rx="14.445"
             ry="19.33"
             fill="#4d9078"
@@ -444,16 +446,16 @@
             style="paint-order:markers stroke fill"
           />
           <text
-            x="132.18866"
-            y="96.725327"
+            x="142.85011"
+            y="97.935097"
             font-family="Arial"
             font-size="10.583px"
             stroke-width=".26458"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="132.18866"
-              y="96.725327"
+              x="142.85011"
+              y="97.935097"
               font-weight="bold"
               stroke-width=".26458"
               text-anchor="middle">PSI</tspan
@@ -471,15 +473,15 @@
           onkeydown={(e) => onApparatusKey(e, "ATP Synthase")}
         >
           <rect
-            x="164.426"
-            y="73.945"
+            x="178.74146"
+            y="75.15477"
             width="27"
             height="38.661"
             fill="transparent"
           />
           <rect
-            x="168.08"
-            y="73.945"
+            x="178.74146"
+            y="75.15477"
             width="19.692"
             height="38.661"
             rx="1.3495"
@@ -491,7 +493,7 @@
             stroke-width="3"
             style="paint-order:markers stroke fill"
           />
-          <g transform="matrix(1.4098 0 0 1.4098 -175.97 -39.243)">
+          <g transform="matrix(1.4098,0,0,1.4098,-165.30855,-38.033229)">
             <ellipse
               cx="256.94"
               cy="73.424"
@@ -531,7 +533,7 @@
             />
           </g>
           <g
-            transform="matrix(0.83789924,0,0,0.83789924,25.126425,-3.392121)"
+            transform="matrix(0.83789924,0,0,0.83789924,35.787879,-2.1823503)"
             font-family="Arial"
           >
             <text
@@ -567,7 +569,7 @@
           </g>
         </g>
       </g>
-      <g transform="translate(4.4602144,0.35049983)">
+      <g>
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "CBB Cycle")}
@@ -578,7 +580,10 @@
           onclick={() => toggle(APP_CAT, "CBB Cycle")}
           onkeydown={(e) => onApparatusKey(e, "CBB Cycle")}
         >
-          <g stroke-linecap="round">
+          <g
+            stroke-linecap="round"
+            transform="translate(-11.867485,5.6927831)"
+          >
             <path
               d="m129.18 26.72a21.82 21.82 0 0 1-21.82 21.82 21.82 21.82 0 0 1-21.82-21.82 21.82 21.82 0 0 1 21.82-21.82 21.82 21.82 0 0 1 21.82 21.82z"
               fill-opacity="0"
@@ -605,23 +610,23 @@
             </g>
           </g>
           <text
-            x="95.90773"
-            y="30.169697"
+            x="84.040245"
+            y="35.86248"
             font-family="Arial"
             font-size="10.583px"
             stroke-width="1.5"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="95.90773"
-              y="30.169697"
+              x="84.040245"
+              y="35.86248"
               font-weight="bold"
               stroke-width="1.5">CBB</tspan
             ></text
           >
         </g>
       </g>
-      <g transform="translate(5.0175544,0.93899983)">
+      <g>
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "FNR")}
@@ -633,30 +638,30 @@
           onkeydown={(e) => onApparatusKey(e, "FNR")}
         >
           <ellipse
-            cx="146.73"
-            cy="67.026"
+            cx="151.74754"
+            cy="76.7771"
             rx="13.3"
             ry="13.3"
             fill="transparent"
           />
           <ellipse
-            cx="146.73"
-            cy="67.026"
+            cx="151.74754"
+            cy="76.7771"
             rx="8.4889"
             ry="5.2234"
             fill="#f2c14e"
           />
           <text
-            x="146.53954"
-            y="69.122124"
+            x="151.55708"
+            y="78.873222"
             font-family="Arial"
             font-size="6.4286px"
             stroke-width=".16071"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="146.53954"
-              y="69.122124"
+              x="151.55708"
+              y="78.873222"
               font-weight="bold"
               stroke-width=".16071"
               text-anchor="middle">FNR</tspan
@@ -664,7 +669,7 @@
           >
         </g>
       </g>
-      <g transform="translate(23.885754,-62.1728)">
+      <g>
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "PQ Cycle")}
@@ -676,15 +681,15 @@
           onkeydown={(e) => onApparatusKey(e, "PQ Cycle")}
         >
           <rect
-            x="32.166"
-            y="134.348"
+            x="61.005753"
+            y="86.699295"
             width="27"
             height="27"
             fill="transparent"
           />
           <rect
-            x="37.12"
-            y="140.06"
+            x="61.005753"
+            y="86.699295"
             width="17.091"
             height="15.576"
             rx="5.5295"
@@ -694,16 +699,16 @@
             stroke-width="1.7544"
           />
           <text
-            x="45.413319"
-            y="150.62613"
+            x="69.299072"
+            y="97.265427"
             font-family="Arial"
             font-size="8.4667px"
             stroke-width=".26458"
             style="line-height:1.05"
             xml:space="preserve"
             ><tspan
-              x="45.413319"
-              y="150.62613"
+              x="69.299072"
+              y="97.265427"
               font-size="8.4667px"
               font-weight="bold"
               stroke-width=".26458"
@@ -712,7 +717,7 @@
           >
         </g>
       </g>
-      <g transform="matrix(1.0437 0 0 1 70.781754 -42.8428)">
+      <g>
         <g
           class="apparatus"
           class:selected={isActive(APP_CAT, "PC")}
@@ -724,40 +729,178 @@
           onkeydown={(e) => onApparatusKey(e, "PC")}
         >
           <rect
-            x="32.166"
-            y="134.901"
+            x="105.46912"
+            y="106.22929"
             width="27"
             height="27"
             fill="transparent"
           />
           <rect
-            x="33.235"
-            y="140.26"
-            width="24.861"
+            x="105.46912"
+            y="106.22929"
+            width="25.947426"
             height="16.281"
-            rx="6.5393"
+            rx="6.8250675"
             fill="#8684cf"
             stroke="#fff"
             stroke-linejoin="round"
-            stroke-width="2.1634"
+            stroke-width="2.21016"
           />
           <text
-            x="45.390369"
-            y="151.43082"
+            x="115.65562"
+            y="119.93788"
             font-family="Arial"
-            font-size="8.4667px"
-            stroke-width=".26458"
+            font-size="8.64972px"
+            stroke-width="0.270299"
             style="line-height:1.05"
             xml:space="preserve"
+            transform="scale(1.0216164,0.97884101)"
             ><tspan
-              x="45.390369"
-              y="151.43082"
-              font-size="8.4667px"
+              x="115.65562"
+              y="119.93788"
+              font-size="8.64972px"
               font-weight="bold"
-              stroke-width=".26458"
+              stroke-width="0.270299"
               text-anchor="middle">PC</tspan
             ></text
           >
+        </g>
+        <g
+          class="apparatus"
+          class:selected={isActive(APP_CAT, "NPQ")}
+          role="button"
+          tabindex="0"
+          aria-pressed={isActive(APP_CAT, "NPQ")}
+          aria-label="NPQ"
+          onclick={() => toggle(APP_CAT, "NPQ")}
+          onkeydown={(e) => onApparatusKey(e, "NPQ")}
+        >
+          <rect
+            x="30.661455"
+            y="39.894554"
+            width="28.889999"
+            height="16.18956"
+            fill="transparent"
+          />
+          <rect
+            x="30.661455"
+            y="39.894554"
+            width="28.889999"
+            height="16.18956"
+            rx="6.8250675"
+            fill="#ea5555"
+            stroke="#fff"
+            stroke-linejoin="round"
+            stroke-width="2.21016"
+          />
+          <text
+            x="43.870968"
+            y="52.169224"
+            font-family="Arial"
+            font-size="8.64972px"
+            stroke-width="0.270299"
+            style="line-height:1.05"
+            xml:space="preserve"
+            transform="scale(1.0216164,0.97884101)"
+            ><tspan
+              x="43.870968"
+              y="52.169224"
+              font-size="8.64972px"
+              font-weight="bold"
+              stroke-width="0.270299"
+              text-anchor="middle">NPQ</tspan
+            ></text
+          >
+          <path
+            id="path15"
+            stroke="#ea5555"
+            stroke-width="1.49"
+            stroke-linecap="round"
+            d="M 49.714448,72.511301 H 40.49846 m 4.607994,-14.202014 v 14.202014"
+          />
+        </g>
+        <g
+          class="apparatus"
+          class:selected={isActive(APP_CAT, "Photorespiration")}
+          role="button"
+          tabindex="0"
+          aria-pressed={isActive(APP_CAT, "Photorespiration")}
+          aria-label="Photorespiration"
+          onclick={() => toggle(APP_CAT, "Photorespiration")}
+          onkeydown={(e) => onApparatusKey(e, "Photorespiration")}
+        >
+          <g fill="#ea5555">
+            <path
+              d="m 168.23183,10.022448 a 0.75,0.75 0 0 1 0,1.0605 l -3.9707,3.9688 3.9707,3.9707 a 0.75,0.75 0 0 1 0,1.0605 0.75,0.75 0 0 1 -1.0606,0 l -5.0312,-5.0293 5.0312,-5.0312 a 0.75,0.75 0 0 1 1.0606,0 z"
+            />
+            <path
+              d="m 195.58892,30.289528 5.0293,5.0312 a 0.75,0.75 0 0 1 0,1.0605 0.75,0.75 0 0 1 -1.0605,0 l -3.9707,-3.9688 -3.9688,3.9688 a 0.75,0.75 0 0 1 -1.0605,0 0.75,0.75 0 0 1 0,-1.0605 z"
+            />
+            <path
+              d="m 160.82168,44.523257 a 0.75,0.75 0 0 1 0.53125,0.21875 l 5.0293,5.0312 -5.0293,5.0312 a 0.75,0.75 0 0 1 -1.0606,0 0.75,0.75 0 0 1 0,-1.0625 l 3.9688,-3.9688 -3.9688,-3.9688 a 0.75,0.75 0 0 1 0,-1.0625 0.75,0.75 0 0 1 0.5293,-0.21875 z"
+            />
+          </g>
+          <text
+            x="116.82587"
+            y="30.725327"
+            font-family="Arial"
+            font-weight="bold"
+            font-size="8.81944px"
+            stroke-width="1.5"
+            xml:space="preserve"
+            transform="translate(47.441417,-0.656424)"
+            style="line-height:1.05;text-align:center;text-anchor:middle;white-space:pre;inline-size:47.7034;display:inline"
+          >
+            <tspan
+              x="116.82587"
+              y="30.725327"
+              font-size="8.81944px"
+              stroke-width="0.270299"
+              text-anchor="middle"
+              >Photo-
+            </tspan>
+            <tspan
+              x="116.82587"
+              y="39.98574"
+              id="tspan8"
+            >
+              respiration
+            </tspan>
+          </text>
+          <ellipse
+            stroke="#ea5555"
+            stroke-width="1.49"
+            fill="transparent"
+            cx="164.26112"
+            cy="32.412426"
+            ry="17.36068"
+            rx="31.32589"
+          />
+        </g>
+        <g>
+          <rect
+            x="111.49168"
+            y="27.2202"
+            width="28.273638"
+            height="10.384457"
+            rx="4.3532085"
+            fill="#ffffff"
+            stroke="#ffffff"
+            stroke-linejoin="round"
+            stroke-width="1.4097"
+          />
+          <text
+            x="122.87874"
+            y="35.087666"
+            font-family="Arial"
+            font-size="5.51702px"
+            stroke-width="0.172404"
+            font-weight="bold"
+            text-anchor="middle"
+            transform="scale(1.0216164,0.97884102)"
+            style="text-align:center"
+            ><tspan>RuBisCO</tspan>
+          </text>
         </g>
       </g>
     </svg>

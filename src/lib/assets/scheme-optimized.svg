@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    id="photosynthesis-scheme"
-   width="223.64552mm"
-   height="117.23161mm"
+   width="100%"
    version="1.1"
-   viewBox="0 0 223.64552 117.23161"
-   sodipodi:docname="Photosynthesis_Scheme_optimized.svg"
-   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
+   viewBox="0 0 223.64552 126.0437"
+   sodipodi:docname="scheme-optimized.svg"
+   inkscape:version="1.4.4 (1:1.4.4+202605061435+dcaf3e7d9e)"
+   inkscape:export-filename="scheme-optimized.svg"
+   inkscape:export-xdpi="150"
+   inkscape:export-ydpi="150"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +17,7 @@
      id="defs1" />
   <sodipodi:namedview
      id="namedview1"
-     pagecolor="#505050"
+     pagecolor="#ffffff"
      bordercolor="#ffffff"
      borderopacity="1"
      inkscape:showpageshadow="0"
@@ -23,19 +25,19 @@
      inkscape:pagecheckerboard="1"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     showguides="true"
-     inkscape:zoom="2.5766412"
-     inkscape:cx="127.68561"
-     inkscape:cy="362.87552"
+     showguides="false"
+     inkscape:zoom="3.6439209"
+     inkscape:cx="86.033701"
+     inkscape:cy="52.964926"
      inkscape:window-width="1920"
-     inkscape:window-height="953"
+     inkscape:window-height="952"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g43" />
+     inkscape:current-layer="photosynthesis-scheme" />
   <g
      id="g26"
-     transform="translate(0.52825439,-33.1908)">
+     transform="translate(0.52825439,-24.378699)">
     <rect
        id="rect1"
        x="-0.52825439"
@@ -89,13 +91,13 @@
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">Lumen</tspan></text>
     </g>
   </g>
-  <a
-     id="scheme-oec"
-     transform="translate(10.661354,15.9242)">
+  <g
+     id="g38"
+     inkscape:label="scheme-oec">
     <ellipse
-       id="ellipse1-5"
-       cx="34.445"
-       cy="90.412003"
+       id="ellipse1-5"  
+       cx="45.106354"
+       cy="115.1483"
        rx="11.573"
        ry="9.3954"
        fill="#bbdef0"
@@ -107,27 +109,27 @@
        style="paint-order:markers stroke fill" />
     <text
        id="text1-35"
-       x="27.536812"
-       y="96.907669"
+       x="38.198166"
+       y="121.64397"
        font-family="'Source Sans 3'"
        font-size="6.3989px"
        stroke-width="0.15997"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
        xml:space="preserve"><tspan
          id="tspan1-62"
-         x="27.536812"
-         y="96.907669"
+         x="38.198166"
+         y="121.64397"
          font-weight="bold"
          stroke-width="0.15997"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">OEC</tspan></text>
-  </a>
-  <a
-     id="scheme-psii"
-     transform="translate(10.661454,-7.6023302)">
+  </g>
+  <g
+     id="g37"
+     inkscape:label="scheme-psii">
     <ellipse
        id="ellipse1"
-       cx="34.445"
-       cy="93.275002"
+       cx="45.106453"
+       cy="94.484772"
        rx="14.445"
        ry="19.33"
        fill="#5fad56"
@@ -139,27 +141,27 @@
        style="paint-order:markers stroke fill" />
     <text
        id="text1"
-       x="24.404585"
-       y="96.725319"
+       x="35.06604"
+       y="97.935089"
        font-family="'Source Sans 3'"
        font-size="10.583px"
        stroke-width="0.26458"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
        xml:space="preserve"><tspan
          id="tspan1"
-         x="24.404585"
-         y="96.725319"
+         x="35.06604"
+         y="97.935089"
          font-weight="bold"
          stroke-width="0.26458"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">PSII</tspan></text>
-  </a>
-  <a
-     id="scheme-cytb6f"
-     transform="translate(10.661454,-7.6023302)">
+  </g>
+  <g
+     id="g36"
+     inkscape:label="scheme-cytb6f">
     <ellipse
        id="path1-2"
-       cx="83.334999"
-       cy="93.275002"
+       cx="93.996452"
+       cy="94.484772"
        rx="14.445"
        ry="19.33"
        fill="#63c7b2"
@@ -171,8 +173,8 @@
        style="paint-order:markers stroke fill" />
     <text
        id="text1-9"
-       x="70.920174"
-       y="95.290581"
+       x="81.581627"
+       y="96.500351"
        font-family="'Source Sans 3'"
        font-size="7.7885px"
        stroke="#000000"
@@ -181,21 +183,21 @@
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
        xml:space="preserve"><tspan
          id="tspan1-1"
-         x="70.920174"
-         y="95.290581"
+         x="81.581627"
+         y="96.500351"
          font-weight="bold"
          stroke="#000000"
          stroke-opacity="0"
          stroke-width="0.19471"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">Cytb6f</tspan></text>
-  </a>
-  <a
-     id="scheme-psi"
-     transform="translate(10.661454,-7.6023302)">
+  </g>
+  <g
+     id="g35"
+     inkscape:label="scheme-psi">
     <ellipse
        id="path1-9"
-       cx="132.23"
-       cy="93.275002"
+       cx="142.89145"
+       cy="94.484772"
        rx="14.445"
        ry="19.33"
        fill="#4d9078"
@@ -207,29 +209,29 @@
        style="paint-order:markers stroke fill" />
     <text
        id="text1-3"
-       x="132.18866"
-       y="96.725327"
+       x="142.85011"
+       y="97.935097"
        font-family="'Source Sans 3'"
        font-size="10.583px"
        stroke-width="0.26458"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
        xml:space="preserve"><tspan
          id="tspan1-6"
-         x="132.18866"
-         y="96.725327"
+         x="142.85011"
+         y="97.935097"
          font-weight="bold"
          stroke-width="0.26458"
          text-align="center"
          text-anchor="middle"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">PSI</tspan></text>
-  </a>
-  <a
-     id="scheme-atpsynth"
-     transform="translate(10.661454,-7.6023302)">
+  </g>
+  <g
+     id="g34"
+     inkscape:label="scheme-atpsynthase">
     <rect
        id="rect2"
-       x="168.08"
-       y="73.945"
+       x="178.74146"
+       y="75.15477"
        width="19.691999"
        height="38.660999"
        rx="1.3494999"
@@ -242,7 +244,7 @@
        style="paint-order:markers stroke fill" />
     <g
        id="g8"
-       transform="matrix(1.4098,0,0,1.4098,-175.97,-39.243)">
+       transform="matrix(1.4098,0,0,1.4098,-165.30855,-38.033229)">
       <ellipse
          id="path4-9-3"
          cx="256.94"
@@ -288,7 +290,7 @@
     </g>
     <g
        id="g9"
-       transform="matrix(0.83789924,0,0,0.83789924,25.126425,-3.392121)"
+       transform="matrix(0.83789924,0,0,0.83789924,35.787879,-2.1823503)"
        font-family="'Source Sans 3'">
       <text
          id="text1-3-3"
@@ -323,13 +325,14 @@
            text-anchor="middle"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">Synth</tspan></text>
     </g>
-  </a>
-  <a
-     id="scheme-cbb"
-     transform="translate(4.4602144,0.35049983)">
+  </g>
+  <g
+     id="g32"
+     inkscape:label="scheme-cbb">
     <g
        id="path26"
-       stroke-linecap="round">
+       stroke-linecap="round"
+       transform="translate(-11.867485,5.6927831)">
       <path
          id="path37"
          d="M 129.18,26.72 A 21.82,21.82 0 0 1 107.36,48.54 21.82,21.82 0 0 1 85.54,26.72 21.82,21.82 0 0 1 107.36,4.9 21.82,21.82 0 0 1 129.18,26.72 Z"
@@ -347,11 +350,6 @@
       <g
          id="g33"
          fill="#d81159">
-        <path
-           id="path36"
-           d="m 124.68,21.844 a 0.75,0.75 0 0 0 -0.5293,0.2207 0.75,0.75 0 0 0 0,1.0605 l 5.0293,5.0293 5.0312,-5.0293 a 0.75,0.75 0 0 0 0,-1.0605 0.75,0.75 0 0 0 -1.0606,0 l -3.9707,3.9707 -3.9688,-3.9707 a 0.75,0.75 0 0 0 -0.53125,-0.2207 z"
-           color="#000000"
-           style="-inkscape-stroke:none" />
         <path
            id="path35"
            d="m 102.71,-0.13086 a 0.75,0.75 0 0 0 0,1.0605 l 3.9707,3.9688 -3.9707,3.9707 a 0.75,0.75 0 0 0 0,1.0605 0.75,0.75 0 0 0 1.0606,0 l 5.0312,-5.0293 -5.0312,-5.0312 a 0.75,0.75 0 0 0 -1.0606,0 z"
@@ -371,56 +369,56 @@
     </g>
     <text
        id="text1-6"
-       x="95.90773"
-       y="30.169697"
+       x="84.040245"
+       y="35.86248"
        font-family="'Source Sans 3'"
        font-size="10.583px"
        stroke-width="1.5"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
        xml:space="preserve"><tspan
          id="tspan1-10"
-         x="95.90773"
-         y="30.169697"
+         x="84.040245"
+         y="35.86248"
          font-weight="bold"
          stroke-width="1.5"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">CBB</tspan></text>
-  </a>
-  <a
-     id="scheme-fnr"
-     transform="translate(5.0175544,0.93899983)">
+  </g>
+  <g
+     id="g31"
+     inkscape:label="scheme-fnr">
     <ellipse
        id="path27"
-       cx="146.73"
-       cy="67.026001"
+       cx="151.74754"
+       cy="76.7771"
        rx="8.4889002"
        ry="5.2234001"
        fill="#f2c14e"
        style="paint-order:markers stroke fill" />
     <text
        id="text1-3-0"
-       x="146.53954"
-       y="69.122124"
+       x="151.55708"
+       y="78.873222"
        font-family="'Source Sans 3'"
        font-size="6.4286px"
        stroke-width="0.16071"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
        xml:space="preserve"><tspan
          id="tspan1-6-61"
-         x="146.53954"
-         y="69.122124"
+            x="151.55708"
+            y="78.873222"
          font-weight="bold"
          stroke-width="0.16071"
          text-align="center"
          text-anchor="middle"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">FNR</tspan></text>
-  </a>
-  <a
-     id="scheme-pq"
-     transform="translate(23.885754,-62.1728)">
+  </g>
+  <g
+     id="g30"
+     inkscape:label="scheme-pq">
     <rect
        id="rect3"
-       x="37.119999"
-       y="140.06"
+       x="61.005753"
+       y="86.699295"
        width="17.091"
        height="15.576"
        rx="5.5295"
@@ -431,55 +429,172 @@
        style="paint-order:markers stroke fill" />
     <text
        id="text2"
-       x="45.413319"
-       y="150.62613"
+       x="69.299072"
+       y="97.265427"
        font-family="'Source Sans 3'"
        font-size="8.4667px"
        stroke-width="0.26458"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
        xml:space="preserve"><tspan
          id="tspan3"
-         x="45.413319"
-         y="150.62613"
+         x="69.299072"
+         y="97.265427"
          font-size="8.4667px"
          font-weight="bold"
          stroke-width="0.26458"
          text-align="center"
          text-anchor="middle"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">PQ</tspan></text>
-  </a>
-  <a
-     id="scheme-pc"
-     transform="matrix(1.0437,0,0,1,70.781754,-42.8428)">
+  </g>
+  <g
+     id="g29"
+     inkscape:label="scheme-pc">
     <rect
        id="rect4"
-       x="33.235001"
-       y="140.25999"
-       width="24.861"
+       x="105.46912"
+       y="106.22929"
+       width="25.947426"
        height="16.281"
-       rx="6.5393"
+       rx="6.8250675"
        fill="#8684cf"
        stroke="#ffffff"
        stroke-linejoin="round"
-       stroke-width="2.1634"
+       stroke-width="2.21016"
        style="paint-order:markers stroke fill" />
     <text
        id="text4"
-       x="45.390369"
-       y="151.43082"
+       x="115.65562"
+       y="119.93788"
        font-family="'Source Sans 3'"
-       font-size="8.4667px"
-       stroke-width="0.26458"
+       font-size="8.64972px"
+       stroke-width="0.270299"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       transform="scale(1.0216164,0.97884101)"><tspan
          id="tspan4"
-         x="45.390369"
-         y="151.43082"
-         font-size="8.4667px"
+         x="115.65562"
+         y="119.93788"
+         font-size="8.64972px"
          font-weight="bold"
-         stroke-width="0.26458"
+         stroke-width="0.270299"
          text-align="center"
          text-anchor="middle"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">PC</tspan></text>
-  </a>
+  </g>
+  <g
+     id="scheme-npq">
+    <rect
+       id="rect5"
+       x="30.661455"
+       y="39.894554"
+       width="28.889999"
+       height="16.18956"
+       rx="6.8250675"
+       fill="#8684cf"
+       stroke="#ffffff"
+       stroke-linejoin="round"
+       stroke-width="2.21016"
+       style="fill:#ea5555;fill-opacity:1;paint-order:markers stroke fill" />
+    <text
+       id="text5"
+       x="43.870968"
+       y="52.169224"
+       font-family="'Source Sans 3'"
+       font-size="8.64972px"
+       stroke-width="0.270299"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
+       xml:space="preserve"
+       transform="scale(1.0216164,0.97884101)"><tspan
+         id="tspan5"
+         x="43.870968"
+         y="52.169224"
+         font-size="8.64972px"
+         font-weight="bold"
+         stroke-width="0.270299"
+         text-align="center"
+         text-anchor="middle"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">NPQ</tspan></text>
+    <path
+       id="path15"
+       style="fill:#ea5555;fill-opacity:1;stroke:#ea5555;stroke-width:1.49;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M 49.714448,72.511301 H 40.49846 m 4.607994,-14.202014 v 14.202014" />
+  </g>
+  <g
+     id="g28"
+     inkscape:label="scheme-photorespiration">
+    <path
+       id="path18"
+       d="m 168.23183,10.022448 a 0.75,0.75 0 0 1 0,1.0605 l -3.9707,3.9688 3.9707,3.9707 a 0.75,0.75 0 0 1 0,1.0605 0.75,0.75 0 0 1 -1.0606,0 l -5.0312,-5.0293 5.0312,-5.0312 a 0.75,0.75 0 0 1 1.0606,0 z"
+       color="#000000"
+       style="fill:#ea5555;fill-opacity:1;stroke-linecap:round;-inkscape-stroke:none" />
+    <path
+       id="path19"
+       d="m 195.58892,30.289528 5.0293,5.0312 a 0.75,0.75 0 0 1 0,1.0605 0.75,0.75 0 0 1 -1.0605,0 l -3.9707,-3.9688 -3.9688,3.9688 a 0.75,0.75 0 0 1 -1.0605,0 0.75,0.75 0 0 1 0,-1.0605 z"
+       color="#000000"
+       style="fill:#ea5555;fill-opacity:1;stroke-linecap:round;-inkscape-stroke:none" />
+    <path
+       id="path20"
+       d="m 160.82168,44.523257 a 0.75,0.75 0 0 1 0.53125,0.21875 l 5.0293,5.0312 -5.0293,5.0312 a 0.75,0.75 0 0 1 -1.0606,0 0.75,0.75 0 0 1 0,-1.0625 l 3.9688,-3.9688 -3.9688,-3.9688 a 0.75,0.75 0 0 1 0,-1.0625 0.75,0.75 0 0 1 0.5293,-0.21875 z"
+       color="#000000"
+       style="fill:#ea5555;fill-opacity:1;stroke-linecap:round;-inkscape-stroke:none" />
+         <text
+       id="text21"
+       x="116.82587"
+       y="30.725327"
+       font-family="'Source Sans 3'"
+       font-size="10.583px"
+       stroke-width="1.5"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.81944px;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;white-space:pre;inline-size:47.7034;display:inline"
+       xml:space="preserve"
+       transform="translate(47.441417,-0.656424)"><tspan
+         x="116.82587"
+         y="30.725327"
+         id="tspan7">Photo-
+</tspan><tspan
+         x="116.82587"
+         y="39.98574"
+         id="tspan8">respiration</tspan></text>
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#ea5555;stroke-width:1.49;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       id="path24"
+       cx="164.26112"
+       cy="32.412426"
+       ry="17.36068"
+       rx="31.32589" />
+  </g>
+  <g
+     id="g27"
+     inkscape:label="scheme-rubisco">
+    <rect
+       id="rect15"
+       x="111.49168"
+       y="27.2202"
+       width="28.273638"
+       height="10.384457"
+       rx="4.3532085"
+       fill="#8684cf"
+       stroke="#ffffff"
+       stroke-linejoin="round"
+       stroke-width="1.4097"
+       style="fill:#ffffff;fill-opacity:1;paint-order:markers stroke fill" />
+    <text
+       id="text15"
+       x="122.87874"
+       y="35.087666"
+       font-family="'Source Sans 3'"
+       font-size="5.51702px"
+       stroke-width="0.172404"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:1.05;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
+       xml:space="preserve"
+       transform="scale(1.0216164,0.97884102)"><tspan
+         id="tspan15"
+         x="122.87874"
+         y="35.087666"
+         font-size="5.51702px"
+         font-weight="bold"
+         stroke-width="0.172404"
+         text-align="center"
+            
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'">RuBisCO</tspan></text>
+  </g>
 </svg>
