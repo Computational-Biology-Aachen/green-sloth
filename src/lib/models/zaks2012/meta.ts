@@ -31,9 +31,7 @@ export const meta: ModelMeta = {
       nTimePoints: 500,
       variables: [
         "fluorescenceyield",
-        "pH_lumen",
         "Zeaxanthin",
-        "ATP",
         "Fd_ox",
         "P700r",
       ],
