@@ -29,16 +29,19 @@ export const meta: ModelMeta = {
       title: "Time course",
       tEnd: 100,
       nTimePoints: 500,
-      variables: [
-        "fluorescenceyield",
-        "Zeaxanthin",
-        "Fd_ox",
-        "P700r",
-      ],
+      variables: ["pH_lumen", "fluorescenceyield", "Zeaxanthin", "P700r"],
       showDerived: true,
       // Variables span several orders of magnitude; auto-split them into
       // per-magnitude subplots so small-valued species stay readable.
-      plot: { type: "magnitude" },
+      plot: {
+        type: "grid",
+        groups: [
+          ["pH_lumen"],
+          ["Zeaxanthin"],
+          ["P700r"],
+          ["fluorescenceyield"],
+        ],
+      },
     },
     {
       type: "pam",
