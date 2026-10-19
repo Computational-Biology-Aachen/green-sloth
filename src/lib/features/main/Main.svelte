@@ -10,6 +10,7 @@
     Row,
     Section,
     Text,
+    Link,
   } from "@computational-biology-aachen/design";
 
   let citationText =
@@ -126,11 +127,12 @@
   </Text>
   <H2>Comparison</H2>
   <Text>
-    To help choose between models, GreenSloth lets you compare vital information
-    between two models directly. This enables a quicker and more efficient way
-    to choose which model is best tailored to your specific needs. While most
-    comparisons are done using the information from each model summary,
-    GreenSloth also uses more advanced, newly developed techniques.
+    To help choose between models, GreenSloth lets you <Link
+      href={resolve("compare")}>compare</Link
+    > vital information between two models directly. This enables a quicker and more
+    efficient way to choose which model is best tailored to your specific needs. While
+    most comparisons are done using the information from each model summary, GreenSloth
+    also uses more advanced, newly developed techniques.
   </Text>
 </Section>
 
