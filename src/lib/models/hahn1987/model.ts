@@ -1,5 +1,4 @@
 import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
-import names from "#lib/names.js";
 import {
   Add,
   Minus,
@@ -13,379 +12,365 @@ export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("k1", {
       value: 0.344,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k1",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k2", {
       value: 0.046,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k2",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k3", {
       value: 0.0261,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k3",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k4", {
       value: 0.0455,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k4",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k5", {
       value: 0.0455,
-      unit: "s^{-1}",
       texName: "k5",
+      unit: "s^{-1}",
     })
     .addParameter("k6", {
       value: 0.455,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k6",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k7", {
       value: 0.455,
-      unit: "s^{-1}",
       texName: "k7",
+      unit: "s^{-1}",
     })
     .addParameter("k8", {
       value: 0.909,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k8",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k9", {
       value: 0.0136,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k9",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k10", {
       value: 0.004,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k10",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k11", {
       value: 4e-5,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k11",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k12", {
       value: 0.0341,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k12",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k13", {
       value: 1.7,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k13",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k14", {
       value: 0.000852,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k14",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k15", {
       value: 0.00852,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k15",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k16", {
       value: 0.0928,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k16",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k17", {
       value: 0.0227,
-      unit: "s^{-1}",
       texName: "k17",
+      unit: "s^{-1}",
     })
     .addParameter("k18", {
       value: 0.0467,
-      unit: "m^{6}\\,mol^{-2}\\,s^{-1}",
       texName: "k18",
+      unit: "m^{6}\\,mol^{-2}\\,s^{-1}",
     })
     .addParameter("k19", {
       value: 0.00114,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k19",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k20", {
       value: 0.0114,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k20",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k21", {
       value: 0.00114,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k21",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k22", {
       value: 0.00114,
-      unit: "m^{6}\\,mol^{-2}\\,s^{-1}",
       texName: "k22",
+      unit: "m^{6}\\,mol^{-2}\\,s^{-1}",
     })
     .addParameter("k23", {
       value: 0.0114,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k23",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("k24", {
       value: 0.0114,
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
       texName: "k24",
+      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
     })
     .addParameter("kc1", {
       value: 1.0,
-      unit: "s^{-1}",
       texName: "kc1",
+      unit: "s^{-1}",
     })
     .addParameter("kc2", {
       value: 0.933,
-      unit: "s^{-1}",
       texName: "kc2",
+      unit: "s^{-1}",
     })
     .addParameter("rd", {
       value: 1.1e-5,
-      unit: "s^{-1}",
       texName: "rd",
+      unit: "s^{-1}",
     })
     .addParameter("ko1", {
       value: 0.01,
-      unit: "s^{-1}",
       texName: "ko1",
+      unit: "s^{-1}",
     })
     .addParameter("ko2", {
       value: 4.31,
-      unit: "s^{-1}",
       texName: "ko2",
+      unit: "s^{-1}",
     })
     .addParameter("phic", {
       value: 1.84,
-      unit: "s^{-1}",
       texName: "phic",
+      unit: "s^{-1}",
     })
     .addParameter("phio", {
       value: 0.0453,
-      unit: "s^{-1}",
       texName: "phio",
+      unit: "s^{-1}",
     })
     .addParameter("phis", {
       value: 0.0001,
-      unit: "s^{-1}",
       texName: "phis",
+      unit: "s^{-1}",
     })
     .addParameter("D", {
       value: 0.0001,
-      unit: "s^{-1}",
       texName: "D",
+      unit: "s^{-1}",
     })
     .addParameter("E", {
       value: 0.5,
-      unit: "mol\\,m^{-3}",
       texName: "E",
+      unit: "mol\\,m^{-3}",
     })
     .addParameter("Oa", {
       value: 100.0,
-      unit: "mol\\,m^{-3}",
       texName: "Oa",
+      unit: "mol\\,m^{-3}",
     })
     .addParameter("Ca", {
       value: 0.45,
-      unit: "mol\\,m^{-3}",
       texName: "Ca",
+      unit: "mol\\,m^{-3}",
     })
     .addParameter("PAg", {
       value: 0.001,
-      unit: "g\\,m^{-2}\\,s^{-1}",
       texName: "PAg",
-    })
-    .addParameter("PAr", {
-      displayName: names.ppfd,
-      value: 0.0002,
       unit: "g\\,m^{-2}\\,s^{-1}",
-      texName: "PAr",
+    })
+    .addParameter("PPFD", {
+      value: 0.0002,
+      texName: "PPFD",
+      unit: "g\\,m^{-2}\\,s^{-1}",
     })
     .addParameter("h", {
       value: 0.0002,
-      unit: "m",
       texName: "h",
+      unit: "m",
     })
-    .addVariable("RuBP", {
-      displayName: names.rubp,
+    .addVariable("RUBP", {
       value: 1.0,
+      texName: "RUBP",
       unit: "mol\\,m^{-3}",
-      texName: "RuBP",
     })
     .addVariable("PGA", {
-      displayName: names.pga,
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "PGA",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("ADP", {
-      displayName: names.adp,
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "ADP",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("Pi", {
-      displayName: names.pi,
       value: 10.0,
-      unit: "mol\\,m^{-3}",
       texName: "Pi",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("TP", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "TP",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("HP", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "HP",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("GG", {
       value: 100.0,
-      unit: "mol\\,m^{-3}",
       texName: "GG",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("Pio", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "Pio",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("TPo", {
       value: 0.1,
-      unit: "mol\\,m^{-3}",
       texName: "TPo",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("HPo", {
       value: 0.1,
-      unit: "mol\\,m^{-3}",
       texName: "HPo",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("UDP", {
       value: 10.0,
-      unit: "mol\\,m^{-3}",
       texName: "UDP",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("GF", {
       value: 77.3,
-      unit: "mol\\,m^{-3}",
       texName: "GF",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("GFV", {
       value: 77.3,
-      unit: "mol\\,m^{-3}",
       texName: "GFV",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("TPGA", {
       value: 0.1,
-      unit: "mol\\,m^{-3}",
       texName: "TPGA",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("E4P", {
-      displayName: names.e4p,
       value: 0.1,
-      unit: "mol\\,m^{-3}",
       texName: "E4P",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("S7P", {
-      displayName: names.s7p,
       value: 0.1,
-      unit: "mol\\,m^{-3}",
       texName: "S7P",
-    })
-    .addVariable("Ru5P", {
-      displayName: names.ru5p,
-      value: 1.0,
       unit: "mol\\,m^{-3}",
-      texName: "Ru5P",
+    })
+    .addVariable("RU5P", {
+      value: 1.0,
+      texName: "RU5P",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("PGl", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "PGl",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("Gl", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "Gl",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("Gx", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "Gx",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("Sn", {
       value: 10.0,
-      unit: "mol\\,m^{-3}",
       texName: "Sn",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("Gn", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "Gn",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("GA", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "GA",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("GmA", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "GmA",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("Glm", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "Glm",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("OxA", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "OxA",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("NH3", {
       value: 1.0,
-      unit: "mol\\,m^{-3}",
       texName: "NH3",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("CO2", {
-      displayName: names.co2,
       value: 0.33,
-      unit: "mol\\,m^{-3}",
       texName: "CO2",
-      slider: { min: "0.1", max: "1.0", step: "0.01" },
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("O2", {
-      displayName: names.o2,
       value: 0.245,
-      unit: "mol\\,m^{-3}",
       texName: "O2",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("Ci", {
-      displayName: names.co2_intercellular,
       value: 0.4,
-      unit: "mol\\,m^{-3}",
       texName: "Ci",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("Oi", {
       value: 101.0,
-      unit: "mol\\,m^{-3}",
       texName: "Oi",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("AP_tot", {
-      displayName: names.atp_tot,
       value: 11.0,
-      unit: "mol\\,m^{-3}",
       texName: "AP\\_tot",
+      unit: "mol\\,m^{-3}",
     })
     .addVariable("UP_tot", {
       value: 20.0,
-      unit: "mol\\,m^{-3}",
       texName: "UP\\_tot",
+      unit: "mol\\,m^{-3}",
     })
     .addAssignment("ATP", {
-      displayName: names.atp,
       fn: new Add([new Name("AP_tot"), new Minus([new Name("ADP")])]),
       texName: "ATP",
     })
@@ -393,10 +378,24 @@ export function initModel(): KineticModelBuilder {
       fn: new Add([new Name("UP_tot"), new Minus([new Name("UDP")])]),
       texName: "UTP",
     })
+    .addAssignment("PAn", {
+      fn: new Mul([
+        new Num(1584000.0),
+        new Name("h"),
+        new Add([
+          new Minus([
+            new Mul([new Name("k20"), new Pow(new Name("Gn"), new Num(2.0))]),
+          ]),
+          new Minus([new Mul([new Num(12.0), new Name("GF"), new Name("rd")])]),
+          new Mul([new Name("CO2"), new Name("RUBP"), new Name("k1")]),
+        ]),
+      ]),
+      texName: "PAn",
+    })
     .addReaction("v1", {
-      fn: new Mul([new Name("CO2"), new Name("RuBP"), new Name("k1")]),
+      fn: new Mul([new Name("CO2"), new Name("RUBP"), new Name("k1")]),
       stoichiometry: [
-        { name: "RuBP", value: new Num(-1.0) },
+        { name: "RUBP", value: new Num(-1.0) },
         { name: "PGA", value: new Num(2.0) },
         { name: "CO2", value: new Num(-1.0) },
         { name: "O2", value: new Num(-0.5) },
@@ -455,7 +454,7 @@ export function initModel(): KineticModelBuilder {
       stoichiometry: [
         { name: "S7P", value: new Num(-1.0) },
         { name: "TPGA", value: new Num(1.0) },
-        { name: "Ru5P", value: new Num(1.0) },
+        { name: "RU5P", value: new Num(1.0) },
       ],
       texName: "v7",
     })
@@ -464,16 +463,16 @@ export function initModel(): KineticModelBuilder {
       stoichiometry: [
         { name: "TPGA", value: new Num(-1.0) },
         { name: "TP", value: new Num(-1.0) },
-        { name: "Ru5P", value: new Num(1.0) },
+        { name: "RU5P", value: new Num(1.0) },
       ],
       texName: "v8",
     })
     .addReaction("v9", {
-      fn: new Mul([new Name("ATP"), new Name("Ru5P"), new Name("k9")]),
+      fn: new Mul([new Name("ATP"), new Name("RU5P"), new Name("k9")]),
       stoichiometry: [
-        { name: "Ru5P", value: new Num(-1.0) },
+        { name: "RU5P", value: new Num(-1.0) },
         { name: "ADP", value: new Num(1.0) },
-        { name: "RuBP", value: new Num(1.0) },
+        { name: "RUBP", value: new Num(1.0) },
       ],
       texName: "v9",
     })
@@ -535,10 +534,10 @@ export function initModel(): KineticModelBuilder {
       texName: "v15",
     })
     .addReaction("v16", {
-      fn: new Mul([new Name("O2"), new Name("RuBP"), new Name("k16")]),
+      fn: new Mul([new Name("O2"), new Name("RUBP"), new Name("k16")]),
       stoichiometry: [
         { name: "O2", value: new Num(-1.0) },
-        { name: "RuBP", value: new Num(-1.0) },
+        { name: "RUBP", value: new Num(-1.0) },
         { name: "PGl", value: new Num(1.0) },
         { name: "PGA", value: new Num(1.0) },
       ],
