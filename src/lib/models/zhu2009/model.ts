@@ -171,6 +171,11 @@ export function initModel(): KineticModelBuilder {
       unit: "mM",
       texName: "GAP",
     })
+    .addAssignment("A", {
+      fn: new Mul([new Num(33.33), new Name("v1")]),
+      texName: "A",
+      unit: "\\mu M\\, m^{-2}\\, s^{-1}",
+    })
     .addReaction("v1", {
       fn: new Divide([
         new Mul([new Name("RuBP"), new Name("V1_max")]),

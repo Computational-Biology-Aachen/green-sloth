@@ -583,7 +583,23 @@
         "texName": "v13"
       }
     },
-    "derived": {},
+    "derived": {
+      "A": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Num",
+              "value": 33.33
+            },
+            {
+              "type": "Name",
+              "value": "v1"
+            }
+          ]
+        }
+      }
+    },
     "readouts": {}
   }
 }
