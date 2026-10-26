@@ -1,5 +1,7 @@
-import names from "#lib/names.js";
-import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import {
+  KineticModelBuilder,
+  Unit,
+} from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
   Divide,
@@ -18,674 +20,816 @@ import {
 } from "@computational-biology-aachen/mxlweb-core/mathml";
 
 /**
- * Zaks et al. (2012).
+ * Complete mxlpy port of the Zaks et al. photosynthesis model.
  *
- * DOI: 10.1073/pnas.1211017109
+ * |             |                                                                  |
+ * | ----------- | ---------------------------------------------------------------- |
+ * | doi         | 10.1073/pnas.1211017109                                          |
+ * | main author | Julia Zaks                                                       |
+ * | paper title | A kinetic model of rapidly reversible nonphotochemical quenching |
+ * | published   | September 25, 2012                                               |
+ * | journal     | PNAS                                                             |
+ * | organism    | Higher plants                                                    |
+ * | Ported by   | Quang Huy Nguyen ( @PhotosyntheticBatman )                       |
  *
+ * The model provides one of the first mechanistic description of energy dependent
+ * quenching process qE within NPQ. qE activity is simulated under 2 different
+ * light conditions: low light and high light.
+ *
+ * Sections: F1 - PSII (antenna + reaction centre) F2 - qE / xanthophyll cycle F3
+ * \- PQ pool (QB site + plastoquinone) F4 - Cytochrome b6f F5 - PSI F7 - ATP
+ * synthase F8 - Lumen ion fluxes (Mg, Cl, K)
  */
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("crosssection", {
       value: 0.25,
-      unit: "m^{2}\\,\\mu mol^{-1}",
       texName: "crosssection",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", prefix: "kilo", exponent: 2 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kEETLHP680QAox", {
       value: 5000000000.0,
-      unit: "s^{-1}",
       texName: "kEETLHP680QAox",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kEETLHP680QAred", {
       value: 850000000.0,
-      unit: "s^{-1}",
       texName: "kEETLHP680QAred",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kQ", {
       value: 3000000000.0,
-      unit: "s^{-1}",
       texName: "kQ",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kEETLHP680revQAox", {
       value: 10000000000.0,
-      unit: "s^{-1}",
       texName: "kEETLHP680revQAox",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kEETLHP680revQAred", {
       value: 10000000000.0,
-      unit: "s^{-1}",
       texName: "kEETLHP680revQAred",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kquenchP680plus", {
       value: 500000000.0,
-      unit: "s^{-1}",
       texName: "kquenchP680plus",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kNRantenna", {
       value: 500000000.0,
-      unit: "s^{-1}",
       texName: "kNRantenna",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kNRP680", {
       value: 100000000.0,
-      unit: "s^{-1}",
       texName: "kNRP680",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("PsbSDose", {
       value: 0.6,
-      unit: "–",
       texName: "PsbSDose",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kF", {
-      displayName: names.fluorescence_rate_constant,
       value: 70000000.0,
-      unit: "s^{-1}",
       texName: "kF",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("alphaRC", {
       value: 0.4,
-      unit: "–",
       texName: "alphaRC",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("alphaQ", {
       value: 0.1,
-      unit: "–",
       texName: "alphaQ",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kETP680PheOpenRC", {
       value: 3000000000000.0,
-      unit: "s^{-1}",
       texName: "kETP680PheOpenRC",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETP680PheClosedRC", {
       value: 10000000000.0,
-      unit: "s^{-1}",
       texName: "kETP680PheClosedRC",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETPheToQA", {
       value: 3000000000.0,
-      unit: "s^{-1}",
       texName: "kETPheToQA",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETWaterOxidation", {
       value: 30000000.0,
-      unit: "s^{-1}",
       texName: "kETWaterOxidation",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kP680Pherecombination", {
       value: 500000000.0,
-      unit: "s^{-1}",
       texName: "kP680Pherecombination",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kP680QArecombination", {
       value: 30.0,
-      unit: "s^{-1}",
       texName: "kP680QArecombination",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kP680QArecombinationClosedRC", {
       value: 580.0,
-      unit: "s^{-1}",
       texName: "kP680QArecombinationClosedRC",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETQAtoQB1", {
       value: 3500.0,
-      unit: "s^{-1}",
       texName: "kETQAtoQB1",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETQB1toQA", {
       value: 350.0,
-      unit: "s^{-1}",
       texName: "kETQB1toQA",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETQAtoQB2", {
       value: 1600.0,
-      unit: "s^{-1}",
       texName: "kETQAtoQB2",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETQB2toQA", {
       value: 1600.0,
-      unit: "s^{-1}",
       texName: "kETQB2toQA",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("PQH2undock", {
       value: 800.0,
-      unit: "s^{-1}",
       texName: "PQH2undock",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("QReoxidationRate", {
       value: 100.0,
-      unit: "s^{-1}",
       texName: "QReoxidationRate",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("PQdockingrate", {
       value: 500.0,
-      unit: "s^{-1}",
       texName: "PQdockingrate",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("QuinonePoolSize", {
       value: 10.0,
-      unit: "–",
       texName: "QuinonePoolSize",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("pKaC", {
       value: 5.8,
-      unit: "–",
       texName: "pKaC",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("nC", {
       value: 1.2,
-      unit: "–",
       texName: "nC",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("pHStromaStart", {
       value: 7.2,
-      unit: "–",
       texName: "pHStromaStart",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("pHLumenStart", {
       value: 7.2,
-      unit: "–",
       texName: "pHLumenStart",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("StromaProtonsStart", {
       value: 1e-10,
-      unit: "M",
       texName: "StromaProtonsStart",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("bufferCapacityStroma", {
       value: 0.1,
-      unit: "M",
       texName: "bufferCapacityStroma",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("bufferCapacityLumen", {
       value: 0.03,
-      unit: "M",
       texName: "bufferCapacityLumen",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ATPConductivity", {
       value: 6e-10,
-      unit: "mol\\,cm^{-2}\\,V^{-1}\\,s^{-1}",
       texName: "ATPConductivity",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", prefix: "centi", exponent: -2 },
+          { kind: "second", exponent: -1 },
+          { kind: "volt", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kATPsActivate", {
       value: 0.25,
-      unit: "s^{-1}",
       texName: "kATPsActivate",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kATPsInactivate", {
       value: 0.003,
-      unit: "s^{-1}",
       texName: "kATPsInactivate",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("thresholdpmf", {
       value: 0.001,
-      unit: "V",
       texName: "thresholdpmf",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("leakpmf", {
       value: 0.8,
-      unit: "V",
       texName: "leakpmf",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("leakConductivity", {
       value: 1e-7,
-      unit: "mol\\,cm^{-2}\\,V^{-1}\\,s^{-1}",
       texName: "leakConductivity",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", prefix: "centi", exponent: -2 },
+          { kind: "second", exponent: -1 },
+          { kind: "volt", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PCl", {
       value: 1.8e-8,
-      unit: "L\\,cm^{-2}\\,s^{-1}",
       texName: "PCl",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", exponent: 1 },
+          { kind: "metre", prefix: "centi", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PMg", {
       value: 3.6e-8,
-      unit: "L\\,cm^{-2}\\,s^{-1}",
       texName: "PMg",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", exponent: 1 },
+          { kind: "metre", prefix: "centi", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PK", {
       value: 1.8e-8,
-      unit: "L\\,cm^{-2}\\,s^{-1}",
       texName: "PK",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", exponent: 1 },
+          { kind: "metre", prefix: "centi", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("zCl", {
       value: -1.0,
-      unit: "–",
       texName: "zCl",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("zMg", {
       value: 2.0,
-      unit: "–",
       texName: "zMg",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("zK", {
       value: 1.0,
-      unit: "–",
       texName: "zK",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("StromaClStart", {
       value: 0.01,
-      unit: "M",
       texName: "StromaClStart",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("StromaMgStart", {
       value: 0.01,
-      unit: "M",
       texName: "StromaMgStart",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("StromaKStart", {
       value: 0.01,
-      unit: "M",
       texName: "StromaKStart",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Rconst", {
-      displayName: names.gas_constant,
       value: 8.314,
-      unit: "J\\,mol^{-1}\\,K^{-1}",
+      displayName: "R",
       texName: "Rconst",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", exponent: 1 },
+          { kind: "kelvin", exponent: -1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Fconst", {
-      displayName: names.faraday_constant,
       value: 96485.0,
-      unit: "C\\,mol^{-1}",
+      displayName: "F",
       texName: "Fconst",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "coulomb", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Tconst", {
-      displayName: names.temperature,
       value: 300.0,
-      unit: "K",
+      displayName: "T",
       texName: "Tconst",
+      unit: Unit.fromJson({ factors: [{ kind: "kelvin", exponent: 1 }] }),
     })
     .addParameter("LumenVolume", {
       value: 6.7e-21,
-      unit: "L",
       texName: "LumenVolume",
+      unit: Unit.fromJson({ factors: [{ kind: "litre", exponent: 1 }] }),
     })
     .addParameter("StromaVolume", {
       value: 5.36e-20,
-      unit: "L",
       texName: "StromaVolume",
+      unit: Unit.fromJson({ factors: [{ kind: "litre", exponent: 1 }] }),
     })
     .addParameter("lumenVolumePerArea", {
       value: 8e-10,
-      unit: "L\\,cm^{-2}",
       texName: "lumenVolumePerArea",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", exponent: 1 },
+          { kind: "metre", prefix: "centi", exponent: -2 },
+        ],
+      }),
     })
     .addParameter("MembraneCapacitance", {
       value: 1e-6,
-      unit: "C\\,cm^{-2}\\,V^{-1}",
       texName: "MembraneCapacitance",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "coulomb", exponent: 1 },
+          { kind: "metre", prefix: "centi", exponent: -2 },
+          { kind: "volt", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Na", {
       value: 6.022e23,
-      unit: "mol^{-1}",
       texName: "Na",
+      unit: Unit.fromJson({ factors: [{ kind: "mole", exponent: -1 }] }),
     })
     .addParameter("VDErateVioToAnth", {
       value: 0.04,
-      unit: "s^{-1}",
       texName: "VDErateVioToAnth",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("VDErateAnthToZea", {
       value: 0.02,
-      unit: "s^{-1}",
       texName: "VDErateAnthToZea",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("ZErate", {
       value: 0.0004,
-      unit: "s^{-1}",
       texName: "ZErate",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("TotalXanthophyll", {
       value: 1.0,
-      unit: "–",
       texName: "TotalXanthophyll",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("VDEpKa", {
       value: 6.0,
-      unit: "–",
       texName: "VDEpKa",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("nVDE", {
       value: 6.0,
-      unit: "–",
       texName: "nVDE",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PsbSpKa", {
       value: 6.4,
-      unit: "–",
       texName: "PsbSpKa",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("nPsbS", {
       value: 3.0,
-      unit: "–",
       texName: "nPsbS",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("zfrac", {
       value: 0.8,
-      unit: "–",
       texName: "zfrac",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PsbSConvertRate", {
       value: 0.1,
-      unit: "s^{-1}",
       texName: "PsbSConvertRate",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("PSIcrossSection", {
       value: 0.35,
-      unit: "m^{2}\\,\\mu mol^{-1}",
       texName: "PSIcrossSection",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", prefix: "kilo", exponent: 2 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kETPCP700", {
       value: 6000.0,
-      unit: "s^{-1}",
       texName: "kETPCP700",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETP700Fdx", {
       value: 10.0,
-      unit: "–",
       texName: "kETP700Fdx",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PCperPSI", {
       value: 3.0,
-      unit: "–",
       texName: "PCperPSI",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("ElectronsPerPC", {
       value: 1.0,
-      unit: "–",
       texName: "ElectronsPerPC",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("fracIntactRC", {
       value: 1.0,
-      unit: "–",
       texName: "fracIntactRC",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("voltsperlog", {
       value: 0.02585065036015961,
-      unit: "V",
       texName: "voltsperlog",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("LightIntensity", {
-      value: 100,
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      value: 100.0,
+      displayName: "PPFD",
       texName: "LightIntensity",
-      displayName: names.ppfd,
-      slider: { min: "0", max: "1000", step: "100" },
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "micro", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
+      slider: {
+        min: "0",
+        max: "1000",
+        step: "100",
+      },
     })
     .addParameter("P680neut", {
       value: 1.0,
-      unit: "–",
       texName: "P680neut",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("qtrigg1", {
       value: 1.0,
-      unit: "–",
       texName: "qtrigg1",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("qtrigg2", {
       value: 0.0,
-      unit: "–",
       texName: "qtrigg2",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("qtrigg3", {
       value: 1.0,
-      unit: "–",
       texName: "qtrigg3",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("ATPConductivityReverse", {
       value: 1e-10,
-      unit: "mol\\,cm^{-2}\\,V^{-1}\\,s^{-1}",
       texName: "ATPConductivityReverse",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", prefix: "centi", exponent: -2 },
+          { kind: "second", exponent: -1 },
+          { kind: "volt", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ATPperPSI", {
       value: 600.0,
-      unit: "–",
       texName: "ATPperPSI",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("CytRegulateYesNO", {
       value: 1.0,
-      unit: "–",
       texName: "CytRegulateYesNO",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("F_PsbS", {
       value: 0.6,
-      unit: "–",
       texName: "F\\_PsbS",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("NADPperPSI", {
       value: 15.0,
-      unit: "–",
       texName: "NADPperPSI",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PsbSperPSII", {
       value: 1.0,
-      unit: "–",
       texName: "PsbSperPSII",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("damageyesno", {
       value: 0.0,
-      unit: "–",
       texName: "damageyesno",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("electronsPerNADPH", {
       value: 2.0,
-      unit: "–",
       texName: "electronsPerNADPH",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kEETP700", {
       value: 14000000000.0,
-      unit: "s^{-1}",
       texName: "kEETP700",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETFdxMV", {
       value: 1000.0,
-      unit: "s^{-1}",
       texName: "kETFdxMV",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETFdxPQ", {
       value: 0.005,
-      unit: "s^{-1}",
       texName: "kETFdxPQ",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETFdxThrdx", {
       value: 1000.0,
-      unit: "s^{-1}",
       texName: "kETFdxThrdx",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETNADPHPQ", {
       value: 100.0,
-      unit: "s^{-1}",
       texName: "kETNADPHPQ",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kETThrdxOx", {
       value: 100.0,
-      unit: "s^{-1}",
       texName: "kETThrdxOx",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kP680PherecombinationClosedRC", {
       value: 500.0,
-      unit: "s^{-1}",
       texName: "kP680PherecombinationClosedRC",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kP680PherecombinationOpenRC", {
       value: 200000000.0,
-      unit: "s^{-1}",
       texName: "kP680PherecombinationOpenRC",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kPheQArecombination", {
       value: 500.0,
-      unit: "s^{-1}",
       texName: "kPheQArecombination",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kQuenchDamage", {
       value: 0.0,
-      unit: "s^{-1}",
       texName: "kQuenchDamage",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("repairyesno", {
       value: 0.0,
-      unit: "–",
       texName: "repairyesno",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("tF", {
       value: 1.5e-9,
-      unit: "s",
       texName: "tF",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: 1 }] }),
     })
     .addParameter("tHop", {
       value: 1.7e-11,
-      unit: "s",
       texName: "tHop",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: 1 }] }),
     })
     .addParameter("tauCS", {
       value: 5.5e-12,
-      unit: "s",
       texName: "tauCS",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: 1 }] }),
     })
     .addParameter("tauqE", {
       value: 1e-11,
-      unit: "s",
       texName: "tauqE",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: 1 }] }),
     })
     .addParameter("ATPperProton", {
       value: 0.25,
-      unit: "–",
       texName: "ATPperProton",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("ATP", {
-      displayName: names.atp,
       value: 2.0,
-      unit: "–",
       texName: "ATP",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("ActiveATPs", {
       value: 0.05,
-      unit: "–",
       texName: "ActiveATPs",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("Antheraxanthin", {
       value: 1e-14,
-      unit: "–",
       texName: "Antheraxanthin",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("Fdxox", {
-      displayName: names.fd_ox,
       value: 1.0,
-      unit: "–",
+      displayName: "Fd_ox",
       texName: "Fdxox",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("Fdxr", {
-      displayName: names.fd_red,
       value: 1e-14,
-      unit: "–",
+      displayName: "Fd_red",
       texName: "Fdxr",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("LumenCl", {
       value: 0.01,
-      unit: "M",
       texName: "LumenCl",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("LumenK", {
       value: 0.01,
-      unit: "M",
       texName: "LumenK",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("LumenMg", {
       value: 0.01,
-      unit: "M",
       texName: "LumenMg",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("LumenProtons", {
       value: 1e-14,
-      unit: "M",
       texName: "LumenProtons",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("P680ex", {
       value: 1e-14,
-      unit: "–",
       texName: "P680ex",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("P680plus", {
       value: 1e-14,
-      unit: "–",
       texName: "P680plus",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("P700ox", {
       value: 1e-14,
-      unit: "–",
       texName: "P700ox",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("P700r", {
       value: 1.0,
-      unit: "–",
       texName: "P700r",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("PCr", {
       value: 0.2,
-      unit: "–",
       texName: "PCr",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("PQ", {
-      displayName: names.pq,
       value: 8.999,
-      unit: "–",
       texName: "PQ",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("PQH2", {
-      displayName: names.pqh2,
       value: 0.001,
-      unit: "–",
       texName: "PQH2",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("PSIIChlEx", {
       value: 1e-14,
-      unit: "–",
       texName: "PSIIChlEx",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("PheAnion", {
       value: 1e-14,
-      unit: "–",
       texName: "PheAnion",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("PsbSQ", {
       value: 1e-14,
-      unit: "–",
       texName: "PsbSQ",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("QAox", {
-      displayName: names.qa,
       value: 1.0,
-      unit: "–",
+      displayName: "QA",
       texName: "QAox",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("QBneut", {
       value: 1.0,
-      unit: "–",
       texName: "QBneut",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("QBred1", {
       value: 1e-7,
-      unit: "–",
       texName: "QBred1",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("QBred2", {
       value: 1e-7,
-      unit: "–",
       texName: "QBred2",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("Thrdx", {
       value: 1e-14,
-      unit: "–",
       texName: "Thrdx",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("TotalLEF", {
       value: 1e-14,
-      unit: "–",
       texName: "TotalLEF",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("Zeaxanthin", {
       value: 1e-14,
-      unit: "–",
       texName: "Zeaxanthin",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addAssignment("pH_stroma", {
       fn: new Add([
@@ -700,7 +844,6 @@ export function initModel(): KineticModelBuilder {
       texName: "pH\\_stroma",
     })
     .addAssignment("pH_lumen", {
-      displayName: names.ph_lumen,
       fn: new Add([
         new Name("pHLumenStart"),
         new Minus([
@@ -745,12 +888,11 @@ export function initModel(): KineticModelBuilder {
       texName: "deltapsi",
     })
     .addAssignment("deltapH", {
-      displayName: names.delta_ph,
       fn: new Add([new Name("pH_stroma"), new Minus([new Name("pH_lumen")])]),
+      displayName: "delta_pH",
       texName: "deltapH",
     })
     .addAssignment("pmf", {
-      displayName: names.pmf,
       fn: new Add([
         new Name("deltapsi"),
         new Mul([
@@ -885,11 +1027,11 @@ export function initModel(): KineticModelBuilder {
       texName: "q\\_total",
     })
     .addAssignment("QAred", {
-      displayName: names.qa_red,
       fn: new Mul([
         new Name("fracIntactRC"),
         new Add([new Num(1.0), new Minus([new Name("QAox")])]),
       ]),
+      displayName: "QA_red",
       texName: "QAred",
     })
     .addAssignment("Pheneut", {
@@ -1370,7 +1512,6 @@ export function initModel(): KineticModelBuilder {
       texName: "atp\\_synthesis",
     })
     .addReaction("vleak", {
-      displayName: names.r_proton_leak,
       fn: new Piecewise([
         new Num(0.0),
         new GreaterEqual([
@@ -1390,6 +1531,7 @@ export function initModel(): KineticModelBuilder {
           ]),
         },
       ],
+      displayName: "proton leak",
       texName: "vleak",
     })
     .addReaction("atps_activate", {
@@ -1481,19 +1623,19 @@ export function initModel(): KineticModelBuilder {
       stoichiometry: [{ name: "Thrdx", value: new Num(-1.0) }],
       texName: "mv\\_3",
     })
-    .addAssignment("light", {
+    .addReadout("light", {
       fn: new Name("LightIntensity"),
       texName: "light",
     })
-    .addAssignment("kF_obs", {
+    .addReadout("kF_obs", {
       fn: new Mul([new Name("PSIIChlEx"), new Name("kF")]),
       texName: "kF\\_obs",
     })
-    .addAssignment("kqE_obs", {
+    .addReadout("kqE_obs", {
       fn: new Mul([new Name("PSIIChlEx"), new Name("kQ"), new Name("q_total")]),
       texName: "kqE\\_obs",
     })
-    .addAssignment("kPC_obs", {
+    .addReadout("kPC_obs", {
       fn: new Mul([
         new Name("P680neut"),
         new Add([
@@ -1511,7 +1653,7 @@ export function initModel(): KineticModelBuilder {
       ]),
       texName: "kPC\\_obs",
     })
-    .addAssignment("kPCRCC_obs", {
+    .addReadout("kPCRCC_obs", {
       fn: new Mul([
         new Num(1.0),
         new Name("P680neut"),
@@ -1520,7 +1662,7 @@ export function initModel(): KineticModelBuilder {
       ]),
       texName: "kPCRCC\\_obs",
     })
-    .addAssignment("kC_obs", {
+    .addReadout("kC_obs", {
       fn: new Add([
         new Name("kF_obs"),
         new Mul([new Name("PSIIChlEx"), new Name("kNRantenna")]),
@@ -1532,7 +1674,7 @@ export function initModel(): KineticModelBuilder {
       ]),
       texName: "kC\\_obs",
     })
-    .addAssignment("allrates", {
+    .addReadout("allrates", {
       fn: new Add([
         new Name("kC_obs"),
         new Name("kPC_obs"),
@@ -1540,7 +1682,7 @@ export function initModel(): KineticModelBuilder {
       ]),
       texName: "allrates",
     })
-    .addAssignment("allratesRCC", {
+    .addReadout("allratesRCC", {
       fn: new Add([
         new Name("kC_obs"),
         new Name("kPCRCC_obs"),
@@ -1548,19 +1690,19 @@ export function initModel(): KineticModelBuilder {
       ]),
       texName: "allratesRCC",
     })
-    .addAssignment("fluorescenceyield", {
+    .addReadout("fluorescenceyield", {
       fn: new Divide([new Name("kF_obs"), new Name("allrates")]),
       texName: "fluorescenceyield",
     })
-    .addAssignment("fluorescenceyieldRCC", {
+    .addReadout("fluorescenceyieldRCC", {
       fn: new Divide([new Name("kF_obs"), new Name("allratesRCC")]),
       texName: "fluorescenceyieldRCC",
     })
-    .addAssignment("qE_model", {
+    .addReadout("qE_model", {
       fn: new Divide([new Name("kqE_obs"), new Name("kC_obs")]),
       texName: "qE\\_model",
     })
-    .addAssignment("phi_npq", {
+    .addReadout("phi_npq", {
       fn: new Divide([new Name("kqE_obs"), new Name("allrates")]),
       texName: "phi\\_npq",
     });

@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "zhu2005",
   "model": {
@@ -10,12 +10,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "Ap"
       },
       "U": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "U"
       },
@@ -24,12 +50,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "P680plus\\_Pheominus"
       },
       "P680plus_Pheo": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "P680plus\\_Pheo"
       },
@@ -38,12 +90,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "P680\\_Pheominus"
       },
       "S0T": {
         "value": {
           "type": "Num",
           "value": 0.2
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "S0T"
       },
@@ -52,12 +130,38 @@
           "type": "Num",
           "value": 0.8
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "S1T"
       },
       "S2T": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "S2T"
       },
@@ -66,12 +170,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "S3T"
       },
       "S0Tp": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "S0Tp"
       },
@@ -80,12 +210,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "S1Tp"
       },
       "S2Tp": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "S2Tp"
       },
@@ -94,12 +250,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "S3Tp"
       },
       "QA_QB": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "QA\\_QB"
       },
@@ -108,12 +290,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "QAred\\_QB"
       },
       "QA_QBred": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "QA\\_QBred"
       },
@@ -122,12 +330,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "QAred\\_QBred"
       },
       "QA_QB2red": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "QA\\_QB2red"
       },
@@ -136,12 +370,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "QAred\\_QB2red"
       },
       "PQH2": {
         "value": {
           "type": "Num",
           "value": 3
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "PQH2"
       },
@@ -150,12 +410,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "Aip"
       },
       "Ui": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "Ui"
       },
@@ -164,12 +450,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "Uifc"
       },
       "P680plus_Pheominus_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "P680plus\\_Pheominus\\_i"
       },
@@ -178,12 +490,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "P680plus\\_Pheo\\_i"
       },
       "P680_Pheominus_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "P680\\_Pheominus\\_i"
       },
@@ -192,12 +530,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "S0T\\_i"
       },
       "S1T_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "S1T\\_i"
       },
@@ -206,12 +570,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "S2T\\_i"
       },
       "S3T_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "S3T\\_i"
       },
@@ -220,12 +610,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "S0Tp\\_i"
       },
       "S1Tp_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "S1Tp\\_i"
       },
@@ -234,12 +650,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "S2Tp\\_i"
       },
       "S3Tp_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "S3Tp\\_i"
       },
@@ -248,12 +690,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "QA\\_QB\\_i"
       },
       "QAred_QB_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "QAred\\_QB\\_i"
       },
@@ -262,12 +730,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "QA\\_QBred\\_i"
       },
       "QAred_QBred_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "QAred\\_QBred\\_i"
       },
@@ -276,12 +770,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "QA\\_QB2red\\_i"
       },
       "QAred_QB2red_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "QAred\\_QB2red\\_i"
       }
@@ -292,12 +812,32 @@
           "type": "Num",
           "value": 3000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Iin"
       },
       "x": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "x"
       },
@@ -306,12 +846,27 @@
           "type": "Num",
           "value": 0.5
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "p"
       },
       "c_light": {
         "value": {
           "type": "Num",
           "value": 300000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "c\\_light"
       },
@@ -320,12 +875,36 @@
           "type": "Num",
           "value": 6.62e-34
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "second",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "h"
       },
       "k_boltzmann": {
         "value": {
           "type": "Num",
           "value": 1.38e-23
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_boltzmann"
       },
@@ -334,12 +913,28 @@
           "type": "Num",
           "value": 298
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "temperature"
       },
       "lambda_chl": {
         "value": {
           "type": "Num",
           "value": 6.73e-7
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "lambda\\_chl"
       },
@@ -348,12 +943,23 @@
           "type": "Num",
           "value": 6.8e-7
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "lambda\\_p680"
       },
       "n_psi_psii": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "n\\_psi\\_psii"
       },
@@ -362,12 +968,18 @@
           "type": "Num",
           "value": 70
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "n\\_core\\_chl"
       },
       "n_nonreducing_peripheral_chl": {
         "value": {
           "type": "Num",
           "value": 220
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "n\\_nonreducing\\_peripheral\\_chl"
       },
@@ -376,12 +988,18 @@
           "type": "Num",
           "value": 35
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "n\\_nonreducing\\_core\\_chl"
       },
       "n_nonreducing_detached_chl": {
         "value": {
           "type": "Num",
           "value": 35
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "n\\_nonreducing\\_detached\\_chl"
       },
@@ -390,12 +1008,38 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "P680Pheo\\_total"
       },
       "PQ_total": {
         "value": {
           "type": "Num",
           "value": 6
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "PQ\\_total"
       },
@@ -404,12 +1048,28 @@
           "type": "Num",
           "value": 2000000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k2"
       },
       "k3": {
         "value": {
           "type": "Num",
           "value": 800
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k3"
       },
@@ -418,12 +1078,28 @@
           "type": "Num",
           "value": 80
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kr3"
       },
       "kAB1": {
         "value": {
           "type": "Num",
           "value": 2500
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kAB1"
       },
@@ -432,12 +1108,28 @@
           "type": "Num",
           "value": 3300
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kAB2"
       },
       "kBA1": {
         "value": {
           "type": "Num",
           "value": 175
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kBA1"
       },
@@ -446,12 +1138,28 @@
           "type": "Num",
           "value": 250
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kBA2"
       },
       "kAd": {
         "value": {
           "type": "Num",
           "value": 100000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kAd"
       },
@@ -460,12 +1168,28 @@
           "type": "Num",
           "value": 30000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kAf"
       },
       "kAU": {
         "value": {
           "type": "Num",
           "value": 10000000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kAU"
       },
@@ -474,12 +1198,28 @@
           "type": "Num",
           "value": 10000000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kUA"
       },
       "kUd_closed": {
         "value": {
           "type": "Num",
           "value": 100000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kUd\\_closed"
       },
@@ -488,12 +1228,28 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kUd\\_open"
       },
       "kUf": {
         "value": {
           "type": "Num",
           "value": 30000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kUf"
       },
@@ -502,12 +1258,37 @@
           "type": "Num",
           "value": 1000000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "prefix": "kilo",
+              "exponent": 2
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_c"
       },
       "kminus1_closed": {
         "value": {
           "type": "Num",
           "value": 900000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kminus1\\_closed"
       },
@@ -516,12 +1297,28 @@
           "type": "Num",
           "value": 300000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kminus1\\_open"
       },
       "k1_closed": {
         "value": {
           "type": "Num",
           "value": 4000000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k1\\_closed"
       },
@@ -530,12 +1327,23 @@
           "type": "Num",
           "value": 25000000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k1\\_open"
       },
       "Ke": {
         "value": {
           "type": "Num",
           "value": 1000000
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Ke"
       },
@@ -544,12 +1352,28 @@
           "type": "Num",
           "value": 50
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k01"
       },
       "k12": {
         "value": {
           "type": "Num",
           "value": 30000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k12"
       },
@@ -558,12 +1382,28 @@
           "type": "Num",
           "value": 10000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k23"
       },
       "k30": {
         "value": {
           "type": "Num",
           "value": 3000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k30"
       },
@@ -572,12 +1412,28 @@
           "type": "Num",
           "value": 250
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kox"
       },
       "kz": {
         "value": {
           "type": "Num",
           "value": 5000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kz"
       },
@@ -586,12 +1442,33 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "P680Pheo\\_total\\_i"
       },
       "kAB1_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kAB1\\_i"
       },
@@ -600,12 +1477,28 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kAB2\\_i"
       },
       "kBA1_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kBA1\\_i"
       },
@@ -614,6 +1507,14 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kBA2\\_i"
       },
       "k3_i": {
@@ -621,12 +1522,28 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k3\\_i"
       },
       "kr3_i": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kr3\\_i"
       }
@@ -5308,6 +6225,19 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "P680\\_excited"
       },
       "k_q": {
@@ -5803,6 +6733,19 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "P680\\_excited\\_i"
       },
       "P680plus_fraction_i": {
@@ -5886,7 +6829,9 @@
           ]
         },
         "texName": "P680\\_ground\\_fraction\\_i"
-      },
+      }
+    },
+    "readouts": {
       "F": {
         "fn": {
           "type": "Add",
@@ -6235,6 +7180,6 @@
         "texName": "obs\\_Iuif"
       }
     },
-    "readouts": {}
+    "nn_blocks": {}
   }
 }

@@ -46,7 +46,7 @@
               <td class="unit">
                 {#if par.unit}
                   <Math
-                    tex={`\\mathrm{${par.unit}}`}
+                    tex={par.unit.toTex(model.customUnits)}
                     display={false}
                   />
                 {/if}
@@ -80,7 +80,7 @@
               <td class="unit">
                 {#if ass.unit}
                   <Math
-                    tex={`\\mathrm{${ass.unit}}`}
+                    tex={ass.unit.toTex(model.customUnits)}
                     display={false}
                   />
                 {/if}

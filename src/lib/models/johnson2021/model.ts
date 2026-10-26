@@ -17,18 +17,43 @@ import {
 
 export function initModel(): SteadyStateModelBuilder {
   return new SteadyStateModelBuilder()
+    .addCustomUnit("mol_ATP", {
+      symbol: "mol ATP",
+      tex: "\\mathrm{mol\\,ATP}",
+      description: "mole of ATP",
+    })
+    .addCustomUnit("mol_CO2", {
+      symbol: "mol CO₂",
+      tex: "\\mathrm{mol\\,CO_2}",
+      description: "mole of CO2",
+    })
+    .addCustomUnit("mol_O2", {
+      symbol: "mol O₂",
+      tex: "\\mathrm{mol\\,O_2}",
+      description: "mole of O2",
+    })
+    .addCustomUnit("mol_e", {
+      symbol: "mol e⁻",
+      tex: "\\mathrm{mol\\,e^{-}}",
+      description: "mole of electrons",
+    })
+    .addCustomUnit("mol_sites", {
+      symbol: "mol sites",
+      tex: "\\mathrm{mol\\,sites}",
+      description: "mole of reaction sites",
+    })
     .addParameter("PAR", {
       value: 800,
       displayName: "PAR",
       texName: "\\mathrm{PAR}",
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      unit: "umol m^-2 s^-1",
       slider: { min: "0", max: "2400", step: "10" },
     })
-    .addParameter("Temp", { value: 25, texName: "T", unit: "^{\\circ}C" })
+    .addParameter("Temp", { value: 25, texName: "T", unit: "°C" })
     .addParameter("CO2", {
       value: 200,
       displayName: "CO2",
-      unit: "\\mu bar",
+      unit: "ubar",
       texName: "\\mathrm{CO_2}",
     })
     .addParameter("O2", {
@@ -40,83 +65,91 @@ export function initModel(): SteadyStateModelBuilder {
     .addParameter("Abs", {
       value: 0.85,
       texName: "\\mathrm{Abs}",
-      unit: "mol\\,mol^{-1}",
+      unit: "mol mol^-1",
     })
     .addParameter("beta", {
       value: 0.52,
       texName: "\\beta",
-      unit: "mol\\,mol^{-1}",
+      unit: "mol mol^-1",
     })
     .addParameter("CB6F", {
       value: 0.0000011666666666666668,
-      unit: "mol\\,sites\\,m^{-2}",
+      unit: "mol_sites m^-2",
       texName: "\\mathrm{CB6F}",
     })
     .addParameter("RUB", {
       value: 0.00002777777777777778,
-      unit: "mol\\,sites\\,m^{-2}",
+      unit: "mol_sites m^-2",
       texName: "\\mathrm{RUB}",
     })
-    .addParameter("Rds", { value: 0.01, texName: "R_{ds}", unit: "–" })
-    .addParameter("Ku2", { value: 0, texName: "K_{u2}", unit: "s^{-1}" })
-    .addParameter("theta1", { value: 1, texName: "\\theta_1", unit: "–" })
+    .addParameter("Rds", {
+      value: 0.01,
+      texName: "R_{ds}",
+      unit: "dimensionless",
+    })
+    .addParameter("Ku2", { value: 0, texName: "K_{u2}", unit: "s^-1" })
+    .addParameter("theta1", {
+      value: 1,
+      texName: "\\theta_1",
+      unit: "dimensionless",
+    })
     .addParameter("eps1", {
       value: 0,
       texName: "\\epsilon_1",
-      unit: "mol\\,mol^{-1}",
+      unit: "mol mol^-1",
     })
     .addParameter("eps2", {
       value: 1,
       texName: "\\epsilon_2",
-      unit: "mol\\,mol^{-1}",
+      unit: "mol mol^-1",
     })
     .addParameter("nl", {
       value: 0.75,
       texName: "n_l",
-      unit: "mol\\,ATP\\,mol^{-1}\\,e^{-}",
+      unit: "mol_ATP mol_e^-1",
     })
     .addParameter("nc", {
       value: 1,
       texName: "n_c",
-      unit: "mol\\,ATP\\,mol^{-1}\\,e^{-}",
+      unit: "mol_ATP mol_e^-1",
     })
-    .addParameter("Kf", { value: 50000000, texName: "K_f", unit: "s^{-1}" })
-    .addParameter("Kd", { value: 550000000, texName: "K_d", unit: "s^{-1}" })
+    .addParameter("Kf", { value: 50000000, texName: "K_f", unit: "s^-1" })
+    .addParameter("Kd", { value: 550000000, texName: "K_d", unit: "s^-1" })
     .addParameter("Kp1", {
       value: 14500000000,
       texName: "K_{p1}",
-      unit: "s^{-1}",
+      unit: "s^-1",
     })
     .addParameter("Kn1", {
       value: 14500000000,
       texName: "K_{n1}",
-      unit: "s^{-1}",
+      unit: "s^-1",
     })
     .addParameter("Kp2", {
       value: 4500000000,
       texName: "K_{p2}",
-      unit: "s^{-1}",
+      unit: "s^-1",
     })
     .addParameter("kq", {
       value: 300,
       texName: "k_q",
-      unit: "mol\\,e^{-}\\,mol^{-1}\\,sites\\,s^{-1}",
+      unit: "mol_e mol_sites^-1 s^-1",
     })
     .addParameter("kc", {
       value: 3.6,
       texName: "k_c",
-      unit: "mol\\,CO_2\\,mol^{-1}\\,sites\\,s^{-1}",
+      unit: "mol_CO2 mol_sites^-1 s^-1",
     })
     .addParameter("ko", {
       value: 0.9720000000000001,
       texName: "k_o",
-      unit: "mol\\,O_2\\,mol^{-1}\\,sites\\,s^{-1}",
+      unit: "mol_O2 mol_sites^-1 s^-1",
     })
     .addParameter("Kc", { value: 0.00026, texName: "K_c", unit: "bar" })
     .addParameter("Ko", { value: 0.179, texName: "K_o", unit: "bar" })
     .addAssignment("Q", {
       fn: new Divide([new Name("PAR"), new Num(1000000)]),
-      unit: "mol\\,m^{-2}\\,s^{-1}",
+      unit: "mol m^-2 s^-1",
       displayName: "Q",
     })
     .addAssignment("C", {
@@ -131,19 +164,19 @@ export function initModel(): SteadyStateModelBuilder {
     })
     .addAssignment("Vqmax", {
       fn: new Mul([new Name("CB6F"), new Name("kq")]),
-      unit: "mol\\,e^{-}\\,m^{-2}\\,s^{-1}",
+      unit: "mol_e m^-2 s^-1",
       displayName: "Vqmax",
       texName: "V_{qmax}",
     })
     .addAssignment("Vcmax", {
       fn: new Mul([new Name("RUB"), new Name("kc")]),
-      unit: "mol\\,CO_2\\,m^{-2}\\,s^{-1}",
+      unit: "mol_CO2 m^-2 s^-1",
       displayName: "Vcmax",
       texName: "V_{cmax}",
     })
     .addAssignment("Rd", {
       fn: new Mul([new Name("Vcmax"), new Name("Rds")]),
-      unit: "mol\\,CO_2\\,m^{-2}\\,s^{-1}",
+      unit: "mol_CO2 m^-2 s^-1",
       displayName: "Rd",
       texName: "R_d",
     })
@@ -152,7 +185,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Divide([new Name("kc"), new Name("Kc")]),
         new Divide([new Name("Ko"), new Name("ko")]),
       ]),
-      unit: "mol\\,mol^{-1}",
+      unit: "mol mol^-1",
       displayName: "S",
     })
     .addAssignment("gammas", {
@@ -184,7 +217,7 @@ export function initModel(): SteadyStateModelBuilder {
           ]),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "eta",
       texName: "\\eta",
     })
@@ -193,17 +226,17 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("Kp1"),
         new Add([new Name("Kp1"), new Name("Kd"), new Name("Kf")]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi1P_max",
     })
     .addAssignment("a2", {
       fn: new Mul([new Name("Abs"), new Name("beta")]),
-      unit: "mol\\,mol^{-1}",
+      unit: "mol mol^-1",
       displayName: "a2",
     })
     .addAssignment("a1", {
       fn: new Minus([new Name("Abs"), new Name("a2")]),
-      unit: "mol\\,mol^{-1}",
+      unit: "mol mol^-1",
       displayName: "a1",
     })
     .addAssignment("JP700_j", {
@@ -217,12 +250,12 @@ export function initModel(): SteadyStateModelBuilder {
           ]),
         ]),
       ]),
-      unit: "mol\\,e^{-}\\,m^{-2}\\,s^{-1}",
+      unit: "mol_e m^-2 s^-1",
       displayName: "JP700_j",
     })
     .addAssignment("JP680_j", {
       fn: new Divide([new Name("JP700_j"), new Name("eta")]),
-      unit: "mol\\,e^{-}\\,m^{-2}\\,s^{-1}",
+      unit: "mol_e m^-2 s^-1",
       displayName: "JP680_j",
     })
     .addAssignment("Vc_j", {
@@ -239,7 +272,7 @@ export function initModel(): SteadyStateModelBuilder {
           ]),
         ]),
       ]),
-      unit: "mol\\,CO_2\\,m^{-2}\\,s^{-1}",
+      unit: "mol_CO2 m^-2 s^-1",
       displayName: "Vc_j",
     })
     .addAssignment("Vo_j", {
@@ -247,7 +280,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Name("Vc_j"), new Num(2), new Name("gammas")]),
         new Name("C"),
       ]),
-      unit: "mol\\,O_2\\,m^{-2}\\,s^{-1}",
+      unit: "mol_O2 m^-2 s^-1",
       displayName: "Vo_j",
     })
     .addAssignment("Ag_j", {
@@ -255,7 +288,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("Vc_j"),
         new Divide([new Name("Vo_j"), new Num(2)]),
       ]),
-      unit: "mol\\,CO_2\\,m^{-2}\\,s^{-1}",
+      unit: "mol_CO2 m^-2 s^-1",
       displayName: "Ag_j",
     })
     .addAssignment("Vc_c", {
@@ -272,7 +305,7 @@ export function initModel(): SteadyStateModelBuilder {
           ]),
         ]),
       ]),
-      unit: "mol\\,CO_2\\,m^{-2}\\,s^{-1}",
+      unit: "mol_CO2 m^-2 s^-1",
       displayName: "Vc_c",
     })
     .addAssignment("Vo_c", {
@@ -280,7 +313,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Name("Vc_c"), new Num(2), new Name("gammas")]),
         new Name("C"),
       ]),
-      unit: "mol\\,O_2\\,m^{-2}\\,s^{-1}",
+      unit: "mol_O2 m^-2 s^-1",
       displayName: "Vo_c",
     })
     .addAssignment("Ag_c", {
@@ -288,7 +321,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("Vc_c"),
         new Divide([new Name("Vo_c"), new Num(2)]),
       ]),
-      unit: "mol\\,CO_2\\,m^{-2}\\,s^{-1}",
+      unit: "mol_CO2 m^-2 s^-1",
       displayName: "Ag_c",
     })
     .addAssignment("JP680_c", {
@@ -309,12 +342,12 @@ export function initModel(): SteadyStateModelBuilder {
           new Divide([new Name("gammas"), new Name("C")]),
         ]),
       ]),
-      unit: "mol\\,e^{-}\\,m^{-2}\\,s^{-1}",
+      unit: "mol_e m^-2 s^-1",
       displayName: "JP680_c",
     })
     .addAssignment("JP700_c", {
       fn: new Mul([new Name("JP680_c"), new Name("eta")]),
-      unit: "mol\\,e^{-}\\,m^{-2}\\,s^{-1}",
+      unit: "mol_e m^-2 s^-1",
       displayName: "JP700_c",
     })
     .addAssignment("JP680_a", {
@@ -368,7 +401,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Mul([new Num(2), new Name("theta1")]),
         ]),
       ]),
-      unit: "mol\\,e^{-}\\,m^{-2}\\,s^{-1}",
+      unit: "mol_e m^-2 s^-1",
       displayName: "JP680_a",
     })
     .addAssignment("JP700_a", {
@@ -422,7 +455,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Mul([new Num(2), new Name("theta1")]),
         ]),
       ]),
-      unit: "mol\\,e^{-}\\,m^{-2}\\,s^{-1}",
+      unit: "mol_e m^-2 s^-1",
       displayName: "JP700_a",
     })
     .addAssignment("Ag_a", {
@@ -529,13 +562,13 @@ export function initModel(): SteadyStateModelBuilder {
           ]),
         ]),
       ]),
-      unit: "mol\\,CO_2\\,m^{-2}\\,s^{-1}",
+      unit: "mol_CO2 m^-2 s^-1",
       displayName: "Ag_a",
       texName: "A_g",
     })
     .addAssignment("An_a", {
       fn: new Minus([new Name("Ag_a"), new Name("Rd")]),
-      unit: "mol\\,CO_2\\,m^{-2}\\,s^{-1}",
+      unit: "mol_CO2 m^-2 s^-1",
       displayName: "An_a",
       texName: "A_n",
     })
@@ -544,11 +577,11 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("JP700_a"),
         new Mul([new Name("Q"), new Name("a1")]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
     })
     .addAssignment("q1_a", {
       fn: new Divide([new Name("phi1P_a0"), new Name("phi1P_max")]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "q1_a",
     })
     .addAssignment("phi2P_a0", {
@@ -556,11 +589,11 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("JP680_a"),
         new Mul([new Name("Q"), new Name("a2")]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
     })
     .addAssignment("CB6F_a", {
       fn: new Divide([new Name("JP700_j"), new Name("kq")]),
-      unit: "mol\\,sites\\,m^{-2}",
+      unit: "mol_sites m^-2",
       displayName: "CB6F_a",
     })
     .addAssignment("q2_a", {
@@ -574,7 +607,7 @@ export function initModel(): SteadyStateModelBuilder {
         ]),
         new Num(1),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "q2_a",
     })
     .addAssignment("num_kn", {
@@ -627,7 +660,7 @@ export function initModel(): SteadyStateModelBuilder {
         ]),
         new Num(0),
       ]),
-      unit: "s^{-2}",
+      unit: "s^-2",
     })
     .addAssignment("Kn2_a", {
       fn: new Minus([
@@ -646,7 +679,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("Ku2"),
         new Name("Kd"),
       ]),
-      unit: "s^{-1}",
+      unit: "s^-1",
       displayName: "Kn2_a",
       texName: "K_{n2}",
     })
@@ -658,7 +691,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("Kf"),
         new Name("Ku2"),
       ]),
-      unit: "s^{-1}",
+      unit: "s^-1",
     })
     .addAssignment("denom2c", {
       fn: new Add([
@@ -667,14 +700,14 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("Kf"),
         new Name("Ku2"),
       ]),
-      unit: "s^{-1}",
+      unit: "s^-1",
     })
     .addAssignment("phi2p_a", {
       fn: new Divide([
         new Mul([new Name("q2_a"), new Name("Kp2")]),
         new Name("denom2"),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi2p_a",
     })
     .addAssignment("phi2n_a", {
@@ -691,7 +724,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom2c"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi2n_a",
     })
     .addAssignment("phi2d_a", {
@@ -705,7 +738,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom2c"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi2d_a",
     })
     .addAssignment("phi2f_a", {
@@ -719,7 +752,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom2c"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi2f_a",
     })
     .addAssignment("phi2u_a", {
@@ -733,7 +766,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom2c"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi2u_a",
     })
     .addAssignment("phi2P_a", {
@@ -741,7 +774,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("phi2p_a"),
         new Minus([new Num(1), new Name("phi2u_a")]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi2P_a",
     })
     .addAssignment("phi2N_a", {
@@ -749,7 +782,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("phi2n_a"),
         new Minus([new Num(1), new Name("phi2u_a")]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi2N_a",
     })
     .addAssignment("phi2D_a", {
@@ -757,7 +790,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("phi2d_a"),
         new Minus([new Num(1), new Name("phi2u_a")]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi2D_a",
     })
     .addAssignment("phi2F_a", {
@@ -765,23 +798,23 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("phi2f_a"),
         new Minus([new Num(1), new Name("phi2u_a")]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi2F_a",
     })
     .addAssignment("denom1_open", {
       fn: new Add([new Name("Kp1"), new Name("Kd"), new Name("Kf")]),
-      unit: "s^{-1}",
+      unit: "s^-1",
     })
     .addAssignment("denom1_closed", {
       fn: new Add([new Name("Kn1"), new Name("Kd"), new Name("Kf")]),
-      unit: "s^{-1}",
+      unit: "s^-1",
     })
     .addAssignment("phi1P_a", {
       fn: new Divide([
         new Mul([new Name("q1_a"), new Name("Kp1")]),
         new Name("denom1_open"),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi1P_a",
     })
     .addAssignment("phi1N_a", {
@@ -789,7 +822,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Minus([new Num(1), new Name("q1_a")]), new Name("Kn1")]),
         new Name("denom1_closed"),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi1N_a",
     })
     .addAssignment("phi1D_a", {
@@ -803,7 +836,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom1_closed"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi1D_a",
     })
     .addAssignment("phi1F_a", {
@@ -817,7 +850,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("denom1_closed"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "phi1F_a",
     })
     .addAssignment("Fm_a", {
@@ -837,7 +870,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("eps1"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "Fm_a",
     })
     .addAssignment("Fo_a", {
@@ -857,7 +890,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("eps1"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "Fo_a",
     })
     .addAssignment("Fmp_a", {
@@ -877,7 +910,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("eps1"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "Fmp_a",
     })
     .addAssignment("Fop_a", {
@@ -902,7 +935,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("eps1"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "Fop_a",
     })
     .addAssignment("Fs_a", {
@@ -910,7 +943,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Name("a2"), new Name("phi2F_a"), new Name("eps2")]),
         new Mul([new Name("a1"), new Name("phi1F_a"), new Name("eps1")]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "Fs_a",
     })
     .addAssignment("PAM1_a", {
@@ -918,7 +951,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Num(1),
         new Divide([new Name("Fs_a"), new Name("Fmp_a")]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "PAM1_a",
     })
     .addAssignment("PAM2_a", {
@@ -929,12 +962,12 @@ export function initModel(): SteadyStateModelBuilder {
           new Divide([new Num(1), new Name("Fm_a")]),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "PAM2_a",
     })
     .addAssignment("PAM3_a", {
       fn: new Divide([new Name("Fs_a"), new Name("Fm_a")]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "PAM3_a",
     })
     .addAssignment("ETR", {
@@ -942,7 +975,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Divide([new Mul([new Name("Q"), new Num(0.85)]), new Num(2)]),
         new Name("PAM1_a"),
       ]),
-      unit: "mol\\,e^{-}\\,m^{-2}\\,s^{-1}",
+      unit: "mol_e m^-2 s^-1",
       displayName: "ETR",
     })
     .addAssignment("qP", {
@@ -950,7 +983,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Minus([new Name("Fmp_a"), new Name("Fs_a")]),
         new Minus([new Name("Fmp_a"), new Name("Fop_a")]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "qP",
     })
     .addAssignment("qL", {
@@ -964,7 +997,7 @@ export function initModel(): SteadyStateModelBuilder {
           new Name("Fs_a"),
         ]),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "qL",
     })
     .addAssignment("kPuddle", {
@@ -972,7 +1005,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("ETR"),
         new Minus([new Num(1), new Name("qP")]),
       ]),
-      unit: "mol\\,e^{-}\\,m^{-2}\\,s^{-1}",
+      unit: "mol_e m^-2 s^-1",
       displayName: "kPuddle",
     })
     .addAssignment("kLake", {
@@ -980,7 +1013,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("ETR"),
         new Minus([new Num(1), new Name("qL")]),
       ]),
-      unit: "mol\\,e^{-}\\,m^{-2}\\,s^{-1}",
+      unit: "mol_e m^-2 s^-1",
       displayName: "kLake",
     })
     .addAssignment("NPQ", {
@@ -988,7 +1021,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Divide([new Name("Fm_a"), new Name("Fmp_a")]),
         new Num(1),
       ]),
-      unit: "–",
+      unit: "dimensionless",
       displayName: "NPQ",
     })
     .addAssignment("active_cb6f", {
@@ -996,7 +1029,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Mul([new Name("CB6F"), new Minus([new Num(1), new Name("q2_a")])]),
         new Num(1e-12),
       ]),
-      unit: "mol\\,sites\\,m^{-2}",
+      unit: "mol_sites m^-2",
     })
     .addAssignment("k_CB6F", {
       fn: new Piecewise([
@@ -1007,7 +1040,7 @@ export function initModel(): SteadyStateModelBuilder {
         ]),
         new Divide([new Name("JP700_a"), new Name("active_cb6f")]),
       ]),
-      unit: "mol\\,e^{-}\\,mol^{-1}\\,sites\\,s^{-1}",
+      unit: "mol_e mol_sites^-1 s^-1",
       displayName: "k_CB6F",
     });
 }

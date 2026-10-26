@@ -1,4 +1,7 @@
-import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import {
+  KineticModelBuilder,
+  Unit,
+} from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
   Minus,
@@ -8,367 +11,712 @@ import {
   Pow,
 } from "@computational-biology-aachen/mxlweb-core/mathml";
 
+/**
+ * Hahn 1987 Photorespiration and Photosynthesis model.
+ *
+ * |             |                                                             |
+ * | ----------- | ----------------------------------------------------------- |
+ * | doi         | 10.1093/oxfordjournals.aob.a087432                          |
+ * | main author | Brian D. Hahn                                               |
+ * | paper title | A Mathematical Model of Photorespiration and Photosynthesis |
+ * | published   | August 1987                                                 |
+ * | journal     | Annals of Botany                                            |
+ * | organism    | C3 leaf                                                     |
+ * | Ported by   | ElouenCorvest ( @ElouenCorvest )                            |
+ *
+ * A comprehensive model of C3 leaf carbon metabolism combining the Calvin cycle
+ * with the glycolate and glycerate pathways of photorespiration, formulated as a
+ * system of non-linear differential equations. It extends Hahn's earlier
+ * Calvin-cycle models (1984, 1986) by adding the competitive inhibition of
+ * ribulose-bisphosphate carboxylase by oxygen. The model reaches an effectively
+ * stable steady state and behaves realistically when external CO2 and O2
+ * concentrations are varied: photosynthesis is inhibited by higher oxygen levels,
+ * while photorespiration is inhibited by higher carbon dioxide levels.
+ */
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("k1", {
       value: 0.344,
       texName: "k1",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k2", {
       value: 0.046,
       texName: "k2",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k3", {
       value: 0.0261,
       texName: "k3",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k4", {
       value: 0.0455,
       texName: "k4",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k5", {
       value: 0.0455,
       texName: "k5",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("k6", {
       value: 0.455,
       texName: "k6",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k7", {
       value: 0.455,
       texName: "k7",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("k8", {
       value: 0.909,
       texName: "k8",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k9", {
       value: 0.0136,
       texName: "k9",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k10", {
       value: 0.004,
       texName: "k10",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k11", {
       value: 4e-5,
       texName: "k11",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k12", {
       value: 0.0341,
       texName: "k12",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k13", {
       value: 1.7,
       texName: "k13",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k14", {
       value: 0.000852,
       texName: "k14",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k15", {
       value: 0.00852,
       texName: "k15",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k16", {
       value: 0.0928,
       texName: "k16",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k17", {
       value: 0.0227,
       texName: "k17",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("k18", {
       value: 0.0467,
       texName: "k18",
-      unit: "m^{6}\\,mol^{-2}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 6 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k19", {
       value: 0.00114,
       texName: "k19",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k20", {
       value: 0.0114,
       texName: "k20",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k21", {
       value: 0.00114,
       texName: "k21",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k22", {
       value: 0.00114,
       texName: "k22",
-      unit: "m^{6}\\,mol^{-2}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 6 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k23", {
       value: 0.0114,
       texName: "k23",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k24", {
       value: 0.0114,
       texName: "k24",
-      unit: "m^{3}\\,mol^{-1}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", exponent: 3 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kc1", {
       value: 1.0,
       texName: "kc1",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kc2", {
       value: 0.933,
       texName: "kc2",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("rd", {
       value: 1.1e-5,
       texName: "rd",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("ko1", {
       value: 0.01,
       texName: "ko1",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("ko2", {
       value: 4.31,
       texName: "ko2",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("phic", {
       value: 1.84,
       texName: "phic",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("phio", {
       value: 0.0453,
       texName: "phio",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("phis", {
       value: 0.0001,
       texName: "phis",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("D", {
       value: 0.0001,
       texName: "D",
-      unit: "s^{-1}",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("E", {
       value: 0.5,
       texName: "E",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addParameter("Oa", {
       value: 100.0,
       texName: "Oa",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addParameter("Ca", {
       value: 0.45,
       texName: "Ca",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addParameter("PAg", {
       value: 0.001,
       texName: "PAg",
-      unit: "g\\,m^{-2}\\,s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "gram", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("PPFD", {
+    .addParameter("PAr", {
       value: 0.0002,
-      texName: "PPFD",
-      unit: "g\\,m^{-2}\\,s^{-1}",
+      texName: "PAr",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "gram", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("h", {
       value: 0.0002,
       texName: "h",
-      unit: "m",
+      unit: Unit.fromJson({ factors: [{ kind: "metre", exponent: 1 }] }),
     })
-    .addVariable("RUBP", {
+    .addVariable("RuBP", {
       value: 1.0,
-      texName: "RUBP",
-      unit: "mol\\,m^{-3}",
+      texName: "RuBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("PGA", {
       value: 1.0,
       texName: "PGA",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("ADP", {
       value: 1.0,
       texName: "ADP",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("Pi", {
       value: 10.0,
       texName: "Pi",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("TP", {
       value: 1.0,
       texName: "TP",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("HP", {
       value: 1.0,
       texName: "HP",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("GG", {
       value: 100.0,
       texName: "GG",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("Pio", {
       value: 1.0,
       texName: "Pio",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("TPo", {
       value: 0.1,
       texName: "TPo",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("HPo", {
       value: 0.1,
       texName: "HPo",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("UDP", {
       value: 10.0,
       texName: "UDP",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("GF", {
       value: 77.3,
       texName: "GF",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("GFV", {
       value: 77.3,
       texName: "GFV",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("TPGA", {
       value: 0.1,
       texName: "TPGA",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("E4P", {
       value: 0.1,
       texName: "E4P",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("S7P", {
       value: 0.1,
       texName: "S7P",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
-    .addVariable("RU5P", {
+    .addVariable("Ru5P", {
       value: 1.0,
-      texName: "RU5P",
-      unit: "mol\\,m^{-3}",
+      texName: "Ru5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("PGl", {
       value: 1.0,
       texName: "PGl",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("Gl", {
       value: 1.0,
       texName: "Gl",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("Gx", {
       value: 1.0,
       texName: "Gx",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("Sn", {
       value: 10.0,
       texName: "Sn",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("Gn", {
       value: 1.0,
       texName: "Gn",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("GA", {
       value: 1.0,
       texName: "GA",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("GmA", {
       value: 1.0,
       texName: "GmA",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("Glm", {
       value: 1.0,
       texName: "Glm",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("OxA", {
       value: 1.0,
       texName: "OxA",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("NH3", {
       value: 1.0,
       texName: "NH3",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("CO2", {
       value: 0.33,
       texName: "CO2",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
+      slider: {
+        min: "0.1",
+        max: "1.0",
+        step: "0.01",
+      },
     })
     .addVariable("O2", {
       value: 0.245,
       texName: "O2",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("Ci", {
       value: 0.4,
       texName: "Ci",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("Oi", {
       value: 101.0,
       texName: "Oi",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("AP_tot", {
       value: 11.0,
       texName: "AP\\_tot",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addVariable("UP_tot", {
       value: 20.0,
       texName: "UP\\_tot",
-      unit: "mol\\,m^{-3}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -3 },
+        ],
+      }),
     })
     .addAssignment("ATP", {
       fn: new Add([new Name("AP_tot"), new Minus([new Name("ADP")])]),
@@ -387,15 +735,15 @@ export function initModel(): KineticModelBuilder {
             new Mul([new Name("k20"), new Pow(new Name("Gn"), new Num(2.0))]),
           ]),
           new Minus([new Mul([new Num(12.0), new Name("GF"), new Name("rd")])]),
-          new Mul([new Name("CO2"), new Name("RUBP"), new Name("k1")]),
+          new Mul([new Name("CO2"), new Name("RuBP"), new Name("k1")]),
         ]),
       ]),
       texName: "PAn",
     })
     .addReaction("v1", {
-      fn: new Mul([new Name("CO2"), new Name("RUBP"), new Name("k1")]),
+      fn: new Mul([new Name("CO2"), new Name("RuBP"), new Name("k1")]),
       stoichiometry: [
-        { name: "RUBP", value: new Num(-1.0) },
+        { name: "RuBP", value: new Num(-1.0) },
         { name: "PGA", value: new Num(2.0) },
         { name: "CO2", value: new Num(-1.0) },
         { name: "O2", value: new Num(-0.5) },
@@ -454,7 +802,7 @@ export function initModel(): KineticModelBuilder {
       stoichiometry: [
         { name: "S7P", value: new Num(-1.0) },
         { name: "TPGA", value: new Num(1.0) },
-        { name: "RU5P", value: new Num(1.0) },
+        { name: "Ru5P", value: new Num(1.0) },
       ],
       texName: "v7",
     })
@@ -463,16 +811,16 @@ export function initModel(): KineticModelBuilder {
       stoichiometry: [
         { name: "TPGA", value: new Num(-1.0) },
         { name: "TP", value: new Num(-1.0) },
-        { name: "RU5P", value: new Num(1.0) },
+        { name: "Ru5P", value: new Num(1.0) },
       ],
       texName: "v8",
     })
     .addReaction("v9", {
-      fn: new Mul([new Name("ATP"), new Name("RU5P"), new Name("k9")]),
+      fn: new Mul([new Name("ATP"), new Name("Ru5P"), new Name("k9")]),
       stoichiometry: [
-        { name: "RU5P", value: new Num(-1.0) },
+        { name: "Ru5P", value: new Num(-1.0) },
         { name: "ADP", value: new Num(1.0) },
-        { name: "RUBP", value: new Num(1.0) },
+        { name: "RuBP", value: new Num(1.0) },
       ],
       texName: "v9",
     })
@@ -534,10 +882,10 @@ export function initModel(): KineticModelBuilder {
       texName: "v15",
     })
     .addReaction("v16", {
-      fn: new Mul([new Name("O2"), new Name("RUBP"), new Name("k16")]),
+      fn: new Mul([new Name("O2"), new Name("RuBP"), new Name("k16")]),
       stoichiometry: [
         { name: "O2", value: new Num(-1.0) },
-        { name: "RUBP", value: new Num(-1.0) },
+        { name: "RuBP", value: new Num(-1.0) },
         { name: "PGl", value: new Num(1.0) },
         { name: "PGA", value: new Num(1.0) },
       ],

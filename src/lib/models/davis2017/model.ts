@@ -1,5 +1,7 @@
-import names from "#lib/names.js";
-import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import {
+  KineticModelBuilder,
+  Unit,
+} from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
   Divide,
@@ -11,313 +13,349 @@ import {
   Pow,
 } from "@computational-biology-aachen/mxlweb-core/mathml";
 
+/**
+ * Davis 2017 model of pmf-induced photosystem II photodamage.
+ *
+ * |             |                                                                                                                                                                  |
+ * | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ * | doi         | 10.1098/rstb.2016.0381                                                                                                                                           |
+ * | main author | Geoffry A. Davis                                                                                                                                                 |
+ * | paper title | Hacking the thylakoid proton motive force for improved photosynthesis: modulating ion flux rates that control proton motive force partitioning into Dpsi and DpH |
+ * | published   | 31 May 2017                                                                                                                                                      |
+ * | journal     | Philosophical Transactions of the Royal Society B                                                                                                                |
+ * | organism    | higher plants (thylakoid)                                                                                                                                        |
+ * | Ported by   | Quang Huy Nguyen ( @PhotosyntheticBatman )                                                                                                                       |
+ *
+ * A mechanistic model of the photosynthetic electron transport chain and
+ * thylakoid proton motive force (pmf) that resolves the pmf into its two
+ * thermodynamically distinct components: the transmembrane electric field (Dpsi)
+ * and the lumen pH gradient (delta_pH). The central result is that the Dpsi
+ * component, rather than lumen acidification, drives elevated PSII charge
+ * recombination, which produces singlet oxygen (singO2) and subsequent PSII
+ * photodamage.
+ *
+ * Electron transport runs PSII -> PQ pool -> cytochrome b6f -> plastocyanin ->
+ * PSI -> ferredoxin -> FNR -> NADPH -> CBB. Proton accumulation in the lumen and
+ * charge separation across the membrane build the pmf, which drives ATP synthase.
+ * Counter-ion fluxes (KEA3 K+/H+ antiport, VKC K+ channel) partition the pmf
+ * between Dpsi and delta_pH. NPQ is modelled via PsbS protonation and the
+ * xanthophyll cycle (violaxanthin \<-> zeaxanthin).
+ */
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("PPFD", {
       value: 100.0,
-      unit: "s^{-1}",
       texName: "PPFD",
-      displayName: names.ppfd,
-      slider: { min: "100", max: "2000", step: "10" },
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
+      slider: {
+        min: "100",
+        max: "2000",
+        step: "10",
+      },
     })
     .addParameter("k_recomb", {
-      displayName: names.k_recomb,
       value: 0.33,
-      unit: "s^{-1}",
       texName: "k\\_recomb",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("phi_triplet", {
-      displayName: names.phi_triplet,
       value: 0.45,
-      unit: "–",
       texName: "phi\\_triplet",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("phi_1O2", {
-      displayName: names.phi_1o2,
       value: 1.0,
-      unit: "–",
       texName: "phi\\_1O2",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("sigma0_II", {
-      displayName: names.sigma0_ii,
       value: 1.0,
-      unit: "–",
       texName: "sigma0\\_II",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("c_b6f", {
-      displayName: names.c_b6f,
       value: 1.0,
-      unit: "–",
       texName: "c\\_b6f",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("pKa_reg", {
-      displayName: names.pka_reg,
       value: 6.5,
-      unit: "–",
       texName: "pKa\\_reg",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("Em_PC_pH7", {
-      displayName: names.em_pc_ph7,
       value: 0.37,
-      unit: "V",
       texName: "Em\\_PC\\_pH7",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("Em_PQH2_pH7", {
-      displayName: names.em_pqh2_ph7,
       value: 0.11,
-      unit: "V",
       texName: "Em\\_PQH2\\_pH7",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("Vmax_b6f", {
-      displayName: names.vmax_b6f,
       value: 500.0,
-      unit: "s^{-1}",
       texName: "Vmax\\_b6f",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("pKa_PsbS", {
-      displayName: names.pka_psbs,
       value: 6.4,
-      unit: "–",
       texName: "pKa\\_PsbS",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("NPQ_max", {
-      displayName: names.npq_max,
       value: 5.0,
-      unit: "–",
       texName: "NPQ\\_max",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("pH_stroma", {
       value: 7.8,
-      unit: "–",
       texName: "pH\\_stroma",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PSI_antenna_size", {
       value: 1.0,
-      unit: "–",
       texName: "PSI\\_antenna\\_size",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("k_QA", {
-      displayName: names.k_qa,
       value: 1000.0,
-      unit: "s^{-1}",
       texName: "k\\_QA",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("Keq_QA", {
-      displayName: names.keq_qa,
       value: 200.0,
-      unit: "–",
       texName: "Keq\\_QA",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("k_PCtoP700", {
-      displayName: names.k_pctop700,
       value: 500.0,
-      unit: "s^{-1}",
       texName: "k\\_PCtoP700",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("k_FdtoNADP", {
-      displayName: names.k_fdtonadp,
       value: 1000.0,
-      unit: "s^{-1}",
       texName: "k\\_FdtoNADP",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("K_st", {
-      displayName: names.k_st,
       value: 0.04,
-      unit: "M",
       texName: "K\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k_KEA3", {
-      displayName: names.k_kea3,
       value: 0.0,
-      unit: "M^{-2}\\,s^{-1}",
       texName: "k\\_KEA3",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", exponent: 2 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("P_K", {
-      displayName: names.p_k,
       value: 6000.0,
-      unit: "M^{-1}\\,V^{-1}\\,s^{-1}",
       texName: "P\\_K",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+          { kind: "volt", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("lumen_protons_per_turnover", {
       value: 1.4e-5,
-      unit: "M",
       texName: "lumen\\_protons\\_per\\_turnover",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("n", {
       value: 4.666666666666667,
-      unit: "–",
       texName: "n",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("DeltaGATP", {
       value: 42.0,
-      unit: "kJ\\,mol^{-1}",
       texName: "DeltaGATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Vmax_ATPsynth", {
-      displayName: names.vmax_atpsynth,
       value: 1000.0,
-      unit: "V^{-1}\\,s^{-1}",
       texName: "Vmax\\_ATPsynth",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "second", exponent: -1 },
+          { kind: "volt", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("b_H", {
-      displayName: names.b_h,
       value: 0.03,
-      unit: "M",
+      displayName: "bH",
       texName: "b\\_H",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("volt_per_charge", {
       value: 0.033,
-      unit: "V",
       texName: "volt\\_per\\_charge",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("k_EZ", {
-      displayName: names.k_ez,
       value: 0.03,
-      unit: "s^{-1}",
       texName: "k\\_EZ",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("nh_VDE", {
-      displayName: names.nh_vde,
       value: 4.0,
-      unit: "–",
       texName: "nh\\_VDE",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("pKa_VDE", {
-      displayName: names.pka_vde,
       value: 5.8,
-      unit: "–",
       texName: "pKa\\_VDE",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("Vmax_VDE", {
-      displayName: names.vmax_vde,
       value: 1.0,
-      unit: "s^{-1}",
       texName: "Vmax\\_VDE",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("QA_total", {
-      displayName: names.qa_tot,
       value: 1.0,
-      unit: "–",
       texName: "QA\\_total",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PQ_tot", {
-      displayName: names.pq_tot,
       value: 6.0,
-      unit: "–",
       texName: "PQ\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("P700_total", {
-      displayName: names.p700_tot,
       value: 1.0,
-      unit: "–",
       texName: "P700\\_total",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PC_tot", {
-      displayName: names.pc_tot,
       value: 2.0,
-      unit: "–",
       texName: "PC\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("Fd_tot", {
-      displayName: names.fd_tot,
       value: 1.0,
-      unit: "–",
       texName: "Fd\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("NADP_tot", {
-      displayName: names.nadp_tot,
       value: 1.0,
-      unit: "–",
       texName: "NADP\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("Xanthophyll_tot", {
       value: 1.0,
-      unit: "–",
       texName: "Xanthophyll\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("k_CBB", {
-      displayName: names.k_cbb,
       value: 3000.0,
-      unit: "s^{-1}",
       texName: "k\\_CBB",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addVariable("QA_red", {
-      displayName: names.qa_red,
       value: 0.0,
-      unit: "–",
       texName: "QA\\_red",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("PQH_2", {
-      displayName: names.pqh2,
       value: 0.0,
-      unit: "–",
+      displayName: "PQH2",
       texName: "PQH\\_2",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("pH_lumen", {
-      displayName: names.ph_lumen,
       value: 7.0,
-      unit: "–",
       texName: "pH\\_lumen",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("Dpsi", {
-      displayName: names.dpsi,
       value: 0.1,
-      unit: "V",
       texName: "Dpsi",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addVariable("K_lu", {
-      displayName: names.k_lu,
       value: 0.04,
-      unit: "M",
       texName: "K\\_lu",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("PC_ox", {
-      displayName: names.pc_ox,
       value: 0.0,
-      unit: "–",
       texName: "PC\\_ox",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("Zx", {
-      displayName: names.zeaxanthin_fraction,
       value: 0.0,
-      unit: "–",
+      displayName: "zx",
       texName: "Zx",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("singO2", {
-      displayName: names.single_oxygen,
       value: 0.0,
-      unit: "–",
       texName: "singO2",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("P700_ox", {
       value: 0.0,
-      unit: "–",
       texName: "P700\\_ox",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("Fd_red", {
-      displayName: names.fd_red,
       value: 0.0,
-      unit: "–",
       texName: "Fd\\_red",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("NADPH_st", {
-      displayName: names.nadph,
       value: 0.0,
-      unit: "–",
+      displayName: "NADPH",
       texName: "NADPH\\_st",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("LEF", {
       value: 0.0,
-      unit: "–",
       texName: "LEF",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("ATP_made", {
       value: 0.0,
-      unit: "–",
       texName: "ATP\\_made",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addAssignment("QA", {
-      displayName: names.qa,
       fn: new Add([new Name("QA_total"), new Minus([new Name("QA_red")])]),
       texName: "QA",
     })
@@ -326,37 +364,33 @@ export function initModel(): KineticModelBuilder {
       texName: "P700\\_red",
     })
     .addAssignment("PQ", {
-      displayName: names.pq,
       fn: new Add([new Name("PQ_tot"), new Minus([new Name("PQH_2")])]),
       texName: "PQ",
     })
     .addAssignment("PC_red", {
-      displayName: names.pc_red,
       fn: new Add([new Name("PC_tot"), new Minus([new Name("PC_ox")])]),
       texName: "PC\\_red",
     })
     .addAssignment("Fd_ox", {
-      displayName: names.fd_ox,
       fn: new Add([new Name("Fd_tot"), new Minus([new Name("Fd_red")])]),
       texName: "Fd\\_ox",
     })
     .addAssignment("NADP_st", {
-      displayName: names.nadp,
       fn: new Add([new Name("NADP_tot"), new Minus([new Name("NADPH_st")])]),
+      displayName: "NADP",
       texName: "NADP\\_st",
     })
     .addAssignment("Vx", {
-      displayName: names.violaxanthin_fraction,
       fn: new Add([new Name("Xanthophyll_tot"), new Minus([new Name("Zx")])]),
+      displayName: "vx",
       texName: "Vx",
     })
     .addAssignment("DeltaGATP_V", {
       fn: new Mul([new Num(0.010526315789473684), new Name("DeltaGATP")]),
-      unit: "V",
       texName: "DeltaGATP\\_V",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addAssignment("PsbSP", {
-      displayName: names.psbsp,
       fn: new Divide([
         new Num(1.0),
         new Add([
@@ -370,12 +404,10 @@ export function initModel(): KineticModelBuilder {
       texName: "PsbSP",
     })
     .addAssignment("NPQ", {
-      displayName: names.npq,
       fn: new Mul([new Name("NPQ_max"), new Name("PsbSP"), new Name("Zx")]),
       texName: "NPQ",
     })
     .addAssignment("PhiPSII", {
-      displayName: names.phipsii,
       fn: new Divide([
         new Num(1.0),
         new Add([
@@ -392,43 +424,49 @@ export function initModel(): KineticModelBuilder {
       texName: "PhiPSII",
     })
     .addAssignment("H_lumen", {
-      displayName: names.protons_lumen,
       fn: new Pow(
         new Num(10.0),
         new Minus([new Mul([new Num(1.0), new Name("pH_lumen")])]),
       ),
-      unit: "M",
+      displayName: "protons_lumen",
       texName: "H\\_lumen",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("H_stroma", {
-      displayName: names.h_stroma,
       fn: new Pow(
         new Num(10.0),
         new Minus([new Mul([new Num(1.0), new Name("pH_stroma")])]),
       ),
-      unit: "M",
       texName: "H\\_stroma",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("pmf", {
-      displayName: names.pmf,
       fn: new Add([
         new Name("Dpsi"),
         new Mul([new Num(0.06), new Name("pH_stroma")]),
         new Minus([new Mul([new Num(0.06), new Name("pH_lumen")])]),
       ]),
-      unit: "V",
       texName: "pmf",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addAssignment("delta_pH", {
-      displayName: names.delta_ph,
       fn: new Add([new Name("pH_stroma"), new Minus([new Name("pH_lumen")])]),
       texName: "delta\\_pH",
     })
     .addAssignment("delta_pH_inVolts", {
-      displayName: names.delta_ph_involts,
       fn: new Mul([new Num(0.06), new Name("delta_pH")]),
-      unit: "V",
       texName: "delta\\_pH\\_inVolts",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addAssignment("ATP_synthase_driving_force", {
       fn: new Add([
@@ -436,6 +474,22 @@ export function initModel(): KineticModelBuilder {
         new Minus([new Divide([new Name("DeltaGATP_V"), new Name("n")])]),
       ]),
       texName: "ATP\\_synthase\\_driving\\_force",
+    })
+    .addAssignment("K_deltaG", {
+      fn: new Add([
+        new Name("Dpsi"),
+        new Minus([
+          new Divide([
+            new Mul([
+              new Num(0.06),
+              new Ln(new Divide([new Name("K_st"), new Name("K_lu")])),
+            ]),
+            new Ln(new Num(10.0)),
+          ]),
+        ]),
+      ]),
+      texName: "K\\_deltaG",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addAssignment("k_b6f", {
       fn: new Mul([
@@ -462,7 +516,6 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_b6f",
     })
     .addReaction("vPSII_recomb", {
-      displayName: names.r_psii_recomb,
       fn: new Mul([
         new Name("QA_red"),
         new Name("k_recomb"),
@@ -493,7 +546,6 @@ export function initModel(): KineticModelBuilder {
       texName: "vPSII\\_recomb",
     })
     .addReaction("vPSII_ChSep", {
-      displayName: names.r_psii_charge_separation,
       fn: new Mul([new Name("PPFD"), new Name("PhiPSII")]),
       stoichiometry: [
         { name: "QA_red", value: new Num(1.0) },
@@ -511,16 +563,15 @@ export function initModel(): KineticModelBuilder {
       texName: "vPSII\\_ChSep",
     })
     .addReaction("v_PSII", {
-      displayName: names.r_psii,
       fn: new Mul([new Name("PQ"), new Name("QA_red"), new Name("k_QA")]),
       stoichiometry: [
         { name: "QA_red", value: new Num(-1.0) },
         { name: "PQH_2", value: new Num(0.5) },
       ],
+      displayName: "PSII",
       texName: "v\\_PSII",
     })
     .addReaction("v_PQ", {
-      displayName: names.r_pq_reduction,
       fn: new Divide([
         new Mul([new Name("PQH_2"), new Name("QA"), new Name("k_QA")]),
         new Name("Keq_QA"),
@@ -529,10 +580,10 @@ export function initModel(): KineticModelBuilder {
         { name: "QA_red", value: new Num(1.0) },
         { name: "PQH_2", value: new Num(-0.5) },
       ],
+      displayName: "PQ reduction",
       texName: "v\\_PQ",
     })
     .addReaction("v_b6f", {
-      displayName: names.r_b6f,
       fn: new Add([
         new Divide([
           new Mul([
@@ -622,10 +673,10 @@ export function initModel(): KineticModelBuilder {
         },
         { name: "Dpsi", value: new Name("volt_per_charge") },
       ],
+      displayName: "cyt b6f",
       texName: "v\\_b6f",
     })
     .addReaction("PSI_ChSep", {
-      displayName: names.r_psi_charge_separation,
       fn: new Mul([
         new Name("Fd_ox"),
         new Name("P700_red"),
@@ -640,7 +691,6 @@ export function initModel(): KineticModelBuilder {
       texName: "PSI\\_ChSep",
     })
     .addReaction("v_PSI_PCoxid", {
-      displayName: names.r_psi_pc_oxidation,
       fn: new Mul([
         new Name("P700_ox"),
         new Name("PC_red"),
@@ -653,7 +703,6 @@ export function initModel(): KineticModelBuilder {
       texName: "v\\_PSI\\_PCoxid",
     })
     .addReaction("v_FNR", {
-      displayName: names.r_fnr,
       fn: new Mul([
         new Name("Fd_red"),
         new Name("NADP_st"),
@@ -664,6 +713,7 @@ export function initModel(): KineticModelBuilder {
         { name: "NADPH_st", value: new Num(0.5) },
         { name: "LEF", value: new Num(1.0) },
       ],
+      displayName: "FNR",
       texName: "v\\_FNR",
     })
     .addReaction("vATPsynthase", {
@@ -690,13 +740,11 @@ export function initModel(): KineticModelBuilder {
       texName: "vATPsynthase",
     })
     .addReaction("v_CBB", {
-      displayName: names.r_cbb,
       fn: new Mul([new Name("NADPH_st"), new Name("k_CBB")]),
       stoichiometry: [{ name: "NADPH_st", value: new Num(-1.0) }],
       texName: "v\\_CBB",
     })
     .addReaction("v_KEA3", {
-      displayName: names.r_kea3,
       fn: new Mul([
         new Name("k_KEA3"),
         new Add([
@@ -718,22 +766,10 @@ export function initModel(): KineticModelBuilder {
       texName: "v\\_KEA3",
     })
     .addReaction("v_VKC", {
-      displayName: names.r_vkc,
       fn: new Mul([
         new Num(0.5),
+        new Name("K_deltaG"),
         new Name("P_K"),
-        new Add([
-          new Name("Dpsi"),
-          new Minus([
-            new Divide([
-              new Mul([
-                new Num(0.06),
-                new Ln(new Divide([new Name("K_st"), new Name("K_lu")])),
-              ]),
-              new Ln(new Num(10.0)),
-            ]),
-          ]),
-        ]),
         new Add([new Name("K_lu"), new Name("K_st")]),
       ]),
       stoichiometry: [
@@ -746,13 +782,11 @@ export function initModel(): KineticModelBuilder {
       texName: "v\\_VKC",
     })
     .addReaction("v_Epox", {
-      displayName: names.r_epoxidation,
       fn: new Mul([new Name("Zx"), new Name("k_EZ")]),
       stoichiometry: [{ name: "Zx", value: new Num(-1.0) }],
       texName: "v\\_Epox",
     })
     .addReaction("v_Deepox", {
-      displayName: names.r_deepoxidation,
       fn: new Divide([
         new Mul([new Num(1.0), new Name("Vmax_VDE"), new Name("Vx")]),
         new Add([

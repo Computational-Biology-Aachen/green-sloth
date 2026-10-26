@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/steady-state-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "steady-state",
   "model_id": "fvcb1980",
   "model": {
@@ -10,6 +10,15 @@
           "type": "Num",
           "value": 500
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "micro",
+              "exponent": 1
+            }
+          ]
+        },
         "displayName": "Ci",
         "texName": "C_i"
       },
@@ -18,12 +27,38 @@
           "type": "Num",
           "value": 80
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "V_{cmax}"
       },
       "kc": {
         "value": {
           "type": "Num",
           "value": 259
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "micro",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "K_c"
       },
@@ -32,12 +67,30 @@
           "type": "Num",
           "value": 179
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "milli",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "K_o"
       },
       "ccp": {
         "value": {
           "type": "Num",
           "value": 38.6
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "micro",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "\\Gamma^*"
       },
@@ -46,6 +99,23 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "R_d"
       },
       "alpha": {
@@ -53,12 +123,24 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "\\alpha"
       },
       "o": {
         "value": {
           "type": "Num",
           "value": 210
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "milli",
+              "exponent": 1
+            }
+          ]
         },
         "displayName": "O₂",
         "texName": "O",
@@ -73,6 +155,23 @@
           "type": "Num",
           "value": 124
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "J",
         "texName": "J",
         "slider": {
@@ -85,6 +184,23 @@
         "value": {
           "type": "Num",
           "value": 15
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "Tp",
         "texName": "T_p",
@@ -155,6 +271,23 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "Wc",
         "texName": "W_c"
       },
@@ -205,6 +338,23 @@
                   ]
                 }
               ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -323,6 +473,23 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "Wp",
         "texName": "W_p"
       },
@@ -341,6 +508,23 @@
             {
               "type": "Name",
               "value": "wp"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -385,6 +569,23 @@
             {
               "type": "Name",
               "value": "rl"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },

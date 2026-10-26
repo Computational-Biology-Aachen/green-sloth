@@ -66,7 +66,7 @@
               <td class="unit">
                 {#if vari.unit}
                   <Math
-                    tex={`\\mathrm{${vari.unit}}`}
+                    tex={vari.unit.toTex(model.customUnits)}
                     display={false}
                   />
                 {/if}
@@ -95,7 +95,7 @@
               <td class="unit">
                 {#if par.unit}
                   <Math
-                    tex={`\\mathrm{${par.unit}}`}
+                    tex={par.unit.toTex(model.customUnits)}
                     display={false}
                   />
                 {/if}
@@ -129,7 +129,7 @@
               <td class="unit">
                 {#if ass.unit}
                   <Math
-                    tex={`\\mathrm{${ass.unit}}`}
+                    tex={ass.unit.toTex(model.customUnits)}
                     display={false}
                   />
                 {/if}
@@ -173,7 +173,7 @@
               <td class="unit">
                 {#if rxn.unit}
                   <Math
-                    tex={`\\mathrm{${rxn.unit}}`}
+                    tex={rxn.unit.toTex(model.customUnits)}
                     display={false}
                   />
                 {/if}

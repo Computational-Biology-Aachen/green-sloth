@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "lazar1997",
   "model": {
@@ -10,12 +10,18 @@
           "type": "Num",
           "value": 0.66
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "y1"
       },
       "y2": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "y2"
       },
@@ -24,12 +30,18 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "y3"
       },
       "y4": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "y4"
       },
@@ -38,12 +50,18 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "y5"
       },
       "y6": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "y6"
       },
@@ -52,12 +70,18 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "y7"
       },
       "y8": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "y8"
       },
@@ -66,12 +90,18 @@
           "type": "Num",
           "value": 7
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "y9"
       },
       "y10": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "y10"
       },
@@ -80,12 +110,18 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "y11"
       },
       "y12": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "y12"
       },
@@ -94,6 +130,9 @@
           "type": "Num",
           "value": 0.22
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "y13"
       },
       "y14": {
@@ -101,12 +140,18 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "y14"
       },
       "y15": {
         "value": {
           "type": "Num",
           "value": 0.12
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "y15"
       }
@@ -117,12 +162,28 @@
           "type": "Num",
           "value": 1666
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k1"
       },
       "k2": {
         "value": {
           "type": "Num",
           "value": 1250
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k2"
       },
@@ -131,12 +192,28 @@
           "type": "Num",
           "value": 500
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k3"
       },
       "k4": {
         "value": {
           "type": "Num",
           "value": 20000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k4"
       },
@@ -145,12 +222,28 @@
           "type": "Num",
           "value": 1666
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k5"
       },
       "k6": {
         "value": {
           "type": "Num",
           "value": 3500
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k6"
       },
@@ -159,12 +252,28 @@
           "type": "Num",
           "value": 175
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k7"
       },
       "k8": {
         "value": {
           "type": "Num",
           "value": 1750
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k8"
       },
@@ -173,12 +282,28 @@
           "type": "Num",
           "value": 35
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k9"
       },
       "k10": {
         "value": {
           "type": "Num",
           "value": 5000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k10"
       },
@@ -187,12 +312,28 @@
           "type": "Num",
           "value": 5000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k11"
       },
       "k12": {
         "value": {
           "type": "Num",
           "value": 150
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k12"
       },
@@ -201,12 +342,28 @@
           "type": "Num",
           "value": 100
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k13"
       },
       "k14": {
         "value": {
           "type": "Num",
           "value": 150
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k14"
       },
@@ -215,12 +372,28 @@
           "type": "Num",
           "value": 100
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k15"
       },
       "k16": {
         "value": {
           "type": "Num",
           "value": 150
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k16"
       },
@@ -229,12 +402,28 @@
           "type": "Num",
           "value": 100
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k17"
       },
       "k18": {
         "value": {
           "type": "Num",
           "value": 150
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k18"
       },
@@ -243,12 +432,28 @@
           "type": "Num",
           "value": 100
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k19"
       },
       "k20": {
         "value": {
           "type": "Num",
           "value": 150
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k20"
       },
@@ -257,12 +462,28 @@
           "type": "Num",
           "value": 100
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k21"
       },
       "k22": {
         "value": {
           "type": "Num",
           "value": 150
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k22"
       },
@@ -271,12 +492,28 @@
           "type": "Num",
           "value": 100
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k23"
       },
       "k24": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k24"
       },
@@ -285,6 +522,14 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k25"
       },
       "k6n": {
@@ -292,12 +537,23 @@
           "type": "Num",
           "value": 3500
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k6n"
       },
       "p": {
         "value": {
           "type": "Num",
           "value": 0.55
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "p"
       }
@@ -1432,6 +1688,7 @@
         "texName": "F"
       }
     },
-    "readouts": {}
+    "readouts": {},
+    "nn_blocks": {}
   }
 }

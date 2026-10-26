@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/steady-state-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "steady-state",
   "model_id": "gu2023",
   "model": {
@@ -10,12 +10,32 @@
           "type": "Num",
           "value": 0.7
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "q"
       },
       "U": {
         "value": {
           "type": "Num",
           "value": 250
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "U"
       },
@@ -24,12 +44,18 @@
           "type": "Num",
           "value": 0.2
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "R1"
       },
       "R2": {
         "value": {
           "type": "Num",
           "value": 0.5
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "R2"
       },
@@ -38,12 +64,18 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "q\\_r"
       },
       "a_q": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "a\\_q"
       },
@@ -52,12 +84,32 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "second",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "b\\_s"
       },
       "c_s": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "c\\_s"
       },
@@ -66,12 +118,32 @@
           "type": "Num",
           "value": 0.85
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "alpha"
       },
       "PAR": {
         "value": {
           "type": "Num",
           "value": 588.2352941176471
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "PAR"
       },
@@ -80,6 +152,14 @@
           "type": "Num",
           "value": 298.15
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "T"
       },
       "T0": {
@@ -87,12 +167,28 @@
           "type": "Num",
           "value": 298.15
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "T0"
       },
       "E_T": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "E\\_T"
       }
@@ -172,6 +268,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "ft"
       },
       "fq": {
@@ -214,6 +313,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "fq"
       },
@@ -269,6 +371,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "fs"
       },
@@ -377,6 +482,23 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "J\\_PSII"
       },
       "h_cyt": {
@@ -429,6 +551,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "h\\_cyt"
       },
       "h_pqh2": {
@@ -475,6 +600,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "h\\_pqh2"
       },
       "h_pq": {
@@ -495,6 +623,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "h\\_pq"
       }

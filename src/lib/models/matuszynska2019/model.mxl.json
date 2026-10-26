@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "matuszynska2019",
   "model": {
@@ -10,6 +10,19 @@
           "type": "Num",
           "value": 0.9928653922138561
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "PGA",
         "texName": "3PGA"
       },
@@ -18,7 +31,19 @@
           "type": "Num",
           "value": 0.0005297732935310749
         },
-        "displayName": "BPGA",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "BPGA"
       },
       "GAP": {
@@ -26,7 +51,19 @@
           "type": "Num",
           "value": 0.0062663539939955834
         },
-        "displayName": "GAP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "GAP"
       },
       "DHAP": {
@@ -34,7 +71,19 @@
           "type": "Num",
           "value": 0.13785977143668732
         },
-        "displayName": "DHAP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHAP"
       },
       "FBP": {
@@ -42,7 +91,19 @@
           "type": "Num",
           "value": 0.006133532145409954
         },
-        "displayName": "FBP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "FBP"
       },
       "F6P": {
@@ -50,7 +111,19 @@
           "type": "Num",
           "value": 0.31271973359685457
         },
-        "displayName": "F6P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "F6P"
       },
       "G6P": {
@@ -58,7 +131,19 @@
           "type": "Num",
           "value": 0.719255387166192
         },
-        "displayName": "G6P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "G6P"
       },
       "G1P": {
@@ -66,7 +151,19 @@
           "type": "Num",
           "value": 0.041716812452951633
         },
-        "displayName": "G1P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "G1P"
       },
       "SBP": {
@@ -74,7 +171,19 @@
           "type": "Num",
           "value": 0.013123745088361893
         },
-        "displayName": "SBP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "SBP"
       },
       "S7P": {
@@ -82,7 +191,19 @@
           "type": "Num",
           "value": 0.15890073845176905
         },
-        "displayName": "S7P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "S7P"
       },
       "E4P": {
@@ -90,7 +211,19 @@
           "type": "Num",
           "value": 0.007322797350442026
         },
-        "displayName": "E4P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "E4P"
       },
       "X5P": {
@@ -98,7 +231,19 @@
           "type": "Num",
           "value": 0.022478763225333428
         },
-        "displayName": "X5P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "X5P"
       },
       "R5P": {
@@ -106,7 +251,19 @@
           "type": "Num",
           "value": 0.037651927659696716
         },
-        "displayName": "R5P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "R5P"
       },
       "RUBP": {
@@ -114,7 +271,19 @@
           "type": "Num",
           "value": 0.13184790283048484
         },
-        "displayName": "RUBP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "RUBP"
       },
       "RU5P": {
@@ -122,7 +291,19 @@
           "type": "Num",
           "value": 0.015060770937455408
         },
-        "displayName": "RU5P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "RU5P"
       },
       "ATP": {
@@ -130,13 +311,38 @@
           "type": "Num",
           "value": 1.612922506604933
         },
-        "displayName": "ATP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ATP"
       },
       "Ferredoxine_oxidised": {
         "value": {
           "type": "Num",
           "value": 3.8624032084329674
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "Fd_ox",
         "texName": "Ferredoxine (oxidised)"
@@ -146,14 +352,30 @@
           "type": "Num",
           "value": 0.002208423037307405
         },
-        "displayName": "protons_lumen",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "protons\\_lumen"
       },
-      "Light_minus_harvesting_complex": {
+      "Light_harvesting_complex": {
         "value": {
           "type": "Num",
           "value": 0.80137477470646
         },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "Light-harvesting complex",
         "texName": "Light-harvesting complex"
       },
       "NADPH": {
@@ -161,7 +383,19 @@
           "type": "Num",
           "value": 0.491395685599137
         },
-        "displayName": "NADPH",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "NADPH"
       },
       "Plastocyanine_oxidised": {
@@ -169,6 +403,20 @@
           "type": "Num",
           "value": 1.885391998090184
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "Plastocyanine (oxidised)",
         "texName": "Plastocyanine (oxidised)"
       },
       "Plastoquinone_oxidised": {
@@ -176,20 +424,40 @@
           "type": "Num",
           "value": 10.991562708096392
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "PQ",
         "texName": "Plastoquinone (oxidised)"
       },
-      "PsbS_de_minus_protonated": {
+      "PsbS_de_protonated": {
         "value": {
           "type": "Num",
           "value": 0.9610220887579118
         },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "PsbS (de-protonated)",
         "texName": "PsbS (de-protonated)"
       },
       "Violaxanthin": {
         "value": {
           "type": "Num",
           "value": 0.9514408605906095
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Violaxanthin"
       }
@@ -200,7 +468,19 @@
           "type": "Num",
           "value": 0.000012589254117941661
         },
-        "displayName": "protons",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "protons"
       },
       "pH": {
@@ -208,13 +488,28 @@
           "type": "Num",
           "value": 7.9
         },
-        "displayName": "pH",
+        "unit": {
+          "factors": []
+        },
         "texName": "pH"
       },
       "CO2_dissolved": {
         "value": {
           "type": "Num",
           "value": 0.2
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "CO2",
         "texName": "CO2 (dissolved)",
@@ -229,6 +524,20 @@
           "type": "Num",
           "value": 8
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "O2 (dissolved)_lumen",
         "texName": "O2 (dissolved)\\_lumen"
       },
       "PPFD": {
@@ -236,7 +545,14 @@
           "type": "Num",
           "value": 100
         },
-        "displayName": "PPFD",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PPFD",
         "slider": {
           "min": "100",
@@ -249,7 +565,9 @@
           "type": "Num",
           "value": 100
         },
-        "displayName": "bH",
+        "unit": {
+          "factors": []
+        },
         "texName": "bH"
       },
       "F": {
@@ -257,45 +575,101 @@
           "type": "Num",
           "value": 96.485
         },
-        "displayName": "F",
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "volt",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "F"
       },
-      "E0_PC": {
+      "E_0_PC": {
         "value": {
           "type": "Num",
           "value": 0.38
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "displayName": "E0_PC",
         "texName": "E^0\\_PC"
       },
-      "E0_P700": {
+      "E_0_P700": {
         "value": {
           "type": "Num",
           "value": 0.48
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "displayName": "E0_P700",
         "texName": "E^0\\_P700"
       },
-      "E0_FA": {
+      "E_0_FA": {
         "value": {
           "type": "Num",
           "value": -0.55
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "displayName": "E0_FA",
         "texName": "E^0\\_FA"
       },
-      "E0_Fd": {
+      "E_0_Fd": {
         "value": {
           "type": "Num",
           "value": -0.43
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "displayName": "E0_Fd",
         "texName": "E^0\\_Fd"
       },
-      "E0_NADP": {
+      "E_0_NADP": {
         "value": {
           "type": "Num",
           "value": -0.113
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
         },
         "displayName": "E0_NADP",
         "texName": "E^0\\_NADP"
@@ -305,6 +679,18 @@
           "type": "Num",
           "value": 0.032
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "convf"
       },
       "R": {
@@ -312,7 +698,23 @@
           "type": "Num",
           "value": 0.0083
         },
-        "displayName": "R",
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "R"
       },
       "T": {
@@ -320,7 +722,14 @@
           "type": "Num",
           "value": 298
         },
-        "displayName": "T",
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "T"
       },
       "Carotenoids_tot": {
@@ -328,13 +737,28 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "Carotenoids_tot",
+        "unit": {
+          "factors": []
+        },
         "texName": "Carotenoids\\_tot"
       },
       "Fd_star": {
         "value": {
           "type": "Num",
           "value": 5
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "Fd_tot",
         "texName": "Fd*"
@@ -344,13 +768,28 @@
           "type": "Num",
           "value": 4
         },
-        "displayName": "PC_tot",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PC\\_tot"
       },
       "PSBS_tot": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "PsbS_tot",
         "texName": "PSBS\\_tot"
@@ -360,7 +799,9 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "LHC_tot",
+        "unit": {
+          "factors": []
+        },
         "texName": "LHC\\_tot"
       },
       "gamma0": {
@@ -368,7 +809,9 @@
           "type": "Num",
           "value": 0.1
         },
-        "displayName": "gamma0",
+        "unit": {
+          "factors": []
+        },
         "texName": "gamma0"
       },
       "gamma1": {
@@ -376,7 +819,9 @@
           "type": "Num",
           "value": 0.25
         },
-        "displayName": "gamma1",
+        "unit": {
+          "factors": []
+        },
         "texName": "gamma1"
       },
       "gamma2": {
@@ -384,7 +829,9 @@
           "type": "Num",
           "value": 0.6
         },
-        "displayName": "gamma2",
+        "unit": {
+          "factors": []
+        },
         "texName": "gamma2"
       },
       "gamma3": {
@@ -392,7 +839,9 @@
           "type": "Num",
           "value": 0.15
         },
-        "displayName": "gamma3",
+        "unit": {
+          "factors": []
+        },
         "texName": "gamma3"
       },
       "kZSat": {
@@ -400,21 +849,40 @@
           "type": "Num",
           "value": 0.12
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "K_ZSat",
         "texName": "kZSat"
       },
-      "E0_QA": {
+      "E_0_QA": {
         "value": {
           "type": "Num",
           "value": -0.14
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "displayName": "E0_QA",
         "texName": "E^0\\_QA"
       },
-      "E0_PQ": {
+      "E_0_PQ": {
         "value": {
           "type": "Num",
           "value": 0.354
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
         },
         "displayName": "E0_PQ",
         "texName": "E^0\\_PQ"
@@ -424,7 +892,19 @@
           "type": "Num",
           "value": 17.5
         },
-        "displayName": "PQ_tot",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PQ\\_tot"
       },
       "staticAntII": {
@@ -432,7 +912,9 @@
           "type": "Num",
           "value": 0.1
         },
-        "displayName": "staticAntII",
+        "unit": {
+          "factors": []
+        },
         "texName": "staticAntII"
       },
       "staticAntI": {
@@ -440,13 +922,28 @@
           "type": "Num",
           "value": 0.37
         },
-        "displayName": "staticAntI",
+        "unit": {
+          "factors": []
+        },
         "texName": "staticAntI"
       },
       "NADP_star": {
         "value": {
           "type": "Num",
           "value": 0.8
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "NADP_tot",
         "texName": "NADP*"
@@ -456,6 +953,19 @@
           "type": "Num",
           "value": 2.55
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "AP_tot",
         "texName": "A*P"
       },
@@ -464,7 +974,19 @@
           "type": "Num",
           "value": 17.05
         },
-        "displayName": "Pi_tot",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Pi\\_tot"
       },
       "kf_atp_synthase": {
@@ -472,7 +994,14 @@
           "type": "Num",
           "value": 20
         },
-        "displayName": "kf_atp_synthase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kf\\_atp\\_synthase"
       },
       "HPR": {
@@ -480,7 +1009,9 @@
           "type": "Num",
           "value": 4.666666666666667
         },
-        "displayName": "HPR",
+        "unit": {
+          "factors": []
+        },
         "texName": "HPR"
       },
       "Pi_mol": {
@@ -488,7 +1019,9 @@
           "type": "Num",
           "value": 0.01
         },
-        "displayName": "Pi_mol",
+        "unit": {
+          "factors": []
+        },
         "texName": "Pi\\_mol"
       },
       "DeltaG0_ATP": {
@@ -496,7 +1029,19 @@
           "type": "Num",
           "value": 30.6
         },
-        "displayName": "DeltaG0_ATP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DeltaG0\\_ATP"
       },
       "kcat_b6f": {
@@ -504,7 +1049,23 @@
           "type": "Num",
           "value": 2.5
         },
-        "displayName": "kcat_b6f",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 2
+            },
+            {
+              "kind": "mole",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_b6f"
       },
       "kh_lhc_protonation": {
@@ -512,7 +1073,9 @@
           "type": "Num",
           "value": 3
         },
-        "displayName": "kh_lhc_protonation",
+        "unit": {
+          "factors": []
+        },
         "texName": "kh\\_lhc\\_protonation"
       },
       "kf_lhc_protonation": {
@@ -520,7 +1083,14 @@
           "type": "Num",
           "value": 0.0096
         },
-        "displayName": "kf_lhc_protonation",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kf\\_lhc\\_protonation"
       },
       "ksat_lhc_protonation": {
@@ -528,7 +1098,9 @@
           "type": "Num",
           "value": 5.8
         },
-        "displayName": "ksat_lhc_protonation",
+        "unit": {
+          "factors": []
+        },
         "texName": "ksat\\_lhc\\_protonation"
       },
       "kf_lhc_deprotonation": {
@@ -536,7 +1108,14 @@
           "type": "Num",
           "value": 0.0096
         },
-        "displayName": "kf_lhc_deprotonation",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kf\\_lhc\\_deprotonation"
       },
       "kf_cyclic_electron_flow": {
@@ -544,7 +1123,23 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "kf_cyclic_electron_flow",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 2
+            },
+            {
+              "kind": "mole",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kf\\_cyclic\\_electron\\_flow",
         "slider": {
           "min": "0.0",
@@ -557,7 +1152,14 @@
           "type": "Num",
           "value": 0.0024
         },
-        "displayName": "kf_violaxanthin_deepoxidase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kf\\_violaxanthin\\_deepoxidase"
       },
       "kh_violaxanthin_deepoxidase": {
@@ -565,7 +1167,9 @@
           "type": "Num",
           "value": 5
         },
-        "displayName": "kh_violaxanthin_deepoxidase",
+        "unit": {
+          "factors": []
+        },
         "texName": "kh\\_violaxanthin\\_deepoxidase"
       },
       "ksat_violaxanthin_deepoxidase": {
@@ -573,7 +1177,9 @@
           "type": "Num",
           "value": 5.8
         },
-        "displayName": "ksat_violaxanthin_deepoxidase",
+        "unit": {
+          "factors": []
+        },
         "texName": "ksat\\_violaxanthin\\_deepoxidase"
       },
       "kf_zeaxanthin_epoxidase": {
@@ -581,7 +1187,14 @@
           "type": "Num",
           "value": 0.00024
         },
-        "displayName": "kf_zeaxanthin_epoxidase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kf\\_zeaxanthin\\_epoxidase"
       },
       "km_fnr_Ferredoxine_reduced": {
@@ -589,6 +1202,20 @@
           "type": "Num",
           "value": 1.56
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "km_fnr_Ferredoxine (reduced)",
         "texName": "km\\_fnr\\_Ferredoxine (reduced)"
       },
       "km_fnr_NADP": {
@@ -596,7 +1223,19 @@
           "type": "Num",
           "value": 0.22
         },
-        "displayName": "km_fnr_NADP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_fnr\\_NADP"
       },
       "E0_fnr": {
@@ -604,7 +1243,19 @@
           "type": "Num",
           "value": 3
         },
-        "displayName": "E0_fnr",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "E0\\_fnr"
       },
       "kcat_fnr": {
@@ -612,7 +1263,14 @@
           "type": "Num",
           "value": 500
         },
-        "displayName": "kcat_fnr",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_fnr"
       },
       "kf_ndh": {
@@ -620,7 +1278,14 @@
           "type": "Num",
           "value": 0.002
         },
-        "displayName": "kf_ndh",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kf\\_ndh"
       },
       "PSII_total": {
@@ -628,7 +1293,19 @@
           "type": "Num",
           "value": 2.5
         },
-        "displayName": "PSII_total",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PSII\\_total"
       },
       "PSI_total": {
@@ -636,7 +1313,19 @@
           "type": "Num",
           "value": 2.5
         },
-        "displayName": "PSI_total",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PSI\\_total"
       },
       "kH0": {
@@ -644,7 +1333,14 @@
           "type": "Num",
           "value": 500000000
         },
-        "displayName": "kH0",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kH0"
       },
       "kPQred": {
@@ -652,7 +1348,23 @@
           "type": "Num",
           "value": 250
         },
-        "displayName": "kPQred",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kPQred"
       },
       "kPCox": {
@@ -660,7 +1372,23 @@
           "type": "Num",
           "value": 2500
         },
-        "displayName": "kPCox",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kPCox"
       },
       "kFdred": {
@@ -668,7 +1396,23 @@
           "type": "Num",
           "value": 250000
         },
-        "displayName": "kFdred",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kFdred"
       },
       "k2": {
@@ -676,7 +1420,14 @@
           "type": "Num",
           "value": 5000000000
         },
-        "displayName": "k2",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k2"
       },
       "kH": {
@@ -684,7 +1435,14 @@
           "type": "Num",
           "value": 5000000000
         },
-        "displayName": "kH",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kH"
       },
       "kF": {
@@ -692,7 +1450,14 @@
           "type": "Num",
           "value": 625000000
         },
-        "displayName": "kF",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kF"
       },
       "kf_proton_leak": {
@@ -700,7 +1465,14 @@
           "type": "Num",
           "value": 10
         },
-        "displayName": "kf_proton_leak",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kf\\_proton\\_leak"
       },
       "kPTOX": {
@@ -708,7 +1480,23 @@
           "type": "Num",
           "value": 0.01
         },
-        "displayName": "kPTOX",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kPTOX"
       },
       "kStt7": {
@@ -716,7 +1504,14 @@
           "type": "Num",
           "value": 0.0035
         },
-        "displayName": "kStt7",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kStt7"
       },
       "km_lhc_state_transition_12": {
@@ -724,7 +1519,9 @@
           "type": "Num",
           "value": 0.2
         },
-        "displayName": "km_lhc_state_transition_12",
+        "unit": {
+          "factors": []
+        },
         "texName": "km\\_lhc\\_state\\_transition\\_12"
       },
       "n_ST": {
@@ -732,7 +1529,9 @@
           "type": "Num",
           "value": 2
         },
-        "displayName": "n_ST",
+        "unit": {
+          "factors": []
+        },
         "texName": "n\\_ST"
       },
       "kPph1": {
@@ -740,13 +1539,33 @@
           "type": "Num",
           "value": 0.0013
         },
-        "displayName": "kPph1",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kPph1"
       },
       "E0_rubisco": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "E0\\_rubisco"
       },
@@ -755,7 +1574,14 @@
           "type": "Num",
           "value": 2.72
         },
-        "displayName": "kcat_rubisco_carboxylase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_rubisco\\_carboxylase"
       },
       "km_rubisco_carboxylase_RUBP": {
@@ -763,13 +1589,38 @@
           "type": "Num",
           "value": 0.02
         },
-        "displayName": "km_rubisco_carboxylase_RUBP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_rubisco\\_carboxylase\\_RUBP"
       },
       "km_rubisco_carboxylase_CO2_dissolved": {
         "value": {
           "type": "Num",
           "value": 0.0107
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "km_rubisco_carboxylase_CO2",
         "texName": "km\\_rubisco\\_carboxylase\\_CO2 (dissolved)"
@@ -779,7 +1630,19 @@
           "type": "Num",
           "value": 0.04
         },
-        "displayName": "ki_rubisco_carboxylase_3PGA",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ki\\_rubisco\\_carboxylase\\_3PGA"
       },
       "ki_rubisco_carboxylase_FBP": {
@@ -787,7 +1650,19 @@
           "type": "Num",
           "value": 0.04
         },
-        "displayName": "ki_rubisco_carboxylase_FBP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ki\\_rubisco\\_carboxylase\\_FBP"
       },
       "ki_rubisco_carboxylase_SBP": {
@@ -795,13 +1670,38 @@
           "type": "Num",
           "value": 0.075
         },
-        "displayName": "ki_rubisco_carboxylase_SBP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ki\\_rubisco\\_carboxylase\\_SBP"
       },
       "ki_rubisco_carboxylase_Orthophosphate": {
         "value": {
           "type": "Num",
           "value": 0.9
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "ki_rubisco_carboxylase_Pi",
         "texName": "ki\\_rubisco\\_carboxylase\\_Orthophosphate"
@@ -811,7 +1711,19 @@
           "type": "Num",
           "value": 0.07
         },
-        "displayName": "ki_rubisco_carboxylase_NADPH",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ki\\_rubisco\\_carboxylase\\_NADPH"
       },
       "kre_phosphoglycerate_kinase": {
@@ -819,7 +1731,23 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_phosphoglycerate_kinase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_phosphoglycerate\\_kinase"
       },
       "keq_phosphoglycerate_kinase": {
@@ -827,7 +1755,9 @@
           "type": "Num",
           "value": 0.00031
         },
-        "displayName": "keq_phosphoglycerate_kinase",
+        "unit": {
+          "factors": []
+        },
         "texName": "keq\\_phosphoglycerate\\_kinase"
       },
       "kre_gadph": {
@@ -835,7 +1765,23 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_gadph",
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "prefix": "kilo",
+              "exponent": 2
+            },
+            {
+              "kind": "mole",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_gadph"
       },
       "keq_gadph": {
@@ -843,7 +1789,9 @@
           "type": "Num",
           "value": 16000000
         },
-        "displayName": "keq_gadph",
+        "unit": {
+          "factors": []
+        },
         "texName": "keq\\_gadph"
       },
       "kre_triose_phosphate_isomerase": {
@@ -851,7 +1799,14 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_triose_phosphate_isomerase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_triose\\_phosphate\\_isomerase"
       },
       "keq_triose_phosphate_isomerase": {
@@ -859,7 +1814,9 @@
           "type": "Num",
           "value": 22
         },
-        "displayName": "keq_triose_phosphate_isomerase",
+        "unit": {
+          "factors": []
+        },
         "texName": "keq\\_triose\\_phosphate\\_isomerase"
       },
       "kre_aldolase_dhap_gap": {
@@ -867,7 +1824,23 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_aldolase_dhap_gap",
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_aldolase\\_dhap\\_gap"
       },
       "keq_aldolase_dhap_gap": {
@@ -875,7 +1848,19 @@
           "type": "Num",
           "value": 7.1
         },
-        "displayName": "keq_aldolase_dhap_gap",
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "keq\\_aldolase\\_dhap\\_gap"
       },
       "kre_aldolase_dhap_e4p": {
@@ -883,7 +1868,23 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_aldolase_dhap_e4p",
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_aldolase\\_dhap\\_e4p"
       },
       "keq_aldolase_dhap_e4p": {
@@ -891,7 +1892,19 @@
           "type": "Num",
           "value": 13
         },
-        "displayName": "keq_aldolase_dhap_e4p",
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "keq\\_aldolase\\_dhap\\_e4p"
       },
       "E0_fbpase": {
@@ -899,7 +1912,19 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "E0_fbpase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "E0\\_fbpase"
       },
       "kcat_fbpase": {
@@ -907,7 +1932,14 @@
           "type": "Num",
           "value": 1.6
         },
-        "displayName": "kcat_fbpase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_fbpase"
       },
       "km_fbpase_s": {
@@ -915,7 +1947,19 @@
           "type": "Num",
           "value": 0.03
         },
-        "displayName": "km_fbpase_s",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_fbpase\\_s"
       },
       "ki_fbpase_F6P": {
@@ -923,13 +1967,38 @@
           "type": "Num",
           "value": 0.7
         },
-        "displayName": "ki_fbpase_F6P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ki\\_fbpase\\_F6P"
       },
       "ki_fbpase_Orthophosphate": {
         "value": {
           "type": "Num",
           "value": 12
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "ki_fbpase_Pi",
         "texName": "ki\\_fbpase\\_Orthophosphate"
@@ -939,7 +2008,23 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_transketolase_gap_f6p",
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_transketolase\\_gap\\_f6p"
       },
       "keq_transketolase_gap_f6p": {
@@ -947,7 +2032,9 @@
           "type": "Num",
           "value": 0.084
         },
-        "displayName": "keq_transketolase_gap_f6p",
+        "unit": {
+          "factors": []
+        },
         "texName": "keq\\_transketolase\\_gap\\_f6p"
       },
       "kre_transketolase_gap_s7p": {
@@ -955,7 +2042,23 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_transketolase_gap_s7p",
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_transketolase\\_gap\\_s7p"
       },
       "keq_transketolase_gap_s7p": {
@@ -963,7 +2066,9 @@
           "type": "Num",
           "value": 0.85
         },
-        "displayName": "keq_transketolase_gap_s7p",
+        "unit": {
+          "factors": []
+        },
         "texName": "keq\\_transketolase\\_gap\\_s7p"
       },
       "E0_SBPase": {
@@ -971,7 +2076,19 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "E0_SBPase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "E0\\_SBPase"
       },
       "kcat_SBPase": {
@@ -979,7 +2096,14 @@
           "type": "Num",
           "value": 0.32
         },
-        "displayName": "kcat_SBPase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_SBPase"
       },
       "km_SBPase_s": {
@@ -987,13 +2111,38 @@
           "type": "Num",
           "value": 0.013
         },
-        "displayName": "km_SBPase_s",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_SBPase\\_s"
       },
       "ki_SBPase_Orthophosphate": {
         "value": {
           "type": "Num",
           "value": 12
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "ki_SBPase_Pi",
         "texName": "ki\\_SBPase\\_Orthophosphate"
@@ -1003,7 +2152,14 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_ribose_phosphate_isomerase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_ribose\\_phosphate\\_isomerase"
       },
       "keq_ribose_phosphate_isomerase": {
@@ -1011,7 +2167,9 @@
           "type": "Num",
           "value": 0.4
         },
-        "displayName": "keq_ribose_phosphate_isomerase",
+        "unit": {
+          "factors": []
+        },
         "texName": "keq\\_ribose\\_phosphate\\_isomerase"
       },
       "kre_ribulose_phosphate_epimerase": {
@@ -1019,7 +2177,14 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_ribulose_phosphate_epimerase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_ribulose\\_phosphate\\_epimerase"
       },
       "keq_ribulose_phosphate_epimerase": {
@@ -1027,7 +2192,9 @@
           "type": "Num",
           "value": 0.67
         },
-        "displayName": "keq_ribulose_phosphate_epimerase",
+        "unit": {
+          "factors": []
+        },
         "texName": "keq\\_ribulose\\_phosphate\\_epimerase"
       },
       "E0_phosphoribulokinase": {
@@ -1035,7 +2202,19 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "E0_phosphoribulokinase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "E0\\_phosphoribulokinase"
       },
       "kcat_phosphoribulokinase": {
@@ -1043,7 +2222,14 @@
           "type": "Num",
           "value": 7.9992
         },
-        "displayName": "kcat_phosphoribulokinase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_phosphoribulokinase"
       },
       "km_phosphoribulokinase_RU5P": {
@@ -1051,7 +2237,19 @@
           "type": "Num",
           "value": 0.05
         },
-        "displayName": "km_phosphoribulokinase_RU5P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_phosphoribulokinase\\_RU5P"
       },
       "km_phosphoribulokinase_ATP": {
@@ -1059,7 +2257,19 @@
           "type": "Num",
           "value": 0.05
         },
-        "displayName": "km_phosphoribulokinase_ATP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_phosphoribulokinase\\_ATP"
       },
       "ki_phosphoribulokinase_3PGA": {
@@ -1067,7 +2277,19 @@
           "type": "Num",
           "value": 2
         },
-        "displayName": "ki_phosphoribulokinase_3PGA",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ki\\_phosphoribulokinase\\_3PGA"
       },
       "ki_phosphoribulokinase_RUBP": {
@@ -1075,13 +2297,38 @@
           "type": "Num",
           "value": 0.7
         },
-        "displayName": "ki_phosphoribulokinase_RUBP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ki\\_phosphoribulokinase\\_RUBP"
       },
       "ki_phosphoribulokinase_Orthophosphate": {
         "value": {
           "type": "Num",
           "value": 4
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "ki_phosphoribulokinase_Pi",
         "texName": "ki\\_phosphoribulokinase\\_Orthophosphate"
@@ -1091,7 +2338,19 @@
           "type": "Num",
           "value": 2.5
         },
-        "displayName": "ki_phosphoribulokinase_4",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ki\\_phosphoribulokinase\\_4"
       },
       "ki_phosphoribulokinase_5": {
@@ -1099,7 +2358,19 @@
           "type": "Num",
           "value": 0.4
         },
-        "displayName": "ki_phosphoribulokinase_5",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ki\\_phosphoribulokinase\\_5"
       },
       "kre_g6pi": {
@@ -1107,7 +2378,14 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_g6pi",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_g6pi"
       },
       "keq_g6pi": {
@@ -1115,7 +2393,9 @@
           "type": "Num",
           "value": 2.3
         },
-        "displayName": "keq_g6pi",
+        "unit": {
+          "factors": []
+        },
         "texName": "keq\\_g6pi"
       },
       "kre_phosphoglucomutase": {
@@ -1123,7 +2403,14 @@
           "type": "Num",
           "value": 800000000
         },
-        "displayName": "kre_phosphoglucomutase",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kre\\_phosphoglucomutase"
       },
       "keq_phosphoglucomutase": {
@@ -1131,7 +2418,9 @@
           "type": "Num",
           "value": 0.058
         },
-        "displayName": "keq_phosphoglucomutase",
+        "unit": {
+          "factors": []
+        },
         "texName": "keq\\_phosphoglucomutase"
       },
       "Orthophosphate_external": {
@@ -1139,6 +2428,20 @@
           "type": "Num",
           "value": 0.5
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "Orthophosphate (external)",
         "texName": "Orthophosphate (external)"
       },
       "km_ex_pga": {
@@ -1146,7 +2449,19 @@
           "type": "Num",
           "value": 0.25
         },
-        "displayName": "km_ex_pga",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_ex\\_pga"
       },
       "km_ex_gap": {
@@ -1154,7 +2469,19 @@
           "type": "Num",
           "value": 0.075
         },
-        "displayName": "km_ex_gap",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_ex\\_gap"
       },
       "km_ex_dhap": {
@@ -1162,7 +2489,19 @@
           "type": "Num",
           "value": 0.077
         },
-        "displayName": "km_ex_dhap",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_ex\\_dhap"
       },
       "km_N_translocator_Orthophosphate_external": {
@@ -1170,12 +2509,39 @@
           "type": "Num",
           "value": 0.74
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "km_N_translocator_Orthophosphate (external)",
         "texName": "km\\_N\\_translocator\\_Orthophosphate (external)"
       },
       "km_N_translocator_Orthophosphate": {
         "value": {
           "type": "Num",
           "value": 0.63
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "km\\_N\\_translocator\\_Orthophosphate"
       },
@@ -1184,7 +2550,14 @@
           "type": "Num",
           "value": 2
         },
-        "displayName": "kcat_N_translocator",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_N\\_translocator"
       },
       "E0_N_translocator": {
@@ -1192,7 +2565,19 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "E0_N_translocator",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "E0\\_N\\_translocator"
       },
       "E0_ex_g1p": {
@@ -1200,7 +2585,19 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "E0_ex_g1p",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "E0\\_ex\\_g1p"
       },
       "km_ex_g1p_G1P": {
@@ -1208,7 +2605,19 @@
           "type": "Num",
           "value": 0.08
         },
-        "displayName": "km_ex_g1p_G1P",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_ex\\_g1p\\_G1P"
       },
       "km_ex_g1p_ATP": {
@@ -1216,7 +2625,19 @@
           "type": "Num",
           "value": 0.08
         },
-        "displayName": "km_ex_g1p_ATP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_ex\\_g1p\\_ATP"
       },
       "ki_ex_g1p": {
@@ -1224,7 +2645,19 @@
           "type": "Num",
           "value": 10
         },
-        "displayName": "ki_ex_g1p",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ki\\_ex\\_g1p"
       },
       "ki_ex_g1p_3PGA": {
@@ -1232,7 +2665,9 @@
           "type": "Num",
           "value": 0.1
         },
-        "displayName": "ki_ex_g1p_3PGA",
+        "unit": {
+          "factors": []
+        },
         "texName": "ki\\_ex\\_g1p\\_3PGA"
       },
       "ki_ex_g1p_F6P": {
@@ -1240,7 +2675,9 @@
           "type": "Num",
           "value": 0.02
         },
-        "displayName": "ki_ex_g1p_F6P",
+        "unit": {
+          "factors": []
+        },
         "texName": "ki\\_ex\\_g1p\\_F6P"
       },
       "ki_ex_g1p_FBP": {
@@ -1248,7 +2685,9 @@
           "type": "Num",
           "value": 0.02
         },
-        "displayName": "ki_ex_g1p_FBP",
+        "unit": {
+          "factors": []
+        },
         "texName": "ki\\_ex\\_g1p\\_FBP"
       },
       "kcat_ex_g1p": {
@@ -1256,7 +2695,14 @@
           "type": "Num",
           "value": 0.32
         },
-        "displayName": "kcat_ex_g1p",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_ex\\_g1p"
       }
     },
@@ -1461,7 +2907,7 @@
               "children": [
                 {
                   "type": "Name",
-                  "value": "PsbS_de_minus_protonated"
+                  "value": "PsbS_de_protonated"
                 },
                 {
                   "type": "Name",
@@ -1487,7 +2933,7 @@
                   "type": "Pow",
                   "left": {
                     "type": "Name",
-                    "value": "protons_lumen"
+                    "value": "ksat_lhc_protonation_protons"
                   },
                   "right": {
                     "type": "Name",
@@ -1498,7 +2944,7 @@
                   "type": "Pow",
                   "left": {
                     "type": "Name",
-                    "value": "ksat_lhc_protonation_protons"
+                    "value": "protons_lumen"
                   },
                   "right": {
                     "type": "Name",
@@ -1510,7 +2956,7 @@
           ]
         },
         "stoichiometry": {
-          "PsbS_de_minus_protonated": {
+          "PsbS_de_protonated": {
             "type": "Num",
             "value": -1
           }
@@ -1533,7 +2979,7 @@
           ]
         },
         "stoichiometry": {
-          "PsbS_de_minus_protonated": {
+          "PsbS_de_protonated": {
             "type": "Num",
             "value": 1
           }
@@ -1614,7 +3060,7 @@
                   "type": "Pow",
                   "left": {
                     "type": "Name",
-                    "value": "protons_lumen"
+                    "value": "ksat_violaxanthin_deepoxidase_protons"
                   },
                   "right": {
                     "type": "Name",
@@ -1625,7 +3071,7 @@
                   "type": "Pow",
                   "left": {
                     "type": "Name",
-                    "value": "ksat_violaxanthin_deepoxidase_protons"
+                    "value": "protons_lumen"
                   },
                   "right": {
                     "type": "Name",
@@ -2029,7 +3475,6 @@
             ]
           }
         },
-        "displayName": "PSII",
         "texName": "PSII"
       },
       "PSI": {
@@ -2074,7 +3519,6 @@
             "value": 1
           }
         },
-        "displayName": "PSI",
         "texName": "PSI"
       },
       "proton_leak": {
@@ -2152,7 +3596,6 @@
             "value": 1
           }
         },
-        "displayName": "PTOX",
         "texName": "PTOX"
       },
       "lhc_state_transition_12": {
@@ -2168,7 +3611,7 @@
                 },
                 {
                   "type": "Name",
-                  "value": "Light_minus_harvesting_complex"
+                  "value": "Light_harvesting_complex"
                 },
                 {
                   "type": "Name",
@@ -2217,7 +3660,7 @@
           ]
         },
         "stoichiometry": {
-          "Light_minus_harvesting_complex": {
+          "Light_harvesting_complex": {
             "type": "Num",
             "value": -1
           }
@@ -2231,7 +3674,7 @@
           "children": [
             {
               "type": "Name",
-              "value": "Light_minus_harvesting_complex_protonated"
+              "value": "Light_harvesting_complex_protonated"
             },
             {
               "type": "Name",
@@ -2240,7 +3683,7 @@
           ]
         },
         "stoichiometry": {
-          "Light_minus_harvesting_complex": {
+          "Light_harvesting_complex": {
             "type": "Num",
             "value": 1
           }
@@ -3028,7 +4471,6 @@
             "value": 1
           }
         },
-        "displayName": "SBPase",
         "texName": "SBPase"
       },
       "ribose_phosphate_isomerase": {
@@ -3306,7 +4748,6 @@
             "value": 1
           }
         },
-        "displayName": "phosphoribulokinase",
         "texName": "phosphoribulokinase"
       },
       "g6pi": {
@@ -3406,7 +4847,6 @@
             "value": 1
           }
         },
-        "displayName": "phosphoglucomutase",
         "texName": "phosphoglucomutase"
       },
       "ex_pga": {
@@ -3709,7 +5149,6 @@
             }
           ]
         },
-        "displayName": "RT",
         "texName": "RT"
       },
       "dG_pH": {
@@ -3730,7 +5169,6 @@
             }
           ]
         },
-        "displayName": "dG_pH",
         "texName": "dG\\_pH"
       },
       "pH_lumen": {
@@ -3743,15 +5181,33 @@
                 {
                   "type": "Ln",
                   "child": {
-                    "type": "Mul",
+                    "type": "Min",
                     "children": [
                       {
                         "type": "Num",
-                        "value": 0.00025
+                        "value": 0.1
                       },
                       {
-                        "type": "Name",
-                        "value": "protons_lumen"
+                        "type": "Max",
+                        "children": [
+                          {
+                            "type": "Num",
+                            "value": 1e-14
+                          },
+                          {
+                            "type": "Mul",
+                            "children": [
+                              {
+                                "type": "Num",
+                                "value": 0.00025
+                              },
+                              {
+                                "type": "Name",
+                                "value": "protons_lumen"
+                              }
+                            ]
+                          }
+                        ]
                       }
                     ]
                   }
@@ -3767,7 +5223,6 @@
             }
           ]
         },
-        "displayName": "pH_lumen",
         "texName": "pH\\_lumen"
       },
       "protons_stroma_chl": {
@@ -3793,6 +5248,19 @@
                   }
                 ]
               }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
             }
           ]
         },
@@ -3824,6 +5292,19 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ksat\\_lhc\\_protonation\\_protons"
       },
       "ksat_violaxanthin_deepoxidase_protons": {
@@ -3849,6 +5330,19 @@
                   }
                 ]
               }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
             }
           ]
         },
@@ -3916,6 +5410,7 @@
             }
           ]
         },
+        "displayName": "Plastocyanine (reduced)",
         "texName": "Plastocyanine (reduced)"
       },
       "PsbS_protonated": {
@@ -3931,15 +5426,16 @@
               "children": [
                 {
                   "type": "Name",
-                  "value": "PsbS_de_minus_protonated"
+                  "value": "PsbS_de_protonated"
                 }
               ]
             }
           ]
         },
+        "displayName": "PsbS (protonated)",
         "texName": "PsbS (protonated)"
       },
-      "Light_minus_harvesting_complex_protonated": {
+      "Light_harvesting_complex_protonated": {
         "fn": {
           "type": "Add",
           "children": [
@@ -3952,12 +5448,13 @@
               "children": [
                 {
                   "type": "Name",
-                  "value": "Light_minus_harvesting_complex"
+                  "value": "Light_harvesting_complex"
                 }
               ]
             }
           ]
         },
+        "displayName": "Light-harvesting complex (protonated)",
         "texName": "Light-harvesting complex (protonated)"
       },
       "Q": {
@@ -3969,7 +5466,7 @@
               "children": [
                 {
                   "type": "Name",
-                  "value": "PsbS_de_minus_protonated"
+                  "value": "PsbS_de_protonated"
                 },
                 {
                   "type": "Name",
@@ -4006,7 +5503,7 @@
                   "children": [
                     {
                       "type": "Name",
-                      "value": "PsbS_de_minus_protonated"
+                      "value": "PsbS_de_protonated"
                     },
                     {
                       "type": "Name",
@@ -4070,7 +5567,6 @@
             }
           ]
         },
-        "displayName": "Q",
         "texName": "Q"
       },
       "keq_Plastoquinone_reduced": {
@@ -4091,7 +5587,7 @@
                       },
                       {
                         "type": "Name",
-                        "value": "E0_PQ"
+                        "value": "E_0_PQ"
                       },
                       {
                         "type": "Name",
@@ -4111,7 +5607,7 @@
                           },
                           {
                             "type": "Name",
-                            "value": "E0_QA"
+                            "value": "E_0_QA"
                           },
                           {
                             "type": "Name",
@@ -4152,6 +5648,7 @@
             ]
           }
         },
+        "displayName": "keq_Plastoquinone (reduced)",
         "texName": "keq\\_Plastoquinone (reduced)"
       },
       "Plastoquinone_reduced": {
@@ -4189,7 +5686,7 @@
               "children": [
                 {
                   "type": "Name",
-                  "value": "Light_minus_harvesting_complex"
+                  "value": "Light_harvesting_complex"
                 },
                 {
                   "type": "Add",
@@ -4222,7 +5719,6 @@
             }
           ]
         },
-        "displayName": "PSII_cross_section",
         "texName": "PSII\\_cross\\_section"
       },
       "NADP": {
@@ -4244,7 +5740,6 @@
             }
           ]
         },
-        "displayName": "NADP",
         "texName": "NADP"
       },
       "ADP": {
@@ -4266,7 +5761,6 @@
             }
           ]
         },
-        "displayName": "ADP",
         "texName": "ADP"
       },
       "Orthophosphate": {
@@ -4528,7 +6022,6 @@
             }
           ]
         },
-        "displayName": "keq_atp_synthase",
         "texName": "keq\\_atp\\_synthase"
       },
       "keq_b6f": {
@@ -4549,7 +6042,7 @@
                       },
                       {
                         "type": "Name",
-                        "value": "E0_PC"
+                        "value": "E_0_PC"
                       },
                       {
                         "type": "Name",
@@ -4586,7 +6079,7 @@
                           },
                           {
                             "type": "Name",
-                            "value": "E0_PQ"
+                            "value": "E_0_PQ"
                           },
                           {
                             "type": "Name",
@@ -4641,7 +6134,6 @@
             ]
           }
         },
-        "displayName": "keq_b6f",
         "texName": "keq\\_b6f"
       },
       "keq_fnr": {
@@ -4680,7 +6172,7 @@
                       },
                       {
                         "type": "Name",
-                        "value": "E0_NADP"
+                        "value": "E_0_NADP"
                       },
                       {
                         "type": "Name",
@@ -4700,7 +6192,7 @@
                           },
                           {
                             "type": "Name",
-                            "value": "E0_Fd"
+                            "value": "E_0_Fd"
                           },
                           {
                             "type": "Name",
@@ -4719,7 +6211,6 @@
             ]
           }
         },
-        "displayName": "keq_fnr",
         "texName": "keq\\_fnr"
       },
       "vmax_fnr": {
@@ -4736,7 +6227,6 @@
             }
           ]
         },
-        "displayName": "vmax_fnr",
         "texName": "vmax\\_fnr"
       },
       "keq_PCP700": {
@@ -4753,7 +6243,7 @@
                     "children": [
                       {
                         "type": "Name",
-                        "value": "E0_P700"
+                        "value": "E_0_P700"
                       },
                       {
                         "type": "Name",
@@ -4769,7 +6259,7 @@
                         "children": [
                           {
                             "type": "Name",
-                            "value": "E0_PC"
+                            "value": "E_0_PC"
                           },
                           {
                             "type": "Name",
@@ -4788,7 +6278,6 @@
             ]
           }
         },
-        "displayName": "keq_PCP700",
         "texName": "keq\\_PCP700"
       },
       "keq_ferredoxin_reductase": {
@@ -4805,7 +6294,7 @@
                     "children": [
                       {
                         "type": "Name",
-                        "value": "E0_Fd"
+                        "value": "E_0_Fd"
                       },
                       {
                         "type": "Name",
@@ -4821,7 +6310,7 @@
                         "children": [
                           {
                             "type": "Name",
-                            "value": "E0_FA"
+                            "value": "E_0_FA"
                           },
                           {
                             "type": "Name",
@@ -4840,7 +6329,6 @@
             ]
           }
         },
-        "displayName": "keq_ferredoxin_reductase",
         "texName": "keq\\_ferredoxin\\_reductase"
       },
       "A1": {
@@ -5015,7 +6503,6 @@
             }
           ]
         },
-        "displayName": "A1",
         "texName": "A1"
       },
       "vmax_rubisco_carboxylase": {
@@ -5032,7 +6519,6 @@
             }
           ]
         },
-        "displayName": "vmax_rubisco_carboxylase",
         "texName": "vmax\\_rubisco\\_carboxylase"
       },
       "vmax_fbpase": {
@@ -5049,7 +6535,6 @@
             }
           ]
         },
-        "displayName": "vmax_fbpase",
         "texName": "vmax\\_fbpase"
       },
       "vmax_SBPase": {
@@ -5066,7 +6551,6 @@
             }
           ]
         },
-        "displayName": "vmax_SBPase",
         "texName": "vmax\\_SBPase"
       },
       "vmax_phosphoribulokinase": {
@@ -5083,7 +6567,6 @@
             }
           ]
         },
-        "displayName": "vmax_phosphoribulokinase",
         "texName": "vmax\\_phosphoribulokinase"
       },
       "vmax_ex_pga": {
@@ -5100,7 +6583,6 @@
             }
           ]
         },
-        "displayName": "vmax_ex_pga",
         "texName": "vmax\\_ex\\_pga"
       },
       "N_translocator": {
@@ -5197,7 +6679,6 @@
             }
           ]
         },
-        "displayName": "N_translocator",
         "texName": "N\\_translocator"
       },
       "vmax_ex_g1p": {
@@ -5214,7 +6695,6 @@
             }
           ]
         },
-        "displayName": "vmax_ex_g1p",
         "texName": "vmax\\_ex\\_g1p"
       },
       "B0": {
@@ -6216,7 +7696,6 @@
             }
           ]
         },
-        "displayName": "B0",
         "texName": "B0"
       },
       "B1": {
@@ -7096,7 +8575,6 @@
             }
           ]
         },
-        "displayName": "B1",
         "texName": "B1"
       },
       "B2": {
@@ -8247,7 +9725,6 @@
             }
           ]
         },
-        "displayName": "B2",
         "texName": "B2"
       },
       "B3": {
@@ -9187,10 +10664,11 @@
             }
           ]
         },
-        "displayName": "B3",
         "texName": "B3"
-      },
-      "PQ_ox_div_tot": {
+      }
+    },
+    "readouts": {
+      "PQ_ox_per_tot": {
         "fn": {
           "type": "Divide",
           "children": [
@@ -9204,9 +10682,10 @@
             }
           ]
         },
+        "displayName": "PQ_ox/tot",
         "texName": "PQ\\_ox/tot"
       },
-      "Fd_ox_div_tot": {
+      "Fd_ox_per_tot": {
         "fn": {
           "type": "Divide",
           "children": [
@@ -9220,9 +10699,10 @@
             }
           ]
         },
+        "displayName": "Fd_ox/tot",
         "texName": "Fd\\_ox/tot"
       },
-      "PC_ox_div_tot": {
+      "PC_ox_per_tot": {
         "fn": {
           "type": "Divide",
           "children": [
@@ -9236,9 +10716,10 @@
             }
           ]
         },
+        "displayName": "PC_ox/tot",
         "texName": "PC\\_ox/tot"
       },
-      "NADPH_div_tot": {
+      "NADPH_per_tot": {
         "fn": {
           "type": "Divide",
           "children": [
@@ -9252,9 +10733,10 @@
             }
           ]
         },
+        "displayName": "NADPH/tot",
         "texName": "NADPH/tot"
       },
-      "ATP_div_tot": {
+      "ATP_per_tot": {
         "fn": {
           "type": "Divide",
           "children": [
@@ -9268,6 +10750,7 @@
             }
           ]
         },
+        "displayName": "ATP/tot",
         "texName": "ATP/tot"
       },
       "Fluo": {
@@ -9368,11 +10851,9 @@
             }
           ]
         },
-        "displayName": "Fluo",
         "texName": "Fluo"
       }
     },
-    "readouts": {},
     "nn_blocks": {}
   }
 }

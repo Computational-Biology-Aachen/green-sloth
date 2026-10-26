@@ -1,11 +1,14 @@
-import names from "#lib/names.js";
-import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import {
+  KineticModelBuilder,
+  Unit,
+} from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
   Divide,
   Exp,
   Ln,
   Max,
+  Min,
   Minus,
   Mul,
   Name,
@@ -13,372 +16,496 @@ import {
   Pow,
 } from "@computational-biology-aachen/mxlweb-core/mathml";
 
+/**
+ * Ebenhoeh 2014 photosynthetic electron transport chain (PETC) model.
+ *
+ * |             |                                                                                                              |
+ * | ----------- | ------------------------------------------------------------------------------------------------------------ |
+ * | doi         | 10.1098/rstb.2013.0223                                                                                       |
+ * | main author | Oliver Ebenhöh                                                                                               |
+ * | paper title | Short-term acclimation of the photosynthetic electron transfer chain to changing light: a mathematical model |
+ * | published   | March 2014                                                                                                   |
+ * | journal     | Philosophical Transactions of the Royal Society B                                                            |
+ * | organism    | Chlamydomonas reinhardtii                                                                                    |
+ * | Ported by   | Marvin van Aalst ( @marvinvanaalst )                                                                         |
+ *
+ * Core dynamic model of the thylakoid electron transport chain used to study
+ * short-term light acclimation (state transitions) in *Chlamydomonas*. Covers
+ * PSII/PSI, cytochrome b6f, FNR, ATP synthase, cyclic electron flow, PTOX/NDH and
+ * LHCII state transitions. Non-photochemical quenching is a constant base term
+ * (kH0); the xanthophyll/PsbS machinery of the later Matuszynska models is
+ * absent. ATP and NADPH are consumed by lumped linear sinks instead of a Calvin
+ * cycle.
+ */
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("pH", {
-      displayName: names.ph,
       value: 7.8,
-      unit: "–",
       texName: "pH",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PPFD", {
       value: 100.0,
-      displayName: names.ppfd,
-      unit: "s^{-1}",
       texName: "PPFD",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("cPPFD", {
       value: 0.3333333333333333,
       texName: "cPPFD",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PSII_total", {
-      displayName: names.psii_tot,
       value: 2.5,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PSII\\_total",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PSI_total", {
-      displayName: names.psi_tot,
       value: 2.5,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PSI\\_total",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PQ_tot", {
-      displayName: names.pq_tot,
       value: 17.5,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PQ\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PC_tot", {
-      displayName: names.pc_tot,
       value: 4.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PC\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Fd_star", {
-      displayName: names.fd_tot,
       value: 5.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "Fd_tot",
       texName: "Fd*",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("NADP_star", {
-      displayName: names.nadp_tot,
       value: 25.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "NADP_tot",
       texName: "NADP*",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("A_star_P", {
-      displayName: names.atp_tot,
       value: 60.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "AP_tot",
       texName: "A*P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("LHC_tot", {
-      displayName: names.lhc_tot,
       value: 1.0,
-      unit: "–",
       texName: "LHC\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("F", {
-      displayName: names.faraday_constant,
       value: 96.485,
-      unit: "kJ\\,mol^{-1}\\,V^{-1}",
       texName: "F",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "volt", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("R", {
-      displayName: names.gas_constant,
       value: 0.0083,
-      unit: "kJ\\,mol^{-1}\\,K^{-1}",
       texName: "R",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "kelvin", exponent: -1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("T", {
-      displayName: names.temperature,
       value: 298.0,
-      unit: "K",
       texName: "T",
+      unit: Unit.fromJson({ factors: [{ kind: "kelvin", exponent: 1 }] }),
     })
     .addParameter("bH", {
-      displayName: names.b_h,
       value: 100.0,
-      unit: "–",
       texName: "bH",
+      unit: Unit.fromJson({ factors: [] }),
     })
-    .addParameter("E0_QA", {
-      displayName: names.e0_qa,
+    .addParameter("E_0_QA", {
       value: -0.14,
-      unit: "V",
+      displayName: "E0_QA",
       texName: "E^0\\_QA",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_PQ", {
-      displayName: names.e0_pq,
+    .addParameter("E_0_PQ", {
       value: 0.354,
-      unit: "V",
+      displayName: "E0_PQ",
       texName: "E^0\\_PQ",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_PC", {
-      displayName: names.e0_pc,
+    .addParameter("E_0_PC", {
       value: 0.38,
-      unit: "V",
+      displayName: "E0_PC",
       texName: "E^0\\_PC",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_P700", {
-      displayName: names.e0_p700,
+    .addParameter("E_0_P700", {
       value: 0.48,
-      unit: "V",
+      displayName: "E0_P700",
       texName: "E^0\\_P700",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_FA", {
-      displayName: names.e0_fa,
+    .addParameter("E_0_FA", {
       value: -0.55,
-      unit: "V",
+      displayName: "E0_FA",
       texName: "E^0\\_FA",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_Fd", {
-      displayName: names.e0_fd,
+    .addParameter("E_0_Fd", {
       value: -0.43,
-      unit: "V",
+      displayName: "E0_Fd",
       texName: "E^0\\_Fd",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_NADP", {
-      displayName: names.e0_nadp,
+    .addParameter("E_0_NADP", {
       value: -0.113,
-      unit: "V",
+      displayName: "E0_NADP",
       texName: "E^0\\_NADP",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("kH0", {
-      displayName: names.base_heat_dissipation_rate,
       value: 500000000.0,
-      unit: "s^{-1}",
       texName: "kH0",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kH", {
-      displayName: names.npq_heat_dissipation_rate,
       value: 0.0,
-      unit: "s^{-1}",
       texName: "kH",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kF", {
-      displayName: names.fluorescence_rate_constant,
       value: 62500000.0,
-      unit: "s^{-1}",
       texName: "kF",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("k2", {
-      displayName: names.psii_rate_constant,
       value: 1200000000.0,
-      unit: "s^{-1}",
       texName: "k2",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("Q", {
-      displayName: names.npq_coefficient,
       value: 0.0,
-      unit: "–",
       texName: "Q",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("staticAntI", {
-      displayName: names.static_antenna_i,
       value: 0.2,
-      unit: "–",
       texName: "staticAntI",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("staticAntII", {
-      displayName: names.static_antenna_ii,
       value: 0.0,
-      unit: "–",
       texName: "staticAntII",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kf_atp_synthase", {
-      displayName: names.kf_atp_synthase,
       value: 20.0,
-      unit: "s^{-1}",
       texName: "kf\\_atp\\_synthase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kf_atp_consumption", {
       value: 10.0,
-      unit: "s^{-1}",
       texName: "kf\\_atp\\_consumption",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("Pi_mol", {
-      displayName: names.pi_mol,
       value: 0.01,
-      unit: "–",
       texName: "Pi\\_mol",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("DeltaG0_ATP", {
-      displayName: names.delta_g0_atp,
       value: 30.6,
-      unit: "kJ\\,mol^{-1}",
       texName: "DeltaG0\\_ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("HPR", {
-      displayName: names.hpr,
       value: 4.666666666666667,
-      unit: "–",
       texName: "HPR",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kf_nadph_consumption", {
       value: 15.0,
-      unit: "s^{-1}",
       texName: "kf\\_nadph\\_consumption",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kf_proton_leak", {
-      displayName: names.kf_proton_leak,
       value: 0.01,
-      unit: "s^{-1}",
       texName: "kf\\_proton\\_leak",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kPQred", {
-      displayName: names.k_pq_red,
       value: 250.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPQred",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_b6f", {
-      displayName: names.kcat_b6f,
       value: 2.5,
-      unit: "(mol\\,Chl)^{2}\\,mmol^{-2}\\,s^{-1}",
       texName: "kcat\\_b6f",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 2 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kPTOX", {
-      displayName: names.k_ptox,
       value: 0.01,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPTOX",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kPCox", {
-      displayName: names.k_pc_ox,
       value: 2500.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPCox",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kFdred", {
-      displayName: names.k_fd_red,
       value: 250000.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kFdred",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_fnr", {
-      displayName: names.kcat_fnr,
       value: 500.0,
-      unit: "s^{-1}",
       texName: "kcat\\_fnr",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("E0_fnr", {
-      displayName: names.e0_fnr,
       value: 3.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "E0\\_fnr",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_fnr_Ferredoxine_reduced", {
       value: 1.56,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "km_fnr_Ferredoxine (reduced)",
       texName: "km\\_fnr\\_Ferredoxine (reduced)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_fnr_NADP", {
-      displayName: names.km_fnr_nadp,
       value: 0.22,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "km\\_fnr\\_NADP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kf_cyclic_electron_flow", {
-      displayName: names.kf_cyclic_electron_flow,
       value: 1.0,
-      unit: "(mol\\,Chl)^{2}\\,mmol^{-2}\\,s^{-1}",
       texName: "kf\\_cyclic\\_electron\\_flow",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 2 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("O2_dissolved_lumen", {
       value: 8.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "O2 (dissolved)_lumen",
       texName: "O2 (dissolved)\\_lumen",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kf_ndh", {
-      displayName: names.kf_ndh,
       value: 0.004,
-      unit: "s^{-1}",
       texName: "kf\\_ndh",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kStt7", {
-      displayName: names.k_stt7,
       value: 0.0035,
-      unit: "s^{-1}",
       texName: "kStt7",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kPph1", {
-      displayName: names.k_pph1,
       value: 0.0013,
-      unit: "s^{-1}",
       texName: "kPph1",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_lhc_state_transition_12", {
-      displayName: names.km_lhc_state_transition_12,
       value: 0.2,
-      unit: "–",
       texName: "km\\_lhc\\_state\\_transition\\_12",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("n_ST", {
-      displayName: names.n_st,
       value: 2.0,
-      unit: "–",
       texName: "n\\_ST",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("Plastoquinone_oxidised", {
-      displayName: names.pq,
       value: 17.5,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "PQ",
       texName: "Plastoquinone (oxidised)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("Plastocyanine_oxidised", {
       value: 0.0202,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "Plastocyanine (oxidised)",
       texName: "Plastocyanine (oxidised)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("Ferredoxine_oxidised", {
-      displayName: names.fd_ox,
       value: 5.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "Fd_ox",
       texName: "Ferredoxine (oxidised)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("ATP", {
-      displayName: names.atp,
       value: 0.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("NADPH", {
-      displayName: names.nadph,
       value: 0.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "NADPH",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("protons_lumen", {
-      displayName: names.protons_lumen,
       value: 0.00025238293779207717,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "protons\\_lumen",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
-    .addVariable("Light_minus_harvesting_complex", {
+    .addVariable("Light_harvesting_complex", {
       value: 0.9,
-      unit: "–",
+      displayName: "Light-harvesting complex",
       texName: "Light-harvesting complex",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addAssignment("RT", {
-      displayName: names.rt,
       fn: new Mul([new Name("R"), new Name("T")]),
       texName: "RT",
     })
     .addAssignment("dG_pH", {
-      displayName: names.delta_g_ph,
       fn: new Mul([new Num(2.302585092994046), new Name("R"), new Name("T")]),
       texName: "dG\\_pH",
     })
     .addAssignment("pH_lumen", {
-      displayName: names.ph_lumen,
       fn: new Minus([
         new Divide([
           new Ln(
-            new Max([
-              new Num(1e-14),
-              new Mul([new Num(0.00025), new Name("protons_lumen")]),
+            new Min([
+              new Num(0.1),
+              new Max([
+                new Num(1e-14),
+                new Mul([new Num(0.00025), new Name("protons_lumen")]),
+              ]),
             ]),
           ),
           new Ln(new Num(10.0)),
@@ -386,12 +513,25 @@ export function initModel(): KineticModelBuilder {
       ]),
       texName: "pH\\_lumen",
     })
+    .addAssignment("protons_stroma_chl", {
+      fn: new Mul([
+        new Num(4000.0),
+        new Pow(new Num(10.0), new Minus([new Name("pH")])),
+      ]),
+      texName: "protons\\_stroma\\_chl",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
+    })
     .addAssignment("Plastoquinone_reduced", {
-      displayName: names.pqh2,
       fn: new Add([
         new Name("PQ_tot"),
         new Minus([new Name("Plastoquinone_oxidised")]),
       ]),
+      displayName: "PQH2",
       texName: "Plastoquinone (reduced)",
     })
     .addAssignment("Plastocyanine_reduced", {
@@ -399,39 +539,38 @@ export function initModel(): KineticModelBuilder {
         new Name("PC_tot"),
         new Minus([new Name("Plastocyanine_oxidised")]),
       ]),
+      displayName: "Plastocyanine (reduced)",
       texName: "Plastocyanine (reduced)",
     })
     .addAssignment("Ferredoxine_reduced", {
-      displayName: names.fd_red,
       fn: new Add([
         new Name("Fd_star"),
         new Minus([new Name("Ferredoxine_oxidised")]),
       ]),
+      displayName: "Fd_red",
       texName: "Ferredoxine (reduced)",
     })
     .addAssignment("ADP", {
-      displayName: names.adp,
       fn: new Add([new Name("A_star_P"), new Minus([new Name("ATP")])]),
       texName: "ADP",
     })
     .addAssignment("NADP", {
-      displayName: names.nadp,
       fn: new Add([new Name("NADP_star"), new Minus([new Name("NADPH")])]),
       texName: "NADP",
     })
-    .addAssignment("Light_minus_harvesting_complex_protonated", {
+    .addAssignment("Light_harvesting_complex_protonated", {
       fn: new Add([
         new Name("LHC_tot"),
-        new Minus([new Name("Light_minus_harvesting_complex")]),
+        new Minus([new Name("Light_harvesting_complex")]),
       ]),
+      displayName: "Light-harvesting complex (protonated)",
       texName: "Light-harvesting complex (protonated)",
     })
     .addAssignment("PSII_cross_section", {
-      displayName: names.psii_cross_section,
       fn: new Add([
         new Name("staticAntII"),
         new Mul([
-          new Name("Light_minus_harvesting_complex"),
+          new Name("Light_harvesting_complex"),
           new Add([
             new Num(1.0),
             new Minus([new Name("staticAntI")]),
@@ -445,9 +584,9 @@ export function initModel(): KineticModelBuilder {
       fn: new Exp(
         new Divide([
           new Add([
-            new Mul([new Num(2.0), new Name("E0_PQ"), new Name("F")]),
+            new Mul([new Num(2.0), new Name("E_0_PQ"), new Name("F")]),
             new Minus([
-              new Mul([new Num(2.0), new Name("E0_QA"), new Name("F")]),
+              new Mul([new Num(2.0), new Name("E_0_QA"), new Name("F")]),
             ]),
             new Minus([
               new Mul([new Num(2.0), new Name("dG_pH"), new Name("pH")]),
@@ -456,10 +595,10 @@ export function initModel(): KineticModelBuilder {
           new Name("RT"),
         ]),
       ),
+      displayName: "keq_Plastoquinone (reduced)",
       texName: "keq\\_Plastoquinone (reduced)",
     })
     .addAssignment("keq_atp_synthase", {
-      displayName: names.keq_atp_synthase,
       fn: new Mul([
         new Name("Pi_mol"),
         new Exp(
@@ -479,14 +618,13 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_atp\\_synthase",
     })
     .addAssignment("keq_b6f", {
-      displayName: names.keq_b6f,
       fn: new Exp(
         new Divide([
           new Add([
-            new Mul([new Num(2.0), new Name("E0_PC"), new Name("F")]),
+            new Mul([new Num(2.0), new Name("E_0_PC"), new Name("F")]),
             new Mul([new Num(2.0), new Name("dG_pH"), new Name("pH_lumen")]),
             new Minus([
-              new Mul([new Num(2.0), new Name("E0_PQ"), new Name("F")]),
+              new Mul([new Num(2.0), new Name("E_0_PQ"), new Name("F")]),
             ]),
             new Minus([
               new Mul([
@@ -502,14 +640,13 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_b6f",
     })
     .addAssignment("keq_fnr", {
-      displayName: names.keq_fnr,
       fn: new Exp(
         new Divide([
           new Add([
             new Minus([new Mul([new Name("dG_pH"), new Name("pH")])]),
-            new Mul([new Num(2.0), new Name("E0_NADP"), new Name("F")]),
+            new Mul([new Num(2.0), new Name("E_0_NADP"), new Name("F")]),
             new Minus([
-              new Mul([new Num(2.0), new Name("E0_Fd"), new Name("F")]),
+              new Mul([new Num(2.0), new Name("E_0_Fd"), new Name("F")]),
             ]),
           ]),
           new Name("RT"),
@@ -518,17 +655,15 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_fnr",
     })
     .addAssignment("vmax_fnr", {
-      displayName: names.vmax_fnr,
       fn: new Mul([new Name("E0_fnr"), new Name("kcat_fnr")]),
       texName: "vmax\\_fnr",
     })
     .addAssignment("keq_PCP700", {
-      displayName: names.keq_pc_p700,
       fn: new Exp(
         new Divide([
           new Add([
-            new Mul([new Name("E0_P700"), new Name("F")]),
-            new Minus([new Mul([new Name("E0_PC"), new Name("F")])]),
+            new Mul([new Name("E_0_P700"), new Name("F")]),
+            new Minus([new Mul([new Name("E_0_PC"), new Name("F")])]),
           ]),
           new Name("RT"),
         ]),
@@ -536,12 +671,11 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_PCP700",
     })
     .addAssignment("keq_ferredoxin_reductase", {
-      displayName: names.keq_ferredoxin_reductase,
       fn: new Exp(
         new Divide([
           new Add([
-            new Mul([new Name("E0_Fd"), new Name("F")]),
-            new Minus([new Mul([new Name("E0_FA"), new Name("F")])]),
+            new Mul([new Name("E_0_Fd"), new Name("F")]),
+            new Minus([new Mul([new Name("E_0_FA"), new Name("F")])]),
           ]),
           new Name("RT"),
         ]),
@@ -549,7 +683,6 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_ferredoxin\\_reductase",
     })
     .addAssignment("A1", {
-      displayName: names.a1,
       fn: new Divide([
         new Name("PSI_total"),
         new Add([
@@ -602,7 +735,6 @@ export function initModel(): KineticModelBuilder {
       texName: "A1",
     })
     .addReaction("PSII", {
-      displayName: names.r_psii,
       fn: new Mul([new Num(0.5), new Name("B1"), new Name("k2")]),
       stoichiometry: [
         { name: "Plastoquinone_oxidised", value: new Num(-1.0) },
@@ -614,7 +746,6 @@ export function initModel(): KineticModelBuilder {
       texName: "PSII",
     })
     .addReaction("PSI", {
-      displayName: names.r_psi,
       fn: new Mul([
         new Name("A1"),
         new Name("PPFD"),
@@ -628,7 +759,6 @@ export function initModel(): KineticModelBuilder {
       texName: "PSI",
     })
     .addReaction("PTOX", {
-      displayName: names.r_ptox,
       fn: new Mul([
         new Name("O2_dissolved_lumen"),
         new Name("Plastoquinone_reduced"),
@@ -638,13 +768,12 @@ export function initModel(): KineticModelBuilder {
       texName: "PTOX",
     })
     .addReaction("ndh", {
-      displayName: names.r_ndh,
       fn: new Mul([new Name("Plastoquinone_oxidised"), new Name("kf_ndh")]),
       stoichiometry: [{ name: "Plastoquinone_oxidised", value: new Num(-1.0) }],
+      displayName: "NDH",
       texName: "ndh",
     })
     .addReaction("b6f", {
-      displayName: names.r_b6f,
       fn: new Max([
         new Minus([new Name("kcat_b6f")]),
         new Mul([
@@ -674,10 +803,10 @@ export function initModel(): KineticModelBuilder {
           value: new Divide([new Num(4.0), new Name("bH")]),
         },
       ],
+      displayName: "cyt b6f",
       texName: "b6f",
     })
     .addReaction("cyclic_electron_flow", {
-      displayName: names.r_cyclic_electron_flow,
       fn: new Mul([
         new Name("Plastoquinone_oxidised"),
         new Name("kf_cyclic_electron_flow"),
@@ -687,10 +816,10 @@ export function initModel(): KineticModelBuilder {
         { name: "Plastoquinone_oxidised", value: new Num(-1.0) },
         { name: "Ferredoxine_oxidised", value: new Num(2.0) },
       ],
+      displayName: "cyclic electron flow",
       texName: "cyclic\\_electron\\_flow",
     })
     .addReaction("fnr", {
-      displayName: names.r_fnr,
       fn: new Divide([
         new Mul([
           new Name("vmax_fnr"),
@@ -773,20 +902,15 @@ export function initModel(): KineticModelBuilder {
         { name: "Ferredoxine_oxidised", value: new Num(2.0) },
         { name: "NADPH", value: new Num(1.0) },
       ],
+      displayName: "FNR",
       texName: "fnr",
     })
     .addReaction("proton_leak", {
-      displayName: names.r_proton_leak,
       fn: new Mul([
         new Name("kf_proton_leak"),
         new Add([
           new Name("protons_lumen"),
-          new Minus([
-            new Mul([
-              new Num(4000.0),
-              new Pow(new Num(10.0), new Minus([new Name("pH")])),
-            ]),
-          ]),
+          new Minus([new Name("protons_stroma_chl")]),
         ]),
       ]),
       stoichiometry: [
@@ -795,14 +919,14 @@ export function initModel(): KineticModelBuilder {
           value: new Minus([new Divide([new Num(1.0), new Name("bH")])]),
         },
       ],
+      displayName: "proton leak",
       texName: "proton\\_leak",
     })
     .addReaction("lhc_state_transition_12", {
-      displayName: names.r_lhc_state_transition_12,
       fn: new Divide([
         new Mul([
           new Num(1.0),
-          new Name("Light_minus_harvesting_complex"),
+          new Name("Light_harvesting_complex"),
           new Name("kStt7"),
         ]),
         new Add([
@@ -820,23 +944,23 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       stoichiometry: [
-        { name: "Light_minus_harvesting_complex", value: new Num(-1.0) },
+        { name: "Light_harvesting_complex", value: new Num(-1.0) },
       ],
+      displayName: "LHC state transition 1->2",
       texName: "lhc\\_state\\_transition\\_12",
     })
     .addReaction("lhc_state_transition_21", {
-      displayName: names.r_lhc_state_transition_21,
       fn: new Mul([
-        new Name("Light_minus_harvesting_complex_protonated"),
+        new Name("Light_harvesting_complex_protonated"),
         new Name("kPph1"),
       ]),
       stoichiometry: [
-        { name: "Light_minus_harvesting_complex", value: new Num(1.0) },
+        { name: "Light_harvesting_complex", value: new Num(1.0) },
       ],
+      displayName: "LHC state transition 2->1",
       texName: "lhc\\_state\\_transition\\_21",
     })
     .addReaction("atp_synthase", {
-      displayName: names.r_atp_synthase,
       fn: new Mul([
         new Name("kf_atp_synthase"),
         new Add([
@@ -853,6 +977,7 @@ export function initModel(): KineticModelBuilder {
           value: new Minus([new Divide([new Name("HPR"), new Name("bH")])]),
         },
       ],
+      displayName: "ATP synthase",
       texName: "atp\\_synthase",
     })
     .addReaction("atp_consumption", {
@@ -866,7 +991,6 @@ export function initModel(): KineticModelBuilder {
       texName: "nadph\\_consumption",
     })
     .addAssignment("B0", {
-      displayName: names.b0,
       fn: new Divide([
         new Mul([
           new Name("PSII_total"),
@@ -1124,7 +1248,6 @@ export function initModel(): KineticModelBuilder {
       texName: "B0",
     })
     .addAssignment("B1", {
-      displayName: names.b1,
       fn: new Divide([
         new Mul([
           new Name("PPFD"),
@@ -1366,7 +1489,6 @@ export function initModel(): KineticModelBuilder {
       texName: "B1",
     })
     .addAssignment("B2", {
-      displayName: names.b2,
       fn: new Divide([
         new Mul([
           new Name("PSII_total"),
@@ -1682,7 +1804,6 @@ export function initModel(): KineticModelBuilder {
       texName: "B2",
     })
     .addAssignment("B3", {
-      displayName: names.b3,
       fn: new Divide([
         new Mul([
           new Name("PPFD"),
@@ -1945,28 +2066,32 @@ export function initModel(): KineticModelBuilder {
       ]),
       texName: "B3",
     })
-    .addAssignment("PQ_red_div_tot", {
+    .addReadout("PQ_red_per_tot", {
       fn: new Divide([new Name("Plastoquinone_reduced"), new Name("PQ_tot")]),
+      displayName: "PQ_red/tot",
       texName: "PQ\\_red/tot",
     })
-    .addAssignment("Fd_red_div_tot", {
+    .addReadout("Fd_red_per_tot", {
       fn: new Divide([new Name("Ferredoxine_reduced"), new Name("Fd_star")]),
+      displayName: "Fd_red/tot",
       texName: "Fd\\_red/tot",
     })
-    .addAssignment("PC_red_div_tot", {
+    .addReadout("PC_red_per_tot", {
       fn: new Divide([new Name("Plastocyanine_reduced"), new Name("PC_tot")]),
+      displayName: "PC_red/tot",
       texName: "PC\\_red/tot",
     })
-    .addAssignment("NADPH_div_tot", {
+    .addReadout("NADPH_per_tot", {
       fn: new Divide([new Name("NADPH"), new Name("NADP_star")]),
+      displayName: "NADPH/tot",
       texName: "NADPH/tot",
     })
-    .addAssignment("ATP_div_tot", {
+    .addReadout("ATP_per_tot", {
       fn: new Divide([new Name("ATP"), new Name("A_star_P")]),
+      displayName: "ATP/tot",
       texName: "ATP/tot",
     })
-    .addAssignment("Fluo", {
-      displayName: names.fluorescence,
+    .addReadout("Fluo", {
       fn: new Add([
         new Divide([
           new Mul([

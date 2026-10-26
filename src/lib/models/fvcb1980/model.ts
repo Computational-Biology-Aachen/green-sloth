@@ -16,27 +16,31 @@ export function initModel(): SteadyStateModelBuilder {
     .addParameter("Ci", {
       value: 500,
       displayName: "Ci",
-      unit: "\\mu bar",
+      unit: "ubar",
       texName: "C_i",
     })
     .addParameter("vcmax", {
       value: 80,
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      unit: "umol m^-2 s^-1",
       texName: "V_{cmax}",
     })
-    .addParameter("kc", { value: 259, unit: "\\mu bar", texName: "K_c" })
+    .addParameter("kc", { value: 259, unit: "ubar", texName: "K_c" })
     .addParameter("ko", { value: 179, unit: "mbar", texName: "K_o" })
     .addParameter("ccp", {
       value: 38.6,
-      unit: "\\mu bar",
+      unit: "ubar",
       texName: "\\Gamma^*",
     })
     .addParameter("rl", {
       value: 1,
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      unit: "umol m^-2 s^-1",
       texName: "R_d",
     })
-    .addParameter("alpha", { value: 0, unit: "–", texName: "\\alpha" })
+    .addParameter("alpha", {
+      value: 0,
+      unit: "dimensionless",
+      texName: "\\alpha",
+    })
     .addParameter("o", {
       value: 210,
       displayName: "O₂",
@@ -47,14 +51,14 @@ export function initModel(): SteadyStateModelBuilder {
     .addParameter("j", {
       value: 124,
       displayName: "J",
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      unit: "umol m^-2 s^-1",
       texName: "J",
       slider: { min: "50", max: "300", step: "1" },
     })
     .addParameter("tp", {
       value: 15,
       displayName: "Tp",
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      unit: "umol m^-2 s^-1",
       texName: "T_p",
       slider: { min: "5", max: "50", step: "1" },
     })
@@ -70,7 +74,7 @@ export function initModel(): SteadyStateModelBuilder {
         ]),
       ]),
       displayName: "Wc",
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      unit: "umol m^-2 s^-1",
       texName: "W_c",
     })
     .addAssignment("wj", {
@@ -82,7 +86,7 @@ export function initModel(): SteadyStateModelBuilder {
         ]),
       ]),
       displayName: "Wj",
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      unit: "umol m^-2 s^-1",
       texName: "W_j",
     })
     .addAssignment("wp", {
@@ -107,13 +111,13 @@ export function initModel(): SteadyStateModelBuilder {
         ]),
       ]),
       displayName: "Wp",
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      unit: "umol m^-2 s^-1",
       texName: "W_p",
     })
     .addAssignment("vc", {
       fn: new Min([new Name("wc"), new Name("wj"), new Name("wp")]),
       displayName: "Vc",
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      unit: "umol m^-2 s^-1",
       texName: "V_c",
     })
     .addAssignment("an", {
@@ -128,7 +132,7 @@ export function initModel(): SteadyStateModelBuilder {
         new Name("rl"),
       ]),
       displayName: "An",
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
+      unit: "umol m^-2 s^-1",
       texName: "A_n",
     });
 }

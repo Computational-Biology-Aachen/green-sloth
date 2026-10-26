@@ -1,11 +1,14 @@
-import names from "#lib/names.js";
-import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import {
+  KineticModelBuilder,
+  Unit,
+} from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
   Divide,
   Exp,
   Ln,
   Max,
+  Min,
   Minus,
   Mul,
   Name,
@@ -14,38 +17,54 @@ import {
 } from "@computational-biology-aachen/mxlweb-core/mathml";
 
 /**
- * Matuszyńska et al. (2019) supply–demand model of photosynthesis.
+ * Matuszynska 2019.
  *
- * "Balancing energy supply during photosynthesis – a theoretical perspective."
- * Merges two previously developed models — a photosynthetic electron transport
+ * Photosynthesis model with NPQ, state transitions, and Calvin cycle.
+ *
+ * |             |                                                                           |
+ * | ----------- | ------------------------------------------------------------------------- |
+ * | doi         | 10.1111/ppl.12962                                                         |
+ * | main author | Anna Matuszyńska                                                          |
+ * | paper title | Balancing energy supply during photosynthesis - a theoretical perspective |
+ * | published   | May 2019                                                                  |
+ * | journal     | Physiologia Plantarum                                                     |
+ * | organism    | higher plants                                                             |
+ * | Ported by   | Marvin van Aalst ( @marvinvanaalst )                                      |
+ *
+ * Merges two previously developed models, a photosynthetic electron transport
  * chain (PETC) model (originally for non-photochemical quenching) and a dynamic
- * Calvin–Benson–Bassham (CBB) cycle model for C3 carbon fixation — into one ODE
+ * Calvin-Benson-Bassham (CBB) cycle model for C3 carbon fixation, into one ODE
  * system to study how energy/redox supply by photosynthesis matches downstream
  * demand. Illustrates the dark stand-by mode needed to restart carbon fixation
- * after dark–light transitions.
- *
- * Ref: Matuszyńska et al. (2019), Physiologia Plantarum.
- * DOI: https://doi.org/10.1111/ppl.12962
+ * after dark-light transitions.
  */
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("protons", {
-      displayName: names.protons,
       value: 1.2589254117941661e-5,
-      unit: "mM",
       texName: "protons",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("pH", {
-      displayName: names.ph,
       value: 7.9,
-      unit: "–",
       texName: "pH",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("CO2_dissolved", {
-      displayName: names.co2,
       value: 0.2,
-      unit: "mM",
+      displayName: "CO2",
       texName: "CO2 (dissolved)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "0.0008",
         max: "0.014",
@@ -54,242 +73,290 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("O2_dissolved_lumen", {
       value: 8.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "O2 (dissolved)_lumen",
       texName: "O2 (dissolved)\\_lumen",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PPFD", {
       value: 100.0,
-      unit: "s^{-1}",
       texName: "PPFD",
-      displayName: names.ppfd,
-      slider: { min: "100", max: "2000", step: "10" },
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
+      slider: {
+        min: "100",
+        max: "2000",
+        step: "10",
+      },
     })
     .addParameter("bH", {
-      displayName: names.b_h,
       value: 100.0,
-      unit: "–",
       texName: "bH",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("F", {
-      displayName: names.faraday_constant,
       value: 96.485,
-      unit: "kJ\\,mol^{-1}\\,V^{-1}",
       texName: "F",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "volt", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("E0_PC", {
-      displayName: names.e0_pc,
+    .addParameter("E_0_PC", {
       value: 0.38,
-      unit: "V",
+      displayName: "E0_PC",
       texName: "E^0\\_PC",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_P700", {
-      displayName: names.e0_p700,
+    .addParameter("E_0_P700", {
       value: 0.48,
-      unit: "V",
+      displayName: "E0_P700",
       texName: "E^0\\_P700",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_FA", {
-      displayName: names.e0_fa,
+    .addParameter("E_0_FA", {
       value: -0.55,
-      unit: "V",
+      displayName: "E0_FA",
       texName: "E^0\\_FA",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_Fd", {
-      displayName: names.e0_fd,
+    .addParameter("E_0_Fd", {
       value: -0.43,
-      unit: "V",
+      displayName: "E0_Fd",
       texName: "E^0\\_Fd",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_NADP", {
-      displayName: names.e0_nadp,
+    .addParameter("E_0_NADP", {
       value: -0.113,
-      unit: "V",
+      displayName: "E0_NADP",
       texName: "E^0\\_NADP",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("convf", {
       value: 0.032,
-      unit: "mM\\,mol\\,Chl\\,mmol^{-1}",
       texName: "convf",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("R", {
-      displayName: names.gas_constant,
       value: 0.0083,
-      unit: "kJ\\,mol^{-1}\\,K^{-1}",
       texName: "R",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "kelvin", exponent: -1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("T", {
-      displayName: names.temperature,
       value: 298.0,
-      unit: "K",
       texName: "T",
+      unit: Unit.fromJson({ factors: [{ kind: "kelvin", exponent: 1 }] }),
     })
     .addParameter("Carotenoids_tot", {
-      displayName: names.carotenoids_tot,
       value: 1.0,
-      unit: "–",
       texName: "Carotenoids\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("Fd_star", {
-      displayName: names.fd_tot,
       value: 5.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "Fd_tot",
       texName: "Fd*",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PC_tot", {
-      displayName: names.pc_tot,
       value: 4.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PC\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PSBS_tot", {
-      displayName: names.psbs_tot,
       value: 1.0,
-      unit: "–",
+      displayName: "PsbS_tot",
       texName: "PSBS\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("LHC_tot", {
-      displayName: names.lhc_tot,
       value: 1.0,
-      unit: "–",
       texName: "LHC\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("gamma0", {
-      displayName: names.gamma0,
       value: 0.1,
-      unit: "–",
       texName: "gamma0",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("gamma1", {
-      displayName: names.gamma1,
       value: 0.25,
-      unit: "–",
       texName: "gamma1",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("gamma2", {
-      displayName: names.gamma2,
       value: 0.6,
-      unit: "–",
       texName: "gamma2",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("gamma3", {
-      displayName: names.gamma3,
       value: 0.15,
-      unit: "–",
       texName: "gamma3",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kZSat", {
-      displayName: names.k_zsat,
       value: 0.12,
-      unit: "–",
+      displayName: "K_ZSat",
       texName: "kZSat",
+      unit: Unit.fromJson({ factors: [] }),
     })
-    .addParameter("E0_QA", {
-      displayName: names.e0_qa,
+    .addParameter("E_0_QA", {
       value: -0.14,
-      unit: "V",
+      displayName: "E0_QA",
       texName: "E^0\\_QA",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
-    .addParameter("E0_PQ", {
-      displayName: names.e0_pq,
+    .addParameter("E_0_PQ", {
       value: 0.354,
-      unit: "V",
+      displayName: "E0_PQ",
       texName: "E^0\\_PQ",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("PQ_tot", {
-      displayName: names.pq_tot,
       value: 17.5,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PQ\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("staticAntII", {
-      displayName: names.static_antenna_ii,
       value: 0.1,
-      unit: "–",
       texName: "staticAntII",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("staticAntI", {
-      displayName: names.static_antenna_i,
       value: 0.37,
-      unit: "–",
       texName: "staticAntI",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("NADP_star", {
-      displayName: names.nadp_tot,
       value: 0.8,
-      unit: "mM",
+      displayName: "NADP_tot",
       texName: "NADP*",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("A_star_P", {
-      displayName: names.atp_tot,
       value: 2.55,
-      unit: "mM",
+      displayName: "AP_tot",
       texName: "A*P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Pi_tot", {
-      displayName: names.pi_tot,
       value: 17.05,
-      unit: "mM",
       texName: "Pi\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kf_atp_synthase", {
-      displayName: names.kf_atp_synthase,
       value: 20.0,
-      unit: "s^{-1}",
       texName: "kf\\_atp\\_synthase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("HPR", {
-      displayName: names.hpr,
       value: 4.666666666666667,
-      unit: "–",
       texName: "HPR",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("Pi_mol", {
-      displayName: names.pi_mol,
       value: 0.01,
-      unit: "–",
       texName: "Pi\\_mol",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("DeltaG0_ATP", {
-      displayName: names.delta_g0_atp,
       value: 30.6,
-      unit: "kJ\\,mol^{-1}",
       texName: "DeltaG0\\_ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_b6f", {
-      displayName: names.kcat_b6f,
       value: 2.5,
-      unit: "(mol\\,Chl)^{2}\\,mmol^{-2}\\,s^{-1}",
       texName: "kcat\\_b6f",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 2 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kh_lhc_protonation", {
-      displayName: names.kh_lhc_protonation,
       value: 3.0,
-      unit: "–",
       texName: "kh\\_lhc\\_protonation",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kf_lhc_protonation", {
-      displayName: names.kf_lhc_protonation,
       value: 0.0096,
-      unit: "s^{-1}",
       texName: "kf\\_lhc\\_protonation",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("ksat_lhc_protonation", {
-      displayName: names.ksat_lhc_protonation,
       value: 5.8,
-      unit: "–",
       texName: "ksat\\_lhc\\_protonation",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kf_lhc_deprotonation", {
-      displayName: names.kf_lhc_deprotonation,
       value: 0.0096,
-      unit: "s^{-1}",
       texName: "kf\\_lhc\\_deprotonation",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kf_cyclic_electron_flow", {
-      displayName: names.kf_cyclic_electron_flow,
       value: 1.0,
-      unit: "(mol\\,Chl)^{2}\\,mmol^{-2}\\,s^{-1}",
       texName: "kf\\_cyclic\\_electron\\_flow",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 2 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "0.0",
         max: "1.0",
@@ -297,689 +364,974 @@ export function initModel(): KineticModelBuilder {
       },
     })
     .addParameter("kf_violaxanthin_deepoxidase", {
-      displayName: names.kf_violaxanthin_deepoxidase,
       value: 0.0024,
-      unit: "s^{-1}",
       texName: "kf\\_violaxanthin\\_deepoxidase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kh_violaxanthin_deepoxidase", {
-      displayName: names.kh_violaxanthin_deepoxidase,
       value: 5.0,
-      unit: "–",
       texName: "kh\\_violaxanthin\\_deepoxidase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("ksat_violaxanthin_deepoxidase", {
-      displayName: names.ksat_violaxanthin_deepoxidase,
       value: 5.8,
-      unit: "–",
       texName: "ksat\\_violaxanthin\\_deepoxidase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kf_zeaxanthin_epoxidase", {
-      displayName: names.kf_zeaxanthin_epoxidase,
       value: 0.00024,
-      unit: "s^{-1}",
       texName: "kf\\_zeaxanthin\\_epoxidase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_fnr_Ferredoxine_reduced", {
       value: 1.56,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "km_fnr_Ferredoxine (reduced)",
       texName: "km\\_fnr\\_Ferredoxine (reduced)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_fnr_NADP", {
-      displayName: names.km_fnr_nadp,
       value: 0.22,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "km\\_fnr\\_NADP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("E0_fnr", {
-      displayName: names.e0_fnr,
       value: 3.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "E0\\_fnr",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_fnr", {
-      displayName: names.kcat_fnr,
       value: 500.0,
-      unit: "s^{-1}",
       texName: "kcat\\_fnr",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kf_ndh", {
-      displayName: names.kf_ndh,
       value: 0.002,
-      unit: "s^{-1}",
       texName: "kf\\_ndh",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("PSII_total", {
-      displayName: names.psii_tot,
       value: 2.5,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PSII\\_total",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PSI_total", {
-      displayName: names.psi_tot,
       value: 2.5,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PSI\\_total",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kH0", {
-      displayName: names.base_heat_dissipation_rate,
       value: 500000000.0,
-      unit: "s^{-1}",
       texName: "kH0",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kPQred", {
-      displayName: names.k_pq_red,
       value: 250.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPQred",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kPCox", {
-      displayName: names.k_pc_ox,
       value: 2500.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPCox",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kFdred", {
-      displayName: names.k_fd_red,
       value: 250000.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kFdred",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k2", {
-      displayName: names.psii_rate_constant,
       value: 5000000000.0,
-      unit: "s^{-1}",
       texName: "k2",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kH", {
-      displayName: names.npq_heat_dissipation_rate,
       value: 5000000000.0,
-      unit: "s^{-1}",
       texName: "kH",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kF", {
-      displayName: names.fluorescence_rate_constant,
       value: 625000000.0,
-      unit: "s^{-1}",
       texName: "kF",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kf_proton_leak", {
-      displayName: names.kf_proton_leak,
       value: 10.0,
-      unit: "s^{-1}",
       texName: "kf\\_proton\\_leak",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kPTOX", {
-      displayName: names.k_ptox,
       value: 0.01,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPTOX",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kStt7", {
-      displayName: names.k_stt7,
       value: 0.0035,
-      unit: "s^{-1}",
       texName: "kStt7",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_lhc_state_transition_12", {
-      displayName: names.km_lhc_state_transition_12,
       value: 0.2,
-      unit: "–",
       texName: "km\\_lhc\\_state\\_transition\\_12",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("n_ST", {
-      displayName: names.n_st,
       value: 2.0,
-      unit: "–",
       texName: "n\\_ST",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kPph1", {
-      displayName: names.k_pph1,
       value: 0.0013,
-      unit: "s^{-1}",
       texName: "kPph1",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("E0_rubisco", {
       value: 1.0,
-      unit: "mM",
       texName: "E0\\_rubisco",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_rubisco_carboxylase", {
-      displayName: names.kcat_rubisco_carboxylase,
       value: 2.72,
-      unit: "s^{-1}",
       texName: "kcat\\_rubisco\\_carboxylase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_rubisco_carboxylase_RUBP", {
-      displayName: names.km_rubisco_carboxylase_rubp,
       value: 0.02,
-      unit: "mM",
       texName: "km\\_rubisco\\_carboxylase\\_RUBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_rubisco_carboxylase_CO2_dissolved", {
-      displayName: names.km_rubisco_carboxylase_co2,
       value: 0.0107,
-      unit: "mM",
+      displayName: "km_rubisco_carboxylase_CO2",
       texName: "km\\_rubisco\\_carboxylase\\_CO2 (dissolved)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_rubisco_carboxylase_3PGA", {
-      displayName: names.ki_rubisco_carboxylase_pga,
       value: 0.04,
-      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_3PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_rubisco_carboxylase_FBP", {
-      displayName: names.ki_rubisco_carboxylase_fbp,
       value: 0.04,
-      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_FBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_rubisco_carboxylase_SBP", {
-      displayName: names.ki_rubisco_carboxylase_sbp,
       value: 0.075,
-      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_SBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_rubisco_carboxylase_Orthophosphate", {
-      displayName: names.ki_rubisco_carboxylase_pi,
       value: 0.9,
-      unit: "mM",
+      displayName: "ki_rubisco_carboxylase_Pi",
       texName: "ki\\_rubisco\\_carboxylase\\_Orthophosphate",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_rubisco_carboxylase_NADPH", {
-      displayName: names.ki_rubisco_carboxylase_nadph,
       value: 0.07,
-      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_NADPH",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kre_phosphoglycerate_kinase", {
-      displayName: names.kre_phosphoglycerate_kinase,
       value: 800000000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_phosphoglycerate\\_kinase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_phosphoglycerate_kinase", {
-      displayName: names.keq_phosphoglycerate_kinase,
       value: 0.00031,
-      unit: "–",
       texName: "keq\\_phosphoglycerate\\_kinase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_gadph", {
-      displayName: names.kre_gadph,
       value: 800000000.0,
-      unit: "mM^{-2}\\,s^{-1}",
       texName: "kre\\_gadph",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 2 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_gadph", {
-      displayName: names.keq_gadph,
       value: 16000000.0,
-      unit: "–",
       texName: "keq\\_gadph",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_triose_phosphate_isomerase", {
-      displayName: names.kre_triose_phosphate_isomerase,
       value: 800000000.0,
-      unit: "s^{-1}",
       texName: "kre\\_triose\\_phosphate\\_isomerase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("keq_triose_phosphate_isomerase", {
-      displayName: names.keq_triose_phosphate_isomerase,
       value: 22.0,
-      unit: "–",
       texName: "keq\\_triose\\_phosphate\\_isomerase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_aldolase_dhap_gap", {
-      displayName: names.kre_aldolase_dhap_gap,
       value: 800000000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_aldolase\\_dhap\\_gap",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_aldolase_dhap_gap", {
-      displayName: names.keq_aldolase_dhap_gap,
       value: 7.1,
-      unit: "mM^{-1}",
       texName: "keq\\_aldolase\\_dhap\\_gap",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kre_aldolase_dhap_e4p", {
-      displayName: names.kre_aldolase_dhap_e4p,
       value: 800000000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_aldolase\\_dhap\\_e4p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_aldolase_dhap_e4p", {
-      displayName: names.keq_aldolase_dhap_e4p,
       value: 13.0,
-      unit: "mM^{-1}",
       texName: "keq\\_aldolase\\_dhap\\_e4p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("E0_fbpase", {
-      displayName: names.e0_fbpase,
       value: 1.0,
-      unit: "mM",
       texName: "E0\\_fbpase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_fbpase", {
-      displayName: names.kcat_fbpase,
       value: 1.6,
-      unit: "s^{-1}",
       texName: "kcat\\_fbpase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_fbpase_s", {
-      displayName: names.km_fbpase_s,
       value: 0.03,
-      unit: "mM",
       texName: "km\\_fbpase\\_s",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_fbpase_F6P", {
-      displayName: names.ki_fbpase_f6p,
       value: 0.7,
-      unit: "mM",
       texName: "ki\\_fbpase\\_F6P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_fbpase_Orthophosphate", {
-      displayName: names.ki_fbpase_pi,
       value: 12.0,
-      unit: "mM",
+      displayName: "ki_fbpase_Pi",
       texName: "ki\\_fbpase\\_Orthophosphate",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kre_transketolase_gap_f6p", {
-      displayName: names.kre_transketolase_gap_f6p,
       value: 800000000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_transketolase\\_gap\\_f6p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_transketolase_gap_f6p", {
-      displayName: names.keq_transketolase_gap_f6p,
       value: 0.084,
-      unit: "–",
       texName: "keq\\_transketolase\\_gap\\_f6p",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_transketolase_gap_s7p", {
-      displayName: names.kre_transketolase_gap_s7p,
       value: 800000000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_transketolase\\_gap\\_s7p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_transketolase_gap_s7p", {
-      displayName: names.keq_transketolase_gap_s7p,
       value: 0.85,
-      unit: "–",
       texName: "keq\\_transketolase\\_gap\\_s7p",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("E0_SBPase", {
-      displayName: names.e0_sbpase,
       value: 1.0,
-      unit: "mM",
       texName: "E0\\_SBPase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_SBPase", {
-      displayName: names.kcat_sbpase,
       value: 0.32,
-      unit: "s^{-1}",
       texName: "kcat\\_SBPase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_SBPase_s", {
-      displayName: names.km_sbpase_s,
       value: 0.013,
-      unit: "mM",
       texName: "km\\_SBPase\\_s",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_SBPase_Orthophosphate", {
-      displayName: names.ki_sbpase_pi,
       value: 12.0,
-      unit: "mM",
+      displayName: "ki_SBPase_Pi",
       texName: "ki\\_SBPase\\_Orthophosphate",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kre_ribose_phosphate_isomerase", {
-      displayName: names.kre_ribose_phosphate_isomerase,
       value: 800000000.0,
-      unit: "s^{-1}",
       texName: "kre\\_ribose\\_phosphate\\_isomerase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("keq_ribose_phosphate_isomerase", {
-      displayName: names.keq_ribose_phosphate_isomerase,
       value: 0.4,
-      unit: "–",
       texName: "keq\\_ribose\\_phosphate\\_isomerase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_ribulose_phosphate_epimerase", {
-      displayName: names.kre_ribulose_phosphate_epimerase,
       value: 800000000.0,
-      unit: "s^{-1}",
       texName: "kre\\_ribulose\\_phosphate\\_epimerase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("keq_ribulose_phosphate_epimerase", {
-      displayName: names.keq_ribulose_phosphate_epimerase,
       value: 0.67,
-      unit: "–",
       texName: "keq\\_ribulose\\_phosphate\\_epimerase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("E0_phosphoribulokinase", {
-      displayName: names.e0_phosphoribulokinase,
       value: 1.0,
-      unit: "mM",
       texName: "E0\\_phosphoribulokinase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_phosphoribulokinase", {
-      displayName: names.kcat_phosphoribulokinase,
       value: 7.9992,
-      unit: "s^{-1}",
       texName: "kcat\\_phosphoribulokinase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_phosphoribulokinase_RU5P", {
-      displayName: names.km_phosphoribulokinase_ru5p,
       value: 0.05,
-      unit: "mM",
       texName: "km\\_phosphoribulokinase\\_RU5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_phosphoribulokinase_ATP", {
-      displayName: names.km_phosphoribulokinase_atp,
       value: 0.05,
-      unit: "mM",
       texName: "km\\_phosphoribulokinase\\_ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_phosphoribulokinase_3PGA", {
-      displayName: names.ki_phosphoribulokinase_pga,
       value: 2.0,
-      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_3PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_phosphoribulokinase_RUBP", {
-      displayName: names.ki_phosphoribulokinase_rubp,
       value: 0.7,
-      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_RUBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_phosphoribulokinase_Orthophosphate", {
-      displayName: names.ki_phosphoribulokinase_pi,
       value: 4.0,
-      unit: "mM",
+      displayName: "ki_phosphoribulokinase_Pi",
       texName: "ki\\_phosphoribulokinase\\_Orthophosphate",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_phosphoribulokinase_4", {
-      displayName: names.ki_phosphoribulokinase_4,
       value: 2.5,
-      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_4",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_phosphoribulokinase_5", {
-      displayName: names.ki_phosphoribulokinase_5,
       value: 0.4,
-      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_5",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kre_g6pi", {
-      displayName: names.kre_g6pi,
       value: 800000000.0,
-      unit: "s^{-1}",
       texName: "kre\\_g6pi",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("keq_g6pi", {
-      displayName: names.keq_g6pi,
       value: 2.3,
-      unit: "–",
       texName: "keq\\_g6pi",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_phosphoglucomutase", {
-      displayName: names.kre_phosphoglucomutase,
       value: 800000000.0,
-      unit: "s^{-1}",
       texName: "kre\\_phosphoglucomutase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("keq_phosphoglucomutase", {
-      displayName: names.keq_phosphoglucomutase,
       value: 0.058,
-      unit: "–",
       texName: "keq\\_phosphoglucomutase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("Orthophosphate_external", {
       value: 0.5,
-      unit: "mM",
+      displayName: "Orthophosphate (external)",
       texName: "Orthophosphate (external)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_ex_pga", {
-      displayName: names.km_ex_pga,
       value: 0.25,
-      unit: "mM",
       texName: "km\\_ex\\_pga",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_ex_gap", {
-      displayName: names.km_ex_gap,
       value: 0.075,
-      unit: "mM",
       texName: "km\\_ex\\_gap",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_ex_dhap", {
-      displayName: names.km_ex_dhap,
       value: 0.077,
-      unit: "mM",
       texName: "km\\_ex\\_dhap",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_N_translocator_Orthophosphate_external", {
       value: 0.74,
-      unit: "mM",
+      displayName: "km_N_translocator_Orthophosphate (external)",
       texName: "km\\_N\\_translocator\\_Orthophosphate (external)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_N_translocator_Orthophosphate", {
       value: 0.63,
-      unit: "mM",
       texName: "km\\_N\\_translocator\\_Orthophosphate",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_N_translocator", {
-      displayName: names.kcat_n_translocator,
       value: 2.0,
-      unit: "s^{-1}",
       texName: "kcat\\_N\\_translocator",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("E0_N_translocator", {
-      displayName: names.e0_n_translocator,
       value: 1.0,
-      unit: "mM",
       texName: "E0\\_N\\_translocator",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("E0_ex_g1p", {
-      displayName: names.e0_ex_g1p,
       value: 1.0,
-      unit: "mM",
       texName: "E0\\_ex\\_g1p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_ex_g1p_G1P", {
-      displayName: names.km_ex_g1p_g1p,
       value: 0.08,
-      unit: "mM",
       texName: "km\\_ex\\_g1p\\_G1P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_ex_g1p_ATP", {
-      displayName: names.km_ex_g1p_atp,
       value: 0.08,
-      unit: "mM",
       texName: "km\\_ex\\_g1p\\_ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_ex_g1p", {
-      displayName: names.ki_ex_g1p,
       value: 10.0,
-      unit: "mM",
       texName: "ki\\_ex\\_g1p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_ex_g1p_3PGA", {
-      displayName: names.ki_ex_g1p_pga,
       value: 0.1,
-      unit: "–",
       texName: "ki\\_ex\\_g1p\\_3PGA",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("ki_ex_g1p_F6P", {
-      displayName: names.ki_ex_g1p_f6p,
       value: 0.02,
-      unit: "–",
       texName: "ki\\_ex\\_g1p\\_F6P",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("ki_ex_g1p_FBP", {
-      displayName: names.ki_ex_g1p_fbp,
       value: 0.02,
-      unit: "–",
       texName: "ki\\_ex\\_g1p\\_FBP",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kcat_ex_g1p", {
-      displayName: names.kcat_ex_g1p,
       value: 0.32,
-      unit: "s^{-1}",
       texName: "kcat\\_ex\\_g1p",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addVariable("_3PGA", {
-      displayName: names.pga,
       value: 0.9928653922138561,
-      unit: "mM",
+      displayName: "PGA",
       texName: "3PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("BPGA", {
-      displayName: names.bpga,
       value: 0.0005297732935310749,
-      unit: "mM",
       texName: "BPGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("GAP", {
-      displayName: names.gap,
       value: 0.0062663539939955834,
-      unit: "mM",
       texName: "GAP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("DHAP", {
-      displayName: names.dhap,
       value: 0.13785977143668732,
-      unit: "mM",
       texName: "DHAP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("FBP", {
-      displayName: names.fbp,
       value: 0.006133532145409954,
-      unit: "mM",
       texName: "FBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("F6P", {
-      displayName: names.f6p,
       value: 0.31271973359685457,
-      unit: "mM",
       texName: "F6P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("G6P", {
-      displayName: names.g6p,
       value: 0.719255387166192,
-      unit: "mM",
       texName: "G6P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("G1P", {
-      displayName: names.g1p,
       value: 0.041716812452951633,
-      unit: "mM",
       texName: "G1P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("SBP", {
-      displayName: names.sbp,
       value: 0.013123745088361893,
-      unit: "mM",
       texName: "SBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("S7P", {
-      displayName: names.s7p,
       value: 0.15890073845176905,
-      unit: "mM",
       texName: "S7P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("E4P", {
-      displayName: names.e4p,
       value: 0.007322797350442026,
-      unit: "mM",
       texName: "E4P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("X5P", {
-      displayName: names.x5p,
       value: 0.022478763225333428,
-      unit: "mM",
       texName: "X5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("R5P", {
-      displayName: names.r5p,
       value: 0.037651927659696716,
-      unit: "mM",
       texName: "R5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("RUBP", {
-      displayName: names.rubp,
       value: 0.13184790283048484,
-      unit: "mM",
       texName: "RUBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("RU5P", {
-      displayName: names.ru5p,
       value: 0.015060770937455408,
-      unit: "mM",
       texName: "RU5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("ATP", {
-      displayName: names.atp,
       value: 1.612922506604933,
-      unit: "mM",
       texName: "ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("Ferredoxine_oxidised", {
-      displayName: names.fd_ox,
       value: 3.8624032084329674,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "Fd_ox",
       texName: "Ferredoxine (oxidised)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("protons_lumen", {
-      displayName: names.protons_lumen,
       value: 0.002208423037307405,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "protons\\_lumen",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
-    .addVariable("Light_minus_harvesting_complex", {
+    .addVariable("Light_harvesting_complex", {
       value: 0.80137477470646,
-      unit: "–",
+      displayName: "Light-harvesting complex",
       texName: "Light-harvesting complex",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("NADPH", {
-      displayName: names.nadph,
       value: 0.491395685599137,
-      unit: "mM",
       texName: "NADPH",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("Plastocyanine_oxidised", {
       value: 1.885391998090184,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "Plastocyanine (oxidised)",
       texName: "Plastocyanine (oxidised)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("Plastoquinone_oxidised", {
-      displayName: names.pq,
       value: 10.991562708096392,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "PQ",
       texName: "Plastoquinone (oxidised)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
-    .addVariable("PsbS_de_minus_protonated", {
+    .addVariable("PsbS_de_protonated", {
       value: 0.9610220887579118,
-      unit: "–",
+      displayName: "PsbS (de-protonated)",
       texName: "PsbS (de-protonated)",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("Violaxanthin", {
       value: 0.9514408605906095,
-      unit: "–",
       texName: "Violaxanthin",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addAssignment("RT", {
-      displayName: names.rt,
       fn: new Mul([new Name("R"), new Name("T")]),
       texName: "RT",
     })
     .addAssignment("dG_pH", {
-      displayName: names.delta_g_ph,
       fn: new Mul([new Num(2.302585092994046), new Name("R"), new Name("T")]),
       texName: "dG\\_pH",
     })
     .addAssignment("pH_lumen", {
-      displayName: names.ph_lumen,
       fn: new Minus([
         new Divide([
-          new Ln(new Mul([new Num(0.00025), new Name("protons_lumen")])),
+          new Ln(
+            new Min([
+              new Num(0.1),
+              new Max([
+                new Num(1e-14),
+                new Mul([new Num(0.00025), new Name("protons_lumen")]),
+              ]),
+            ]),
+          ),
           new Ln(new Num(10.0)),
         ]),
       ]),
@@ -990,16 +1342,26 @@ export function initModel(): KineticModelBuilder {
         new Num(4000.0),
         new Pow(new Num(10.0), new Minus([new Name("pH")])),
       ]),
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "protons\\_stroma\\_chl",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("ksat_lhc_protonation_protons", {
       fn: new Mul([
         new Num(4000.0),
         new Pow(new Num(10.0), new Minus([new Name("ksat_lhc_protonation")])),
       ]),
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "ksat\\_lhc\\_protonation\\_protons",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("ksat_violaxanthin_deepoxidase_protons", {
       fn: new Mul([
@@ -1009,8 +1371,13 @@ export function initModel(): KineticModelBuilder {
           new Minus([new Name("ksat_violaxanthin_deepoxidase")]),
         ),
       ]),
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "ksat\\_violaxanthin\\_deepoxidase\\_protons",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("Zeaxanthin", {
       fn: new Add([
@@ -1020,11 +1387,11 @@ export function initModel(): KineticModelBuilder {
       texName: "Zeaxanthin",
     })
     .addAssignment("Ferredoxine_reduced", {
-      displayName: names.fd_red,
       fn: new Add([
         new Name("Fd_star"),
         new Minus([new Name("Ferredoxine_oxidised")]),
       ]),
+      displayName: "Fd_red",
       texName: "Ferredoxine (reduced)",
     })
     .addAssignment("Plastocyanine_reduced", {
@@ -1032,27 +1399,29 @@ export function initModel(): KineticModelBuilder {
         new Name("PC_tot"),
         new Minus([new Name("Plastocyanine_oxidised")]),
       ]),
+      displayName: "Plastocyanine (reduced)",
       texName: "Plastocyanine (reduced)",
     })
     .addAssignment("PsbS_protonated", {
       fn: new Add([
         new Name("PSBS_tot"),
-        new Minus([new Name("PsbS_de_minus_protonated")]),
+        new Minus([new Name("PsbS_de_protonated")]),
       ]),
+      displayName: "PsbS (protonated)",
       texName: "PsbS (protonated)",
     })
-    .addAssignment("Light_minus_harvesting_complex_protonated", {
+    .addAssignment("Light_harvesting_complex_protonated", {
       fn: new Add([
         new Name("LHC_tot"),
-        new Minus([new Name("Light_minus_harvesting_complex")]),
+        new Minus([new Name("Light_harvesting_complex")]),
       ]),
+      displayName: "Light-harvesting complex (protonated)",
       texName: "Light-harvesting complex (protonated)",
     })
     .addAssignment("Q", {
-      displayName: names.npq_coefficient,
       fn: new Add([
         new Mul([
-          new Name("PsbS_de_minus_protonated"),
+          new Name("PsbS_de_protonated"),
           new Name("Violaxanthin"),
           new Name("gamma0"),
         ]),
@@ -1063,7 +1432,7 @@ export function initModel(): KineticModelBuilder {
         ]),
         new Divide([
           new Mul([
-            new Name("PsbS_de_minus_protonated"),
+            new Name("PsbS_de_protonated"),
             new Name("Zeaxanthin"),
             new Name("gamma3"),
           ]),
@@ -1084,9 +1453,9 @@ export function initModel(): KineticModelBuilder {
       fn: new Exp(
         new Divide([
           new Add([
-            new Mul([new Num(2.0), new Name("E0_PQ"), new Name("F")]),
+            new Mul([new Num(2.0), new Name("E_0_PQ"), new Name("F")]),
             new Minus([
-              new Mul([new Num(2.0), new Name("E0_QA"), new Name("F")]),
+              new Mul([new Num(2.0), new Name("E_0_QA"), new Name("F")]),
             ]),
             new Minus([
               new Mul([new Num(2.0), new Name("dG_pH"), new Name("pH")]),
@@ -1095,22 +1464,22 @@ export function initModel(): KineticModelBuilder {
           new Name("RT"),
         ]),
       ),
+      displayName: "keq_Plastoquinone (reduced)",
       texName: "keq\\_Plastoquinone (reduced)",
     })
     .addAssignment("Plastoquinone_reduced", {
-      displayName: names.pqh2,
       fn: new Add([
         new Name("PQ_tot"),
         new Minus([new Name("Plastoquinone_oxidised")]),
       ]),
+      displayName: "PQH2",
       texName: "Plastoquinone (reduced)",
     })
     .addAssignment("PSII_cross_section", {
-      displayName: names.psii_cross_section,
       fn: new Add([
         new Name("staticAntII"),
         new Mul([
-          new Name("Light_minus_harvesting_complex"),
+          new Name("Light_harvesting_complex"),
           new Add([
             new Num(1.0),
             new Minus([new Name("staticAntI")]),
@@ -1121,12 +1490,10 @@ export function initModel(): KineticModelBuilder {
       texName: "PSII\\_cross\\_section",
     })
     .addAssignment("NADP", {
-      displayName: names.nadp,
       fn: new Add([new Name("NADP_star"), new Minus([new Name("NADPH")])]),
       texName: "NADP",
     })
     .addAssignment("ADP", {
-      displayName: names.adp,
       fn: new Add([new Name("A_star_P"), new Minus([new Name("ATP")])]),
       texName: "ADP",
     })
@@ -1153,7 +1520,6 @@ export function initModel(): KineticModelBuilder {
       texName: "Orthophosphate",
     })
     .addAssignment("keq_atp_synthase", {
-      displayName: names.keq_atp_synthase,
       fn: new Mul([
         new Name("Pi_mol"),
         new Exp(
@@ -1173,14 +1539,13 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_atp\\_synthase",
     })
     .addAssignment("keq_b6f", {
-      displayName: names.keq_b6f,
       fn: new Exp(
         new Divide([
           new Add([
-            new Mul([new Num(2.0), new Name("E0_PC"), new Name("F")]),
+            new Mul([new Num(2.0), new Name("E_0_PC"), new Name("F")]),
             new Mul([new Num(2.0), new Name("dG_pH"), new Name("pH_lumen")]),
             new Minus([
-              new Mul([new Num(2.0), new Name("E0_PQ"), new Name("F")]),
+              new Mul([new Num(2.0), new Name("E_0_PQ"), new Name("F")]),
             ]),
             new Minus([
               new Mul([
@@ -1196,14 +1561,13 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_b6f",
     })
     .addAssignment("keq_fnr", {
-      displayName: names.keq_fnr,
       fn: new Exp(
         new Divide([
           new Add([
             new Minus([new Mul([new Name("dG_pH"), new Name("pH")])]),
-            new Mul([new Num(2.0), new Name("E0_NADP"), new Name("F")]),
+            new Mul([new Num(2.0), new Name("E_0_NADP"), new Name("F")]),
             new Minus([
-              new Mul([new Num(2.0), new Name("E0_Fd"), new Name("F")]),
+              new Mul([new Num(2.0), new Name("E_0_Fd"), new Name("F")]),
             ]),
           ]),
           new Name("RT"),
@@ -1212,17 +1576,15 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_fnr",
     })
     .addAssignment("vmax_fnr", {
-      displayName: names.vmax_fnr,
       fn: new Mul([new Name("E0_fnr"), new Name("kcat_fnr")]),
       texName: "vmax\\_fnr",
     })
     .addAssignment("keq_PCP700", {
-      displayName: names.keq_pc_p700,
       fn: new Exp(
         new Divide([
           new Add([
-            new Mul([new Name("E0_P700"), new Name("F")]),
-            new Minus([new Mul([new Name("E0_PC"), new Name("F")])]),
+            new Mul([new Name("E_0_P700"), new Name("F")]),
+            new Minus([new Mul([new Name("E_0_PC"), new Name("F")])]),
           ]),
           new Name("RT"),
         ]),
@@ -1230,12 +1592,11 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_PCP700",
     })
     .addAssignment("keq_ferredoxin_reductase", {
-      displayName: names.keq_ferredoxin_reductase,
       fn: new Exp(
         new Divide([
           new Add([
-            new Mul([new Name("E0_Fd"), new Name("F")]),
-            new Minus([new Mul([new Name("E0_FA"), new Name("F")])]),
+            new Mul([new Name("E_0_Fd"), new Name("F")]),
+            new Minus([new Mul([new Name("E_0_FA"), new Name("F")])]),
           ]),
           new Name("RT"),
         ]),
@@ -1243,7 +1604,6 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_ferredoxin\\_reductase",
     })
     .addAssignment("A1", {
-      displayName: names.a1,
       fn: new Divide([
         new Name("PSI_total"),
         new Add([
@@ -1294,7 +1654,6 @@ export function initModel(): KineticModelBuilder {
       texName: "A1",
     })
     .addAssignment("vmax_rubisco_carboxylase", {
-      displayName: names.vmax_rubisco_carboxylase,
       fn: new Mul([
         new Name("E0_rubisco"),
         new Name("kcat_rubisco_carboxylase"),
@@ -1302,17 +1661,14 @@ export function initModel(): KineticModelBuilder {
       texName: "vmax\\_rubisco\\_carboxylase",
     })
     .addAssignment("vmax_fbpase", {
-      displayName: names.vmax_fbpase,
       fn: new Mul([new Name("E0_fbpase"), new Name("kcat_fbpase")]),
       texName: "vmax\\_fbpase",
     })
     .addAssignment("vmax_SBPase", {
-      displayName: names.vmax_sbpase,
       fn: new Mul([new Name("E0_SBPase"), new Name("kcat_SBPase")]),
       texName: "vmax\\_SBPase",
     })
     .addAssignment("vmax_phosphoribulokinase", {
-      displayName: names.vmax_phosphoribulokinase,
       fn: new Mul([
         new Name("E0_phosphoribulokinase"),
         new Name("kcat_phosphoribulokinase"),
@@ -1320,7 +1676,6 @@ export function initModel(): KineticModelBuilder {
       texName: "vmax\\_phosphoribulokinase",
     })
     .addAssignment("vmax_ex_pga", {
-      displayName: names.vmax_ex_pga,
       fn: new Mul([
         new Name("E0_N_translocator"),
         new Name("kcat_N_translocator"),
@@ -1328,7 +1683,6 @@ export function initModel(): KineticModelBuilder {
       texName: "vmax\\_ex\\_pga",
     })
     .addAssignment("N_translocator", {
-      displayName: names.n_translocator,
       fn: new Add([
         new Num(1.0),
         new Mul([
@@ -1353,12 +1707,10 @@ export function initModel(): KineticModelBuilder {
       texName: "N\\_translocator",
     })
     .addAssignment("vmax_ex_g1p", {
-      displayName: names.vmax_ex_g1p,
       fn: new Mul([new Name("E0_ex_g1p"), new Name("kcat_ex_g1p")]),
       texName: "vmax\\_ex\\_g1p",
     })
     .addReaction("atp_synthase", {
-      displayName: names.r_atp_synthase,
       fn: new Mul([
         new Name("kf_atp_synthase"),
         new Add([
@@ -1378,10 +1730,10 @@ export function initModel(): KineticModelBuilder {
         },
         { name: "ATP", value: new Name("convf") },
       ],
+      displayName: "ATP synthase",
       texName: "atp\\_synthase",
     })
     .addReaction("b6f", {
-      displayName: names.r_b6f,
       fn: new Max([
         new Minus([new Name("kcat_b6f")]),
         new Mul([
@@ -1411,42 +1763,38 @@ export function initModel(): KineticModelBuilder {
           value: new Divide([new Num(4.0), new Name("bH")]),
         },
       ],
+      displayName: "cyt b6f",
       texName: "b6f",
     })
     .addReaction("lhc_protonation", {
-      displayName: names.r_lhc_protonation,
       fn: new Divide([
         new Mul([
-          new Name("PsbS_de_minus_protonated"),
+          new Name("PsbS_de_protonated"),
           new Name("kf_lhc_protonation"),
           new Pow(new Name("protons_lumen"), new Name("kh_lhc_protonation")),
         ]),
         new Add([
-          new Pow(new Name("protons_lumen"), new Name("kh_lhc_protonation")),
           new Pow(
             new Name("ksat_lhc_protonation_protons"),
             new Name("kh_lhc_protonation"),
           ),
+          new Pow(new Name("protons_lumen"), new Name("kh_lhc_protonation")),
         ]),
       ]),
-      stoichiometry: [
-        { name: "PsbS_de_minus_protonated", value: new Num(-1.0) },
-      ],
+      stoichiometry: [{ name: "PsbS_de_protonated", value: new Num(-1.0) }],
+      displayName: "LHC protonation",
       texName: "lhc\\_protonation",
     })
     .addReaction("lhc_deprotonation", {
-      displayName: names.r_lhc_deprotonation,
       fn: new Mul([
         new Name("PsbS_protonated"),
         new Name("kf_lhc_deprotonation"),
       ]),
-      stoichiometry: [
-        { name: "PsbS_de_minus_protonated", value: new Num(1.0) },
-      ],
+      stoichiometry: [{ name: "PsbS_de_protonated", value: new Num(1.0) }],
+      displayName: "LHC deprotonation",
       texName: "lhc\\_deprotonation",
     })
     .addReaction("cyclic_electron_flow", {
-      displayName: names.r_cyclic_electron_flow,
       fn: new Mul([
         new Name("Plastoquinone_oxidised"),
         new Name("kf_cyclic_electron_flow"),
@@ -1456,10 +1804,10 @@ export function initModel(): KineticModelBuilder {
         { name: "Plastoquinone_oxidised", value: new Num(-1.0) },
         { name: "Ferredoxine_oxidised", value: new Num(2.0) },
       ],
+      displayName: "cyclic electron flow",
       texName: "cyclic\\_electron\\_flow",
     })
     .addReaction("violaxanthin_deepoxidase", {
-      displayName: names.r_violaxanthin_deepoxidase,
       fn: new Divide([
         new Mul([
           new Name("Violaxanthin"),
@@ -1471,29 +1819,29 @@ export function initModel(): KineticModelBuilder {
         ]),
         new Add([
           new Pow(
-            new Name("protons_lumen"),
+            new Name("ksat_violaxanthin_deepoxidase_protons"),
             new Name("kh_violaxanthin_deepoxidase"),
           ),
           new Pow(
-            new Name("ksat_violaxanthin_deepoxidase_protons"),
+            new Name("protons_lumen"),
             new Name("kh_violaxanthin_deepoxidase"),
           ),
         ]),
       ]),
       stoichiometry: [{ name: "Violaxanthin", value: new Num(-1.0) }],
+      displayName: "violaxanthin deepoxidase",
       texName: "violaxanthin\\_deepoxidase",
     })
     .addReaction("zeaxanthin_epoxidase", {
-      displayName: names.r_zeaxanthin_epoxidase,
       fn: new Mul([
         new Name("Zeaxanthin"),
         new Name("kf_zeaxanthin_epoxidase"),
       ]),
       stoichiometry: [{ name: "Violaxanthin", value: new Num(1.0) }],
+      displayName: "zeaxanthin epoxidase",
       texName: "zeaxanthin\\_epoxidase",
     })
     .addReaction("fnr", {
-      displayName: names.r_fnr,
       fn: new Divide([
         new Mul([
           new Name("vmax_fnr"),
@@ -1586,16 +1934,16 @@ export function initModel(): KineticModelBuilder {
         { name: "Ferredoxine_oxidised", value: new Num(2.0) },
         { name: "NADPH", value: new Name("convf") },
       ],
+      displayName: "FNR",
       texName: "fnr",
     })
     .addReaction("ndh", {
-      displayName: names.r_ndh,
       fn: new Mul([new Name("Plastoquinone_oxidised"), new Name("kf_ndh")]),
       stoichiometry: [{ name: "Plastoquinone_oxidised", value: new Num(-1.0) }],
+      displayName: "NDH",
       texName: "ndh",
     })
     .addReaction("PSII", {
-      displayName: names.r_psii,
       fn: new Mul([new Num(0.5), new Name("B1"), new Name("k2")]),
       stoichiometry: [
         { name: "Plastoquinone_oxidised", value: new Num(-1.0) },
@@ -1607,7 +1955,6 @@ export function initModel(): KineticModelBuilder {
       texName: "PSII",
     })
     .addReaction("PSI", {
-      displayName: names.r_psi,
       fn: new Mul([
         new Name("A1"),
         new Name("PPFD"),
@@ -1620,7 +1967,6 @@ export function initModel(): KineticModelBuilder {
       texName: "PSI",
     })
     .addReaction("proton_leak", {
-      displayName: names.r_proton_leak,
       fn: new Mul([
         new Name("kf_proton_leak"),
         new Add([
@@ -1634,10 +1980,10 @@ export function initModel(): KineticModelBuilder {
           value: new Minus([new Divide([new Num(1.0), new Name("bH")])]),
         },
       ],
+      displayName: "proton leak",
       texName: "proton\\_leak",
     })
     .addReaction("PTOX", {
-      displayName: names.r_ptox,
       fn: new Mul([
         new Name("O2_dissolved_lumen"),
         new Name("Plastoquinone_reduced"),
@@ -1647,11 +1993,10 @@ export function initModel(): KineticModelBuilder {
       texName: "PTOX",
     })
     .addReaction("lhc_state_transition_12", {
-      displayName: names.r_lhc_state_transition_12,
       fn: new Divide([
         new Mul([
           new Num(1.0),
-          new Name("Light_minus_harvesting_complex"),
+          new Name("Light_harvesting_complex"),
           new Name("kStt7"),
         ]),
         new Add([
@@ -1669,23 +2014,23 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       stoichiometry: [
-        { name: "Light_minus_harvesting_complex", value: new Num(-1.0) },
+        { name: "Light_harvesting_complex", value: new Num(-1.0) },
       ],
+      displayName: "LHC state transition 1->2",
       texName: "lhc\\_state\\_transition\\_12",
     })
     .addReaction("lhc_state_transition_21", {
-      displayName: names.r_lhc_state_transition_21,
       fn: new Mul([
-        new Name("Light_minus_harvesting_complex_protonated"),
+        new Name("Light_harvesting_complex_protonated"),
         new Name("kPph1"),
       ]),
       stoichiometry: [
-        { name: "Light_minus_harvesting_complex", value: new Num(1.0) },
+        { name: "Light_harvesting_complex", value: new Num(1.0) },
       ],
+      displayName: "LHC state transition 2->1",
       texName: "lhc\\_state\\_transition\\_21",
     })
     .addReaction("rubisco_carboxylase", {
-      displayName: names.r_rubisco_carboxylase,
       fn: new Divide([
         new Mul([
           new Name("CO2_dissolved"),
@@ -1732,10 +2077,10 @@ export function initModel(): KineticModelBuilder {
         { name: "RUBP", value: new Num(-1.0) },
         { name: "_3PGA", value: new Num(2.0) },
       ],
+      displayName: "rubisco carboxylase",
       texName: "rubisco\\_carboxylase",
     })
     .addReaction("phosphoglycerate_kinase", {
-      displayName: names.r_phosphoglycerate_kinase,
       fn: new Mul([
         new Name("kre_phosphoglycerate_kinase"),
         new Add([
@@ -1753,10 +2098,10 @@ export function initModel(): KineticModelBuilder {
         { name: "ATP", value: new Num(-1.0) },
         { name: "BPGA", value: new Num(1.0) },
       ],
+      displayName: "phosphoglycerate kinase",
       texName: "phosphoglycerate\\_kinase",
     })
     .addReaction("gadph", {
-      displayName: names.r_gadph,
       fn: new Mul([
         new Name("kre_gadph"),
         new Add([
@@ -1778,10 +2123,10 @@ export function initModel(): KineticModelBuilder {
         { name: "BPGA", value: new Num(-1.0) },
         { name: "GAP", value: new Num(1.0) },
       ],
+      displayName: "GAPDH",
       texName: "gadph",
     })
     .addReaction("triose_phosphate_isomerase", {
-      displayName: names.r_triose_phosphate_isomerase,
       fn: new Mul([
         new Name("kre_triose_phosphate_isomerase"),
         new Add([
@@ -1798,10 +2143,10 @@ export function initModel(): KineticModelBuilder {
         { name: "GAP", value: new Num(-1.0) },
         { name: "DHAP", value: new Num(1.0) },
       ],
+      displayName: "triose phosphate isomerase",
       texName: "triose\\_phosphate\\_isomerase",
     })
     .addReaction("aldolase_dhap_gap", {
-      displayName: names.r_aldolase_dhap_gap,
       fn: new Mul([
         new Name("kre_aldolase_dhap_gap"),
         new Add([
@@ -1816,10 +2161,10 @@ export function initModel(): KineticModelBuilder {
         { name: "DHAP", value: new Num(-1.0) },
         { name: "FBP", value: new Num(1.0) },
       ],
+      displayName: "aldolase (DHAP+GAP)",
       texName: "aldolase\\_dhap\\_gap",
     })
     .addReaction("aldolase_dhap_e4p", {
-      displayName: names.r_aldolase_dhap_e4p,
       fn: new Mul([
         new Name("kre_aldolase_dhap_e4p"),
         new Add([
@@ -1834,10 +2179,10 @@ export function initModel(): KineticModelBuilder {
         { name: "E4P", value: new Num(-1.0) },
         { name: "SBP", value: new Num(1.0) },
       ],
+      displayName: "aldolase (DHAP+E4P)",
       texName: "aldolase\\_dhap\\_e4p",
     })
     .addReaction("fbpase", {
-      displayName: names.r_fbpase,
       fn: new Divide([
         new Mul([new Name("FBP"), new Name("vmax_fbpase")]),
         new Add([
@@ -1859,10 +2204,10 @@ export function initModel(): KineticModelBuilder {
         { name: "FBP", value: new Num(-1.0) },
         { name: "F6P", value: new Num(1.0) },
       ],
+      displayName: "FBPase",
       texName: "fbpase",
     })
     .addReaction("transketolase_gap_f6p", {
-      displayName: names.r_transketolase_gap_f6p,
       fn: new Mul([
         new Name("kre_transketolase_gap_f6p"),
         new Add([
@@ -1881,10 +2226,10 @@ export function initModel(): KineticModelBuilder {
         { name: "E4P", value: new Num(1.0) },
         { name: "X5P", value: new Num(1.0) },
       ],
+      displayName: "transketolase (GAP+F6P)",
       texName: "transketolase\\_gap\\_f6p",
     })
     .addReaction("transketolase_gap_s7p", {
-      displayName: names.r_transketolase_gap_s7p,
       fn: new Mul([
         new Name("kre_transketolase_gap_s7p"),
         new Add([
@@ -1903,10 +2248,10 @@ export function initModel(): KineticModelBuilder {
         { name: "R5P", value: new Num(1.0) },
         { name: "X5P", value: new Num(1.0) },
       ],
+      displayName: "transketolase (GAP+S7P)",
       texName: "transketolase\\_gap\\_s7p",
     })
     .addReaction("SBPase", {
-      displayName: names.r_sbpase,
       fn: new Divide([
         new Mul([new Name("SBP"), new Name("vmax_SBPase")]),
         new Add([
@@ -1930,7 +2275,6 @@ export function initModel(): KineticModelBuilder {
       texName: "SBPase",
     })
     .addReaction("ribose_phosphate_isomerase", {
-      displayName: names.r_ribose_phosphate_isomerase,
       fn: new Mul([
         new Name("kre_ribose_phosphate_isomerase"),
         new Add([
@@ -1947,10 +2291,10 @@ export function initModel(): KineticModelBuilder {
         { name: "R5P", value: new Num(-1.0) },
         { name: "RU5P", value: new Num(1.0) },
       ],
+      displayName: "ribose phosphate isomerase",
       texName: "ribose\\_phosphate\\_isomerase",
     })
     .addReaction("ribulose_phosphate_epimerase", {
-      displayName: names.r_ribulose_phosphate_epimerase,
       fn: new Mul([
         new Name("kre_ribulose_phosphate_epimerase"),
         new Add([
@@ -1967,10 +2311,10 @@ export function initModel(): KineticModelBuilder {
         { name: "X5P", value: new Num(-1.0) },
         { name: "RU5P", value: new Num(1.0) },
       ],
+      displayName: "ribulose phosphate epimerase",
       texName: "ribulose\\_phosphate\\_epimerase",
     })
     .addReaction("phosphoribulokinase", {
-      displayName: names.r_phosphoribulokinase,
       fn: new Divide([
         new Mul([
           new Name("ATP"),
@@ -2031,7 +2375,6 @@ export function initModel(): KineticModelBuilder {
       texName: "phosphoribulokinase",
     })
     .addReaction("g6pi", {
-      displayName: names.r_g6pi,
       fn: new Mul([
         new Name("kre_g6pi"),
         new Add([
@@ -2043,10 +2386,10 @@ export function initModel(): KineticModelBuilder {
         { name: "F6P", value: new Num(-1.0) },
         { name: "G6P", value: new Num(1.0) },
       ],
+      displayName: "G6P isomerase",
       texName: "g6pi",
     })
     .addReaction("phosphoglucomutase", {
-      displayName: names.r_phosphoglucomutase,
       fn: new Mul([
         new Name("kre_phosphoglucomutase"),
         new Add([
@@ -2063,34 +2406,33 @@ export function initModel(): KineticModelBuilder {
       texName: "phosphoglucomutase",
     })
     .addReaction("ex_pga", {
-      displayName: names.r_ex_pga,
       fn: new Divide([
         new Mul([new Name("_3PGA"), new Name("vmax_ex_pga")]),
         new Mul([new Name("N_translocator"), new Name("km_ex_pga")]),
       ]),
       stoichiometry: [{ name: "_3PGA", value: new Num(-1.0) }],
+      displayName: "PGA export",
       texName: "ex\\_pga",
     })
     .addReaction("ex_gap", {
-      displayName: names.r_ex_gap,
       fn: new Divide([
         new Mul([new Name("GAP"), new Name("vmax_ex_pga")]),
         new Mul([new Name("N_translocator"), new Name("km_ex_gap")]),
       ]),
       stoichiometry: [{ name: "GAP", value: new Num(-1.0) }],
+      displayName: "GAP export",
       texName: "ex\\_gap",
     })
     .addReaction("ex_dhap", {
-      displayName: names.r_ex_dhap,
       fn: new Divide([
         new Mul([new Name("DHAP"), new Name("vmax_ex_pga")]),
         new Mul([new Name("N_translocator"), new Name("km_ex_dhap")]),
       ]),
       stoichiometry: [{ name: "DHAP", value: new Num(-1.0) }],
+      displayName: "DHAP export",
       texName: "ex\\_dhap",
     })
     .addReaction("ex_g1p", {
-      displayName: names.r_ex_g1p,
       fn: new Divide([
         new Mul([new Name("ATP"), new Name("G1P"), new Name("vmax_ex_g1p")]),
         new Mul([
@@ -2118,10 +2460,10 @@ export function initModel(): KineticModelBuilder {
         { name: "G1P", value: new Num(-1.0) },
         { name: "ATP", value: new Num(-1.0) },
       ],
+      displayName: "G1P export",
       texName: "ex\\_g1p",
     })
     .addAssignment("B0", {
-      displayName: names.b0,
       fn: new Divide([
         new Mul([
           new Name("PSII_total"),
@@ -2363,11 +2705,9 @@ export function initModel(): KineticModelBuilder {
           ]),
         ]),
       ]),
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "B0",
     })
     .addAssignment("B1", {
-      displayName: names.b1,
       fn: new Divide([
         new Mul([
           new Name("PPFD"),
@@ -2592,11 +2932,9 @@ export function initModel(): KineticModelBuilder {
           ]),
         ]),
       ]),
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "B1",
     })
     .addAssignment("B2", {
-      displayName: names.b2,
       fn: new Divide([
         new Mul([
           new Name("PSII_total"),
@@ -2893,11 +3231,9 @@ export function initModel(): KineticModelBuilder {
           ]),
         ]),
       ]),
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "B2",
     })
     .addAssignment("B3", {
-      displayName: names.b3,
       fn: new Divide([
         new Mul([
           new Name("PPFD"),
@@ -3143,31 +3479,34 @@ export function initModel(): KineticModelBuilder {
           ]),
         ]),
       ]),
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "B3",
     })
-    .addAssignment("PQ_ox_div_tot", {
+    .addReadout("PQ_ox_per_tot", {
       fn: new Divide([new Name("Plastoquinone_reduced"), new Name("PQ_tot")]),
+      displayName: "PQ_ox/tot",
       texName: "PQ\\_ox/tot",
     })
-    .addAssignment("Fd_ox_div_tot", {
+    .addReadout("Fd_ox_per_tot", {
       fn: new Divide([new Name("Ferredoxine_reduced"), new Name("Fd_star")]),
+      displayName: "Fd_ox/tot",
       texName: "Fd\\_ox/tot",
     })
-    .addAssignment("PC_ox_div_tot", {
+    .addReadout("PC_ox_per_tot", {
       fn: new Divide([new Name("Plastocyanine_reduced"), new Name("PC_tot")]),
+      displayName: "PC_ox/tot",
       texName: "PC\\_ox/tot",
     })
-    .addAssignment("NADPH_div_tot", {
+    .addReadout("NADPH_per_tot", {
       fn: new Divide([new Name("NADPH"), new Name("NADP_star")]),
+      displayName: "NADPH/tot",
       texName: "NADPH/tot",
     })
-    .addAssignment("ATP_div_tot", {
+    .addReadout("ATP_per_tot", {
       fn: new Divide([new Name("ATP"), new Name("A_star_P")]),
+      displayName: "ATP/tot",
       texName: "ATP/tot",
     })
-    .addAssignment("Fluo", {
-      displayName: names.fluorescence,
+    .addReadout("Fluo", {
       fn: new Add([
         new Divide([
           new Mul([

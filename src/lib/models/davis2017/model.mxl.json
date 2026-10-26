@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "davis2017",
   "model": {
@@ -10,13 +10,18 @@
           "type": "Num",
           "value": 0
         },
-        "displayName": "QA_red",
+        "unit": {
+          "factors": []
+        },
         "texName": "QA\\_red"
       },
       "PQH_2": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "PQH2",
         "texName": "PQH\\_2"
@@ -26,7 +31,9 @@
           "type": "Num",
           "value": 7
         },
-        "displayName": "pH_lumen",
+        "unit": {
+          "factors": []
+        },
         "texName": "pH\\_lumen"
       },
       "Dpsi": {
@@ -34,7 +41,14 @@
           "type": "Num",
           "value": 0.1
         },
-        "displayName": "Dpsi",
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "Dpsi"
       },
       "K_lu": {
@@ -42,7 +56,18 @@
           "type": "Num",
           "value": 0.04
         },
-        "displayName": "K_lu",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "K\\_lu"
       },
       "PC_ox": {
@@ -50,13 +75,18 @@
           "type": "Num",
           "value": 0
         },
-        "displayName": "PC_ox",
+        "unit": {
+          "factors": []
+        },
         "texName": "PC\\_ox"
       },
       "Zx": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "zx",
         "texName": "Zx"
@@ -66,13 +96,18 @@
           "type": "Num",
           "value": 0
         },
-        "displayName": "singO2",
+        "unit": {
+          "factors": []
+        },
         "texName": "singO2"
       },
       "P700_ox": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "P700\\_ox"
       },
@@ -81,13 +116,18 @@
           "type": "Num",
           "value": 0
         },
-        "displayName": "Fd_red",
+        "unit": {
+          "factors": []
+        },
         "texName": "Fd\\_red"
       },
       "NADPH_st": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "NADPH",
         "texName": "NADPH\\_st"
@@ -97,12 +137,18 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "LEF"
       },
       "ATP_made": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "ATP\\_made"
       }
@@ -113,7 +159,14 @@
           "type": "Num",
           "value": 100
         },
-        "displayName": "PPFD",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PPFD",
         "slider": {
           "min": "100",
@@ -126,7 +179,14 @@
           "type": "Num",
           "value": 0.33
         },
-        "displayName": "k_recomb",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_recomb"
       },
       "phi_triplet": {
@@ -134,7 +194,9 @@
           "type": "Num",
           "value": 0.45
         },
-        "displayName": "phi_triplet",
+        "unit": {
+          "factors": []
+        },
         "texName": "phi\\_triplet"
       },
       "phi_1O2": {
@@ -142,7 +204,9 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "phi_1O2",
+        "unit": {
+          "factors": []
+        },
         "texName": "phi\\_1O2"
       },
       "sigma0_II": {
@@ -150,7 +214,9 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "sigma0_II",
+        "unit": {
+          "factors": []
+        },
         "texName": "sigma0\\_II"
       },
       "c_b6f": {
@@ -158,7 +224,9 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "c_b6f",
+        "unit": {
+          "factors": []
+        },
         "texName": "c\\_b6f"
       },
       "pKa_reg": {
@@ -166,7 +234,9 @@
           "type": "Num",
           "value": 6.5
         },
-        "displayName": "pKa_reg",
+        "unit": {
+          "factors": []
+        },
         "texName": "pKa\\_reg"
       },
       "Em_PC_pH7": {
@@ -174,7 +244,14 @@
           "type": "Num",
           "value": 0.37
         },
-        "displayName": "Em_PC_pH7",
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "Em\\_PC\\_pH7"
       },
       "Em_PQH2_pH7": {
@@ -182,7 +259,14 @@
           "type": "Num",
           "value": 0.11
         },
-        "displayName": "Em_PQH2_pH7",
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "Em\\_PQH2\\_pH7"
       },
       "Vmax_b6f": {
@@ -190,7 +274,14 @@
           "type": "Num",
           "value": 500
         },
-        "displayName": "Vmax_b6f",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Vmax\\_b6f"
       },
       "pKa_PsbS": {
@@ -198,7 +289,9 @@
           "type": "Num",
           "value": 6.4
         },
-        "displayName": "pKa_PsbS",
+        "unit": {
+          "factors": []
+        },
         "texName": "pKa\\_PsbS"
       },
       "NPQ_max": {
@@ -206,13 +299,18 @@
           "type": "Num",
           "value": 5
         },
-        "displayName": "NPQ_max",
+        "unit": {
+          "factors": []
+        },
         "texName": "NPQ\\_max"
       },
       "pH_stroma": {
         "value": {
           "type": "Num",
           "value": 7.8
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "pH\\_stroma"
       },
@@ -221,6 +319,9 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "PSI\\_antenna\\_size"
       },
       "k_QA": {
@@ -228,7 +329,14 @@
           "type": "Num",
           "value": 1000
         },
-        "displayName": "k_QA",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_QA"
       },
       "Keq_QA": {
@@ -236,7 +344,9 @@
           "type": "Num",
           "value": 200
         },
-        "displayName": "Keq_QA",
+        "unit": {
+          "factors": []
+        },
         "texName": "Keq\\_QA"
       },
       "k_PCtoP700": {
@@ -244,7 +354,14 @@
           "type": "Num",
           "value": 500
         },
-        "displayName": "k_PCtoP700",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_PCtoP700"
       },
       "k_FdtoNADP": {
@@ -252,7 +369,14 @@
           "type": "Num",
           "value": 1000
         },
-        "displayName": "k_FdtoNADP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_FdtoNADP"
       },
       "K_st": {
@@ -260,7 +384,18 @@
           "type": "Num",
           "value": 0.04
         },
-        "displayName": "K_st",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "K\\_st"
       },
       "k_KEA3": {
@@ -268,7 +403,22 @@
           "type": "Num",
           "value": 0
         },
-        "displayName": "k_KEA3",
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 2
+            },
+            {
+              "kind": "mole",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_KEA3"
       },
       "P_K": {
@@ -276,13 +426,44 @@
           "type": "Num",
           "value": 6000
         },
-        "displayName": "P_K",
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "volt",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "P\\_K"
       },
       "lumen_protons_per_turnover": {
         "value": {
           "type": "Num",
           "value": 0.000014
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "lumen\\_protons\\_per\\_turnover"
       },
@@ -291,12 +472,28 @@
           "type": "Num",
           "value": 4.666666666666667
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "n"
       },
       "DeltaGATP": {
         "value": {
           "type": "Num",
           "value": 42
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DeltaGATP"
       },
@@ -305,13 +502,36 @@
           "type": "Num",
           "value": 1000
         },
-        "displayName": "Vmax_ATPsynth",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "volt",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Vmax\\_ATPsynth"
       },
       "b_H": {
         "value": {
           "type": "Num",
           "value": 0.03
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "bH",
         "texName": "b\\_H"
@@ -321,6 +541,14 @@
           "type": "Num",
           "value": 0.033
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "volt\\_per\\_charge"
       },
       "k_EZ": {
@@ -328,7 +556,14 @@
           "type": "Num",
           "value": 0.03
         },
-        "displayName": "k_EZ",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_EZ"
       },
       "nh_VDE": {
@@ -336,7 +571,9 @@
           "type": "Num",
           "value": 4
         },
-        "displayName": "nh_VDE",
+        "unit": {
+          "factors": []
+        },
         "texName": "nh\\_VDE"
       },
       "pKa_VDE": {
@@ -344,7 +581,9 @@
           "type": "Num",
           "value": 5.8
         },
-        "displayName": "pKa_VDE",
+        "unit": {
+          "factors": []
+        },
         "texName": "pKa\\_VDE"
       },
       "Vmax_VDE": {
@@ -352,7 +591,14 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "Vmax_VDE",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Vmax\\_VDE"
       },
       "QA_total": {
@@ -360,7 +606,9 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "QA_total",
+        "unit": {
+          "factors": []
+        },
         "texName": "QA\\_total"
       },
       "PQ_tot": {
@@ -368,7 +616,9 @@
           "type": "Num",
           "value": 6
         },
-        "displayName": "PQ_tot",
+        "unit": {
+          "factors": []
+        },
         "texName": "PQ\\_tot"
       },
       "P700_total": {
@@ -376,7 +626,9 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "P700_total",
+        "unit": {
+          "factors": []
+        },
         "texName": "P700\\_total"
       },
       "PC_tot": {
@@ -384,7 +636,9 @@
           "type": "Num",
           "value": 2
         },
-        "displayName": "PC_tot",
+        "unit": {
+          "factors": []
+        },
         "texName": "PC\\_tot"
       },
       "Fd_tot": {
@@ -392,7 +646,9 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "Fd_tot",
+        "unit": {
+          "factors": []
+        },
         "texName": "Fd\\_tot"
       },
       "NADP_tot": {
@@ -400,13 +656,18 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "NADP_tot",
+        "unit": {
+          "factors": []
+        },
         "texName": "NADP\\_tot"
       },
       "Xanthophyll_tot": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Xanthophyll\\_tot"
       },
@@ -415,7 +676,14 @@
           "type": "Num",
           "value": 3000
         },
-        "displayName": "k_CBB",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_CBB"
       }
     },
@@ -522,7 +790,6 @@
             ]
           }
         },
-        "displayName": "vPSII_recomb",
         "texName": "vPSII\\_recomb"
       },
       "vPSII_ChSep": {
@@ -567,7 +834,6 @@
             "value": "volt_per_charge"
           }
         },
-        "displayName": "vPSII_ChSep",
         "texName": "vPSII\\_ChSep"
       },
       "v_PSII": {
@@ -1016,7 +1282,6 @@
             "value": "volt_per_charge"
           }
         },
-        "displayName": "PSI_ChSep",
         "texName": "PSI\\_ChSep"
       },
       "v_PSI_PCoxid": {
@@ -1047,7 +1312,6 @@
             "value": 1
           }
         },
-        "displayName": "v_PSI_PCoxid",
         "texName": "v\\_PSI\\_PCoxid"
       },
       "v_FNR": {
@@ -1167,7 +1431,6 @@
             "value": -1
           }
         },
-        "displayName": "v_CBB",
         "texName": "v\\_CBB"
       },
       "v_KEA3": {
@@ -1244,7 +1507,6 @@
             ]
           }
         },
-        "displayName": "v_KEA3",
         "texName": "v\\_KEA3"
       },
       "v_VKC": {
@@ -1257,58 +1519,11 @@
             },
             {
               "type": "Name",
-              "value": "P_K"
+              "value": "K_deltaG"
             },
             {
-              "type": "Add",
-              "children": [
-                {
-                  "type": "Name",
-                  "value": "Dpsi"
-                },
-                {
-                  "type": "Minus",
-                  "children": [
-                    {
-                      "type": "Divide",
-                      "children": [
-                        {
-                          "type": "Mul",
-                          "children": [
-                            {
-                              "type": "Num",
-                              "value": 0.06
-                            },
-                            {
-                              "type": "Ln",
-                              "child": {
-                                "type": "Divide",
-                                "children": [
-                                  {
-                                    "type": "Name",
-                                    "value": "K_st"
-                                  },
-                                  {
-                                    "type": "Name",
-                                    "value": "K_lu"
-                                  }
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        {
-                          "type": "Ln",
-                          "child": {
-                            "type": "Num",
-                            "value": 10
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              "type": "Name",
+              "value": "P_K"
             },
             {
               "type": "Add",
@@ -1345,7 +1560,6 @@
             ]
           }
         },
-        "displayName": "v_VKC",
         "texName": "v\\_VKC"
       },
       "v_Epox": {
@@ -1368,7 +1582,6 @@
             "value": -1
           }
         },
-        "displayName": "v_Epox",
         "texName": "v\\_Epox"
       },
       "v_Deepox": {
@@ -1443,7 +1656,6 @@
             "value": 1
           }
         },
-        "displayName": "v_Deepox",
         "texName": "v\\_Deepox"
       }
     },
@@ -1467,7 +1679,6 @@
             }
           ]
         },
-        "displayName": "QA",
         "texName": "QA"
       },
       "P700_red": {
@@ -1510,7 +1721,6 @@
             }
           ]
         },
-        "displayName": "PQ",
         "texName": "PQ"
       },
       "PC_red": {
@@ -1532,7 +1742,6 @@
             }
           ]
         },
-        "displayName": "PC_red",
         "texName": "PC\\_red"
       },
       "Fd_ox": {
@@ -1554,7 +1763,6 @@
             }
           ]
         },
-        "displayName": "Fd_ox",
         "texName": "Fd\\_ox"
       },
       "NADP_st": {
@@ -1615,6 +1823,14 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "DeltaGATP\\_V"
       },
       "PsbSP": {
@@ -1661,7 +1877,6 @@
             }
           ]
         },
-        "displayName": "PsbSP",
         "texName": "PsbSP"
       },
       "NPQ": {
@@ -1682,7 +1897,6 @@
             }
           ]
         },
-        "displayName": "NPQ",
         "texName": "NPQ"
       },
       "PhiPSII": {
@@ -1735,7 +1949,6 @@
             }
           ]
         },
-        "displayName": "PhiPSII",
         "texName": "PhiPSII"
       },
       "H_lumen": {
@@ -1763,6 +1976,18 @@
               }
             ]
           }
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "protons_lumen",
         "texName": "H\\_lumen"
@@ -1793,7 +2018,18 @@
             ]
           }
         },
-        "displayName": "H_stroma",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "H\\_stroma"
       },
       "pmf": {
@@ -1837,7 +2073,14 @@
             }
           ]
         },
-        "displayName": "pmf",
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "pmf"
       },
       "delta_pH": {
@@ -1859,7 +2102,6 @@
             }
           ]
         },
-        "displayName": "delta_pH",
         "texName": "delta\\_pH"
       },
       "delta_pH_inVolts": {
@@ -1876,7 +2118,14 @@
             }
           ]
         },
-        "displayName": "delta_pH_inVolts",
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "delta\\_pH\\_inVolts"
       },
       "ATP_synthase_driving_force": {
@@ -1908,6 +2157,68 @@
           ]
         },
         "texName": "ATP\\_synthase\\_driving\\_force"
+      },
+      "K_deltaG": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Dpsi"
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 0.06
+                        },
+                        {
+                          "type": "Ln",
+                          "child": {
+                            "type": "Divide",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "K_st"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "K_lu"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Ln",
+                      "child": {
+                        "type": "Num",
+                        "value": 10
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
+        "texName": "K\\_deltaG"
       },
       "k_b6f": {
         "fn": {
@@ -1979,6 +2290,7 @@
         "texName": "k\\_b6f"
       }
     },
-    "readouts": {}
+    "readouts": {},
+    "nn_blocks": {}
   }
 }

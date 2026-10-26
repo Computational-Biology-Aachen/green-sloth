@@ -19,6 +19,7 @@
   import {
     KineticModelBuilder,
     type ModelBuilderBase,
+    type Unit,
   } from "@computational-biology-aachen/mxlweb-core";
   import { onMount } from "svelte";
 
@@ -213,8 +214,8 @@
   // Side-by-side values/units for parameters both models share, so a reader
   // can see whether a "shared" parameter actually agrees.
   type ParamRow = SharedEntry & {
-    a?: { value: number; unit?: string };
-    b?: { value: number; unit?: string };
+    a?: { value: number; unit?: Unit };
+    b?: { value: number; unit?: Unit };
     valueDiffers: boolean;
     unitDiffers: boolean;
   };
@@ -225,8 +226,8 @@
     return Math.abs(x - y) <= 1e-9 * Math.max(Math.abs(x), Math.abs(y));
   }
 
-  function normUnit(unit: string | undefined): string {
-    return (unit ?? "").replace(/\s+/g, "");
+  function sameUnit(a: Unit | undefined, b: Unit | undefined): boolean {
+    return a === undefined || b === undefined ? a === b : a.equals(b);
   }
 
   // Exponent notation outside [1e-3, 1e5) — rate constants like 5e9 are
@@ -250,7 +251,7 @@
         a,
         b,
         valueDiffers: !!a && !!b && !sameValue(a.value, b.value),
-        unitDiffers: !!a && !!b && normUnit(a.unit) !== normUnit(b.unit),
+        unitDiffers: !!a && !!b && !sameUnit(a.unit, b.unit),
       };
     });
   });
@@ -446,7 +447,9 @@
                   >
                     {#if side?.unit}
                       <Tex
-                        tex={`\\mathrm{${side.unit}}`}
+                        tex={side.unit.toTex(
+                          (i === 0 ? modelA : modelB)?.customUnits,
+                        )}
                         display={false}
                       />
                     {/if}

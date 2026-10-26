@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/steady-state-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "steady-state",
   "model_id": "johnson2021",
   "model": {
@@ -9,6 +9,23 @@
         "value": {
           "type": "Num",
           "value": 800
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "PAR",
         "texName": "\\mathrm{PAR}",
@@ -23,12 +40,29 @@
           "type": "Num",
           "value": 25
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "T"
       },
       "CO2": {
         "value": {
           "type": "Num",
           "value": 200
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "micro",
+              "exponent": 1
+            }
+          ]
         },
         "displayName": "CO2",
         "texName": "\\mathrm{CO_2}"
@@ -38,6 +72,15 @@
           "type": "Num",
           "value": 209
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "milli",
+              "exponent": 1
+            }
+          ]
+        },
         "displayName": "O2",
         "texName": "\\mathrm{O_2}"
       },
@@ -46,12 +89,18 @@
           "type": "Num",
           "value": 0.85
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "\\mathrm{Abs}"
       },
       "beta": {
         "value": {
           "type": "Num",
           "value": 0.52
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "\\beta"
       },
@@ -60,12 +109,36 @@
           "type": "Num",
           "value": 0.0000011666666666666668
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_sites",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "\\mathrm{CB6F}"
       },
       "RUB": {
         "value": {
           "type": "Num",
           "value": 0.00002777777777777778
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_sites",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "\\mathrm{RUB}"
       },
@@ -74,12 +147,23 @@
           "type": "Num",
           "value": 0.01
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "R_{ds}"
       },
       "Ku2": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "K_{u2}"
       },
@@ -88,12 +172,18 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "\\theta_1"
       },
       "eps1": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "\\epsilon_1"
       },
@@ -102,12 +192,27 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "\\epsilon_2"
       },
       "nl": {
         "value": {
           "type": "Num",
           "value": 0.75
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_ATP",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_e",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "n_l"
       },
@@ -116,12 +221,32 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_ATP",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_e",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "n_c"
       },
       "Kf": {
         "value": {
           "type": "Num",
           "value": 50000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "K_f"
       },
@@ -130,12 +255,28 @@
           "type": "Num",
           "value": 550000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "K_d"
       },
       "Kp1": {
         "value": {
           "type": "Num",
           "value": 14500000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "K_{p1}"
       },
@@ -144,12 +285,28 @@
           "type": "Num",
           "value": 14500000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "K_{n1}"
       },
       "Kp2": {
         "value": {
           "type": "Num",
           "value": 4500000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "K_{p2}"
       },
@@ -158,12 +315,44 @@
           "type": "Num",
           "value": 300
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "mol_sites",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k_q"
       },
       "kc": {
         "value": {
           "type": "Num",
           "value": 3.6
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_CO2",
+              "exponent": 1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "mol_sites",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k_c"
       },
@@ -172,6 +361,22 @@
           "type": "Num",
           "value": 0.9720000000000001
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_O2",
+              "exponent": 1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "mol_sites",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k_o"
       },
       "Kc": {
@@ -179,12 +384,28 @@
           "type": "Num",
           "value": 0.00026
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "K_c"
       },
       "Ko": {
         "value": {
           "type": "Num",
           "value": 0.179
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "K_o"
       }
@@ -204,6 +425,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "Q"
       },
       "C": {
@@ -217,6 +454,14 @@
             {
               "type": "Num",
               "value": 1000000
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "exponent": 1
             }
           ]
         },
@@ -236,6 +481,14 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "exponent": 1
+            }
+          ]
+        },
         "displayName": "O"
       },
       "Vqmax": {
@@ -249,6 +502,22 @@
             {
               "type": "Name",
               "value": "kq"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -269,6 +538,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_CO2",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "Vcmax",
         "texName": "V_{cmax}"
       },
@@ -283,6 +568,22 @@
             {
               "type": "Name",
               "value": "Rds"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_CO2",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -321,6 +622,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "S"
       },
       "gammas": {
@@ -343,6 +647,14 @@
                   "value": "S"
                 }
               ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "bar",
+              "exponent": 1
             }
           ]
         },
@@ -453,6 +765,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "eta",
         "texName": "\\eta"
       },
@@ -483,6 +798,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "phi1P_max"
       },
       "a2": {
@@ -499,6 +817,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "a2"
       },
       "a1": {
@@ -514,6 +835,9 @@
               "value": "a2"
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "a1"
       },
@@ -567,6 +891,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "JP700_j"
       },
       "JP680_j": {
@@ -580,6 +920,22 @@
             {
               "type": "Name",
               "value": "eta"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -635,6 +991,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_CO2",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "Vc_j"
       },
       "Vo_j": {
@@ -664,6 +1036,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_O2",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "Vo_j"
       },
       "Ag_j": {
@@ -686,6 +1074,22 @@
                   "value": 2
                 }
               ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_CO2",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -750,6 +1154,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_CO2",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "Vc_c"
       },
       "Vo_c": {
@@ -779,6 +1199,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_O2",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "Vo_c"
       },
       "Ag_c": {
@@ -801,6 +1237,22 @@
                   "value": 2
                 }
               ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_CO2",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -878,6 +1330,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "JP680_c"
       },
       "JP700_c": {
@@ -891,6 +1359,22 @@
             {
               "type": "Name",
               "value": "eta"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -1098,6 +1582,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "JP680_a"
       },
       "JP700_a": {
@@ -1299,6 +1799,22 @@
                   ]
                 }
               ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -1725,6 +2241,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_CO2",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "Ag_a",
         "texName": "A_g"
       },
@@ -1739,6 +2271,22 @@
             {
               "type": "Name",
               "value": "Rd"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_CO2",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -1767,6 +2315,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         }
       },
       "q1_a": {
@@ -1782,6 +2333,9 @@
               "value": "phi1P_max"
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "q1_a"
       },
@@ -1807,6 +2361,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         }
       },
       "CB6F_a": {
@@ -1820,6 +2377,18 @@
             {
               "type": "Name",
               "value": "kq"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_sites",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
             }
           ]
         },
@@ -1865,6 +2434,9 @@
               "value": 1
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "q2_a"
       },
@@ -2091,6 +2663,14 @@
               "value": 0
             }
           ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -2
+            }
+          ]
         }
       },
       "Kn2_a": {
@@ -2189,6 +2769,14 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "Kn2_a",
         "texName": "K_{n2}"
       },
@@ -2217,6 +2805,14 @@
               "value": "Ku2"
             }
           ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         }
       },
       "denom2c": {
@@ -2238,6 +2834,14 @@
             {
               "type": "Name",
               "value": "Ku2"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         }
@@ -2264,6 +2868,9 @@
               "value": "denom2"
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "phi2p_a"
       },
@@ -2326,6 +2933,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "phi2n_a"
       },
       "phi2d_a": {
@@ -2386,6 +2996,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "phi2d_a"
       },
@@ -2448,6 +3061,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "phi2f_a"
       },
       "phi2u_a": {
@@ -2509,6 +3125,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "phi2u_a"
       },
       "phi2P_a": {
@@ -2533,6 +3152,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "phi2P_a"
       },
@@ -2559,6 +3181,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "phi2N_a"
       },
       "phi2D_a": {
@@ -2583,6 +3208,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "phi2D_a"
       },
@@ -2609,6 +3237,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "phi2F_a"
       },
       "denom1_open": {
@@ -2628,6 +3259,14 @@
               "value": "Kf"
             }
           ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         }
       },
       "denom1_closed": {
@@ -2645,6 +3284,14 @@
             {
               "type": "Name",
               "value": "Kf"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         }
@@ -2671,6 +3318,9 @@
               "value": "denom1_open"
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "phi1P_a"
       },
@@ -2705,6 +3355,9 @@
               "value": "denom1_closed"
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "phi1N_a"
       },
@@ -2767,6 +3420,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "phi1D_a"
       },
       "phi1F_a": {
@@ -2827,6 +3483,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "phi1F_a"
       },
@@ -2919,6 +3578,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "Fm_a"
       },
@@ -3016,6 +3678,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "Fo_a"
       },
       "Fmp_a": {
@@ -3111,6 +3776,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "Fmp_a"
       },
@@ -3212,6 +3880,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "Fop_a"
       },
       "Fs_a": {
@@ -3254,6 +3925,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "Fs_a"
       },
       "PAM1_a": {
@@ -3278,6 +3952,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "PAM1_a"
       },
@@ -3322,6 +3999,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "PAM2_a"
       },
       "PAM3_a": {
@@ -3337,6 +4017,9 @@
               "value": "Fm_a"
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "PAM3_a"
       },
@@ -3369,6 +4052,22 @@
             {
               "type": "Name",
               "value": "PAM1_a"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -3405,6 +4104,9 @@
               ]
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "qP"
       },
@@ -3458,6 +4160,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "qL"
       },
       "kPuddle": {
@@ -3480,6 +4185,22 @@
                   "value": "qP"
                 }
               ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -3508,6 +4229,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "kLake"
       },
       "NPQ": {
@@ -3532,6 +4269,9 @@
               "value": 1
             }
           ]
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "NPQ"
       },
@@ -3564,6 +4304,18 @@
             {
               "type": "Num",
               "value": 1e-12
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_sites",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
             }
           ]
         }
@@ -3613,7 +4365,50 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_e",
+              "exponent": 1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "mol_sites",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "k_CB6F"
+      }
+    },
+    "units": {
+      "mol_ATP": {
+        "symbol": "mol ATP",
+        "tex": "\\mathrm{mol\\,ATP}",
+        "description": "mole of ATP"
+      },
+      "mol_CO2": {
+        "symbol": "mol CO₂",
+        "tex": "\\mathrm{mol\\,CO_2}",
+        "description": "mole of CO2"
+      },
+      "mol_O2": {
+        "symbol": "mol O₂",
+        "tex": "\\mathrm{mol\\,O_2}",
+        "description": "mole of O2"
+      },
+      "mol_e": {
+        "symbol": "mol e⁻",
+        "tex": "\\mathrm{mol\\,e^{-}}",
+        "description": "mole of electrons"
+      },
+      "mol_sites": {
+        "symbol": "mol sites",
+        "tex": "\\mathrm{mol\\,sites}",
+        "description": "mole of reaction sites"
       }
     }
   }

@@ -1,5 +1,7 @@
-import names from "#lib/names.js";
-import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import {
+  KineticModelBuilder,
+  Unit,
+} from "@computational-biology-aachen/mxlweb-core";
 import {
   Abs,
   Add,
@@ -15,521 +17,894 @@ import {
   Sqrt,
 } from "@computational-biology-aachen/mxlweb-core/mathml";
 
+/**
+ * Bellasio 2019 model.
+ *
+ * |             |                                                                                                                        |
+ * | ----------- | ---------------------------------------------------------------------------------------------------------------------- |
+ * | doi         | 10.1007/s11120-018-0601-1                                                                                              |
+ * | main author | Chandra Bellasio                                                                                                       |
+ * | paper title | A generalised dynamic model of leaf-level C3 photosynthesis combining light and dark reactions with stomatal behaviour |
+ * | published   | January 2019                                                                                                           |
+ * | journal     | Photosynthesis Research                                                                                                |
+ * | organism    | C3 leaf                                                                                                                |
+ * | Ported by   | Marvin van Aalst ( @marvinvanaalst )                                                                                   |
+ *
+ * The [Bellasio2019](https://doi.org/10.1007/s11120-018-0601-1) model is a
+ * generalized C3 leaf-photosynthesis model that includes simplified
+ * representations of the light and dark reactions and a stomatal behavior
+ * submodule. A lot of its implementation is based on past work by the same author
+ * and is mainly inspired by the common Farquhar-von Caemmerer-Berry model. The
+ * light reactions are modified from Yin et al. (2004) and include the potential
+ * rates of ATP and NADPH production based on light intensity. This model has been
+ * created with the simple user in mind, and the author has made an effort to show
+ * its simplicity by giving access to a Microsoft Excel Workbook containing the
+ * entire model. To showcase the model's capabilities, the author creates common
+ * steady-state carbon assimilation curves against intercellular CO2 concentration
+ * and light intensity, and compares them to experimental data from the
+ * literature. As many models of photosynthesis rely on purely stead-state
+ * assumptions, this model is also validated in dynamic conditions, showing for
+ * example the response of the model to a fluctuation of ambient oxygen
+ * concentration.
+ *
+ * This model was created to stay as simple as possible, while still being able to
+ * accurately represent the main features of C<sub>3</sub> photosynthesis. As
+ * such, it can be used as a base for more complex models, or as a starting block
+ * in larger models of plant physiology. While giving access to the entire model
+ * in an Excel Workbook format is transparent and great, the execution of said
+ * practice has been inefficient in this instance. The entire mathematical
+ * description of the model is also given in the Appendix of the publication,
+ * however there are missing or different equations between the publication and
+ * the Excel Workbook, which can lead to confusion. On top of that, the simulation
+ * protocols used for each figure are only given in small details, which leads to
+ * further confusion when trying to reproduce the results and see which equations
+ * are correct or not.
+ */
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("AP_tot", {
       value: 1.5,
-      displayName: names.atp_tot,
-      unit: "mM",
       texName: "AP\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Pi_tot", {
       value: 15.0,
-      displayName: names.pi_tot,
-      unit: "mM",
       texName: "Pi\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("p_o2", {
       value: 210000.0,
-      unit: "\\mu mol\\,mol^{-1}",
       texName: "p\\_o2",
+      unit: Unit.fromJson({ factors: [], multiplier: 1e-6 }),
     })
     .addParameter("Kh_o2", {
       value: 833300.0,
-      unit: "\\mu mol\\,mol^{-1}\\,mM^{-1}",
       texName: "Kh\\_o2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "milli", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("V_m", {
       value: 0.03,
-      unit: "L\\,m^{-2}",
       texName: "V\\_m",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+        ],
+      }),
     })
     .addParameter("PPFD", {
       value: 1500.0,
-      displayName: names.ppfd,
-      unit: "\\mu mol\\,m^{-2}\\,s^{-1}",
       texName: "PPFD",
-      slider: { min: "100", max: "2000", step: "10" },
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "micro", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
+      slider: {
+        min: "100",
+        max: "2000",
+        step: "10",
+      },
     })
     .addParameter("RLight", {
       value: 0.001,
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "RLight",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("s", {
       value: 0.43,
-      unit: "–",
       texName: "s",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PhiPSII_LL", {
       value: 0.72,
-      unit: "–",
       texName: "PhiPSII\\_LL",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("PhiPSI_LL", {
       value: 1.0,
-      unit: "–",
       texName: "PhiPSI\\_LL",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("alpha_ppfd_PhiPSII", {
       value: 0.00125,
-      unit: "m^{2}\\,s\\,\\mu mol^{-1}",
       texName: "alpha\\_ppfd\\_PhiPSII",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", prefix: "kilo", exponent: 2 },
+          { kind: "second", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("V0_ppfd_PhiPSII", {
       value: -0.8,
-      unit: "–",
       texName: "V0\\_ppfd\\_PhiPSII",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("theta_ppfd_PhiPSII", {
       value: 0.7,
-      unit: "–",
       texName: "theta\\_ppfd\\_PhiPSII",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("f_pseudocycNR", {
       value: 0.01,
-      unit: "–",
       texName: "f\\_pseudocycNR",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("fq", {
       value: 1.0,
-      unit: "–",
       texName: "fq",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("f_ndh", {
       value: 0.0,
-      unit: "–",
       texName: "f\\_ndh",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("h", {
       value: 4.0,
-      unit: "–",
       texName: "h",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("Ca", {
       value: 350.0,
-      unit: "\\mu mol\\,mol^{-1}",
       texName: "Ca",
+      unit: Unit.fromJson({ factors: [], multiplier: 1e-6 }),
     })
     .addParameter("alpha_ppfd_rub", {
       value: 0.0018,
-      unit: "m^{2}\\,s\\,\\mu mol^{-1}",
       texName: "alpha\\_ppfd\\_rub",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "metre", prefix: "kilo", exponent: 2 },
+          { kind: "second", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("V0_ppfd_rub", {
       value: 0.16,
-      unit: "–",
       texName: "V0\\_ppfd\\_rub",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("theta_ppfd_rub", {
       value: 0.95,
-      unit: "–",
       texName: "theta\\_ppfd\\_rub",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("alpha_co2", {
       value: 400.0,
-      unit: "mM^{-1}",
       texName: "alpha\\_co2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("V0_co2", {
       value: -0.2,
-      unit: "–",
       texName: "V0\\_co2",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("theta_co2", {
       value: 0.98,
-      unit: "–",
       texName: "theta\\_co2",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("tau_i", {
       value: 360.0,
-      unit: "s",
       texName: "tau\\_i",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: 1 }] }),
     })
     .addParameter("tau_d", {
       value: 1200.0,
-      unit: "s",
       texName: "tau\\_d",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: 1 }] }),
     })
     .addParameter("km_v_RuBisCO_c_CO2", {
-      displayName: names.km_rubisco_carboxylase_co2,
       value: 0.014,
-      unit: "mM",
+      displayName: "km_rubisco_carboxylase_CO2",
       texName: "km\\_v\\_RuBisCO\\_c\\_CO2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_RuBisCO_c_RUBP", {
-      displayName: names.km_rubisco_carboxylase_rubp,
       value: 0.02,
-      unit: "mM",
+      displayName: "km_rubisco_carboxylase_RUBP",
       texName: "km\\_v\\_RuBisCO\\_c\\_RUBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_RuBisCO_c_O2", {
       value: 0.222,
-      unit: "mM",
       texName: "km\\_v\\_RuBisCO\\_c\\_O2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_v_RuBisCO_c_PGA", {
-      displayName: names.ki_rubisco_carboxylase_pga,
       value: 2.52,
-      unit: "mM",
+      displayName: "ki_rubisco_carboxylase_3PGA",
       texName: "ki\\_v\\_RuBisCO\\_c\\_PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_v_RuBisCO_c_NADP_st", {
       value: 0.21,
-      unit: "mM",
       texName: "ki\\_v\\_RuBisCO\\_c\\_NADP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_v_RuBisCO_c_ADP_st", {
       value: 0.2,
-      unit: "mM",
       texName: "ki\\_v\\_RuBisCO\\_c\\_ADP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_v_RuBisCO_c_Pi_st", {
-      displayName: names.ki_rubisco_carboxylase_pi,
       value: 3.6,
-      unit: "mM",
+      displayName: "ki_rubisco_carboxylase_Pi",
       texName: "ki\\_v\\_RuBisCO\\_c\\_Pi\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("vmax_v_RuBisCO_c", {
-      displayName: names.vmax_rubisco_carboxylase,
       value: 0.2,
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
+      displayName: "vmax_rubisco_carboxylase",
       texName: "vmax\\_v\\_RuBisCO\\_c",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_v_RuBisCO_c", {
-      displayName: names.kcat_rubisco_carboxylase,
       value: 4.7,
-      unit: "s^{-1}",
+      displayName: "kcat_rubisco_carboxylase",
       texName: "kcat\\_v\\_RuBisCO\\_c",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("S_co_gas", {
       value: 2200.0,
-      unit: "–",
       texName: "S\\_co\\_gas",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("vmax_v_PRKase", {
-      displayName: names.vmax_phosphoribulokinase,
       value: 1.17,
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
+      displayName: "vmax_phosphoribulokinase",
       texName: "vmax\\_v\\_PRKase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_v_PRKase", {
       value: 6846.0,
-      unit: "–",
       texName: "keq\\_v\\_PRKase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("km_v_PRKase_ATP_st", {
-      displayName: names.km_phosphoribulokinase_atp,
       value: 0.625,
-      unit: "mM",
+      displayName: "km_phosphoribulokinase_ATP",
       texName: "km\\_v\\_PRKase\\_ATP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_v_PRKase_ADP_st", {
       value: 0.1,
-      unit: "mM",
       texName: "ki\\_v\\_PRKase\\_ADP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_PRKase_RU5P", {
-      displayName: names.km_phosphoribulokinase_ru5p,
       value: 0.034,
-      unit: "mM",
+      displayName: "km_phosphoribulokinase_RU5P",
       texName: "km\\_v\\_PRKase\\_RU5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_v_PRKase_PGA", {
-      displayName: names.ki_phosphoribulokinase_pga,
       value: 2.0,
-      unit: "mM",
+      displayName: "ki_phosphoribulokinase_3PGA",
       texName: "ki\\_v\\_PRKase\\_PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_v_PRKase_RUBP", {
-      displayName: names.ki_phosphoribulokinase_rubp,
       value: 0.7,
-      unit: "mM",
+      displayName: "ki_phosphoribulokinase_RUBP",
       texName: "ki\\_v\\_PRKase\\_RUBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_v_PRKase_Pi_st", {
-      displayName: names.ki_phosphoribulokinase_pi,
       value: 4.0,
-      unit: "mM",
+      displayName: "ki_phosphoribulokinase_Pi",
       texName: "ki\\_v\\_PRKase\\_Pi\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("vmax_v_pgareduction", {
       value: 0.4,
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "vmax\\_v\\_pgareduction",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_pgareduction_ATP_st", {
       value: 0.3,
-      unit: "mM",
       texName: "km\\_v\\_pgareduction\\_ATP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_pgareduction_PGA", {
       value: 10.0,
-      unit: "mM",
       texName: "km\\_v\\_pgareduction\\_PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_pgareduction_NADPH_st", {
       value: 0.05,
-      unit: "mM",
       texName: "km\\_v\\_pgareduction\\_NADPH\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_v_pgareduction_ADP_st", {
       value: 0.89,
-      unit: "mM",
       texName: "ki\\_v\\_pgareduction\\_ADP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("vmax_v_carbohydrate_synthesis", {
       value: 0.2235,
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "vmax\\_v\\_carbohydrate\\_synthesis",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_v_carbohydrate_synthesis", {
       value: 0.8,
-      unit: "mM\\,mmol\\,m^{-2}\\,s^{-1}",
       texName: "keq\\_v\\_carbohydrate\\_synthesis",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 2 },
+          { kind: "litre", exponent: -1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_carbohydrate_synthesis_DHAP", {
       value: 22.0,
-      unit: "mM",
       texName: "km\\_v\\_carbohydrate\\_synthesis\\_DHAP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_v_carbohydrate_synthesis_ADP_st", {
       value: 1.0,
-      unit: "mM",
       texName: "ki\\_v\\_carbohydrate\\_synthesis\\_ADP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("vmax_v_rpp", {
       value: 0.0585,
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "vmax\\_v\\_rpp",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_v_rpp", {
       value: 0.06,
-      unit: "–",
       texName: "keq\\_v\\_rpp",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("km_v_rpp_DHAP", {
       value: 0.5,
-      unit: "mM",
       texName: "km\\_v\\_rpp\\_DHAP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("H", {
       value: 5.012e-5,
-      unit: "mM",
       texName: "H",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("vmax_v_co2_hydration", {
       value: 200.0,
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "vmax\\_v\\_co2\\_hydration",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_v_co2_hydration", {
       value: 0.00056,
-      unit: "mM",
       texName: "keq\\_v\\_co2\\_hydration",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_co2_hydration_CO2", {
       value: 2.8,
-      unit: "mM",
       texName: "km\\_v\\_co2\\_hydration\\_CO2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_co2_hydration_HCO3", {
       value: 34.0,
-      unit: "mM",
       texName: "km\\_v\\_co2\\_hydration\\_HCO3",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_v_FNR", {
       value: 502.0,
-      unit: "–",
       texName: "keq\\_v\\_FNR",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("km_v_FNR_NADP_st", {
-      displayName: names.km_fnr_nadp,
       value: 0.0072,
-      unit: "mM",
+      displayName: "km_fnr_NADP",
       texName: "km\\_v\\_FNR\\_NADP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_FNR_NADPH_st", {
       value: 0.036,
-      unit: "mM",
       texName: "km\\_v\\_FNR\\_NADPH\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Kj_NADPH", {
       value: 200.0,
-      unit: "s",
       texName: "Kj\\_NADPH",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: 1 }] }),
     })
     .addParameter("keq_v_ATPsynth", {
-      displayName: names.keq_atp_synthase,
       value: 5734.0,
-      unit: "mM^{-1}",
+      displayName: "keq_atp_synthase",
       texName: "keq\\_v\\_ATPsynth",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_ATPsynth_ADP_st", {
       value: 0.014,
-      unit: "mM",
       texName: "km\\_v\\_ATPsynth\\_ADP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_ATPsynth_Pi_st", {
       value: 0.3,
-      unit: "mM",
       texName: "km\\_v\\_ATPsynth\\_Pi\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_ATPsynth_ATP_st", {
       value: 0.3,
-      unit: "mM",
       texName: "km\\_v\\_ATPsynth\\_ATP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Kj_ATP", {
       value: 200.0,
-      unit: "s",
       texName: "Kj\\_ATP",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: 1 }] }),
     })
     .addParameter("gm", {
       value: 0.5,
-      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gm",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Kh_co2", {
       value: 30303.0303030303,
-      unit: "\\mu mol\\,mol^{-1}\\,mM^{-1}",
       texName: "Kh\\_co2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "milli", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Kd", {
       value: 150.0,
-      unit: "s",
       texName: "Kd",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: 1 }] }),
     })
     .addParameter("Ki", {
       value: 900.0,
-      unit: "s",
       texName: "Ki",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: 1 }] }),
     })
     .addParameter("tau0", {
       value: -0.1,
-      unit: "–",
       texName: "tau0",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("chi_beta", {
       value: 0.5,
-      unit: "mol\\,m^{-2}\\,MPa^{-1}\\,s^{-1}",
       texName: "chi\\_beta",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "pascal", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("phi", {
       value: 0.0,
-      unit: "MPa",
       texName: "phi",
+      unit: Unit.fromJson({ factors: [{ kind: "pascal", exponent: 1 }] }),
     })
     .addParameter("pi_e", {
       value: 1.2,
-      unit: "MPa",
       texName: "pi\\_e",
+      unit: Unit.fromJson({ factors: [{ kind: "pascal", exponent: 1 }] }),
     })
     .addParameter("Kh", {
       value: 12.0,
-      unit: "mmol\\,m^{-2}\\,MPa^{-1}\\,s^{-1}",
       texName: "Kh",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "pascal", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Ds", {
       value: 10.0,
-      unit: "mmol\\,mol^{-1}",
       texName: "Ds",
+      unit: Unit.fromJson({ factors: [], multiplier: 0.001 }),
     })
     .addParameter("gs0", {
       value: 0.01,
-      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gs0",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("NADP_tot", {
-      displayName: names.nadp_tot,
       value: 0.5,
-      unit: "mM",
       texName: "NADP\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("CO2", {
-      displayName: names.co2,
       value: new Divide([
         new Mul([new Num(0.3), new Name("Ca")]),
         new Name("Kh_co2"),
       ]),
-      unit: "mM",
       texName: "CO2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("HCO3", {
       value: 0.1327,
-      unit: "mM",
       texName: "HCO3",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("RUBP", {
-      displayName: names.rubp,
       value: 2.0,
-      unit: "mM",
       texName: "RUBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("PGA", {
-      displayName: names.pga,
       value: 4.0,
-      unit: "mM",
       texName: "PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("DHAP", {
-      displayName: names.dhap,
       value: 4.0,
-      unit: "mM",
       texName: "DHAP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("ATP_st", {
-      displayName: names.atp,
       value: 0.68,
-      unit: "mM",
+      displayName: "ATP",
       texName: "ATP\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("NADPH_st", {
-      displayName: names.nadph,
       value: 0.21,
-      unit: "mM",
+      displayName: "NADPH",
       texName: "NADPH\\_st",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("RU5P", {
-      displayName: names.ru5p,
       value: 0.34,
-      unit: "mM",
       texName: "RU5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("Ract", {
       value: 1.0,
-      unit: "–",
       texName: "Ract",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("J_NADPH", {
       value: 0.1,
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "J\\_NADPH",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("J_ATP", {
       value: 0.16,
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "J\\_ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("Ci", {
-      displayName: names.co2_intercellular,
       value: new Mul([new Num(0.65), new Name("Ca")]),
-      unit: "\\mu mol\\,mol^{-1}",
       texName: "Ci",
+      unit: Unit.fromJson({ factors: [], multiplier: 1e-6 }),
     })
     .addVariable("gs", {
       value: 0.334934046786077,
-      unit: "mol\\,m^{-2}\\,s^{-1}",
       texName: "gs",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("ADP_st", {
-      displayName: names.adp,
       fn: new Add([new Name("AP_tot"), new Minus([new Name("ATP_st")])]),
+      displayName: "ADP",
       texName: "ADP\\_st",
     })
     .addAssignment("NADP_st", {
-      displayName: names.nadp,
       fn: new Add([new Name("NADP_tot"), new Minus([new Name("NADPH_st")])]),
+      displayName: "NADP",
       texName: "NADP\\_st",
     })
     .addAssignment("Pi_st", {
@@ -596,7 +971,6 @@ export function initModel(): KineticModelBuilder {
       texName: "f\\_rubp",
     })
     .addAssignment("O2", {
-      displayName: names.o2,
       fn: new Divide([new Name("p_o2"), new Name("Kh_o2")]),
       texName: "O2",
     })
@@ -747,7 +1121,6 @@ export function initModel(): KineticModelBuilder {
       texName: "I2",
     })
     .addAssignment("PhiPSII", {
-      displayName: names.phipsii,
       fn: new Divide([
         new Mul([
           new Name("PhiPSII_LL"),
@@ -854,8 +1227,14 @@ export function initModel(): KineticModelBuilder {
           new Minus([new Name("f_pseudocyc")]),
         ]),
       ]),
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "J\\_NADPH\\_steady",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("J_ATP_steady", {
       fn: new Divide([
@@ -876,8 +1255,14 @@ export function initModel(): KineticModelBuilder {
         ]),
         new Name("h"),
       ]),
-      unit: "mmol\\,m^{-2}\\,s^{-1}",
       texName: "J\\_ATP\\_steady",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("gs_steady", {
       fn: new Max([
@@ -905,7 +1290,6 @@ export function initModel(): KineticModelBuilder {
       texName: "gs\\_steady",
     })
     .addAssignment("A", {
-      displayName: names.net_assimilation_rate,
       fn: new Add([
         new Name("v_RuBisCO_c"),
         new Minus([new Name("RLight")]),
@@ -983,7 +1367,6 @@ export function initModel(): KineticModelBuilder {
       texName: "v\\_gs",
     })
     .addReaction("v_RuBisCO_c", {
-      displayName: names.r_rubisco_carboxylase,
       fn: new Divide([
         new Mul([
           new Name("CO2"),
@@ -1017,6 +1400,7 @@ export function initModel(): KineticModelBuilder {
         },
         { name: "PGA", value: new Divide([new Num(2.0), new Name("V_m")]) },
       ],
+      displayName: "rubisco carboxylase",
       texName: "v\\_RuBisCO\\_c",
     })
     .addReaction("rubisco_oxygenase", {
@@ -1047,16 +1431,15 @@ export function initModel(): KineticModelBuilder {
       texName: "rubisco\\_oxygenase",
     })
     .addReaction("glycine_decarboxylase", {
-      displayName: names.r_glycine_decarboxylase,
       fn: new Name("rubisco_oxygenase"),
       stoichiometry: [
         { name: "CO2", value: new Divide([new Num(0.5), new Name("V_m")]) },
         { name: "PGA", value: new Divide([new Num(0.5), new Name("V_m")]) },
       ],
+      displayName: "glycine decarboxylase",
       texName: "glycine\\_decarboxylase",
     })
     .addReaction("v_PRKase", {
-      displayName: names.r_phosphoribulokinase,
       fn: new Divide([
         new Mul([
           new Name("vmax_v_PRKase"),
@@ -1115,6 +1498,7 @@ export function initModel(): KineticModelBuilder {
           value: new Minus([new Divide([new Num(1.0), new Name("V_m")])]),
         },
       ],
+      displayName: "phosphoribulokinase",
       texName: "v\\_PRKase",
     })
     .addReaction("v_pgareduction", {
@@ -1290,7 +1674,6 @@ export function initModel(): KineticModelBuilder {
       texName: "v\\_RLight",
     })
     .addReaction("v_FNR", {
-      displayName: names.r_fnr,
       fn: new Divide([
         new Mul([
           new Name("J_NADPH"),
@@ -1316,10 +1699,10 @@ export function initModel(): KineticModelBuilder {
           value: new Divide([new Num(1.0), new Name("V_m")]),
         },
       ],
+      displayName: "FNR",
       texName: "v\\_FNR",
     })
     .addReaction("v_ATPsynth", {
-      displayName: names.r_atp_synthase,
       fn: new Divide([
         new Mul([
           new Name("J_ATP"),
@@ -1351,6 +1734,7 @@ export function initModel(): KineticModelBuilder {
       stoichiometry: [
         { name: "ATP_st", value: new Divide([new Num(1.0), new Name("V_m")]) },
       ],
+      displayName: "ATP synthase",
       texName: "v\\_ATPsynth",
     })
     .addReaction("CO2_dissolution", {

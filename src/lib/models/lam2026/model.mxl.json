@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "lam2026",
   "model": {
@@ -9,6 +9,19 @@
         "value": {
           "type": "Name",
           "value": "V_tot_WT"
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "V"
       },
@@ -23,6 +36,19 @@
             {
               "type": "Name",
               "value": "V_tot_WT"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
             }
           ]
         },
@@ -46,6 +72,19 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Z"
       },
       "PV": {
@@ -63,6 +102,19 @@
             {
               "type": "Name",
               "value": "V_tot_WT"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
             }
           ]
         },
@@ -87,6 +139,19 @@
             {
               "type": "Name",
               "value": "V_tot_WT"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
             }
           ]
         },
@@ -118,6 +183,19 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PZ"
       },
       "QV": {
@@ -139,6 +217,19 @@
             {
               "type": "Name",
               "value": "V_tot_WT"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
             }
           ]
         },
@@ -167,6 +258,19 @@
             {
               "type": "Name",
               "value": "V_tot_WT"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
             }
           ]
         },
@@ -202,12 +306,38 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "QZ"
       },
       "QL": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "QL"
       },
@@ -216,12 +346,28 @@
           "type": "Num",
           "value": 165
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PL"
       },
       "PSIId": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "PSIId"
       },
@@ -239,6 +385,9 @@
             }
           ]
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "alpha\\_VDE"
       }
     },
@@ -248,12 +397,28 @@
           "type": "Num",
           "value": 2.47
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_L\\_VA"
       },
       "k_D_VA": {
         "value": {
           "type": "Num",
           "value": 0.014
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_D\\_VA"
       },
@@ -262,12 +427,28 @@
           "type": "Num",
           "value": 0.5
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_L\\_AZ"
       },
       "k_AV": {
         "value": {
           "type": "Num",
           "value": 1.12
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_AV"
       },
@@ -276,12 +457,37 @@
           "type": "Num",
           "value": 0.07
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_ZA"
       },
       "k_PV_f": {
         "value": {
           "type": "Num",
           "value": 2.18
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_PV\\_f"
       },
@@ -290,12 +496,37 @@
           "type": "Num",
           "value": 9.43
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_PV\\_b"
       },
       "k_PA_f": {
         "value": {
           "type": "Num",
           "value": 130
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_PA\\_f"
       },
@@ -304,12 +535,37 @@
           "type": "Num",
           "value": 254
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_PA\\_b"
       },
       "k_PZ_f": {
         "value": {
           "type": "Num",
           "value": 295
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_PZ\\_f"
       },
@@ -318,12 +574,28 @@
           "type": "Num",
           "value": 126
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_PZ\\_b"
       },
       "k_L_QV_f": {
         "value": {
           "type": "Num",
           "value": 0.027
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_L\\_QV\\_f"
       },
@@ -332,12 +604,28 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_D\\_QV\\_f"
       },
       "k_QV_b": {
         "value": {
           "type": "Num",
           "value": 0.066
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_QV\\_b"
       },
@@ -346,12 +634,28 @@
           "type": "Num",
           "value": 0.66
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_L\\_QA\\_f"
       },
       "k_D_QA_f": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_D\\_QA\\_f"
       },
@@ -360,12 +664,28 @@
           "type": "Num",
           "value": 8.57
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_QA\\_b"
       },
       "k_L_QZ_f": {
         "value": {
           "type": "Num",
           "value": 0.56
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_L\\_QZ\\_f"
       },
@@ -374,12 +694,28 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_D\\_QZ\\_f"
       },
       "k_QZ_b": {
         "value": {
           "type": "Num",
           "value": 1.22
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_QZ\\_b"
       },
@@ -388,12 +724,28 @@
           "type": "Num",
           "value": 0.056
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_L\\_QL\\_f"
       },
       "k_QL_b": {
         "value": {
           "type": "Num",
           "value": 3.68
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_QL\\_b"
       },
@@ -402,12 +754,28 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_D\\_QX\\_f"
       },
       "k_L_damage": {
         "value": {
           "type": "Num",
           "value": 0.0222
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "k\\_L\\_damage"
       },
@@ -416,12 +784,28 @@
           "type": "Num",
           "value": 0.0161
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "k\\_D\\_damage"
       },
       "k_D_VDE": {
         "value": {
           "type": "Num",
           "value": 0.24
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_D\\_VDE"
       },
@@ -430,12 +814,28 @@
           "type": "Num",
           "value": 0.28
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_L\\_VDE"
       },
       "k_AV_aba1": {
         "value": {
           "type": "Num",
           "value": 0.006
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_AV\\_aba1"
       },
@@ -444,12 +844,37 @@
           "type": "Num",
           "value": 0.038
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_ZA\\_aba1"
       },
       "k_PV_f_lut2": {
         "value": {
           "type": "Num",
           "value": 1.43
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_PV\\_f\\_lut2"
       },
@@ -458,12 +883,37 @@
           "type": "Num",
           "value": 13.1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_PV\\_b\\_lut2"
       },
       "k_PA_f_lut2": {
         "value": {
           "type": "Num",
           "value": 34.4
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_PA\\_f\\_lut2"
       },
@@ -472,12 +922,37 @@
           "type": "Num",
           "value": 294
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_PA\\_b\\_lut2"
       },
       "k_PZ_f_lut2": {
         "value": {
           "type": "Num",
           "value": 74.1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k\\_PZ\\_f\\_lut2"
       },
@@ -486,12 +961,33 @@
           "type": "Num",
           "value": 168
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_PZ\\_b\\_lut2"
       },
       "V_tot_npq1": {
         "value": {
           "type": "Num",
           "value": 49.8
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "V\\_tot\\_npq1"
       },
@@ -500,12 +996,38 @@
           "type": "Num",
           "value": 71.2
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "V\\_tot\\_lut2"
       },
       "V_tot_npq4": {
         "value": {
           "type": "Num",
           "value": 40.6
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "V\\_tot\\_npq4"
       },
@@ -514,12 +1036,38 @@
           "type": "Num",
           "value": 10.7
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "V\\_tot\\_aba1"
       },
       "V_tot_WT": {
         "value": {
           "type": "Num",
           "value": 35.9
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "V\\_tot\\_WT"
       },
@@ -528,12 +1076,38 @@
           "type": "Num",
           "value": 45.4
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "P\\_tot"
       },
       "P_tot_lut2": {
         "value": {
           "type": "Num",
           "value": 49.9
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mol_chl",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "P\\_tot\\_lut2"
       },
@@ -542,12 +1116,46 @@
           "type": "Num",
           "value": 0.04
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kappa\\_QV"
       },
       "kappa_QA": {
         "value": {
           "type": "Num",
           "value": 0.174
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kappa\\_QA"
       },
@@ -556,12 +1164,46 @@
           "type": "Num",
           "value": 0.177
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kappa\\_QZ"
       },
       "kappa_QL": {
         "value": {
           "type": "Num",
           "value": 0.262
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kappa\\_QL"
       },
@@ -570,12 +1212,37 @@
           "type": "Num",
           "value": 0.03
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mol_chl",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kappa\\_qZ"
       },
       "kappa_qI": {
         "value": {
           "type": "Num",
           "value": 3.86
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kappa\\_qI"
       },
@@ -584,12 +1251,37 @@
           "type": "Num",
           "value": 7.05
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kappa\\_qI\\_double\\_mut"
       },
       "ppfd": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "PPFD",
         "texName": "ppfd"
@@ -599,12 +1291,23 @@
           "type": "Num",
           "value": 1.730890791
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "tau\\_0"
       },
       "PSII_tot": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "PSII_total",
         "texName": "PSII\\_tot"
@@ -893,15 +1596,46 @@
       },
       "QVf": {
         "fn": {
-          "type": "Mul",
+          "type": "Piecewise",
           "children": [
             {
-              "type": "Name",
-              "value": "PV"
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "PV"
+                },
+                {
+                  "type": "Name",
+                  "value": "k_D_QX_f"
+                }
+              ]
             },
             {
-              "type": "Name",
-              "value": "k_L_QV_f"
+              "type": "Eq",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ppfd"
+                },
+                {
+                  "type": "Num",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "PV"
+                },
+                {
+                  "type": "Name",
+                  "value": "k_L_QV_f"
+                }
+              ]
             }
           ]
         },
@@ -945,15 +1679,46 @@
       },
       "QAf": {
         "fn": {
-          "type": "Mul",
+          "type": "Piecewise",
           "children": [
             {
-              "type": "Name",
-              "value": "PA"
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "PA"
+                },
+                {
+                  "type": "Name",
+                  "value": "k_D_QX_f"
+                }
+              ]
             },
             {
-              "type": "Name",
-              "value": "k_L_QA_f"
+              "type": "Eq",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ppfd"
+                },
+                {
+                  "type": "Num",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "PA"
+                },
+                {
+                  "type": "Name",
+                  "value": "k_L_QA_f"
+                }
+              ]
             }
           ]
         },
@@ -997,15 +1762,46 @@
       },
       "QZf": {
         "fn": {
-          "type": "Mul",
+          "type": "Piecewise",
           "children": [
             {
-              "type": "Name",
-              "value": "PZ"
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "PZ"
+                },
+                {
+                  "type": "Name",
+                  "value": "k_D_QX_f"
+                }
+              ]
             },
             {
-              "type": "Name",
-              "value": "k_L_QZ_f"
+              "type": "Eq",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ppfd"
+                },
+                {
+                  "type": "Num",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "PZ"
+                },
+                {
+                  "type": "Name",
+                  "value": "k_L_QZ_f"
+                }
+              ]
             }
           ]
         },
@@ -1049,15 +1845,46 @@
       },
       "QLf": {
         "fn": {
-          "type": "Mul",
+          "type": "Piecewise",
           "children": [
             {
-              "type": "Name",
-              "value": "PL"
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "PL"
+                },
+                {
+                  "type": "Name",
+                  "value": "k_D_QX_f"
+                }
+              ]
             },
             {
-              "type": "Name",
-              "value": "k_L_QL_f"
+              "type": "Eq",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ppfd"
+                },
+                {
+                  "type": "Num",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "PL"
+                },
+                {
+                  "type": "Name",
+                  "value": "k_L_QL_f"
+                }
+              ]
             }
           ]
         },
@@ -1101,47 +1928,114 @@
       },
       "damage": {
         "fn": {
-          "type": "Max",
+          "type": "Piecewise",
           "children": [
             {
-              "type": "Num",
-              "value": 0
-            },
-            {
-              "type": "Mul",
+              "type": "Max",
               "children": [
                 {
-                  "type": "Name",
-                  "value": "k_L_damage"
+                  "type": "Num",
+                  "value": 0
                 },
                 {
-                  "type": "Add",
+                  "type": "Mul",
                   "children": [
                     {
-                      "type": "Num",
-                      "value": 1
+                      "type": "Name",
+                      "value": "k_D_damage"
                     },
                     {
-                      "type": "Minus",
+                      "type": "Add",
                       "children": [
                         {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Minus",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "PSIId"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Max",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 0
+                        },
+                        {
                           "type": "Name",
-                          "value": "PSIId"
+                          "value": "tau_Fluo"
                         }
                       ]
                     }
                   ]
+                }
+              ]
+            },
+            {
+              "type": "Eq",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ppfd"
                 },
                 {
-                  "type": "Max",
+                  "type": "Num",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "type": "Max",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 0
+                },
+                {
+                  "type": "Mul",
                   "children": [
                     {
-                      "type": "Num",
-                      "value": 0
+                      "type": "Name",
+                      "value": "k_L_damage"
                     },
                     {
-                      "type": "Name",
-                      "value": "tau_Fluo"
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Minus",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "PSIId"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Max",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 0
+                        },
+                        {
+                          "type": "Name",
+                          "value": "tau_Fluo"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -1159,8 +2053,85 @@
       },
       "v_alpha_VDE": {
         "fn": {
-          "type": "Num",
-          "value": 1
+          "type": "Piecewise",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "k_D_VDE"
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "alpha_VDE"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "k_D_VA"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "k_L_VA"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Eq",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "ppfd"
+                },
+                {
+                  "type": "Num",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "k_L_VDE"
+                },
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "alpha_VDE"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         "stoichiometry": {
           "alpha_VDE": {
@@ -1941,8 +2912,18 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "tau\\_Fluo"
-      },
+      }
+    },
+    "readouts": {
       "NPQ_V": {
         "fn": {
           "type": "Mul",
@@ -2040,6 +3021,6 @@
         "texName": "NPQ\\_qI"
       }
     },
-    "readouts": {}
+    "nn_blocks": {}
   }
 }

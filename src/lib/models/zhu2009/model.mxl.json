@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "zhu2009",
   "model": {
@@ -10,6 +10,19 @@
           "type": "Num",
           "value": 2
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "RUBP",
         "texName": "RuBP"
       },
@@ -18,13 +31,38 @@
           "type": "Num",
           "value": 2.4
         },
-        "displayName": "PGA",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PGA"
       },
       "DPGA": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "BPGA",
         "texName": "DPGA"
@@ -34,6 +72,19 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "RU5P",
         "texName": "Ru5P"
       },
@@ -42,7 +93,19 @@
           "type": "Num",
           "value": 1
         },
-        "displayName": "GAP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "GAP"
       }
     },
@@ -51,6 +114,23 @@
         "value": {
           "type": "Num",
           "value": 3.78
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "V1\\_max",
         "slider": {
@@ -64,6 +144,23 @@
           "type": "Num",
           "value": 11.75
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "V2\\_max",
         "slider": {
           "min": "5.9",
@@ -75,6 +172,23 @@
         "value": {
           "type": "Num",
           "value": 5.04
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "V3\\_max",
         "slider": {
@@ -88,6 +202,23 @@
           "type": "Num",
           "value": 3.05
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "V4\\_max",
         "slider": {
           "min": "1.5",
@@ -99,6 +230,23 @@
         "value": {
           "type": "Num",
           "value": 3
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "V5\\_max",
         "slider": {
@@ -112,6 +260,23 @@
           "type": "Num",
           "value": 0.1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "V6\\_max",
         "slider": {
           "min": "0.1",
@@ -123,6 +288,23 @@
         "value": {
           "type": "Num",
           "value": 8
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "V13\\_max",
         "slider": {
@@ -136,12 +318,38 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "K\\_m1"
       },
       "K_m21": {
         "value": {
           "type": "Num",
           "value": 0.24
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "K\\_m21"
       },
@@ -150,12 +358,38 @@
           "type": "Num",
           "value": 0.39
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "K\\_m22"
       },
       "K_m3": {
         "value": {
           "type": "Num",
           "value": 0.5
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "K\\_m3"
       },
@@ -164,12 +398,38 @@
           "type": "Num",
           "value": 0.84
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "K\\_m4"
       },
       "K_m51": {
         "value": {
           "type": "Num",
           "value": 0.75
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "K\\_m51"
       },
@@ -178,12 +438,38 @@
           "type": "Num",
           "value": 0.275
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "K\\_m52"
       },
       "K_m6": {
         "value": {
           "type": "Num",
           "value": 5
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "K\\_m6"
       },
@@ -192,12 +478,38 @@
           "type": "Num",
           "value": 0.15
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "K\\_m131"
       },
       "K_m132": {
         "value": {
           "type": "Num",
           "value": 0.059
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "K\\_m132"
       },
@@ -206,7 +518,19 @@
           "type": "Num",
           "value": 0.2
         },
-        "displayName": "ATP",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ATP",
         "slider": {
           "min": "0.1",
@@ -597,9 +921,28 @@
               "value": "v1"
             }
           ]
-        }
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "A"
       }
     },
-    "readouts": {}
+    "readouts": {},
+    "nn_blocks": {}
   }
 }

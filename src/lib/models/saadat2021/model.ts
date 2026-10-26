@@ -1,11 +1,14 @@
-import names from "#lib/names.js";
-import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import {
+  KineticModelBuilder,
+  Unit,
+} from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
   Divide,
   Exp,
   Ln,
   Max,
+  Min,
   Minus,
   Mul,
   Name,
@@ -14,469 +17,609 @@ import {
 } from "@computational-biology-aachen/mxlweb-core/mathml";
 
 /**
- * Saadat et al. (2021) PSI electron transport chain model.
+ * Saadat 2021 chloroplast model.
  *
- * Models linear electron flow through Photosystem I (PSI) in chloroplasts.
- * Electron transfer from plastocyanin (PC) through P700 → iron-sulfur cluster (FA)
- * → ferredoxin (Fd) → NADPH is driven by PPFD and governed by Nernst equilibrium
- * potentials. Includes the Mehler reaction (O₂ reduction at PSI).
+ * With ROS scavenging, Calvin cycle, and thioredoxin regulation.
  *
- * Variables: PC, P700, Fd, and their redox states
- * Parameters: E°_PC, E°_P700, E°_FA, E°_Fd, E°_NADP, PPFD, CO₂, O₂_lumen
- * Ref: Saadat et al. (2021)
+ * |             |                                                                                                  |
+ * | ----------- | ------------------------------------------------------------------------------------------------ |
+ * | doi         | 10.3389/fpls.2021.750580                                                                         |
+ * | main author | Nima P. Saadat                                                                                   |
+ * | paper title | Computational Analysis of Alternative Photosynthetic Electron Flows Linked With Oxidative Stress |
+ * | published   | October 2021                                                                                     |
+ * | journal     | Frontiers in Plant Science                                                                       |
+ * | organism    | higher plants                                                                                    |
+ * | Ported by   | Marvin van Aalst ( @marvinvanaalst )                                                             |
  */
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("PPFD", {
       value: 100.0,
-      unit: "s^{-1}",
       texName: "PPFD",
-      displayName: names.ppfd,
-      slider: { min: "100", max: "2000", step: "10" },
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
+      slider: {
+        min: "100",
+        max: "2000",
+        step: "10",
+      },
     })
-    .addParameter("CO2__dissolved_", {
-      displayName: names.co2,
+    .addParameter("CO2_dissolved", {
       value: 0.2,
-      unit: "mM",
+      displayName: "CO2",
       texName: "CO2 (dissolved)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("O2_lumen", {
+    .addParameter("O2_dissolved_lumen", {
       value: 8.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
-      texName: "O2\\_lumen",
+      displayName: "O2 (dissolved)_lumen",
+      texName: "O2 (dissolved)\\_lumen",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("pH", {
-      displayName: names.ph,
       value: 7.9,
-      unit: "–",
       texName: "pH",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("protons", {
-      displayName: names.protons,
       value: 1.2589254117941661e-5,
-      unit: "mM",
       texName: "protons",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("bH", {
-      displayName: names.b_h,
       value: 100.0,
-      unit: "–",
       texName: "bH",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("F", {
-      displayName: names.faraday_constant,
       value: 96.485,
-      unit: "kJ\\,mol^{-1}\\,V^{-1}",
       texName: "F",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "volt", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("E_0_PC", {
-      displayName: names.e0_pc,
       value: 0.38,
-      unit: "V",
+      displayName: "E0_PC",
       texName: "E^0\\_PC",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("E_0_P700", {
-      displayName: names.e0_p700,
       value: 0.48,
-      unit: "V",
+      displayName: "E0_P700",
       texName: "E^0\\_P700",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("E_0_FA", {
-      displayName: names.e0_fa,
       value: -0.55,
-      unit: "V",
+      displayName: "E0_FA",
       texName: "E^0\\_FA",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("E_0_Fd", {
-      displayName: names.e0_fd,
       value: -0.43,
-      unit: "V",
+      displayName: "E0_Fd",
       texName: "E^0\\_Fd",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("E_0_NADP", {
-      displayName: names.e0_nadp,
       value: -0.113,
-      unit: "V",
+      displayName: "E0_NADP",
       texName: "E^0\\_NADP",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("convf", {
       value: 0.032,
-      unit: "mol\\,Chl\\,L^{-1}",
       texName: "convf",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("R", {
-      displayName: names.gas_constant,
       value: 0.0083,
-      unit: "kJ\\,mol^{-1}\\,K^{-1}",
       texName: "R",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "kelvin", exponent: -1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("T", {
-      displayName: names.temperature,
       value: 298.0,
-      unit: "K",
       texName: "T",
+      unit: Unit.fromJson({ factors: [{ kind: "kelvin", exponent: 1 }] }),
     })
     .addParameter("Carotenoids_tot", {
-      displayName: names.carotenoids_tot,
       value: 1.0,
-      unit: "–",
       texName: "Carotenoids\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
-    .addParameter("Fd_", {
-      displayName: names.fd_tot,
+    .addParameter("Fd_star", {
       value: 5.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
+      displayName: "Fd_tot",
       texName: "Fd*",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PC_tot", {
-      displayName: names.pc_tot,
       value: 4.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PC\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PSBS_tot", {
-      displayName: names.psbs_tot,
       value: 1.0,
-      unit: "–",
+      displayName: "PsbS_tot",
       texName: "PSBS\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("LHC_tot", {
-      displayName: names.lhc_tot,
       value: 1.0,
-      unit: "–",
       texName: "LHC\\_tot",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("gamma0", {
-      displayName: names.gamma0,
       value: 0.1,
-      unit: "–",
       texName: "gamma0",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("gamma1", {
-      displayName: names.gamma1,
       value: 0.25,
-      unit: "–",
       texName: "gamma1",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("gamma2", {
-      displayName: names.gamma2,
       value: 0.6,
-      unit: "–",
       texName: "gamma2",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("gamma3", {
-      displayName: names.gamma3,
       value: 0.15,
-      unit: "–",
       texName: "gamma3",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kZSat", {
-      displayName: names.k_zsat,
       value: 0.12,
-      unit: "–",
+      displayName: "K_ZSat",
       texName: "kZSat",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("E_0_QA", {
-      displayName: names.e0_qa,
       value: -0.14,
-      unit: "V",
+      displayName: "E0_QA",
       texName: "E^0\\_QA",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("E_0_PQ", {
-      displayName: names.e0_pq,
       value: 0.354,
-      unit: "V",
+      displayName: "E0_PQ",
       texName: "E^0\\_PQ",
+      unit: Unit.fromJson({ factors: [{ kind: "volt", exponent: 1 }] }),
     })
     .addParameter("PQ_tot", {
-      displayName: names.pq_tot,
       value: 17.5,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PQ\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("staticAntII", {
-      displayName: names.static_antenna_ii,
       value: 0.1,
-      unit: "–",
       texName: "staticAntII",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("staticAntI", {
-      displayName: names.static_antenna_i,
       value: 0.37,
-      unit: "–",
       texName: "staticAntI",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("Thioredoxin_tot", {
       value: 1.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "Thioredoxin\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("E_total", {
       value: 6.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "E\\_total",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("NADP_", {
-      displayName: names.nadp_tot,
+    .addParameter("NADP_star", {
       value: 0.8,
-      unit: "mM",
+      displayName: "NADP_tot",
       texName: "NADP*",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("A_P", {
-      displayName: names.atp_tot,
+    .addParameter("A_star_P", {
       value: 2.55,
-      unit: "mM",
+      displayName: "AP_tot",
       texName: "A*P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("Pi_tot", {
-      displayName: names.pi_tot,
       value: 17.05,
-      unit: "mM",
       texName: "Pi\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kf_ferredoxin_thioredoxin_reductase", {
       value: 1.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kf\\_ferredoxin\\_thioredoxin\\_reductase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kf_tr_activation", {
       value: 1.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kf\\_tr\\_activation",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kf_tr_inactivation", {
       value: 0.1,
-      unit: "s^{-1}",
       texName: "kf\\_tr\\_inactivation",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
-    .addParameter("ASC_tot_", { value: 10, unit: "mM", texName: "ASC\\_tot*" })
+    .addParameter("ASC_tot_star", {
+      value: 10.0,
+      displayName: "ASC_tot*",
+      texName: "ASC\\_tot*",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
+    })
     .addParameter("Glutathion_tot", {
       value: 10.0,
-      unit: "mM",
       texName: "Glutathion\\_tot",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kf_atp_synthase", {
-      displayName: names.kf_atp_synthase,
       value: 20.0,
-      unit: "s^{-1}",
       texName: "kf\\_atp\\_synthase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("HPR", {
-      displayName: names.hpr,
       value: 4.666666666666667,
-      unit: "–",
       texName: "HPR",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("Pi_mol", {
-      displayName: names.pi_mol,
       value: 0.01,
-      unit: "–",
       texName: "Pi\\_mol",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("DeltaG0_ATP", {
-      displayName: names.delta_g0_atp,
       value: 30.6,
-      unit: "kJ\\,mol^{-1}",
       texName: "DeltaG0\\_ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_b6f", {
-      displayName: names.kcat_b6f,
       value: 2.5,
-      unit: "(mol\\,Chl)^{2}\\,mmol^{-2}\\,s^{-1}",
       texName: "kcat\\_b6f",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 2 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kh_lhc_protonation", {
-      displayName: names.kh_lhc_protonation,
       value: 3.0,
-      unit: "–",
       texName: "kh\\_lhc\\_protonation",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kf_lhc_protonation", {
-      displayName: names.kf_lhc_protonation,
       value: 0.0096,
-      unit: "s^{-1}",
       texName: "kf\\_lhc\\_protonation",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("ksat_lhc_protonation", {
-      displayName: names.ksat_lhc_protonation,
       value: 5.8,
-      unit: "–",
       texName: "ksat\\_lhc\\_protonation",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kf_lhc_deprotonation", {
-      displayName: names.kf_lhc_deprotonation,
       value: 0.0096,
-      unit: "s^{-1}",
       texName: "kf\\_lhc\\_deprotonation",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kf_cyclic_electron_flow", {
-      displayName: names.kf_cyclic_electron_flow,
       value: 1.0,
-      unit: "(mol\\,Chl)^{2}\\,mmol^{-2}\\,s^{-1}",
       texName: "kf\\_cyclic\\_electron\\_flow",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 2 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kf_violaxanthin_deepoxidase", {
-      displayName: names.kf_violaxanthin_deepoxidase,
       value: 0.0024,
-      unit: "s^{-1}",
       texName: "kf\\_violaxanthin\\_deepoxidase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kh_violaxanthin_deepoxidase", {
-      displayName: names.kh_violaxanthin_deepoxidase,
       value: 5.0,
-      unit: "–",
       texName: "kh\\_violaxanthin\\_deepoxidase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("ksat_violaxanthin_deepoxidase", {
-      displayName: names.ksat_violaxanthin_deepoxidase,
       value: 5.8,
-      unit: "–",
       texName: "ksat\\_violaxanthin\\_deepoxidase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kf_zeaxanthin_epoxidase", {
-      displayName: names.kf_zeaxanthin_epoxidase,
       value: 0.00024,
-      unit: "s^{-1}",
       texName: "kf\\_zeaxanthin\\_epoxidase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
-    .addParameter("km_fnr_fd_red", {
+    .addParameter("km_fnr_Ferredoxine_reduced", {
       value: 1.56,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
-      texName: "km\\_fnr\\_fd\\_red",
+      displayName: "km_fnr_Ferredoxine (reduced)",
+      texName: "km\\_fnr\\_Ferredoxine (reduced)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("km_fnr_nadp", {
-      displayName: names.km_fnr_nadp,
+    .addParameter("km_fnr_NADP", {
       value: 0.22,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
-      texName: "km\\_fnr\\_nadp",
+      texName: "km\\_fnr\\_NADP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("E0_fnr", {
-      displayName: names.e0_fnr,
       value: 3.0,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "E0\\_fnr",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_fnr", {
-      displayName: names.kcat_fnr,
       value: 500.0,
-      unit: "s^{-1}",
       texName: "kcat\\_fnr",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kf_ndh", {
-      displayName: names.kf_ndh,
       value: 0.002,
-      unit: "s^{-1}",
       texName: "kf\\_ndh",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("PSII_total", {
-      displayName: names.psii_tot,
       value: 2.5,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PSII\\_total",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("PSI_total", {
-      displayName: names.psi_tot,
       value: 2.5,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "PSI\\_total",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kH0", {
-      displayName: names.base_heat_dissipation_rate,
       value: 500000000.0,
-      unit: "s^{-1}",
       texName: "kH0",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kPQred", {
-      displayName: names.k_pq_red,
       value: 250.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPQred",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kPCox", {
-      displayName: names.k_pc_ox,
       value: 2500.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPCox",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kFdred", {
-      displayName: names.k_fd_red,
       value: 250000.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kFdred",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("k2", {
-      displayName: names.psii_rate_constant,
       value: 5000000000.0,
-      unit: "s^{-1}",
       texName: "k2",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kH", {
-      displayName: names.npq_heat_dissipation_rate,
       value: 5000000000.0,
-      unit: "s^{-1}",
       texName: "kH",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kF", {
-      displayName: names.fluorescence_rate_constant,
       value: 625000000.0,
-      unit: "s^{-1}",
       texName: "kF",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kMehler", {
       value: 1.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kMehler",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("E0_ferredoxin_reductase", {
       value: 1.0,
-      unit: "–",
       texName: "E0\\_ferredoxin\\_reductase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kcat_ferredoxin_reductase", {
       value: 250000.0,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kcat\\_ferredoxin\\_reductase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kf_proton_leak", {
-      displayName: names.kf_proton_leak,
       value: 10.0,
-      unit: "s^{-1}",
       texName: "kf\\_proton\\_leak",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kPTOX", {
-      displayName: names.k_ptox,
       value: 0.01,
-      unit: "mol\\,Chl\\,mmol^{-1}\\,s^{-1}",
       texName: "kPTOX",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kStt7", {
-      displayName: names.k_stt7,
       value: 0.0035,
-      unit: "s^{-1}",
       texName: "kStt7",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_lhc_state_transition_12", {
-      displayName: names.km_lhc_state_transition_12,
       value: 0.2,
-      unit: "–",
       texName: "km\\_lhc\\_state\\_transition\\_12",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("n_ST", {
-      displayName: names.n_st,
       value: 2.0,
-      unit: "–",
       texName: "n\\_ST",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kPph1", {
-      displayName: names.k_pph1,
       value: 0.0013,
-      unit: "s^{-1}",
       texName: "kPph1",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("E0_rubisco", {
       value: 1.0,
-      unit: "mol\\,Chl\\,L^{-1}",
       texName: "E0\\_rubisco",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "0.1",
         max: "2.0",
@@ -484,714 +627,1179 @@ export function initModel(): KineticModelBuilder {
       },
     })
     .addParameter("kcat_rubisco_carboxylase", {
-      displayName: names.kcat_rubisco_carboxylase,
       value: 2.72,
-      unit: "s^{-1}",
       texName: "kcat\\_rubisco\\_carboxylase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_rubisco_carboxylase_RUBP", {
-      displayName: names.km_rubisco_carboxylase_rubp,
       value: 0.02,
-      unit: "mM",
       texName: "km\\_rubisco\\_carboxylase\\_RUBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("km_rubisco_carboxylase_CO2__dissolved_", {
-      displayName: names.km_rubisco_carboxylase_co2,
+    .addParameter("km_rubisco_carboxylase_CO2_dissolved", {
       value: 0.0107,
-      unit: "mM",
+      displayName: "km_rubisco_carboxylase_CO2",
       texName: "km\\_rubisco\\_carboxylase\\_CO2 (dissolved)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_rubisco_carboxylase_3PGA", {
-      displayName: names.ki_rubisco_carboxylase_pga,
       value: 0.04,
-      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_3PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_rubisco_carboxylase_FBP", {
-      displayName: names.ki_rubisco_carboxylase_fbp,
       value: 0.04,
-      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_FBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_rubisco_carboxylase_SBP", {
-      displayName: names.ki_rubisco_carboxylase_sbp,
       value: 0.075,
-      unit: "mM",
       texName: "ki\\_rubisco\\_carboxylase\\_SBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("ki_rubisco_carboxylase_pi", {
-      displayName: names.ki_rubisco_carboxylase_pi,
+    .addParameter("ki_rubisco_carboxylase_Orthophosphate", {
       value: 0.9,
-      unit: "mM",
-      texName: "ki\\_rubisco\\_carboxylase\\_pi",
+      displayName: "ki_rubisco_carboxylase_Pi",
+      texName: "ki\\_rubisco\\_carboxylase\\_Orthophosphate",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("ki_rubisco_carboxylase_nadph", {
-      displayName: names.ki_rubisco_carboxylase_nadph,
+    .addParameter("ki_rubisco_carboxylase_NADPH", {
       value: 0.07,
-      unit: "mM",
-      texName: "ki\\_rubisco\\_carboxylase\\_nadph",
+      texName: "ki\\_rubisco\\_carboxylase\\_NADPH",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kre_phosphoglycerate_kinase", {
-      displayName: names.kre_phosphoglycerate_kinase,
       value: 800000000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_phosphoglycerate\\_kinase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_phosphoglycerate_kinase", {
-      displayName: names.keq_phosphoglycerate_kinase,
       value: 0.00031,
-      unit: "–",
       texName: "keq\\_phosphoglycerate\\_kinase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_gadph", {
-      displayName: names.kre_gadph,
       value: 800000000.0,
-      unit: "mM^{-2}\\,s^{-1}",
       texName: "kre\\_gadph",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 2 },
+          { kind: "mole", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_gadph", {
-      displayName: names.keq_gadph,
       value: 16000000.0,
-      unit: "–",
       texName: "keq\\_gadph",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_triose_phosphate_isomerase", {
-      displayName: names.kre_triose_phosphate_isomerase,
       value: 800000000.0,
-      unit: "s^{-1}",
       texName: "kre\\_triose\\_phosphate\\_isomerase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("keq_triose_phosphate_isomerase", {
-      displayName: names.keq_triose_phosphate_isomerase,
       value: 22.0,
-      unit: "–",
       texName: "keq\\_triose\\_phosphate\\_isomerase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_aldolase_dhap_gap", {
-      displayName: names.kre_aldolase_dhap_gap,
       value: 800000000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_aldolase\\_dhap\\_gap",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_aldolase_dhap_gap", {
-      displayName: names.keq_aldolase_dhap_gap,
       value: 7.1,
-      unit: "mM^{-1}",
       texName: "keq\\_aldolase\\_dhap\\_gap",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kre_aldolase_dhap_e4p", {
-      displayName: names.kre_aldolase_dhap_e4p,
       value: 800000000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_aldolase\\_dhap\\_e4p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_aldolase_dhap_e4p", {
-      displayName: names.keq_aldolase_dhap_e4p,
       value: 13.0,
-      unit: "mM^{-1}",
       texName: "keq\\_aldolase\\_dhap\\_e4p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("E0_fbpase", {
-      displayName: names.e0_fbpase,
       value: 1.0,
-      unit: "mol\\,Chl\\,L^{-1}",
       texName: "E0\\_fbpase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_fbpase", {
-      displayName: names.kcat_fbpase,
       value: 1.6,
-      unit: "s^{-1}",
       texName: "kcat\\_fbpase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_fbpase_s", {
-      displayName: names.km_fbpase_s,
       value: 0.03,
-      unit: "mM",
       texName: "km\\_fbpase\\_s",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_fbpase_F6P", {
-      displayName: names.ki_fbpase_f6p,
       value: 0.7,
-      unit: "mM",
       texName: "ki\\_fbpase\\_F6P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("ki_fbpase_pi", {
-      displayName: names.ki_fbpase_pi,
+    .addParameter("ki_fbpase_Orthophosphate", {
       value: 12.0,
-      unit: "mM",
-      texName: "ki\\_fbpase\\_pi",
+      displayName: "ki_fbpase_Pi",
+      texName: "ki\\_fbpase\\_Orthophosphate",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kre_transketolase_gap_f6p", {
-      displayName: names.kre_transketolase_gap_f6p,
       value: 800000000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_transketolase\\_gap\\_f6p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_transketolase_gap_f6p", {
-      displayName: names.keq_transketolase_gap_f6p,
       value: 0.084,
-      unit: "–",
       texName: "keq\\_transketolase\\_gap\\_f6p",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_transketolase_gap_s7p", {
-      displayName: names.kre_transketolase_gap_s7p,
       value: 800000000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kre\\_transketolase\\_gap\\_s7p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("keq_transketolase_gap_s7p", {
-      displayName: names.keq_transketolase_gap_s7p,
       value: 0.85,
-      unit: "–",
       texName: "keq\\_transketolase\\_gap\\_s7p",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("E0_SBPase", {
-      displayName: names.e0_sbpase,
       value: 1.0,
-      unit: "mol\\,Chl\\,L^{-1}",
       texName: "E0\\_SBPase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_SBPase", {
-      displayName: names.kcat_sbpase,
       value: 0.32,
-      unit: "s^{-1}",
       texName: "kcat\\_SBPase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_SBPase_s", {
-      displayName: names.km_sbpase_s,
       value: 0.013,
-      unit: "mM",
       texName: "km\\_SBPase\\_s",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("ki_SBPase_pi", {
-      displayName: names.ki_sbpase_pi,
+    .addParameter("ki_SBPase_Orthophosphate", {
       value: 12.0,
-      unit: "mM",
-      texName: "ki\\_SBPase\\_pi",
+      displayName: "ki_SBPase_Pi",
+      texName: "ki\\_SBPase\\_Orthophosphate",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kre_ribose_phosphate_isomerase", {
-      displayName: names.kre_ribose_phosphate_isomerase,
       value: 800000000.0,
-      unit: "s^{-1}",
       texName: "kre\\_ribose\\_phosphate\\_isomerase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("keq_ribose_phosphate_isomerase", {
-      displayName: names.keq_ribose_phosphate_isomerase,
       value: 0.4,
-      unit: "–",
       texName: "keq\\_ribose\\_phosphate\\_isomerase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_ribulose_phosphate_epimerase", {
-      displayName: names.kre_ribulose_phosphate_epimerase,
       value: 800000000.0,
-      unit: "s^{-1}",
       texName: "kre\\_ribulose\\_phosphate\\_epimerase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("keq_ribulose_phosphate_epimerase", {
-      displayName: names.keq_ribulose_phosphate_epimerase,
       value: 0.67,
-      unit: "–",
       texName: "keq\\_ribulose\\_phosphate\\_epimerase",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("E0_phosphoribulokinase", {
-      displayName: names.e0_phosphoribulokinase,
       value: 1.0,
-      unit: "mol\\,Chl\\,L^{-1}",
       texName: "E0\\_phosphoribulokinase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_phosphoribulokinase", {
-      displayName: names.kcat_phosphoribulokinase,
       value: 7.9992,
-      unit: "s^{-1}",
       texName: "kcat\\_phosphoribulokinase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("km_phosphoribulokinase_RU5P", {
-      displayName: names.km_phosphoribulokinase_ru5p,
       value: 0.05,
-      unit: "mM",
       texName: "km\\_phosphoribulokinase\\_RU5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("km_phosphoribulokinase_atp", {
-      displayName: names.km_phosphoribulokinase_atp,
+    .addParameter("km_phosphoribulokinase_ATP", {
       value: 0.05,
-      unit: "mM",
-      texName: "km\\_phosphoribulokinase\\_atp",
+      texName: "km\\_phosphoribulokinase\\_ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_phosphoribulokinase_3PGA", {
-      displayName: names.ki_phosphoribulokinase_pga,
       value: 2.0,
-      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_3PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_phosphoribulokinase_RUBP", {
-      displayName: names.ki_phosphoribulokinase_rubp,
       value: 0.7,
-      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_RUBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("ki_phosphoribulokinase_pi", {
-      displayName: names.ki_phosphoribulokinase_pi,
+    .addParameter("ki_phosphoribulokinase_Orthophosphate", {
       value: 4.0,
-      unit: "mM",
-      texName: "ki\\_phosphoribulokinase\\_pi",
+      displayName: "ki_phosphoribulokinase_Pi",
+      texName: "ki\\_phosphoribulokinase\\_Orthophosphate",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_phosphoribulokinase_4", {
-      displayName: names.ki_phosphoribulokinase_4,
       value: 2.5,
-      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_4",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_phosphoribulokinase_5", {
-      displayName: names.ki_phosphoribulokinase_5,
       value: 0.4,
-      unit: "mM",
       texName: "ki\\_phosphoribulokinase\\_5",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kre_g6pi", {
-      displayName: names.kre_g6pi,
       value: 800000000.0,
-      unit: "s^{-1}",
       texName: "kre\\_g6pi",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("keq_g6pi", {
-      displayName: names.keq_g6pi,
       value: 2.3,
-      unit: "–",
       texName: "keq\\_g6pi",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kre_phosphoglucomutase", {
-      displayName: names.kre_phosphoglucomutase,
       value: 800000000.0,
-      unit: "s^{-1}",
       texName: "kre\\_phosphoglucomutase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("keq_phosphoglucomutase", {
-      displayName: names.keq_phosphoglucomutase,
       value: 0.058,
-      unit: "–",
       texName: "keq\\_phosphoglucomutase",
+      unit: Unit.fromJson({ factors: [] }),
     })
-    .addParameter("pi_ext", { value: 0.5, unit: "mM", texName: "pi\\_ext" })
+    .addParameter("Orthophosphate_external", {
+      value: 0.5,
+      displayName: "Orthophosphate (external)",
+      texName: "Orthophosphate (external)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
+    })
     .addParameter("km_ex_pga", {
-      displayName: names.km_ex_pga,
       value: 0.25,
-      unit: "mM",
       texName: "km\\_ex\\_pga",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_ex_gap", {
-      displayName: names.km_ex_gap,
       value: 0.075,
-      unit: "mM",
       texName: "km\\_ex\\_gap",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_ex_dhap", {
-      displayName: names.km_ex_dhap,
       value: 0.077,
-      unit: "mM",
       texName: "km\\_ex\\_dhap",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("km_N_translocator_pi_ext", {
+    .addParameter("km_N_translocator_Orthophosphate_external", {
       value: 0.74,
-      unit: "mM",
-      texName: "km\\_N\\_translocator\\_pi\\_ext",
+      displayName: "km_N_translocator_Orthophosphate (external)",
+      texName: "km\\_N\\_translocator\\_Orthophosphate (external)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("km_N_translocator_pi", {
+    .addParameter("km_N_translocator_Orthophosphate", {
       value: 0.63,
-      unit: "mM",
-      texName: "km\\_N\\_translocator\\_pi",
+      texName: "km\\_N\\_translocator\\_Orthophosphate",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_N_translocator", {
-      displayName: names.kcat_n_translocator,
       value: 2.0,
-      unit: "s^{-1}",
       texName: "kcat\\_N\\_translocator",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("E0_N_translocator", {
-      displayName: names.e0_n_translocator,
       value: 1.0,
-      unit: "mM",
       texName: "E0\\_N\\_translocator",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("E0_ex_g1p", {
-      displayName: names.e0_ex_g1p,
       value: 1.0,
-      unit: "mol\\,Chl\\,L^{-1}",
       texName: "E0\\_ex\\_g1p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_ex_g1p_G1P", {
-      displayName: names.km_ex_g1p_g1p,
       value: 0.08,
-      unit: "mM",
       texName: "km\\_ex\\_g1p\\_G1P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("km_ex_g1p_atp", {
-      displayName: names.km_ex_g1p_atp,
+    .addParameter("km_ex_g1p_ATP", {
       value: 0.08,
-      unit: "mM",
-      texName: "km\\_ex\\_g1p\\_atp",
+      texName: "km\\_ex\\_g1p\\_ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_ex_g1p", {
-      displayName: names.ki_ex_g1p,
       value: 10.0,
-      unit: "mM",
       texName: "ki\\_ex\\_g1p",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ki_ex_g1p_3PGA", {
-      displayName: names.ki_ex_g1p_pga,
       value: 0.1,
-      unit: "–",
       texName: "ki\\_ex\\_g1p\\_3PGA",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("ki_ex_g1p_F6P", {
-      displayName: names.ki_ex_g1p_f6p,
       value: 0.02,
-      unit: "–",
       texName: "ki\\_ex\\_g1p\\_F6P",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("ki_ex_g1p_FBP", {
-      displayName: names.ki_ex_g1p_fbp,
       value: 0.02,
-      unit: "–",
       texName: "ki\\_ex\\_g1p\\_FBP",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addParameter("kcat_ex_g1p", {
-      displayName: names.kcat_ex_g1p,
       value: 0.32,
-      unit: "s^{-1}",
       texName: "kcat\\_ex\\_g1p",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kf_mda_reductase_1", {
       value: 500.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kf\\_mda\\_reductase\\_1",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("E0_mda_reductase_2", {
       value: 0.002,
-      unit: "mM",
       texName: "E0\\_mda\\_reductase\\_2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_mda_reductase_2", {
       value: 300.0,
-      unit: "s^{-1}",
       texName: "kcat\\_mda\\_reductase\\_2",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
-    .addParameter("km_mda_reductase_2_nadph", {
+    .addParameter("km_mda_reductase_2_NADPH", {
       value: 0.023,
-      unit: "mM",
-      texName: "km\\_mda\\_reductase\\_2\\_nadph",
+      texName: "km\\_mda\\_reductase\\_2\\_NADPH",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_mda_reductase_2_MDA", {
       value: 0.0014,
-      unit: "mM",
       texName: "km\\_mda\\_reductase\\_2\\_MDA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kf1", {
       value: 10000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kf1",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("kr1", { value: 220.0, unit: "s^{-1}", texName: "kr1" })
+    .addParameter("kr1", {
+      value: 220.0,
+      texName: "kr1",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
+    })
     .addParameter("kf2", {
       value: 10000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kf2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("kr2", { value: 4000.0, unit: "s^{-1}", texName: "kr2" })
-    .addParameter("kf3", { value: 2510.0, unit: "s^{-1}", texName: "kf3" })
+    .addParameter("kr2", {
+      value: 4000.0,
+      texName: "kr2",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
+    })
+    .addParameter("kf3", {
+      value: 2510.0,
+      texName: "kf3",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
+    })
     .addParameter("kf4", {
       value: 10000.0,
-      unit: "mM^{-1}\\,s^{-1}",
       texName: "kf4",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "litre", prefix: "kilo", exponent: 1 },
+          { kind: "mole", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("kr4", { value: 4000.0, unit: "s^{-1}", texName: "kr4" })
-    .addParameter("kf5", { value: 2510.0, unit: "s^{-1}", texName: "kf5" })
-    .addParameter("XT", { value: 0.07, unit: "mM", texName: "XT" })
+    .addParameter("kr4", {
+      value: 4000.0,
+      texName: "kr4",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
+    })
+    .addParameter("kf5", {
+      value: 2510.0,
+      texName: "kf5",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
+    })
+    .addParameter("XT", {
+      value: 0.07,
+      texName: "XT",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
+    })
     .addParameter("E0_glutathion_reductase", {
       value: 0.0014,
-      unit: "mM",
       texName: "E0\\_glutathion\\_reductase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_glutathion_reductase", {
-      value: 595,
-      unit: "s^{-1}",
+      value: 595.0,
       texName: "kcat\\_glutathion\\_reductase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
-    .addParameter("km_glutathion_reductase_nadph", {
+    .addParameter("km_glutathion_reductase_NADPH", {
       value: 0.003,
-      unit: "mM",
-      texName: "km\\_glutathion\\_reductase\\_nadph",
+      texName: "km\\_glutathion\\_reductase\\_NADPH",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_glutathion_reductase_GSSG", {
       value: 0.2,
-      unit: "mM",
       texName: "km\\_glutathion\\_reductase\\_GSSG",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_dehydroascorbate_reductase_DHA", {
       value: 0.07,
-      unit: "mM",
       texName: "km\\_dehydroascorbate\\_reductase\\_DHA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_dehydroascorbate_reductase_GSH", {
       value: 2.5,
-      unit: "mM",
       texName: "km\\_dehydroascorbate\\_reductase\\_GSH",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addParameter("K", { value: 0.5, unit: "mM^{2}", texName: "K" })
+    .addParameter("K", {
+      value: 0.5,
+      texName: "K",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 2 },
+          { kind: "litre", exponent: -2 },
+        ],
+      }),
+    })
     .addParameter("E0_dehydroascorbate_reductase", {
       value: 0.0017,
-      unit: "mM",
       texName: "E0\\_dehydroascorbate\\_reductase",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("kcat_dehydroascorbate_reductase", {
-      value: 142,
-      unit: "s^{-1}",
+      value: 142.0,
       texName: "kcat\\_dehydroascorbate\\_reductase",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kf_ex_atp", {
       value: 0.2,
-      unit: "s^{-1}",
       texName: "kf\\_ex\\_atp",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addParameter("kf_ex_nadph", {
       value: 0.2,
-      unit: "s^{-1}",
       texName: "kf\\_ex\\_nadph",
+      unit: Unit.fromJson({ factors: [{ kind: "second", exponent: -1 }] }),
     })
     .addVariable("_3PGA", {
-      displayName: names.pga,
       value: 0.9167729479368978,
-      unit: "mM",
+      displayName: "PGA",
       texName: "3PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("BPGA", {
-      displayName: names.bpga,
       value: 0.0003814495319659031,
-      unit: "mM",
       texName: "BPGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("GAP", {
-      displayName: names.gap,
       value: 0.00580821050261484,
-      unit: "mM",
       texName: "GAP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("DHAP", {
-      displayName: names.dhap,
       value: 0.1277806166216142,
-      unit: "mM",
       texName: "DHAP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("FBP", {
-      displayName: names.fbp,
       value: 0.005269452472931973,
-      unit: "mM",
       texName: "FBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("F6P", {
-      displayName: names.f6p,
       value: 0.2874944558066638,
-      unit: "mM",
       texName: "F6P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("G6P", {
-      displayName: names.g6p,
       value: 0.6612372482712676,
-      unit: "mM",
       texName: "G6P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("G1P", {
-      displayName: names.g1p,
       value: 0.03835176039761378,
-      unit: "mM",
       texName: "G1P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("SBP", {
-      displayName: names.sbp,
       value: 0.011101373736607443,
-      unit: "mM",
       texName: "SBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("S7P", {
-      displayName: names.s7p,
       value: 0.1494578301900007,
-      unit: "mM",
       texName: "S7P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("E4P", {
-      displayName: names.e4p,
       value: 0.00668295494870102,
-      unit: "mM",
       texName: "E4P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("X5P", {
-      displayName: names.x5p,
       value: 0.020988553174809618,
-      unit: "mM",
       texName: "X5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("R5P", {
-      displayName: names.r5p,
       value: 0.035155825913785584,
-      unit: "mM",
       texName: "R5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("RUBP", {
-      displayName: names.rubp,
       value: 0.11293260727162346,
-      unit: "mM",
       texName: "RUBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("RU5P", {
-      displayName: names.ru5p,
       value: 0.014062330254191594,
-      unit: "mM",
       texName: "RU5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addVariable("atp", {
-      displayName: names.atp,
+    .addVariable("ATP", {
       value: 1.4612747767895344,
-      unit: "mM",
-      texName: "atp",
+      texName: "ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addVariable("fd_ox", {
-      displayName: names.fd_ox,
+    .addVariable("Ferredoxine_oxidised", {
       value: 3.715702384326767,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
-      texName: "fd\\_ox",
+      displayName: "Fd_ox",
+      texName: "Ferredoxine (oxidised)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("protons_lumen", {
-      displayName: names.protons_lumen,
       value: 0.002086128887296243,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "protons\\_lumen",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
-    .addVariable("lhc", {
+    .addVariable("Light_harvesting_complex", {
       value: 0.7805901436176024,
-      unit: "–",
-      texName: "lhc",
+      displayName: "Light-harvesting complex",
+      texName: "Light-harvesting complex",
+      unit: Unit.fromJson({ factors: [] }),
     })
-    .addVariable("nadph", {
-      displayName: names.nadph,
+    .addVariable("NADPH", {
       value: 0.5578718406315588,
-      unit: "mM",
-      texName: "nadph",
+      texName: "NADPH",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addVariable("pc_ox", {
-      displayName: names.pc_ox,
+    .addVariable("Plastocyanine_oxidised", {
       value: 1.8083642974980014,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
-      texName: "pc\\_ox",
+      displayName: "PC_ox",
+      texName: "Plastocyanine (oxidised)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
-    .addVariable("pq_ox", {
-      displayName: names.pq,
+    .addVariable("Plastoquinone_oxidised", {
       value: 10.251099271612473,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
-      texName: "pq\\_ox",
+      displayName: "PQ",
+      texName: "Plastoquinone (oxidised)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
-    .addVariable("psbs_de", {
-      displayName: names.psbs_deepoxidized,
+    .addVariable("PsbS_de_protonated", {
       value: 0.9667381262477079,
-      unit: "–",
-      texName: "psbs\\_de",
+      displayName: "psbs_de",
+      texName: "PsbS (de-protonated)",
+      unit: Unit.fromJson({ factors: [] }),
     })
-    .addVariable("vx", {
-      displayName: names.violaxanthin_fraction,
+    .addVariable("Violaxanthin", {
       value: 0.9629870646993118,
-      unit: "–",
-      texName: "vx",
+      displayName: "vx",
+      texName: "Violaxanthin",
+      unit: Unit.fromJson({ factors: [] }),
     })
     .addVariable("MDA", {
       value: 2.0353396709300447e-7,
-      unit: "mM",
       texName: "MDA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("H2O2", {
-      displayName: names.h2o2,
       value: 1.2034405327140102e-7,
-      unit: "mM",
       texName: "H2O2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("DHA", {
       value: 1.0296456279861962e-11,
-      unit: "mM",
       texName: "DHA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("GSSG", {
       value: 4.99986167652437e-12,
-      unit: "mM",
       texName: "GSSG",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
-    .addVariable("tr_ox", {
+    .addVariable("Thioredoxin_oxidised", {
       value: 0.9334426859846461,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
-      texName: "tr\\_ox",
+      displayName: "Thioredoxin (oxidised)",
+      texName: "Thioredoxin (oxidised)",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("E_inactive", {
       value: 3.6023635680406634,
-      unit: "mmol\\,(mol\\,Chl)^{-1}",
       texName: "E\\_inactive",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
+    })
+    .addAssignment("protons_stroma_chl", {
+      fn: new Mul([
+        new Num(4000.0),
+        new Pow(new Num(10.0), new Minus([new Name("pH")])),
+      ]),
+      texName: "protons\\_stroma\\_chl",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
+    })
+    .addAssignment("ksat_lhc_protonation_protons", {
+      fn: new Mul([
+        new Num(4000.0),
+        new Pow(new Num(10.0), new Minus([new Name("ksat_lhc_protonation")])),
+      ]),
+      texName: "ksat\\_lhc\\_protonation\\_protons",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
+    })
+    .addAssignment("ksat_violaxanthin_deepoxidase_protons", {
+      fn: new Mul([
+        new Num(4000.0),
+        new Pow(
+          new Num(10.0),
+          new Minus([new Name("ksat_violaxanthin_deepoxidase")]),
+        ),
+      ]),
+      texName: "ksat\\_violaxanthin\\_deepoxidase\\_protons",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("RT", {
-      displayName: names.rt,
       fn: new Mul([new Name("R"), new Name("T")]),
       texName: "RT",
     })
     .addAssignment("dG_pH", {
-      displayName: names.delta_g_ph,
       fn: new Mul([new Num(2.302585092994046), new Name("R"), new Name("T")]),
       texName: "dG\\_pH",
     })
     .addAssignment("pH_lumen", {
-      displayName: names.ph_lumen,
       fn: new Minus([
         new Divide([
-          new Ln(new Mul([new Num(0.00025), new Name("protons_lumen")])),
+          new Ln(
+            new Min([
+              new Num(0.1),
+              new Max([
+                new Num(1e-14),
+                new Mul([new Num(0.00025), new Name("protons_lumen")]),
+              ]),
+            ]),
+          ),
           new Ln(new Num(10.0)),
         ]),
       ]),
       texName: "pH\\_lumen",
     })
-    .addAssignment("zx", {
-      displayName: names.zeaxanthin_fraction,
-      fn: new Add([new Name("Carotenoids_tot"), new Minus([new Name("vx")])]),
-      texName: "zx",
+    .addAssignment("Zeaxanthin", {
+      fn: new Add([
+        new Name("Carotenoids_tot"),
+        new Minus([new Name("Violaxanthin")]),
+      ]),
+      displayName: "zx",
+      texName: "Zeaxanthin",
     })
-    .addAssignment("fd_red", {
-      displayName: names.fd_red,
-      fn: new Add([new Name("Fd_"), new Minus([new Name("fd_ox")])]),
-      texName: "fd\\_red",
+    .addAssignment("Ferredoxine_reduced", {
+      fn: new Add([
+        new Name("Fd_star"),
+        new Minus([new Name("Ferredoxine_oxidised")]),
+      ]),
+      displayName: "Fd_red",
+      texName: "Ferredoxine (reduced)",
     })
-    .addAssignment("pc_red", {
-      displayName: names.pc_red,
-      fn: new Add([new Name("PC_tot"), new Minus([new Name("pc_ox")])]),
-      texName: "pc\\_red",
+    .addAssignment("Plastocyanine_reduced", {
+      fn: new Add([
+        new Name("PC_tot"),
+        new Minus([new Name("Plastocyanine_oxidised")]),
+      ]),
+      displayName: "PC_red",
+      texName: "Plastocyanine (reduced)",
     })
-    .addAssignment("psbs_pr", {
-      displayName: names.psbs_protonated,
-      fn: new Add([new Name("PSBS_tot"), new Minus([new Name("psbs_de")])]),
-      texName: "psbs\\_pr",
+    .addAssignment("PsbS_protonated", {
+      fn: new Add([
+        new Name("PSBS_tot"),
+        new Minus([new Name("PsbS_de_protonated")]),
+      ]),
+      displayName: "psbs_pr",
+      texName: "PsbS (protonated)",
     })
-    .addAssignment("lhc_prot", {
-      fn: new Add([new Name("LHC_tot"), new Minus([new Name("lhc")])]),
-      texName: "lhc\\_prot",
+    .addAssignment("Light_harvesting_complex_protonated", {
+      fn: new Add([
+        new Name("LHC_tot"),
+        new Minus([new Name("Light_harvesting_complex")]),
+      ]),
+      displayName: "Light-harvesting complex (protonated)",
+      texName: "Light-harvesting complex (protonated)",
     })
     .addAssignment("Q", {
-      displayName: names.npq_coefficient,
       fn: new Add([
-        new Mul([new Name("gamma0"), new Name("psbs_de"), new Name("vx")]),
-        new Mul([new Name("gamma1"), new Name("psbs_pr"), new Name("vx")]),
-        new Divide([
-          new Mul([new Name("gamma2"), new Name("psbs_pr"), new Name("zx")]),
-          new Add([new Name("kZSat"), new Name("zx")]),
+        new Mul([
+          new Name("PsbS_de_protonated"),
+          new Name("Violaxanthin"),
+          new Name("gamma0"),
+        ]),
+        new Mul([
+          new Name("PsbS_protonated"),
+          new Name("Violaxanthin"),
+          new Name("gamma1"),
         ]),
         new Divide([
-          new Mul([new Name("gamma3"), new Name("psbs_de"), new Name("zx")]),
-          new Add([new Name("kZSat"), new Name("zx")]),
+          new Mul([
+            new Name("PsbS_de_protonated"),
+            new Name("Zeaxanthin"),
+            new Name("gamma3"),
+          ]),
+          new Add([new Name("Zeaxanthin"), new Name("kZSat")]),
+        ]),
+        new Divide([
+          new Mul([
+            new Name("PsbS_protonated"),
+            new Name("Zeaxanthin"),
+            new Name("gamma2"),
+          ]),
+          new Add([new Name("Zeaxanthin"), new Name("kZSat")]),
         ]),
       ]),
       texName: "Q",
     })
-    .addAssignment("keq_pq_red", {
+    .addAssignment("keq_Plastoquinone_reduced", {
       fn: new Exp(
         new Divide([
           new Add([
@@ -1206,19 +1814,22 @@ export function initModel(): KineticModelBuilder {
           new Name("RT"),
         ]),
       ),
-      texName: "keq\\_pq\\_red",
+      displayName: "keq_Plastoquinone (reduced)",
+      texName: "keq\\_Plastoquinone (reduced)",
     })
-    .addAssignment("pq_red", {
-      displayName: names.pqh2,
-      fn: new Add([new Name("PQ_tot"), new Minus([new Name("pq_ox")])]),
-      texName: "pq\\_red",
+    .addAssignment("Plastoquinone_reduced", {
+      fn: new Add([
+        new Name("PQ_tot"),
+        new Minus([new Name("Plastoquinone_oxidised")]),
+      ]),
+      displayName: "PQH2",
+      texName: "Plastoquinone (reduced)",
     })
     .addAssignment("PSII_cross_section", {
-      displayName: names.psii_cross_section,
       fn: new Add([
         new Name("staticAntII"),
         new Mul([
-          new Name("lhc"),
+          new Name("Light_harvesting_complex"),
           new Add([
             new Num(1.0),
             new Minus([new Name("staticAntI")]),
@@ -1228,31 +1839,30 @@ export function initModel(): KineticModelBuilder {
       ]),
       texName: "PSII\\_cross\\_section",
     })
-    .addAssignment("tr_red", {
+    .addAssignment("Thioredoxin_reduced", {
       fn: new Add([
         new Name("Thioredoxin_tot"),
-        new Minus([new Name("tr_ox")]),
+        new Minus([new Name("Thioredoxin_oxidised")]),
       ]),
-      texName: "tr\\_red",
+      displayName: "Thioredoxin (reduced)",
+      texName: "Thioredoxin (reduced)",
     })
     .addAssignment("E_active", {
       fn: new Add([new Name("E_total"), new Minus([new Name("E_inactive")])]),
       texName: "E\\_active",
     })
-    .addAssignment("nadp", {
-      displayName: names.nadp,
-      fn: new Add([new Name("NADP_"), new Minus([new Name("nadph")])]),
-      texName: "nadp",
+    .addAssignment("NADP", {
+      fn: new Add([new Name("NADP_star"), new Minus([new Name("NADPH")])]),
+      texName: "NADP",
     })
-    .addAssignment("adp", {
-      displayName: names.adp,
-      fn: new Add([new Name("A_P"), new Minus([new Name("atp")])]),
-      texName: "adp",
+    .addAssignment("ADP", {
+      fn: new Add([new Name("A_star_P"), new Minus([new Name("ATP")])]),
+      texName: "ADP",
     })
-    .addAssignment("pi", {
-      displayName: names.pi,
+    .addAssignment("Orthophosphate", {
       fn: new Add([
         new Name("Pi_tot"),
+        new Minus([new Name("ATP")]),
         new Minus([new Name("DHAP")]),
         new Minus([new Name("E4P")]),
         new Minus([new Name("F6P")]),
@@ -1264,17 +1874,17 @@ export function initModel(): KineticModelBuilder {
         new Minus([new Name("S7P")]),
         new Minus([new Name("X5P")]),
         new Minus([new Name("_3PGA")]),
-        new Minus([new Name("atp")]),
         new Minus([new Mul([new Num(2.0), new Name("BPGA")])]),
         new Minus([new Mul([new Num(2.0), new Name("FBP")])]),
         new Minus([new Mul([new Num(2.0), new Name("RUBP")])]),
         new Minus([new Mul([new Num(2.0), new Name("SBP")])]),
       ]),
-      texName: "pi",
+      displayName: "Pi",
+      texName: "Orthophosphate",
     })
     .addAssignment("ascorbate", {
       fn: new Add([
-        new Name("ASC_tot_"),
+        new Name("ASC_tot_star"),
         new Minus([new Name("DHA")]),
         new Minus([new Name("MDA")]),
       ]),
@@ -1288,7 +1898,6 @@ export function initModel(): KineticModelBuilder {
       texName: "GSH",
     })
     .addAssignment("keq_atp_synthase", {
-      displayName: names.keq_atp_synthase,
       fn: new Mul([
         new Name("Pi_mol"),
         new Exp(
@@ -1308,7 +1917,6 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_atp\\_synthase",
     })
     .addAssignment("keq_b6f", {
-      displayName: names.keq_b6f,
       fn: new Exp(
         new Divide([
           new Add([
@@ -1331,7 +1939,6 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_b6f",
     })
     .addAssignment("keq_fnr", {
-      displayName: names.keq_fnr,
       fn: new Exp(
         new Divide([
           new Add([
@@ -1347,12 +1954,10 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_fnr",
     })
     .addAssignment("vmax_fnr", {
-      displayName: names.vmax_fnr,
       fn: new Mul([new Name("E0_fnr"), new Name("kcat_fnr")]),
       texName: "vmax\\_fnr",
     })
     .addAssignment("keq_PCP700", {
-      displayName: names.keq_pc_p700,
       fn: new Exp(
         new Divide([
           new Add([
@@ -1365,7 +1970,6 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_PCP700",
     })
     .addAssignment("keq_ferredoxin_reductase", {
-      displayName: names.keq_ferredoxin_reductase,
       fn: new Exp(
         new Divide([
           new Add([
@@ -1389,7 +1993,6 @@ export function initModel(): KineticModelBuilder {
       texName: "E0\\_rubisco\\_active",
     })
     .addAssignment("vmax_rubisco_carboxylase", {
-      displayName: names.vmax_rubisco_carboxylase,
       fn: new Mul([
         new Name("E0_rubisco_active"),
         new Name("kcat_rubisco_carboxylase"),
@@ -1401,7 +2004,6 @@ export function initModel(): KineticModelBuilder {
       texName: "E0\\_fbpase\\_active",
     })
     .addAssignment("vmax_fbpase", {
-      displayName: names.vmax_fbpase,
       fn: new Mul([new Name("E0_fbpase_active"), new Name("kcat_fbpase")]),
       texName: "vmax\\_fbpase",
     })
@@ -1410,7 +2012,6 @@ export function initModel(): KineticModelBuilder {
       texName: "E0\\_SBPase\\_active",
     })
     .addAssignment("vmax_SBPase", {
-      displayName: names.vmax_sbpase,
       fn: new Mul([new Name("E0_SBPase_active"), new Name("kcat_SBPase")]),
       texName: "vmax\\_SBPase",
     })
@@ -1419,7 +2020,6 @@ export function initModel(): KineticModelBuilder {
       texName: "E0\\_phosphoribulokinase\\_active",
     })
     .addAssignment("vmax_phosphoribulokinase", {
-      displayName: names.vmax_phosphoribulokinase,
       fn: new Mul([
         new Name("E0_phosphoribulokinase_active"),
         new Name("kcat_phosphoribulokinase"),
@@ -1427,7 +2027,6 @@ export function initModel(): KineticModelBuilder {
       texName: "vmax\\_phosphoribulokinase",
     })
     .addAssignment("vmax_ex_pga", {
-      displayName: names.vmax_ex_pga,
       fn: new Mul([
         new Name("E0_N_translocator"),
         new Name("kcat_N_translocator"),
@@ -1435,22 +2034,24 @@ export function initModel(): KineticModelBuilder {
       texName: "vmax\\_ex\\_pga",
     })
     .addAssignment("N_translocator", {
-      displayName: names.n_translocator,
       fn: new Add([
         new Num(1.0),
         new Mul([
           new Add([
             new Num(1.0),
             new Divide([
-              new Name("km_N_translocator_pi_ext"),
-              new Name("pi_ext"),
+              new Name("km_N_translocator_Orthophosphate_external"),
+              new Name("Orthophosphate_external"),
             ]),
           ]),
           new Add([
             new Divide([new Name("DHAP"), new Name("km_ex_dhap")]),
             new Divide([new Name("GAP"), new Name("km_ex_gap")]),
+            new Divide([
+              new Name("Orthophosphate"),
+              new Name("km_N_translocator_Orthophosphate"),
+            ]),
             new Divide([new Name("_3PGA"), new Name("km_ex_pga")]),
-            new Divide([new Name("pi"), new Name("km_N_translocator_pi")]),
           ]),
         ]),
       ]),
@@ -1461,7 +2062,6 @@ export function initModel(): KineticModelBuilder {
       texName: "E0\\_ex\\_g1p\\_active",
     })
     .addAssignment("vmax_ex_g1p", {
-      displayName: names.vmax_ex_g1p,
       fn: new Mul([new Name("E0_ex_g1p_active"), new Name("kcat_ex_g1p")]),
       texName: "vmax\\_ex\\_g1p",
     })
@@ -1486,1450 +2086,27 @@ export function initModel(): KineticModelBuilder {
       ]),
       texName: "vmax\\_dehydroascorbate\\_reductase",
     })
-    .addAssignment("B0", {
-      displayName: names.b0,
-      fn: new Divide([
-        new Mul([
-          new Name("PSII_total"),
-          new Name("kPQred"),
-          new Name("keq_pq_red"),
-          new Name("pq_ox"),
-          new Add([
-            new Pow(new Name("kF"), new Num(2.0)),
-            new Pow(new Name("kH0"), new Num(2.0)),
-            new Mul([new Name("k2"), new Name("kF")]),
-            new Mul([new Name("k2"), new Name("kH0")]),
-            new Mul([
-              new Pow(new Name("Q"), new Num(2.0)),
-              new Pow(new Name("kH"), new Num(2.0)),
-            ]),
-            new Mul([new Num(2.0), new Name("kF"), new Name("kH0")]),
-            new Mul([new Name("Q"), new Name("k2"), new Name("kH")]),
-            new Mul([
-              new Num(2.0),
-              new Name("Q"),
-              new Name("kF"),
-              new Name("kH"),
-            ]),
-            new Mul([
-              new Num(2.0),
-              new Name("Q"),
-              new Name("kH"),
-              new Name("kH0"),
-            ]),
-          ]),
-        ]),
-        new Add([
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("kF"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("kH0"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("keq_pq_red"),
-            new Pow(new Name("PPFD"), new Num(2.0)),
-            new Pow(new Name("PSII_cross_section"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("kF"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("kH0"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("Q"), new Num(2.0)),
-            new Pow(new Name("kH"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("kF"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kF"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("Q"), new Num(2.0)),
-            new Pow(new Name("kH"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kF"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("kF"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kF"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-        ]),
-      ]),
-      texName: "ps2states",
-    })
-    .addAssignment("B1", {
-      displayName: names.b1,
-      fn: new Divide([
-        new Mul([
-          new Name("PPFD"),
-          new Name("PSII_cross_section"),
-          new Name("PSII_total"),
-          new Name("kPQred"),
-          new Name("keq_pq_red"),
-          new Name("pq_ox"),
-          new Add([
-            new Name("kF"),
-            new Name("kH0"),
-            new Mul([new Name("Q"), new Name("kH")]),
-          ]),
-        ]),
-        new Add([
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("kF"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("kH0"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("keq_pq_red"),
-            new Pow(new Name("PPFD"), new Num(2.0)),
-            new Pow(new Name("PSII_cross_section"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("kF"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("kH0"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("Q"), new Num(2.0)),
-            new Pow(new Name("kH"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("kF"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kF"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("Q"), new Num(2.0)),
-            new Pow(new Name("kH"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kF"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("kF"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kF"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-        ]),
-      ]),
-      texName: "ps2states",
-    })
-    .addAssignment("B2", {
-      displayName: names.b2,
-      fn: new Divide([
-        new Mul([
-          new Name("PSII_total"),
-          new Add([
-            new Mul([
-              new Name("kPQred"),
-              new Name("pq_red"),
-              new Pow(new Name("kF"), new Num(2.0)),
-            ]),
-            new Mul([
-              new Name("kPQred"),
-              new Name("pq_red"),
-              new Pow(new Name("kH0"), new Num(2.0)),
-            ]),
-            new Mul([
-              new Name("k2"),
-              new Name("kF"),
-              new Name("kPQred"),
-              new Name("pq_red"),
-            ]),
-            new Mul([
-              new Name("k2"),
-              new Name("kH0"),
-              new Name("kPQred"),
-              new Name("pq_red"),
-            ]),
-            new Mul([
-              new Name("kPQred"),
-              new Name("pq_red"),
-              new Pow(new Name("Q"), new Num(2.0)),
-              new Pow(new Name("kH"), new Num(2.0)),
-            ]),
-            new Mul([
-              new Num(2.0),
-              new Name("kF"),
-              new Name("kH0"),
-              new Name("kPQred"),
-              new Name("pq_red"),
-            ]),
-            new Mul([
-              new Name("PPFD"),
-              new Name("PSII_cross_section"),
-              new Name("k2"),
-              new Name("kF"),
-              new Name("keq_pq_red"),
-            ]),
-            new Mul([
-              new Name("PPFD"),
-              new Name("PSII_cross_section"),
-              new Name("k2"),
-              new Name("kH0"),
-              new Name("keq_pq_red"),
-            ]),
-            new Mul([
-              new Name("Q"),
-              new Name("k2"),
-              new Name("kH"),
-              new Name("kPQred"),
-              new Name("pq_red"),
-            ]),
-            new Mul([
-              new Num(2.0),
-              new Name("Q"),
-              new Name("kF"),
-              new Name("kH"),
-              new Name("kPQred"),
-              new Name("pq_red"),
-            ]),
-            new Mul([
-              new Num(2.0),
-              new Name("Q"),
-              new Name("kH"),
-              new Name("kH0"),
-              new Name("kPQred"),
-              new Name("pq_red"),
-            ]),
-            new Mul([
-              new Name("PPFD"),
-              new Name("PSII_cross_section"),
-              new Name("Q"),
-              new Name("k2"),
-              new Name("kH"),
-              new Name("keq_pq_red"),
-            ]),
-          ]),
-        ]),
-        new Add([
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("kF"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("kH0"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("keq_pq_red"),
-            new Pow(new Name("PPFD"), new Num(2.0)),
-            new Pow(new Name("PSII_cross_section"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("kF"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("kH0"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("Q"), new Num(2.0)),
-            new Pow(new Name("kH"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("kF"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kF"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("Q"), new Num(2.0)),
-            new Pow(new Name("kH"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kF"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("kF"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kF"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-        ]),
-      ]),
-      texName: "ps2states",
-    })
-    .addAssignment("B3", {
-      displayName: names.b3,
-      fn: new Divide([
-        new Mul([
-          new Name("PPFD"),
-          new Name("PSII_cross_section"),
-          new Name("PSII_total"),
-          new Add([
-            new Mul([new Name("k2"), new Name("kPQred"), new Name("pq_red")]),
-            new Mul([new Name("kF"), new Name("kPQred"), new Name("pq_red")]),
-            new Mul([new Name("kH0"), new Name("kPQred"), new Name("pq_red")]),
-            new Mul([
-              new Name("PPFD"),
-              new Name("PSII_cross_section"),
-              new Name("k2"),
-              new Name("keq_pq_red"),
-            ]),
-            new Mul([
-              new Name("Q"),
-              new Name("kH"),
-              new Name("kPQred"),
-              new Name("pq_red"),
-            ]),
-          ]),
-        ]),
-        new Add([
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("kF"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("kH0"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("keq_pq_red"),
-            new Pow(new Name("PPFD"), new Num(2.0)),
-            new Pow(new Name("PSII_cross_section"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("kF"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("kH0"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("pq_red"),
-            new Pow(new Name("Q"), new Num(2.0)),
-            new Pow(new Name("kH"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("kF"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kF"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("k2"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("k2"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-            new Pow(new Name("Q"), new Num(2.0)),
-            new Pow(new Name("kH"), new Num(2.0)),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kF"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("kF"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("keq_pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("pq_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kF"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("Q"),
-            new Name("k2"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kF"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Num(2.0),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kH0"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("PSII_cross_section"),
-            new Name("Q"),
-            new Name("kH"),
-            new Name("kPQred"),
-            new Name("keq_pq_red"),
-            new Name("pq_ox"),
-          ]),
-        ]),
-      ]),
-      texName: "ps2states",
-    })
-    .addAssignment("A0", {
-      fn: new Divide([
-        new Mul([
-          new Name("PSI_total"),
-          new Name("kPCox"),
-          new Name("keq_PCP700"),
-          new Name("keq_ferredoxin_reductase"),
-          new Name("pc_red"),
-          new Add([
-            new Mul([new Name("O2_lumen"), new Name("kMehler")]),
-            new Mul([new Name("fd_ox"), new Name("kFdred")]),
-          ]),
-        ]),
-        new Add([
-          new Mul([
-            new Name("fd_red"),
-            new Name("kFdred"),
-            new Add([
-              new Mul([new Name("kPCox"), new Name("pc_ox")]),
-              new Mul([
-                new Name("PPFD"),
-                new Name("keq_PCP700"),
-                new Add([
-                  new Num(1.0),
-                  new Minus([new Name("PSII_cross_section")]),
-                ]),
-              ]),
-            ]),
-          ]),
-          new Mul([
-            new Name("O2_lumen"),
-            new Name("kMehler"),
-            new Name("keq_ferredoxin_reductase"),
-            new Add([
-              new Mul([new Name("kPCox"), new Name("pc_ox")]),
-              new Mul([
-                new Name("PPFD"),
-                new Name("keq_PCP700"),
-                new Add([
-                  new Num(1.0),
-                  new Minus([new Name("PSII_cross_section")]),
-                ]),
-              ]),
-            ]),
-          ]),
-          new Mul([
-            new Name("fd_ox"),
-            new Name("kFdred"),
-            new Name("keq_ferredoxin_reductase"),
-            new Add([
-              new Mul([new Name("kPCox"), new Name("pc_ox")]),
-              new Mul([
-                new Name("PPFD"),
-                new Name("keq_PCP700"),
-                new Add([
-                  new Num(1.0),
-                  new Minus([new Name("PSII_cross_section")]),
-                ]),
-              ]),
-            ]),
-          ]),
-          new Mul([
-            new Name("O2_lumen"),
-            new Name("kMehler"),
-            new Name("kPCox"),
-            new Name("keq_PCP700"),
-            new Name("keq_ferredoxin_reductase"),
-            new Name("pc_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("kPCox"),
-            new Name("keq_PCP700"),
-            new Name("keq_ferredoxin_reductase"),
-            new Name("pc_red"),
-            new Add([
-              new Num(1.0),
-              new Minus([new Name("PSII_cross_section")]),
-            ]),
-          ]),
-          new Mul([
-            new Name("fd_ox"),
-            new Name("kFdred"),
-            new Name("kPCox"),
-            new Name("keq_PCP700"),
-            new Name("keq_ferredoxin_reductase"),
-            new Name("pc_red"),
-          ]),
-        ]),
-      ]),
-      texName: "ps1states",
-    })
-    .addAssignment("A1", {
-      displayName: names.a1,
-      fn: new Divide([
-        new Mul([
-          new Name("PSI_total"),
-          new Add([
-            new Mul([
-              new Name("fd_red"),
-              new Name("kFdred"),
-              new Add([
-                new Mul([new Name("kPCox"), new Name("pc_ox")]),
-                new Mul([
-                  new Name("PPFD"),
-                  new Name("keq_PCP700"),
-                  new Add([
-                    new Num(1.0),
-                    new Minus([new Name("PSII_cross_section")]),
-                  ]),
-                ]),
-              ]),
-            ]),
-            new Mul([
-              new Name("PPFD"),
-              new Name("kPCox"),
-              new Name("keq_PCP700"),
-              new Name("keq_ferredoxin_reductase"),
-              new Name("pc_red"),
-              new Add([
-                new Num(1.0),
-                new Minus([new Name("PSII_cross_section")]),
-              ]),
-            ]),
-          ]),
-        ]),
-        new Add([
-          new Mul([
-            new Name("fd_red"),
-            new Name("kFdred"),
-            new Add([
-              new Mul([new Name("kPCox"), new Name("pc_ox")]),
-              new Mul([
-                new Name("PPFD"),
-                new Name("keq_PCP700"),
-                new Add([
-                  new Num(1.0),
-                  new Minus([new Name("PSII_cross_section")]),
-                ]),
-              ]),
-            ]),
-          ]),
-          new Mul([
-            new Name("O2_lumen"),
-            new Name("kMehler"),
-            new Name("keq_ferredoxin_reductase"),
-            new Add([
-              new Mul([new Name("kPCox"), new Name("pc_ox")]),
-              new Mul([
-                new Name("PPFD"),
-                new Name("keq_PCP700"),
-                new Add([
-                  new Num(1.0),
-                  new Minus([new Name("PSII_cross_section")]),
-                ]),
-              ]),
-            ]),
-          ]),
-          new Mul([
-            new Name("fd_ox"),
-            new Name("kFdred"),
-            new Name("keq_ferredoxin_reductase"),
-            new Add([
-              new Mul([new Name("kPCox"), new Name("pc_ox")]),
-              new Mul([
-                new Name("PPFD"),
-                new Name("keq_PCP700"),
-                new Add([
-                  new Num(1.0),
-                  new Minus([new Name("PSII_cross_section")]),
-                ]),
-              ]),
-            ]),
-          ]),
-          new Mul([
-            new Name("O2_lumen"),
-            new Name("kMehler"),
-            new Name("kPCox"),
-            new Name("keq_PCP700"),
-            new Name("keq_ferredoxin_reductase"),
-            new Name("pc_red"),
-          ]),
-          new Mul([
-            new Name("PPFD"),
-            new Name("kPCox"),
-            new Name("keq_PCP700"),
-            new Name("keq_ferredoxin_reductase"),
-            new Name("pc_red"),
-            new Add([
-              new Num(1.0),
-              new Minus([new Name("PSII_cross_section")]),
-            ]),
-          ]),
-          new Mul([
-            new Name("fd_ox"),
-            new Name("kFdred"),
-            new Name("kPCox"),
-            new Name("keq_PCP700"),
-            new Name("keq_ferredoxin_reductase"),
-            new Name("pc_red"),
-          ]),
-        ]),
-      ]),
-      texName: "ps1states",
-    })
-    .addAssignment("A2", {
-      fn: new Add([
-        new Name("PSI_total"),
-        new Minus([
-          new Divide([
-            new Mul([
-              new Name("PSI_total"),
-              new Add([
-                new Mul([
-                  new Name("fd_red"),
-                  new Name("kFdred"),
-                  new Add([
-                    new Mul([new Name("kPCox"), new Name("pc_ox")]),
-                    new Mul([
-                      new Name("PPFD"),
-                      new Name("keq_PCP700"),
-                      new Add([
-                        new Num(1.0),
-                        new Minus([new Name("PSII_cross_section")]),
-                      ]),
-                    ]),
-                  ]),
-                ]),
-                new Mul([
-                  new Name("PPFD"),
-                  new Name("kPCox"),
-                  new Name("keq_PCP700"),
-                  new Name("keq_ferredoxin_reductase"),
-                  new Name("pc_red"),
-                  new Add([
-                    new Num(1.0),
-                    new Minus([new Name("PSII_cross_section")]),
-                  ]),
-                ]),
-              ]),
-            ]),
-            new Add([
-              new Mul([
-                new Name("fd_red"),
-                new Name("kFdred"),
-                new Add([
-                  new Mul([new Name("kPCox"), new Name("pc_ox")]),
-                  new Mul([
-                    new Name("PPFD"),
-                    new Name("keq_PCP700"),
-                    new Add([
-                      new Num(1.0),
-                      new Minus([new Name("PSII_cross_section")]),
-                    ]),
-                  ]),
-                ]),
-              ]),
-              new Mul([
-                new Name("O2_lumen"),
-                new Name("kMehler"),
-                new Name("keq_ferredoxin_reductase"),
-                new Add([
-                  new Mul([new Name("kPCox"), new Name("pc_ox")]),
-                  new Mul([
-                    new Name("PPFD"),
-                    new Name("keq_PCP700"),
-                    new Add([
-                      new Num(1.0),
-                      new Minus([new Name("PSII_cross_section")]),
-                    ]),
-                  ]),
-                ]),
-              ]),
-              new Mul([
-                new Name("fd_ox"),
-                new Name("kFdred"),
-                new Name("keq_ferredoxin_reductase"),
-                new Add([
-                  new Mul([new Name("kPCox"), new Name("pc_ox")]),
-                  new Mul([
-                    new Name("PPFD"),
-                    new Name("keq_PCP700"),
-                    new Add([
-                      new Num(1.0),
-                      new Minus([new Name("PSII_cross_section")]),
-                    ]),
-                  ]),
-                ]),
-              ]),
-              new Mul([
-                new Name("O2_lumen"),
-                new Name("kMehler"),
-                new Name("kPCox"),
-                new Name("keq_PCP700"),
-                new Name("keq_ferredoxin_reductase"),
-                new Name("pc_red"),
-              ]),
-              new Mul([
-                new Name("PPFD"),
-                new Name("kPCox"),
-                new Name("keq_PCP700"),
-                new Name("keq_ferredoxin_reductase"),
-                new Name("pc_red"),
-                new Add([
-                  new Num(1.0),
-                  new Minus([new Name("PSII_cross_section")]),
-                ]),
-              ]),
-              new Mul([
-                new Name("fd_ox"),
-                new Name("kFdred"),
-                new Name("kPCox"),
-                new Name("keq_PCP700"),
-                new Name("keq_ferredoxin_reductase"),
-                new Name("pc_red"),
-              ]),
-            ]),
-          ]),
-        ]),
-        new Minus([
-          new Divide([
-            new Mul([
-              new Name("PSI_total"),
-              new Name("kPCox"),
-              new Name("keq_PCP700"),
-              new Name("keq_ferredoxin_reductase"),
-              new Name("pc_red"),
-              new Add([
-                new Mul([new Name("O2_lumen"), new Name("kMehler")]),
-                new Mul([new Name("fd_ox"), new Name("kFdred")]),
-              ]),
-            ]),
-            new Add([
-              new Mul([
-                new Name("fd_red"),
-                new Name("kFdred"),
-                new Add([
-                  new Mul([new Name("kPCox"), new Name("pc_ox")]),
-                  new Mul([
-                    new Name("PPFD"),
-                    new Name("keq_PCP700"),
-                    new Add([
-                      new Num(1.0),
-                      new Minus([new Name("PSII_cross_section")]),
-                    ]),
-                  ]),
-                ]),
-              ]),
-              new Mul([
-                new Name("O2_lumen"),
-                new Name("kMehler"),
-                new Name("keq_ferredoxin_reductase"),
-                new Add([
-                  new Mul([new Name("kPCox"), new Name("pc_ox")]),
-                  new Mul([
-                    new Name("PPFD"),
-                    new Name("keq_PCP700"),
-                    new Add([
-                      new Num(1.0),
-                      new Minus([new Name("PSII_cross_section")]),
-                    ]),
-                  ]),
-                ]),
-              ]),
-              new Mul([
-                new Name("fd_ox"),
-                new Name("kFdred"),
-                new Name("keq_ferredoxin_reductase"),
-                new Add([
-                  new Mul([new Name("kPCox"), new Name("pc_ox")]),
-                  new Mul([
-                    new Name("PPFD"),
-                    new Name("keq_PCP700"),
-                    new Add([
-                      new Num(1.0),
-                      new Minus([new Name("PSII_cross_section")]),
-                    ]),
-                  ]),
-                ]),
-              ]),
-              new Mul([
-                new Name("O2_lumen"),
-                new Name("kMehler"),
-                new Name("kPCox"),
-                new Name("keq_PCP700"),
-                new Name("keq_ferredoxin_reductase"),
-                new Name("pc_red"),
-              ]),
-              new Mul([
-                new Name("PPFD"),
-                new Name("kPCox"),
-                new Name("keq_PCP700"),
-                new Name("keq_ferredoxin_reductase"),
-                new Name("pc_red"),
-                new Add([
-                  new Num(1.0),
-                  new Minus([new Name("PSII_cross_section")]),
-                ]),
-              ]),
-              new Mul([
-                new Name("fd_ox"),
-                new Name("kFdred"),
-                new Name("kPCox"),
-                new Name("keq_PCP700"),
-                new Name("keq_ferredoxin_reductase"),
-                new Name("pc_red"),
-              ]),
-            ]),
-          ]),
-        ]),
-      ]),
-      texName: "ps1states",
-    })
     .addReaction("ferredoxin_thioredoxin_reductase", {
       fn: new Mul([
-        new Name("fd_red"),
+        new Name("Ferredoxine_reduced"),
+        new Name("Thioredoxin_oxidised"),
         new Name("kf_ferredoxin_thioredoxin_reductase"),
-        new Name("tr_ox"),
       ]),
       stoichiometry: [
-        { name: "tr_ox", value: new Num(-1.0) },
-        { name: "fd_ox", value: new Num(1.0) },
+        { name: "Thioredoxin_oxidised", value: new Num(-1.0) },
+        { name: "Ferredoxine_oxidised", value: new Num(1.0) },
       ],
       texName: "ferredoxin\\_thioredoxin\\_reductase",
     })
     .addReaction("tr_activation", {
       fn: new Mul([
         new Name("E_inactive"),
+        new Name("Thioredoxin_reduced"),
         new Name("kf_tr_activation"),
-        new Name("tr_red"),
       ]),
       stoichiometry: [
         { name: "E_inactive", value: new Num(-5.0) },
-        { name: "tr_ox", value: new Num(5.0) },
+        { name: "Thioredoxin_oxidised", value: new Num(5.0) },
       ],
       texName: "tr\\_activation",
     })
@@ -2939,14 +2116,13 @@ export function initModel(): KineticModelBuilder {
       texName: "tr\\_inactivation",
     })
     .addReaction("atp_synthase", {
-      displayName: names.r_atp_synthase,
       fn: new Mul([
         new Name("kf_atp_synthase"),
         new Add([
-          new Divide([new Name("adp"), new Name("convf")]),
+          new Divide([new Name("ADP"), new Name("convf")]),
           new Minus([
             new Divide([
-              new Name("atp"),
+              new Name("ATP"),
               new Mul([new Name("convf"), new Name("keq_atp_synthase")]),
             ]),
           ]),
@@ -2957,26 +2133,26 @@ export function initModel(): KineticModelBuilder {
           name: "protons_lumen",
           value: new Minus([new Divide([new Name("HPR"), new Name("bH")])]),
         },
-        { name: "atp", value: new Name("convf") },
+        { name: "ATP", value: new Name("convf") },
       ],
+      displayName: "ATP synthase",
       texName: "atp\\_synthase",
     })
     .addReaction("b6f", {
-      displayName: names.r_b6f,
       fn: new Max([
         new Minus([new Name("kcat_b6f")]),
         new Mul([
           new Name("kcat_b6f"),
           new Add([
             new Mul([
-              new Name("pq_red"),
-              new Pow(new Name("pc_ox"), new Num(2.0)),
+              new Name("Plastoquinone_reduced"),
+              new Pow(new Name("Plastocyanine_oxidised"), new Num(2.0)),
             ]),
             new Minus([
               new Divide([
                 new Mul([
-                  new Name("pq_ox"),
-                  new Pow(new Name("pc_red"), new Num(2.0)),
+                  new Name("Plastoquinone_oxidised"),
+                  new Pow(new Name("Plastocyanine_reduced"), new Num(2.0)),
                 ]),
                 new Name("keq_b6f"),
               ]),
@@ -2985,65 +2161,62 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       stoichiometry: [
-        { name: "pc_ox", value: new Num(-2.0) },
-        { name: "pq_ox", value: new Num(1.0) },
+        { name: "Plastocyanine_oxidised", value: new Num(-2.0) },
+        { name: "Plastoquinone_oxidised", value: new Num(1.0) },
         {
           name: "protons_lumen",
           value: new Divide([new Num(4.0), new Name("bH")]),
         },
       ],
+      displayName: "cyt b6f",
       texName: "b6f",
     })
     .addReaction("lhc_protonation", {
-      displayName: names.r_lhc_protonation,
       fn: new Divide([
         new Mul([
+          new Name("PsbS_de_protonated"),
           new Name("kf_lhc_protonation"),
-          new Name("psbs_de"),
           new Pow(new Name("protons_lumen"), new Name("kh_lhc_protonation")),
         ]),
         new Add([
-          new Pow(new Name("protons_lumen"), new Name("kh_lhc_protonation")),
           new Pow(
-            new Mul([
-              new Num(4000.0),
-              new Pow(
-                new Num(10.0),
-                new Minus([new Name("ksat_lhc_protonation")]),
-              ),
-            ]),
+            new Name("ksat_lhc_protonation_protons"),
             new Name("kh_lhc_protonation"),
           ),
+          new Pow(new Name("protons_lumen"), new Name("kh_lhc_protonation")),
         ]),
       ]),
-      stoichiometry: [{ name: "psbs_de", value: new Num(-1.0) }],
+      stoichiometry: [{ name: "PsbS_de_protonated", value: new Num(-1.0) }],
+      displayName: "LHC protonation",
       texName: "lhc\\_protonation",
     })
     .addReaction("lhc_deprotonation", {
-      displayName: names.r_lhc_deprotonation,
-      fn: new Mul([new Name("kf_lhc_deprotonation"), new Name("psbs_pr")]),
-      stoichiometry: [{ name: "psbs_de", value: new Num(1.0) }],
+      fn: new Mul([
+        new Name("PsbS_protonated"),
+        new Name("kf_lhc_deprotonation"),
+      ]),
+      stoichiometry: [{ name: "PsbS_de_protonated", value: new Num(1.0) }],
+      displayName: "LHC deprotonation",
       texName: "lhc\\_deprotonation",
     })
     .addReaction("cyclic_electron_flow", {
-      displayName: names.r_cyclic_electron_flow,
       fn: new Mul([
+        new Name("Plastoquinone_oxidised"),
         new Name("kf_cyclic_electron_flow"),
-        new Name("pq_ox"),
-        new Pow(new Name("fd_red"), new Num(2.0)),
+        new Pow(new Name("Ferredoxine_reduced"), new Num(2.0)),
       ]),
       stoichiometry: [
-        { name: "pq_ox", value: new Num(-1.0) },
-        { name: "fd_ox", value: new Num(2.0) },
+        { name: "Plastoquinone_oxidised", value: new Num(-1.0) },
+        { name: "Ferredoxine_oxidised", value: new Num(2.0) },
       ],
+      displayName: "cyclic electron flow",
       texName: "cyclic\\_electron\\_flow",
     })
     .addReaction("violaxanthin_deepoxidase", {
-      displayName: names.r_violaxanthin_deepoxidase,
       fn: new Divide([
         new Mul([
+          new Name("Violaxanthin"),
           new Name("kf_violaxanthin_deepoxidase"),
-          new Name("vx"),
           new Pow(
             new Name("protons_lumen"),
             new Name("kh_violaxanthin_deepoxidase"),
@@ -3051,59 +2224,62 @@ export function initModel(): KineticModelBuilder {
         ]),
         new Add([
           new Pow(
-            new Name("protons_lumen"),
+            new Name("ksat_violaxanthin_deepoxidase_protons"),
             new Name("kh_violaxanthin_deepoxidase"),
           ),
           new Pow(
-            new Mul([
-              new Num(4000.0),
-              new Pow(
-                new Num(10.0),
-                new Minus([new Name("ksat_violaxanthin_deepoxidase")]),
-              ),
-            ]),
+            new Name("protons_lumen"),
             new Name("kh_violaxanthin_deepoxidase"),
           ),
         ]),
       ]),
-      stoichiometry: [{ name: "vx", value: new Num(-1.0) }],
+      stoichiometry: [{ name: "Violaxanthin", value: new Num(-1.0) }],
+      displayName: "violaxanthin deepoxidase",
       texName: "violaxanthin\\_deepoxidase",
     })
     .addReaction("zeaxanthin_epoxidase", {
-      displayName: names.r_zeaxanthin_epoxidase,
-      fn: new Mul([new Name("kf_zeaxanthin_epoxidase"), new Name("zx")]),
-      stoichiometry: [{ name: "vx", value: new Num(1.0) }],
+      fn: new Mul([
+        new Name("Zeaxanthin"),
+        new Name("kf_zeaxanthin_epoxidase"),
+      ]),
+      stoichiometry: [{ name: "Violaxanthin", value: new Num(1.0) }],
+      displayName: "zeaxanthin epoxidase",
       texName: "zeaxanthin\\_epoxidase",
     })
     .addReaction("fnr", {
-      displayName: names.r_fnr,
       fn: new Divide([
         new Mul([
           new Name("vmax_fnr"),
           new Add([
             new Divide([
               new Mul([
-                new Name("nadp"),
+                new Name("NADP"),
                 new Pow(
-                  new Divide([new Name("fd_red"), new Name("km_fnr_fd_red")]),
+                  new Divide([
+                    new Name("Ferredoxine_reduced"),
+                    new Name("km_fnr_Ferredoxine_reduced"),
+                  ]),
                   new Num(2.0),
                 ),
               ]),
-              new Mul([new Name("convf"), new Name("km_fnr_nadp")]),
+              new Mul([new Name("convf"), new Name("km_fnr_NADP")]),
             ]),
             new Minus([
               new Divide([
                 new Mul([
-                  new Name("nadph"),
+                  new Name("NADPH"),
                   new Pow(
-                    new Divide([new Name("fd_ox"), new Name("km_fnr_fd_red")]),
+                    new Divide([
+                      new Name("Ferredoxine_oxidised"),
+                      new Name("km_fnr_Ferredoxine_reduced"),
+                    ]),
                     new Num(2.0),
                   ),
                 ]),
                 new Mul([
                   new Name("convf"),
                   new Name("keq_fnr"),
-                  new Name("km_fnr_nadp"),
+                  new Name("km_fnr_NADP"),
                 ]),
               ]),
             ]),
@@ -3115,55 +2291,67 @@ export function initModel(): KineticModelBuilder {
             new Add([
               new Num(1.0),
               new Divide([
-                new Name("nadp"),
-                new Mul([new Name("convf"), new Name("km_fnr_nadp")]),
+                new Name("NADP"),
+                new Mul([new Name("convf"), new Name("km_fnr_NADP")]),
               ]),
             ]),
             new Add([
               new Num(1.0),
               new Pow(
-                new Divide([new Name("fd_red"), new Name("km_fnr_fd_red")]),
+                new Divide([
+                  new Name("Ferredoxine_reduced"),
+                  new Name("km_fnr_Ferredoxine_reduced"),
+                ]),
                 new Num(2.0),
               ),
-              new Divide([new Name("fd_red"), new Name("km_fnr_fd_red")]),
+              new Divide([
+                new Name("Ferredoxine_reduced"),
+                new Name("km_fnr_Ferredoxine_reduced"),
+              ]),
             ]),
           ]),
           new Mul([
             new Add([
               new Num(1.0),
               new Divide([
-                new Name("nadph"),
-                new Mul([new Name("convf"), new Name("km_fnr_nadp")]),
+                new Name("NADPH"),
+                new Mul([new Name("convf"), new Name("km_fnr_NADP")]),
               ]),
             ]),
             new Add([
               new Num(1.0),
               new Pow(
-                new Divide([new Name("fd_ox"), new Name("km_fnr_fd_red")]),
+                new Divide([
+                  new Name("Ferredoxine_oxidised"),
+                  new Name("km_fnr_Ferredoxine_reduced"),
+                ]),
                 new Num(2.0),
               ),
-              new Divide([new Name("fd_ox"), new Name("km_fnr_fd_red")]),
+              new Divide([
+                new Name("Ferredoxine_oxidised"),
+                new Name("km_fnr_Ferredoxine_reduced"),
+              ]),
             ]),
           ]),
         ]),
       ]),
       stoichiometry: [
-        { name: "fd_ox", value: new Num(2.0) },
-        { name: "nadph", value: new Name("convf") },
+        { name: "Ferredoxine_oxidised", value: new Num(2.0) },
+        { name: "NADPH", value: new Name("convf") },
       ],
+      displayName: "FNR",
       texName: "fnr",
     })
     .addReaction("ndh", {
-      displayName: names.r_ndh,
-      fn: new Mul([new Name("kf_ndh"), new Name("pq_ox")]),
-      stoichiometry: [{ name: "pq_ox", value: new Num(-1.0) }],
+      fn: new Mul([new Name("Plastoquinone_oxidised"), new Name("kf_ndh")]),
+      stoichiometry: [{ name: "Plastoquinone_oxidised", value: new Num(-1.0) }],
+      displayName: "NDH",
       texName: "ndh",
     })
     .addReaction("PSII", {
-      displayName: names.r_psii,
       fn: new Mul([new Num(0.5), new Name("B1"), new Name("k2")]),
       stoichiometry: [
-        { name: "pq_ox", value: new Num(-1.0) },
+        { name: "Plastoquinone_oxidised", value: new Num(-1.0) },
         {
           name: "protons_lumen",
           value: new Divide([new Num(2.0), new Name("bH")]),
@@ -3172,17 +2360,20 @@ export function initModel(): KineticModelBuilder {
       texName: "PSII",
     })
     .addReaction("PSI", {
-      displayName: names.r_psi,
       fn: new Mul([
         new Name("A0"),
         new Name("PPFD"),
         new Add([new Num(1.0), new Minus([new Name("PSII_cross_section")])]),
       ]),
-      stoichiometry: [{ name: "pc_ox", value: new Num(1.0) }],
+      stoichiometry: [{ name: "Plastocyanine_oxidised", value: new Num(1.0) }],
       texName: "PSI",
     })
     .addReaction("mehler", {
-      fn: new Mul([new Name("A1"), new Name("O2_lumen"), new Name("kMehler")]),
+      fn: new Mul([
+        new Name("A1"),
+        new Name("O2_dissolved_lumen"),
+        new Name("kMehler"),
+      ]),
       stoichiometry: [{ name: "H2O2", value: new Name("convf") }],
       texName: "mehler",
     })
@@ -3190,35 +2381,29 @@ export function initModel(): KineticModelBuilder {
       fn: new Add([
         new Mul([
           new Name("A1"),
-          new Name("fd_ox"),
+          new Name("Ferredoxine_oxidised"),
           new Name("vmax_ferredoxin_reductase"),
         ]),
         new Minus([
           new Divide([
             new Mul([
               new Name("A2"),
-              new Name("fd_red"),
+              new Name("Ferredoxine_reduced"),
               new Name("vmax_ferredoxin_reductase"),
             ]),
             new Name("keq_ferredoxin_reductase"),
           ]),
         ]),
       ]),
-      stoichiometry: [{ name: "fd_ox", value: new Num(-1.0) }],
+      stoichiometry: [{ name: "Ferredoxine_oxidised", value: new Num(-1.0) }],
       texName: "ferredoxin\\_reductase",
     })
     .addReaction("proton_leak", {
-      displayName: names.r_proton_leak,
       fn: new Mul([
         new Name("kf_proton_leak"),
         new Add([
           new Name("protons_lumen"),
-          new Minus([
-            new Mul([
-              new Num(4000.0),
-              new Pow(new Num(10.0), new Minus([new Name("pH")])),
-            ]),
-          ]),
+          new Minus([new Name("protons_stroma_chl")]),
         ]),
       ]),
       stoichiometry: [
@@ -3227,27 +2412,30 @@ export function initModel(): KineticModelBuilder {
           value: new Minus([new Divide([new Num(1.0), new Name("bH")])]),
         },
       ],
+      displayName: "proton leak",
       texName: "proton\\_leak",
     })
     .addReaction("PTOX", {
-      displayName: names.r_ptox,
       fn: new Mul([
-        new Name("O2_lumen"),
+        new Name("O2_dissolved_lumen"),
+        new Name("Plastoquinone_reduced"),
         new Name("kPTOX"),
-        new Name("pq_red"),
       ]),
-      stoichiometry: [{ name: "pq_ox", value: new Num(1.0) }],
+      stoichiometry: [{ name: "Plastoquinone_oxidised", value: new Num(1.0) }],
       texName: "PTOX",
     })
     .addReaction("lhc_state_transition_12", {
-      displayName: names.r_lhc_state_transition_12,
       fn: new Divide([
-        new Mul([new Num(1.0), new Name("kStt7"), new Name("lhc")]),
+        new Mul([
+          new Num(1.0),
+          new Name("Light_harvesting_complex"),
+          new Name("kStt7"),
+        ]),
         new Add([
           new Num(1.0),
           new Pow(
             new Divide([
-              new Name("pq_ox"),
+              new Name("Plastoquinone_oxidised"),
               new Mul([
                 new Name("PQ_tot"),
                 new Name("km_lhc_state_transition_12"),
@@ -3257,27 +2445,34 @@ export function initModel(): KineticModelBuilder {
           ),
         ]),
       ]),
-      stoichiometry: [{ name: "lhc", value: new Num(-1.0) }],
+      stoichiometry: [
+        { name: "Light_harvesting_complex", value: new Num(-1.0) },
+      ],
+      displayName: "LHC state transition 1->2",
       texName: "lhc\\_state\\_transition\\_12",
     })
     .addReaction("lhc_state_transition_21", {
-      displayName: names.r_lhc_state_transition_21,
-      fn: new Mul([new Name("kPph1"), new Name("lhc_prot")]),
-      stoichiometry: [{ name: "lhc", value: new Num(1.0) }],
+      fn: new Mul([
+        new Name("Light_harvesting_complex_protonated"),
+        new Name("kPph1"),
+      ]),
+      stoichiometry: [
+        { name: "Light_harvesting_complex", value: new Num(1.0) },
+      ],
+      displayName: "LHC state transition 2->1",
       texName: "lhc\\_state\\_transition\\_21",
     })
     .addReaction("rubisco_carboxylase", {
-      displayName: names.r_rubisco_carboxylase,
       fn: new Divide([
         new Mul([
-          new Name("CO2__dissolved_"),
+          new Name("CO2_dissolved"),
           new Name("RUBP"),
           new Name("vmax_rubisco_carboxylase"),
         ]),
         new Mul([
           new Add([
-            new Name("CO2__dissolved_"),
-            new Name("km_rubisco_carboxylase_CO2__dissolved_"),
+            new Name("CO2_dissolved"),
+            new Name("km_rubisco_carboxylase_CO2_dissolved"),
           ]),
           new Add([
             new Name("RUBP"),
@@ -3290,20 +2485,20 @@ export function initModel(): KineticModelBuilder {
                   new Name("ki_rubisco_carboxylase_FBP"),
                 ]),
                 new Divide([
+                  new Name("NADPH"),
+                  new Name("ki_rubisco_carboxylase_NADPH"),
+                ]),
+                new Divide([
+                  new Name("Orthophosphate"),
+                  new Name("ki_rubisco_carboxylase_Orthophosphate"),
+                ]),
+                new Divide([
                   new Name("SBP"),
                   new Name("ki_rubisco_carboxylase_SBP"),
                 ]),
                 new Divide([
                   new Name("_3PGA"),
                   new Name("ki_rubisco_carboxylase_3PGA"),
-                ]),
-                new Divide([
-                  new Name("nadph"),
-                  new Name("ki_rubisco_carboxylase_nadph"),
-                ]),
-                new Divide([
-                  new Name("pi"),
-                  new Name("ki_rubisco_carboxylase_pi"),
                 ]),
               ]),
             ]),
@@ -3314,17 +2509,17 @@ export function initModel(): KineticModelBuilder {
         { name: "RUBP", value: new Num(-1.0) },
         { name: "_3PGA", value: new Num(2.0) },
       ],
+      displayName: "rubisco carboxylase",
       texName: "rubisco\\_carboxylase",
     })
     .addReaction("phosphoglycerate_kinase", {
-      displayName: names.r_phosphoglycerate_kinase,
       fn: new Mul([
         new Name("kre_phosphoglycerate_kinase"),
         new Add([
-          new Mul([new Name("_3PGA"), new Name("atp")]),
+          new Mul([new Name("ATP"), new Name("_3PGA")]),
           new Minus([
             new Divide([
-              new Mul([new Name("BPGA"), new Name("adp")]),
+              new Mul([new Name("ADP"), new Name("BPGA")]),
               new Name("keq_phosphoglycerate_kinase"),
             ]),
           ]),
@@ -3332,34 +2527,38 @@ export function initModel(): KineticModelBuilder {
       ]),
       stoichiometry: [
         { name: "_3PGA", value: new Num(-1.0) },
-        { name: "atp", value: new Num(-1.0) },
+        { name: "ATP", value: new Num(-1.0) },
         { name: "BPGA", value: new Num(1.0) },
       ],
+      displayName: "phosphoglycerate kinase",
       texName: "phosphoglycerate\\_kinase",
     })
     .addReaction("gadph", {
-      displayName: names.r_gadph,
       fn: new Mul([
         new Name("kre_gadph"),
         new Add([
-          new Mul([new Name("BPGA"), new Name("nadph"), new Name("protons")]),
+          new Mul([new Name("BPGA"), new Name("NADPH"), new Name("protons")]),
           new Minus([
             new Divide([
-              new Mul([new Name("GAP"), new Name("nadp"), new Name("pi")]),
+              new Mul([
+                new Name("GAP"),
+                new Name("NADP"),
+                new Name("Orthophosphate"),
+              ]),
               new Name("keq_gadph"),
             ]),
           ]),
         ]),
       ]),
       stoichiometry: [
-        { name: "nadph", value: new Num(-1.0) },
+        { name: "NADPH", value: new Num(-1.0) },
         { name: "BPGA", value: new Num(-1.0) },
         { name: "GAP", value: new Num(1.0) },
       ],
+      displayName: "GAPDH",
       texName: "gadph",
     })
     .addReaction("triose_phosphate_isomerase", {
-      displayName: names.r_triose_phosphate_isomerase,
       fn: new Mul([
         new Name("kre_triose_phosphate_isomerase"),
         new Add([
@@ -3376,10 +2575,10 @@ export function initModel(): KineticModelBuilder {
         { name: "GAP", value: new Num(-1.0) },
         { name: "DHAP", value: new Num(1.0) },
       ],
+      displayName: "triose phosphate isomerase",
       texName: "triose\\_phosphate\\_isomerase",
     })
     .addReaction("aldolase_dhap_gap", {
-      displayName: names.r_aldolase_dhap_gap,
       fn: new Mul([
         new Name("kre_aldolase_dhap_gap"),
         new Add([
@@ -3394,10 +2593,10 @@ export function initModel(): KineticModelBuilder {
         { name: "DHAP", value: new Num(-1.0) },
         { name: "FBP", value: new Num(1.0) },
       ],
+      displayName: "aldolase (DHAP+GAP)",
       texName: "aldolase\\_dhap\\_gap",
     })
     .addReaction("aldolase_dhap_e4p", {
-      displayName: names.r_aldolase_dhap_e4p,
       fn: new Mul([
         new Name("kre_aldolase_dhap_e4p"),
         new Add([
@@ -3412,10 +2611,10 @@ export function initModel(): KineticModelBuilder {
         { name: "E4P", value: new Num(-1.0) },
         { name: "SBP", value: new Num(1.0) },
       ],
+      displayName: "aldolase (DHAP+E4P)",
       texName: "aldolase\\_dhap\\_e4p",
     })
     .addReaction("fbpase", {
-      displayName: names.r_fbpase,
       fn: new Divide([
         new Mul([new Name("FBP"), new Name("vmax_fbpase")]),
         new Add([
@@ -3425,7 +2624,10 @@ export function initModel(): KineticModelBuilder {
             new Add([
               new Num(1.0),
               new Divide([new Name("F6P"), new Name("ki_fbpase_F6P")]),
-              new Divide([new Name("pi"), new Name("ki_fbpase_pi")]),
+              new Divide([
+                new Name("Orthophosphate"),
+                new Name("ki_fbpase_Orthophosphate"),
+              ]),
             ]),
           ]),
         ]),
@@ -3434,10 +2636,10 @@ export function initModel(): KineticModelBuilder {
         { name: "FBP", value: new Num(-1.0) },
         { name: "F6P", value: new Num(1.0) },
       ],
+      displayName: "FBPase",
       texName: "fbpase",
     })
     .addReaction("transketolase_gap_f6p", {
-      displayName: names.r_transketolase_gap_f6p,
       fn: new Mul([
         new Name("kre_transketolase_gap_f6p"),
         new Add([
@@ -3456,10 +2658,10 @@ export function initModel(): KineticModelBuilder {
         { name: "E4P", value: new Num(1.0) },
         { name: "X5P", value: new Num(1.0) },
       ],
+      displayName: "transketolase (GAP+F6P)",
       texName: "transketolase\\_gap\\_f6p",
     })
     .addReaction("transketolase_gap_s7p", {
-      displayName: names.r_transketolase_gap_s7p,
       fn: new Mul([
         new Name("kre_transketolase_gap_s7p"),
         new Add([
@@ -3478,10 +2680,10 @@ export function initModel(): KineticModelBuilder {
         { name: "R5P", value: new Num(1.0) },
         { name: "X5P", value: new Num(1.0) },
       ],
+      displayName: "transketolase (GAP+S7P)",
       texName: "transketolase\\_gap\\_s7p",
     })
     .addReaction("SBPase", {
-      displayName: names.r_sbpase,
       fn: new Divide([
         new Mul([new Name("SBP"), new Name("vmax_SBPase")]),
         new Add([
@@ -3490,7 +2692,10 @@ export function initModel(): KineticModelBuilder {
             new Name("km_SBPase_s"),
             new Add([
               new Num(1.0),
-              new Divide([new Name("pi"), new Name("ki_SBPase_pi")]),
+              new Divide([
+                new Name("Orthophosphate"),
+                new Name("ki_SBPase_Orthophosphate"),
+              ]),
             ]),
           ]),
         ]),
@@ -3502,7 +2707,6 @@ export function initModel(): KineticModelBuilder {
       texName: "SBPase",
     })
     .addReaction("ribose_phosphate_isomerase", {
-      displayName: names.r_ribose_phosphate_isomerase,
       fn: new Mul([
         new Name("kre_ribose_phosphate_isomerase"),
         new Add([
@@ -3519,10 +2723,10 @@ export function initModel(): KineticModelBuilder {
         { name: "R5P", value: new Num(-1.0) },
         { name: "RU5P", value: new Num(1.0) },
       ],
+      displayName: "ribose phosphate isomerase",
       texName: "ribose\\_phosphate\\_isomerase",
     })
     .addReaction("ribulose_phosphate_epimerase", {
-      displayName: names.r_ribulose_phosphate_epimerase,
       fn: new Mul([
         new Name("kre_ribulose_phosphate_epimerase"),
         new Add([
@@ -3539,14 +2743,14 @@ export function initModel(): KineticModelBuilder {
         { name: "X5P", value: new Num(-1.0) },
         { name: "RU5P", value: new Num(1.0) },
       ],
+      displayName: "ribulose phosphate epimerase",
       texName: "ribulose\\_phosphate\\_epimerase",
     })
     .addReaction("phosphoribulokinase", {
-      displayName: names.r_phosphoribulokinase,
       fn: new Divide([
         new Mul([
+          new Name("ATP"),
           new Name("RU5P"),
-          new Name("atp"),
           new Name("vmax_phosphoribulokinase"),
         ]),
         new Mul([
@@ -3557,6 +2761,10 @@ export function initModel(): KineticModelBuilder {
               new Add([
                 new Num(1.0),
                 new Divide([
+                  new Name("Orthophosphate"),
+                  new Name("ki_phosphoribulokinase_Orthophosphate"),
+                ]),
+                new Divide([
                   new Name("RUBP"),
                   new Name("ki_phosphoribulokinase_RUBP"),
                 ]),
@@ -3564,30 +2772,26 @@ export function initModel(): KineticModelBuilder {
                   new Name("_3PGA"),
                   new Name("ki_phosphoribulokinase_3PGA"),
                 ]),
-                new Divide([
-                  new Name("pi"),
-                  new Name("ki_phosphoribulokinase_pi"),
-                ]),
               ]),
             ]),
           ]),
           new Add([
             new Mul([
-              new Name("atp"),
+              new Name("ATP"),
               new Add([
                 new Num(1.0),
                 new Divide([
-                  new Name("adp"),
+                  new Name("ADP"),
                   new Name("ki_phosphoribulokinase_4"),
                 ]),
               ]),
             ]),
             new Mul([
-              new Name("km_phosphoribulokinase_atp"),
+              new Name("km_phosphoribulokinase_ATP"),
               new Add([
                 new Num(1.0),
                 new Divide([
-                  new Name("adp"),
+                  new Name("ADP"),
                   new Name("ki_phosphoribulokinase_5"),
                 ]),
               ]),
@@ -3597,13 +2801,12 @@ export function initModel(): KineticModelBuilder {
       ]),
       stoichiometry: [
         { name: "RU5P", value: new Num(-1.0) },
-        { name: "atp", value: new Num(-1.0) },
+        { name: "ATP", value: new Num(-1.0) },
         { name: "RUBP", value: new Num(1.0) },
       ],
       texName: "phosphoribulokinase",
     })
     .addReaction("g6pi", {
-      displayName: names.r_g6pi,
       fn: new Mul([
         new Name("kre_g6pi"),
         new Add([
@@ -3615,10 +2818,10 @@ export function initModel(): KineticModelBuilder {
         { name: "F6P", value: new Num(-1.0) },
         { name: "G6P", value: new Num(1.0) },
       ],
+      displayName: "G6P isomerase",
       texName: "g6pi",
     })
     .addReaction("phosphoglucomutase", {
-      displayName: names.r_phosphoglucomutase,
       fn: new Mul([
         new Name("kre_phosphoglucomutase"),
         new Add([
@@ -3635,48 +2838,47 @@ export function initModel(): KineticModelBuilder {
       texName: "phosphoglucomutase",
     })
     .addReaction("ex_pga", {
-      displayName: names.r_ex_pga,
       fn: new Divide([
         new Mul([new Name("_3PGA"), new Name("vmax_ex_pga")]),
         new Mul([new Name("N_translocator"), new Name("km_ex_pga")]),
       ]),
       stoichiometry: [{ name: "_3PGA", value: new Num(-1.0) }],
+      displayName: "PGA export",
       texName: "ex\\_pga",
     })
     .addReaction("ex_gap", {
-      displayName: names.r_ex_gap,
       fn: new Divide([
         new Mul([new Name("GAP"), new Name("vmax_ex_pga")]),
         new Mul([new Name("N_translocator"), new Name("km_ex_gap")]),
       ]),
       stoichiometry: [{ name: "GAP", value: new Num(-1.0) }],
+      displayName: "GAP export",
       texName: "ex\\_gap",
     })
     .addReaction("ex_dhap", {
-      displayName: names.r_ex_dhap,
       fn: new Divide([
         new Mul([new Name("DHAP"), new Name("vmax_ex_pga")]),
         new Mul([new Name("N_translocator"), new Name("km_ex_dhap")]),
       ]),
       stoichiometry: [{ name: "DHAP", value: new Num(-1.0) }],
+      displayName: "DHAP export",
       texName: "ex\\_dhap",
     })
     .addReaction("ex_g1p", {
-      displayName: names.r_ex_g1p,
       fn: new Divide([
-        new Mul([new Name("G1P"), new Name("atp"), new Name("vmax_ex_g1p")]),
+        new Mul([new Name("ATP"), new Name("G1P"), new Name("vmax_ex_g1p")]),
         new Mul([
           new Add([new Name("G1P"), new Name("km_ex_g1p_G1P")]),
           new Add([
             new Mul([
               new Add([
                 new Num(1.0),
-                new Divide([new Name("adp"), new Name("ki_ex_g1p")]),
+                new Divide([new Name("ADP"), new Name("ki_ex_g1p")]),
               ]),
-              new Add([new Name("atp"), new Name("km_ex_g1p_atp")]),
+              new Add([new Name("ATP"), new Name("km_ex_g1p_ATP")]),
             ]),
             new Divide([
-              new Mul([new Name("km_ex_g1p_atp"), new Name("pi")]),
+              new Mul([new Name("Orthophosphate"), new Name("km_ex_g1p_ATP")]),
               new Add([
                 new Mul([new Name("F6P"), new Name("ki_ex_g1p_F6P")]),
                 new Mul([new Name("FBP"), new Name("ki_ex_g1p_FBP")]),
@@ -3688,8 +2890,9 @@ export function initModel(): KineticModelBuilder {
       ]),
       stoichiometry: [
         { name: "G1P", value: new Num(-1.0) },
-        { name: "atp", value: new Num(-1.0) },
+        { name: "ATP", value: new Num(-1.0) },
       ],
+      displayName: "G1P export",
       texName: "ex\\_g1p",
     })
     .addReaction("mda_reductase_1", {
@@ -3707,21 +2910,21 @@ export function initModel(): KineticModelBuilder {
       fn: new Divide([
         new Mul([
           new Name("MDA"),
-          new Name("nadph"),
+          new Name("NADPH"),
           new Name("vmax_mda_reductase_2"),
         ]),
         new Add([
-          new Mul([new Name("MDA"), new Name("km_mda_reductase_2_nadph")]),
-          new Mul([new Name("MDA"), new Name("nadph")]),
+          new Mul([new Name("MDA"), new Name("NADPH")]),
+          new Mul([new Name("MDA"), new Name("km_mda_reductase_2_NADPH")]),
+          new Mul([new Name("NADPH"), new Name("km_mda_reductase_2_MDA")]),
           new Mul([
             new Name("km_mda_reductase_2_MDA"),
-            new Name("km_mda_reductase_2_nadph"),
+            new Name("km_mda_reductase_2_NADPH"),
           ]),
-          new Mul([new Name("km_mda_reductase_2_MDA"), new Name("nadph")]),
         ]),
       ]),
       stoichiometry: [
-        { name: "nadph", value: new Num(-1.0) },
+        { name: "NADPH", value: new Num(-1.0) },
         { name: "MDA", value: new Num(-2.0) },
       ],
       texName: "mda\\_reductase\\_2",
@@ -3769,27 +2972,27 @@ export function initModel(): KineticModelBuilder {
       fn: new Divide([
         new Mul([
           new Name("GSSG"),
-          new Name("nadph"),
+          new Name("NADPH"),
           new Name("vmax_glutathion_reductase"),
         ]),
         new Add([
+          new Mul([new Name("GSSG"), new Name("NADPH")]),
           new Mul([
             new Name("GSSG"),
-            new Name("km_glutathion_reductase_nadph"),
-          ]),
-          new Mul([new Name("GSSG"), new Name("nadph")]),
-          new Mul([
-            new Name("km_glutathion_reductase_GSSG"),
-            new Name("km_glutathion_reductase_nadph"),
+            new Name("km_glutathion_reductase_NADPH"),
           ]),
           new Mul([
+            new Name("NADPH"),
             new Name("km_glutathion_reductase_GSSG"),
-            new Name("nadph"),
+          ]),
+          new Mul([
+            new Name("km_glutathion_reductase_GSSG"),
+            new Name("km_glutathion_reductase_NADPH"),
           ]),
         ]),
       ]),
       stoichiometry: [
-        { name: "nadph", value: new Num(-1.0) },
+        { name: "NADPH", value: new Num(-1.0) },
         { name: "GSSG", value: new Num(-1.0) },
       ],
       texName: "glutathion\\_reductase",
@@ -3821,13 +3024,1517 @@ export function initModel(): KineticModelBuilder {
       texName: "dehydroascorbate\\_reductase",
     })
     .addReaction("ex_atp", {
-      fn: new Mul([new Name("atp"), new Name("kf_ex_atp")]),
-      stoichiometry: [{ name: "atp", value: new Num(-1.0) }],
+      fn: new Mul([new Name("ATP"), new Name("kf_ex_atp")]),
+      stoichiometry: [{ name: "ATP", value: new Num(-1.0) }],
       texName: "ex\\_atp",
     })
     .addReaction("ex_nadph", {
-      fn: new Mul([new Name("kf_ex_nadph"), new Name("nadph")]),
-      stoichiometry: [{ name: "nadph", value: new Num(-1.0) }],
+      fn: new Mul([new Name("NADPH"), new Name("kf_ex_nadph")]),
+      stoichiometry: [{ name: "NADPH", value: new Num(-1.0) }],
       texName: "ex\\_nadph",
+    })
+    .addAssignment("B0", {
+      fn: new Divide([
+        new Mul([
+          new Name("PSII_total"),
+          new Name("Plastoquinone_oxidised"),
+          new Name("kPQred"),
+          new Name("keq_Plastoquinone_reduced"),
+          new Add([
+            new Pow(new Name("kF"), new Num(2.0)),
+            new Pow(new Name("kH0"), new Num(2.0)),
+            new Mul([new Name("k2"), new Name("kF")]),
+            new Mul([new Name("k2"), new Name("kH0")]),
+            new Mul([
+              new Pow(new Name("Q"), new Num(2.0)),
+              new Pow(new Name("kH"), new Num(2.0)),
+            ]),
+            new Mul([new Num(2.0), new Name("kF"), new Name("kH0")]),
+            new Mul([new Name("Q"), new Name("k2"), new Name("kH")]),
+            new Mul([
+              new Num(2.0),
+              new Name("Q"),
+              new Name("kF"),
+              new Name("kH"),
+            ]),
+            new Mul([
+              new Num(2.0),
+              new Name("Q"),
+              new Name("kH"),
+              new Name("kH0"),
+            ]),
+          ]),
+        ]),
+        new Add([
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("kF"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("kH0"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("kF"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("kH0"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("Q"), new Num(2.0)),
+            new Pow(new Name("kH"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("k2"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("PPFD"), new Num(2.0)),
+            new Pow(new Name("PSII_cross_section"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("kF"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("kF"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("Q"), new Num(2.0)),
+            new Pow(new Name("kH"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kF"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kF"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kF"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kF"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+        ]),
+      ]),
+      texName: "B0",
+    })
+    .addAssignment("B1", {
+      fn: new Divide([
+        new Mul([
+          new Name("PPFD"),
+          new Name("PSII_cross_section"),
+          new Name("PSII_total"),
+          new Name("Plastoquinone_oxidised"),
+          new Name("kPQred"),
+          new Name("keq_Plastoquinone_reduced"),
+          new Add([
+            new Name("kF"),
+            new Name("kH0"),
+            new Mul([new Name("Q"), new Name("kH")]),
+          ]),
+        ]),
+        new Add([
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("kF"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("kH0"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("kF"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("kH0"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("Q"), new Num(2.0)),
+            new Pow(new Name("kH"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("k2"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("PPFD"), new Num(2.0)),
+            new Pow(new Name("PSII_cross_section"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("kF"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("kF"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("Q"), new Num(2.0)),
+            new Pow(new Name("kH"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kF"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kF"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kF"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kF"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+        ]),
+      ]),
+      texName: "B1",
+    })
+    .addAssignment("B2", {
+      fn: new Divide([
+        new Mul([
+          new Name("PSII_total"),
+          new Add([
+            new Mul([
+              new Name("Plastoquinone_reduced"),
+              new Name("kPQred"),
+              new Pow(new Name("kF"), new Num(2.0)),
+            ]),
+            new Mul([
+              new Name("Plastoquinone_reduced"),
+              new Name("kPQred"),
+              new Pow(new Name("kH0"), new Num(2.0)),
+            ]),
+            new Mul([
+              new Name("Plastoquinone_reduced"),
+              new Name("k2"),
+              new Name("kF"),
+              new Name("kPQred"),
+            ]),
+            new Mul([
+              new Name("Plastoquinone_reduced"),
+              new Name("k2"),
+              new Name("kH0"),
+              new Name("kPQred"),
+            ]),
+            new Mul([
+              new Name("Plastoquinone_reduced"),
+              new Name("kPQred"),
+              new Pow(new Name("Q"), new Num(2.0)),
+              new Pow(new Name("kH"), new Num(2.0)),
+            ]),
+            new Mul([
+              new Num(2.0),
+              new Name("Plastoquinone_reduced"),
+              new Name("kF"),
+              new Name("kH0"),
+              new Name("kPQred"),
+            ]),
+            new Mul([
+              new Name("PPFD"),
+              new Name("PSII_cross_section"),
+              new Name("k2"),
+              new Name("kF"),
+              new Name("keq_Plastoquinone_reduced"),
+            ]),
+            new Mul([
+              new Name("PPFD"),
+              new Name("PSII_cross_section"),
+              new Name("k2"),
+              new Name("kH0"),
+              new Name("keq_Plastoquinone_reduced"),
+            ]),
+            new Mul([
+              new Name("Plastoquinone_reduced"),
+              new Name("Q"),
+              new Name("k2"),
+              new Name("kH"),
+              new Name("kPQred"),
+            ]),
+            new Mul([
+              new Num(2.0),
+              new Name("Plastoquinone_reduced"),
+              new Name("Q"),
+              new Name("kF"),
+              new Name("kH"),
+              new Name("kPQred"),
+            ]),
+            new Mul([
+              new Num(2.0),
+              new Name("Plastoquinone_reduced"),
+              new Name("Q"),
+              new Name("kH"),
+              new Name("kH0"),
+              new Name("kPQred"),
+            ]),
+            new Mul([
+              new Name("PPFD"),
+              new Name("PSII_cross_section"),
+              new Name("Q"),
+              new Name("k2"),
+              new Name("kH"),
+              new Name("keq_Plastoquinone_reduced"),
+            ]),
+          ]),
+        ]),
+        new Add([
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("kF"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("kH0"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("kF"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("kH0"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("Q"), new Num(2.0)),
+            new Pow(new Name("kH"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("k2"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("PPFD"), new Num(2.0)),
+            new Pow(new Name("PSII_cross_section"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("kF"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("kF"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("Q"), new Num(2.0)),
+            new Pow(new Name("kH"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kF"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kF"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kF"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kF"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+        ]),
+      ]),
+      texName: "B2",
+    })
+    .addAssignment("B3", {
+      fn: new Divide([
+        new Mul([
+          new Name("PPFD"),
+          new Name("PSII_cross_section"),
+          new Name("PSII_total"),
+          new Add([
+            new Mul([
+              new Name("Plastoquinone_reduced"),
+              new Name("k2"),
+              new Name("kPQred"),
+            ]),
+            new Mul([
+              new Name("Plastoquinone_reduced"),
+              new Name("kF"),
+              new Name("kPQred"),
+            ]),
+            new Mul([
+              new Name("Plastoquinone_reduced"),
+              new Name("kH0"),
+              new Name("kPQred"),
+            ]),
+            new Mul([
+              new Name("PPFD"),
+              new Name("PSII_cross_section"),
+              new Name("k2"),
+              new Name("keq_Plastoquinone_reduced"),
+            ]),
+            new Mul([
+              new Name("Plastoquinone_reduced"),
+              new Name("Q"),
+              new Name("kH"),
+              new Name("kPQred"),
+            ]),
+          ]),
+        ]),
+        new Add([
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("kF"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("kH0"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("kF"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("kH0"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("kPQred"),
+            new Pow(new Name("Q"), new Num(2.0)),
+            new Pow(new Name("kH"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("k2"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("PPFD"), new Num(2.0)),
+            new Pow(new Name("PSII_cross_section"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("kF"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("k2"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("kF"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("k2"),
+            new Name("kF"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("k2"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+            new Pow(new Name("Q"), new Num(2.0)),
+            new Pow(new Name("kH"), new Num(2.0)),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kF"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kF"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kH0"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kF"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_reduced"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kPQred"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("k2"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kF"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Num(2.0),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kH0"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("PSII_cross_section"),
+            new Name("Plastoquinone_oxidised"),
+            new Name("Q"),
+            new Name("kH"),
+            new Name("kPQred"),
+            new Name("keq_Plastoquinone_reduced"),
+          ]),
+        ]),
+      ]),
+      texName: "B3",
+    })
+    .addAssignment("A0", {
+      fn: new Divide([
+        new Mul([
+          new Name("PSI_total"),
+          new Name("Plastocyanine_reduced"),
+          new Name("kPCox"),
+          new Name("keq_PCP700"),
+          new Name("keq_ferredoxin_reductase"),
+          new Add([
+            new Mul([new Name("Ferredoxine_oxidised"), new Name("kFdred")]),
+            new Mul([new Name("O2_dissolved_lumen"), new Name("kMehler")]),
+          ]),
+        ]),
+        new Add([
+          new Mul([
+            new Name("Ferredoxine_reduced"),
+            new Name("kFdred"),
+            new Add([
+              new Mul([new Name("Plastocyanine_oxidised"), new Name("kPCox")]),
+              new Mul([
+                new Name("PPFD"),
+                new Name("keq_PCP700"),
+                new Add([
+                  new Num(1.0),
+                  new Minus([new Name("PSII_cross_section")]),
+                ]),
+              ]),
+            ]),
+          ]),
+          new Mul([
+            new Name("Ferredoxine_oxidised"),
+            new Name("kFdred"),
+            new Name("keq_ferredoxin_reductase"),
+            new Add([
+              new Mul([new Name("Plastocyanine_oxidised"), new Name("kPCox")]),
+              new Mul([
+                new Name("PPFD"),
+                new Name("keq_PCP700"),
+                new Add([
+                  new Num(1.0),
+                  new Minus([new Name("PSII_cross_section")]),
+                ]),
+              ]),
+            ]),
+          ]),
+          new Mul([
+            new Name("O2_dissolved_lumen"),
+            new Name("kMehler"),
+            new Name("keq_ferredoxin_reductase"),
+            new Add([
+              new Mul([new Name("Plastocyanine_oxidised"), new Name("kPCox")]),
+              new Mul([
+                new Name("PPFD"),
+                new Name("keq_PCP700"),
+                new Add([
+                  new Num(1.0),
+                  new Minus([new Name("PSII_cross_section")]),
+                ]),
+              ]),
+            ]),
+          ]),
+          new Mul([
+            new Name("Ferredoxine_oxidised"),
+            new Name("Plastocyanine_reduced"),
+            new Name("kFdred"),
+            new Name("kPCox"),
+            new Name("keq_PCP700"),
+            new Name("keq_ferredoxin_reductase"),
+          ]),
+          new Mul([
+            new Name("O2_dissolved_lumen"),
+            new Name("Plastocyanine_reduced"),
+            new Name("kMehler"),
+            new Name("kPCox"),
+            new Name("keq_PCP700"),
+            new Name("keq_ferredoxin_reductase"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("Plastocyanine_reduced"),
+            new Name("kPCox"),
+            new Name("keq_PCP700"),
+            new Name("keq_ferredoxin_reductase"),
+            new Add([
+              new Num(1.0),
+              new Minus([new Name("PSII_cross_section")]),
+            ]),
+          ]),
+        ]),
+      ]),
+      texName: "A0",
+    })
+    .addAssignment("A1", {
+      fn: new Divide([
+        new Mul([
+          new Name("PSI_total"),
+          new Add([
+            new Mul([
+              new Name("Ferredoxine_reduced"),
+              new Name("kFdred"),
+              new Add([
+                new Mul([
+                  new Name("Plastocyanine_oxidised"),
+                  new Name("kPCox"),
+                ]),
+                new Mul([
+                  new Name("PPFD"),
+                  new Name("keq_PCP700"),
+                  new Add([
+                    new Num(1.0),
+                    new Minus([new Name("PSII_cross_section")]),
+                  ]),
+                ]),
+              ]),
+            ]),
+            new Mul([
+              new Name("PPFD"),
+              new Name("Plastocyanine_reduced"),
+              new Name("kPCox"),
+              new Name("keq_PCP700"),
+              new Name("keq_ferredoxin_reductase"),
+              new Add([
+                new Num(1.0),
+                new Minus([new Name("PSII_cross_section")]),
+              ]),
+            ]),
+          ]),
+        ]),
+        new Add([
+          new Mul([
+            new Name("Ferredoxine_reduced"),
+            new Name("kFdred"),
+            new Add([
+              new Mul([new Name("Plastocyanine_oxidised"), new Name("kPCox")]),
+              new Mul([
+                new Name("PPFD"),
+                new Name("keq_PCP700"),
+                new Add([
+                  new Num(1.0),
+                  new Minus([new Name("PSII_cross_section")]),
+                ]),
+              ]),
+            ]),
+          ]),
+          new Mul([
+            new Name("Ferredoxine_oxidised"),
+            new Name("kFdred"),
+            new Name("keq_ferredoxin_reductase"),
+            new Add([
+              new Mul([new Name("Plastocyanine_oxidised"), new Name("kPCox")]),
+              new Mul([
+                new Name("PPFD"),
+                new Name("keq_PCP700"),
+                new Add([
+                  new Num(1.0),
+                  new Minus([new Name("PSII_cross_section")]),
+                ]),
+              ]),
+            ]),
+          ]),
+          new Mul([
+            new Name("O2_dissolved_lumen"),
+            new Name("kMehler"),
+            new Name("keq_ferredoxin_reductase"),
+            new Add([
+              new Mul([new Name("Plastocyanine_oxidised"), new Name("kPCox")]),
+              new Mul([
+                new Name("PPFD"),
+                new Name("keq_PCP700"),
+                new Add([
+                  new Num(1.0),
+                  new Minus([new Name("PSII_cross_section")]),
+                ]),
+              ]),
+            ]),
+          ]),
+          new Mul([
+            new Name("Ferredoxine_oxidised"),
+            new Name("Plastocyanine_reduced"),
+            new Name("kFdred"),
+            new Name("kPCox"),
+            new Name("keq_PCP700"),
+            new Name("keq_ferredoxin_reductase"),
+          ]),
+          new Mul([
+            new Name("O2_dissolved_lumen"),
+            new Name("Plastocyanine_reduced"),
+            new Name("kMehler"),
+            new Name("kPCox"),
+            new Name("keq_PCP700"),
+            new Name("keq_ferredoxin_reductase"),
+          ]),
+          new Mul([
+            new Name("PPFD"),
+            new Name("Plastocyanine_reduced"),
+            new Name("kPCox"),
+            new Name("keq_PCP700"),
+            new Name("keq_ferredoxin_reductase"),
+            new Add([
+              new Num(1.0),
+              new Minus([new Name("PSII_cross_section")]),
+            ]),
+          ]),
+        ]),
+      ]),
+      texName: "A1",
+    })
+    .addAssignment("A2", {
+      fn: new Add([
+        new Name("PSI_total"),
+        new Minus([
+          new Divide([
+            new Mul([
+              new Name("PSI_total"),
+              new Add([
+                new Mul([
+                  new Name("Ferredoxine_reduced"),
+                  new Name("kFdred"),
+                  new Add([
+                    new Mul([
+                      new Name("Plastocyanine_oxidised"),
+                      new Name("kPCox"),
+                    ]),
+                    new Mul([
+                      new Name("PPFD"),
+                      new Name("keq_PCP700"),
+                      new Add([
+                        new Num(1.0),
+                        new Minus([new Name("PSII_cross_section")]),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+                new Mul([
+                  new Name("PPFD"),
+                  new Name("Plastocyanine_reduced"),
+                  new Name("kPCox"),
+                  new Name("keq_PCP700"),
+                  new Name("keq_ferredoxin_reductase"),
+                  new Add([
+                    new Num(1.0),
+                    new Minus([new Name("PSII_cross_section")]),
+                  ]),
+                ]),
+              ]),
+            ]),
+            new Add([
+              new Mul([
+                new Name("Ferredoxine_reduced"),
+                new Name("kFdred"),
+                new Add([
+                  new Mul([
+                    new Name("Plastocyanine_oxidised"),
+                    new Name("kPCox"),
+                  ]),
+                  new Mul([
+                    new Name("PPFD"),
+                    new Name("keq_PCP700"),
+                    new Add([
+                      new Num(1.0),
+                      new Minus([new Name("PSII_cross_section")]),
+                    ]),
+                  ]),
+                ]),
+              ]),
+              new Mul([
+                new Name("Ferredoxine_oxidised"),
+                new Name("kFdred"),
+                new Name("keq_ferredoxin_reductase"),
+                new Add([
+                  new Mul([
+                    new Name("Plastocyanine_oxidised"),
+                    new Name("kPCox"),
+                  ]),
+                  new Mul([
+                    new Name("PPFD"),
+                    new Name("keq_PCP700"),
+                    new Add([
+                      new Num(1.0),
+                      new Minus([new Name("PSII_cross_section")]),
+                    ]),
+                  ]),
+                ]),
+              ]),
+              new Mul([
+                new Name("O2_dissolved_lumen"),
+                new Name("kMehler"),
+                new Name("keq_ferredoxin_reductase"),
+                new Add([
+                  new Mul([
+                    new Name("Plastocyanine_oxidised"),
+                    new Name("kPCox"),
+                  ]),
+                  new Mul([
+                    new Name("PPFD"),
+                    new Name("keq_PCP700"),
+                    new Add([
+                      new Num(1.0),
+                      new Minus([new Name("PSII_cross_section")]),
+                    ]),
+                  ]),
+                ]),
+              ]),
+              new Mul([
+                new Name("Ferredoxine_oxidised"),
+                new Name("Plastocyanine_reduced"),
+                new Name("kFdred"),
+                new Name("kPCox"),
+                new Name("keq_PCP700"),
+                new Name("keq_ferredoxin_reductase"),
+              ]),
+              new Mul([
+                new Name("O2_dissolved_lumen"),
+                new Name("Plastocyanine_reduced"),
+                new Name("kMehler"),
+                new Name("kPCox"),
+                new Name("keq_PCP700"),
+                new Name("keq_ferredoxin_reductase"),
+              ]),
+              new Mul([
+                new Name("PPFD"),
+                new Name("Plastocyanine_reduced"),
+                new Name("kPCox"),
+                new Name("keq_PCP700"),
+                new Name("keq_ferredoxin_reductase"),
+                new Add([
+                  new Num(1.0),
+                  new Minus([new Name("PSII_cross_section")]),
+                ]),
+              ]),
+            ]),
+          ]),
+        ]),
+        new Minus([
+          new Divide([
+            new Mul([
+              new Name("PSI_total"),
+              new Name("Plastocyanine_reduced"),
+              new Name("kPCox"),
+              new Name("keq_PCP700"),
+              new Name("keq_ferredoxin_reductase"),
+              new Add([
+                new Mul([new Name("Ferredoxine_oxidised"), new Name("kFdred")]),
+                new Mul([new Name("O2_dissolved_lumen"), new Name("kMehler")]),
+              ]),
+            ]),
+            new Add([
+              new Mul([
+                new Name("Ferredoxine_reduced"),
+                new Name("kFdred"),
+                new Add([
+                  new Mul([
+                    new Name("Plastocyanine_oxidised"),
+                    new Name("kPCox"),
+                  ]),
+                  new Mul([
+                    new Name("PPFD"),
+                    new Name("keq_PCP700"),
+                    new Add([
+                      new Num(1.0),
+                      new Minus([new Name("PSII_cross_section")]),
+                    ]),
+                  ]),
+                ]),
+              ]),
+              new Mul([
+                new Name("Ferredoxine_oxidised"),
+                new Name("kFdred"),
+                new Name("keq_ferredoxin_reductase"),
+                new Add([
+                  new Mul([
+                    new Name("Plastocyanine_oxidised"),
+                    new Name("kPCox"),
+                  ]),
+                  new Mul([
+                    new Name("PPFD"),
+                    new Name("keq_PCP700"),
+                    new Add([
+                      new Num(1.0),
+                      new Minus([new Name("PSII_cross_section")]),
+                    ]),
+                  ]),
+                ]),
+              ]),
+              new Mul([
+                new Name("O2_dissolved_lumen"),
+                new Name("kMehler"),
+                new Name("keq_ferredoxin_reductase"),
+                new Add([
+                  new Mul([
+                    new Name("Plastocyanine_oxidised"),
+                    new Name("kPCox"),
+                  ]),
+                  new Mul([
+                    new Name("PPFD"),
+                    new Name("keq_PCP700"),
+                    new Add([
+                      new Num(1.0),
+                      new Minus([new Name("PSII_cross_section")]),
+                    ]),
+                  ]),
+                ]),
+              ]),
+              new Mul([
+                new Name("Ferredoxine_oxidised"),
+                new Name("Plastocyanine_reduced"),
+                new Name("kFdred"),
+                new Name("kPCox"),
+                new Name("keq_PCP700"),
+                new Name("keq_ferredoxin_reductase"),
+              ]),
+              new Mul([
+                new Name("O2_dissolved_lumen"),
+                new Name("Plastocyanine_reduced"),
+                new Name("kMehler"),
+                new Name("kPCox"),
+                new Name("keq_PCP700"),
+                new Name("keq_ferredoxin_reductase"),
+              ]),
+              new Mul([
+                new Name("PPFD"),
+                new Name("Plastocyanine_reduced"),
+                new Name("kPCox"),
+                new Name("keq_PCP700"),
+                new Name("keq_ferredoxin_reductase"),
+                new Add([
+                  new Num(1.0),
+                  new Minus([new Name("PSII_cross_section")]),
+                ]),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]),
+      texName: "A2",
+    })
+    .addReadout("PQ_ox_per_tot", {
+      fn: new Divide([new Name("Plastoquinone_reduced"), new Name("PQ_tot")]),
+      displayName: "PQ_ox/tot",
+      texName: "PQ\\_ox/tot",
+    })
+    .addReadout("Fd_ox_per_tot", {
+      fn: new Divide([new Name("Ferredoxine_reduced"), new Name("Fd_star")]),
+      displayName: "Fd_ox/tot",
+      texName: "Fd\\_ox/tot",
+    })
+    .addReadout("PC_ox_per_tot", {
+      fn: new Divide([new Name("Plastocyanine_reduced"), new Name("PC_tot")]),
+      displayName: "PC_ox/tot",
+      texName: "PC\\_ox/tot",
+    })
+    .addReadout("NADPH_per_tot", {
+      fn: new Divide([new Name("NADPH"), new Name("NADP_star")]),
+      displayName: "NADPH/tot",
+      texName: "NADPH/tot",
+    })
+    .addReadout("ATP_per_tot", {
+      fn: new Divide([new Name("ATP"), new Name("A_star_P")]),
+      displayName: "ATP/tot",
+      texName: "ATP/tot",
+    })
+    .addReadout("Fluo", {
+      fn: new Add([
+        new Divide([
+          new Mul([
+            new Name("B0"),
+            new Name("PSII_cross_section"),
+            new Name("kF"),
+          ]),
+          new Add([
+            new Name("k2"),
+            new Name("kF"),
+            new Mul([new Name("Q"), new Name("kH")]),
+          ]),
+        ]),
+        new Divide([
+          new Mul([
+            new Name("B2"),
+            new Name("PSII_cross_section"),
+            new Name("kF"),
+          ]),
+          new Add([new Name("kF"), new Mul([new Name("Q"), new Name("kH")])]),
+        ]),
+      ]),
+      texName: "Fluo",
     });
 }

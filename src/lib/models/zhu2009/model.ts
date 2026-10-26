@@ -1,5 +1,7 @@
-import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
-import names from "#lib/names.js";
+import {
+  KineticModelBuilder,
+  Unit,
+} from "@computational-biology-aachen/mxlweb-core";
 import {
   Add,
   Divide,
@@ -8,12 +10,45 @@ import {
   Num,
 } from "@computational-biology-aachen/mxlweb-core/mathml";
 
+/**
+ * Simple Calvin Cycle model from Zhu et al. (2009).
+ *
+ * |             |                                                                                                                          |
+ * | ----------- | ------------------------------------------------------------------------------------------------------------------------ |
+ * | doi         | 10.1016/j.nonrwa.2008.01.021                                                                                             |
+ * | main author | Xin-Guang Zhu                                                                                                            |
+ * | paper title | A simple model of the Calvin cycle has only one physiologically feasible steady state under the same external conditions |
+ * | published   | June 2009                                                                                                                |
+ * | journal     | Nonlinear Analysis: Real World Applications                                                                              |
+ * | organism    | C3 plant (Calvin cycle)                                                                                                  |
+ * | Ported by   | ElouenCorvest ( @ElouenCorvest )                                                                                         |
+ *
+ * Note: dynamics do not yet perfectly reproduce the published figures.
+ *
+ * The [Zhu 2009](https://doi.org/10.1016/j.nonrwa.2008.01.021) model is a
+ * deliberately simplified kinetic model of the Calvin-Benson-Bassham (CBB) cycle,
+ * the carbon-fixing dark reactions of photosynthesis. It tracks only five
+ * metabolites - ribulose-1,5-bisphosphate (RuBP), 3-phosphoglycerate (PGA),
+ * 1,3-bisphosphoglycerate (DPGA), glyceraldehyde-3-phosphate (GAP), and
+ * ribulose-5-phosphate (Ru5P) - and lumps the many intermediate steps of the
+ * cycle into a handful of Michaelis-Menten reactions, with ATP supplied as a
+ * fixed external parameter rather than a dynamic variable. This reduction keeps
+ * the system small enough to be analysed mathematically while still capturing the
+ * essential autocatalytic structure of carbon fixation, where RuBP is both
+ * consumed by RuBisCO and regenerated downstream.
+ */
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addParameter("V1_max", {
       value: 3.78,
-      unit: "mM\\,s^{-1}",
       texName: "V1\\_max",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "1.9",
         max: "7.6",
@@ -22,8 +57,14 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V2_max", {
       value: 11.75,
-      unit: "mM\\,s^{-1}",
       texName: "V2\\_max",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "5.9",
         max: "23.5",
@@ -32,8 +73,14 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V3_max", {
       value: 5.04,
-      unit: "mM\\,s^{-1}",
       texName: "V3\\_max",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "2.5",
         max: "10.1",
@@ -42,8 +89,14 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V4_max", {
       value: 3.05,
-      unit: "mM\\,s^{-1}",
       texName: "V4\\_max",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "1.5",
         max: "6.1",
@@ -52,8 +105,14 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V5_max", {
       value: 3.0,
-      unit: "mM\\,s^{-1}",
       texName: "V5\\_max",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "1.5",
         max: "6",
@@ -62,8 +121,14 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V6_max", {
       value: 0.1,
-      unit: "mM\\,s^{-1}",
       texName: "V6\\_max",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "0.1",
         max: "0.2",
@@ -72,8 +137,14 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("V13_max", {
       value: 8.0,
-      unit: "mM\\,s^{-1}",
       texName: "V13\\_max",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "4.0",
         max: "16",
@@ -82,59 +153,113 @@ export function initModel(): KineticModelBuilder {
     })
     .addParameter("K_m1", {
       value: 1.0,
-      unit: "mM",
       texName: "K\\_m1",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("K_m21", {
       value: 0.24,
-      unit: "mM",
       texName: "K\\_m21",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("K_m22", {
       value: 0.39,
-      unit: "mM",
       texName: "K\\_m22",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("K_m3", {
       value: 0.5,
-      unit: "mM",
       texName: "K\\_m3",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("K_m4", {
       value: 0.84,
-      unit: "mM",
       texName: "K\\_m4",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("K_m51", {
       value: 0.75,
-      unit: "mM",
       texName: "K\\_m51",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("K_m52", {
       value: 0.275,
-      unit: "mM",
       texName: "K\\_m52",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("K_m6", {
       value: 5.0,
-      unit: "mM",
       texName: "K\\_m6",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("K_m131", {
       value: 0.15,
-      unit: "mM",
       texName: "K\\_m131",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("K_m132", {
       value: 0.059,
-      unit: "mM",
       texName: "K\\_m132",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("ATP", {
-      displayName: names.atp,
       value: 0.2,
-      unit: "mM",
       texName: "ATP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
       slider: {
         min: "0.1",
         max: "0.4",
@@ -142,39 +267,68 @@ export function initModel(): KineticModelBuilder {
       },
     })
     .addVariable("RuBP", {
-      displayName: names.rubp,
       value: 2.0,
-      unit: "mM",
+      displayName: "RUBP",
       texName: "RuBP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("PGA", {
-      displayName: names.pga,
       value: 2.4,
-      unit: "mM",
       texName: "PGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("DPGA", {
-      displayName: names.bpga,
       value: 1.0,
-      unit: "mM",
+      displayName: "BPGA",
       texName: "DPGA",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("Ru5P", {
-      displayName: names.ru5p,
       value: 1.0,
-      unit: "mM",
+      displayName: "RU5P",
       texName: "Ru5P",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addVariable("GAP", {
-      displayName: names.gap,
       value: 1.0,
-      unit: "mM",
       texName: "GAP",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("A", {
       fn: new Mul([new Num(33.33), new Name("v1")]),
       texName: "A",
-      unit: "\\mu M\\, m^{-2}\\, s^{-1}",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "micro", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
     })
     .addReaction("v1", {
       fn: new Divide([

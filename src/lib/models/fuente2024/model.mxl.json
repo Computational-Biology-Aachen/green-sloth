@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "fuente2024",
   "model": {
@@ -10,12 +10,18 @@
           "type": "Num",
           "value": 1.6044277821745498e-23
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "Q\\_active"
       },
       "PQ": {
         "value": {
           "type": "Num",
           "value": 3.537090541057567
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "PQ",
         "texName": "PQ"
@@ -25,6 +31,9 @@
           "type": "Num",
           "value": 0.197310072778891
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "PSI\\_ox"
       },
       "H_lumen": {
@@ -32,12 +41,38 @@
           "type": "Num",
           "value": 0.4120700665522831
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "H\\_lumen"
       },
       "ATP_st": {
         "value": {
           "type": "Num",
           "value": 144.95412072145785
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "ATP",
         "texName": "ATP\\_st"
@@ -49,6 +84,9 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "stoic\\_PSII"
       },
       "stoic_PSI": {
@@ -56,12 +94,18 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "stoic\\_PSI"
       },
       "PQ_tot": {
         "value": {
           "type": "Num",
           "value": 7
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "PQ_tot",
         "texName": "PQ\\_tot"
@@ -71,12 +115,38 @@
           "type": "Num",
           "value": 0.015848931924611134
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "H\\_stroma"
       },
       "AP_tot": {
         "value": {
           "type": "Num",
           "value": 1000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "AP_tot",
         "texName": "AP\\_tot"
@@ -86,12 +156,28 @@
           "type": "Num",
           "value": 2.62e-21
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "V\\_lumen"
       },
       "V_stroma": {
         "value": {
           "type": "Num",
           "value": 2.09e-20
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "V\\_stroma"
       },
@@ -100,12 +186,23 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "sigma\\_PSI\\_0"
       },
       "k1p": {
         "value": {
           "type": "Num",
           "value": 25000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k1p"
       },
@@ -114,12 +211,28 @@
           "type": "Num",
           "value": 2500
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k1m"
       },
       "k2p": {
         "value": {
           "type": "Num",
           "value": 100
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k2p"
       },
@@ -128,12 +241,28 @@
           "type": "Num",
           "value": 10
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k2m"
       },
       "k3": {
         "value": {
           "type": "Num",
           "value": 0.05
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k3"
       },
@@ -142,12 +271,28 @@
           "type": "Num",
           "value": 0.004
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k4"
       },
       "k5": {
         "value": {
           "type": "Num",
           "value": 100
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k5"
       },
@@ -156,12 +301,28 @@
           "type": "Num",
           "value": 10
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k6"
       },
       "k7": {
         "value": {
           "type": "Num",
           "value": 500
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "k7"
       },
@@ -170,6 +331,14 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "k\\_X"
       },
       "L_PSI": {
@@ -177,12 +346,23 @@
           "type": "Num",
           "value": 10000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "L\\_PSI"
       },
       "bH": {
         "value": {
           "type": "Num",
           "value": 0.01
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "bH",
         "texName": "bH"
@@ -192,6 +372,9 @@
           "type": "Num",
           "value": 0.6
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "NPQ_max",
         "texName": "NPQ\\_max"
       },
@@ -200,12 +383,28 @@
           "type": "Num",
           "value": 4.3e-8
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "cEqP"
       },
       "keq_NPQ": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "keq\\_NPQ"
       },
@@ -214,6 +413,9 @@
           "type": "Num",
           "value": 5.3
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "n\\_NPQ"
       },
       "N_A": {
@@ -221,12 +423,29 @@
           "type": "Num",
           "value": 602214076000000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "N\\_A"
       },
       "PPFD": {
         "value": {
           "type": "Num",
           "value": 50
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "PPFD",
         "texName": "PPFD"
@@ -236,6 +455,14 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PPFD\\_add"
       },
       "f": {
@@ -243,12 +470,23 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "f"
       },
       "PSI_total": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "PSI_total",
         "texName": "PSI\\_total"
@@ -258,12 +496,18 @@
           "type": "Num",
           "value": 0.25
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "Fluo\\_0"
       },
       "Q_total": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Q\\_total"
       }
@@ -1244,6 +1488,7 @@
         "texName": "O2"
       }
     },
-    "readouts": {}
+    "readouts": {},
+    "nn_blocks": {}
   }
 }

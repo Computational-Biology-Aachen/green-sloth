@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "zaks2012",
   "model": {
@@ -10,13 +10,18 @@
           "type": "Num",
           "value": 2
         },
-        "displayName": "ATP",
+        "unit": {
+          "factors": []
+        },
         "texName": "ATP"
       },
       "ActiveATPs": {
         "value": {
           "type": "Num",
           "value": 0.05
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "ActiveATPs"
       },
@@ -25,12 +30,18 @@
           "type": "Num",
           "value": 1e-14
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "Antheraxanthin"
       },
       "Fdxox": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "Fd_ox",
         "texName": "Fdxox"
@@ -40,6 +51,9 @@
           "type": "Num",
           "value": 1e-14
         },
+        "unit": {
+          "factors": []
+        },
         "displayName": "Fd_red",
         "texName": "Fdxr"
       },
@@ -48,12 +62,36 @@
           "type": "Num",
           "value": 0.01
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "LumenCl"
       },
       "LumenK": {
         "value": {
           "type": "Num",
           "value": 0.01
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "LumenK"
       },
@@ -62,12 +100,36 @@
           "type": "Num",
           "value": 0.01
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "LumenMg"
       },
       "LumenProtons": {
         "value": {
           "type": "Num",
           "value": 1e-14
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "LumenProtons"
       },
@@ -76,12 +138,18 @@
           "type": "Num",
           "value": 1e-14
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "P680ex"
       },
       "P680plus": {
         "value": {
           "type": "Num",
           "value": 1e-14
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "P680plus"
       },
@@ -90,12 +158,18 @@
           "type": "Num",
           "value": 1e-14
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "P700ox"
       },
       "P700r": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "P700r"
       },
@@ -104,6 +178,9 @@
           "type": "Num",
           "value": 0.2
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "PCr"
       },
       "PQ": {
@@ -111,7 +188,9 @@
           "type": "Num",
           "value": 8.999
         },
-        "displayName": "PQ",
+        "unit": {
+          "factors": []
+        },
         "texName": "PQ"
       },
       "PQH2": {
@@ -119,13 +198,18 @@
           "type": "Num",
           "value": 0.001
         },
-        "displayName": "PQH2",
+        "unit": {
+          "factors": []
+        },
         "texName": "PQH2"
       },
       "PSIIChlEx": {
         "value": {
           "type": "Num",
           "value": 1e-14
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "PSIIChlEx"
       },
@@ -134,6 +218,9 @@
           "type": "Num",
           "value": 1e-14
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "PheAnion"
       },
       "PsbSQ": {
@@ -141,12 +228,18 @@
           "type": "Num",
           "value": 1e-14
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "PsbSQ"
       },
       "QAox": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "displayName": "QA",
         "texName": "QAox"
@@ -156,12 +249,18 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "QBneut"
       },
       "QBred1": {
         "value": {
           "type": "Num",
           "value": 1e-7
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "QBred1"
       },
@@ -170,12 +269,18 @@
           "type": "Num",
           "value": 1e-7
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "QBred2"
       },
       "Thrdx": {
         "value": {
           "type": "Num",
           "value": 1e-14
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Thrdx"
       },
@@ -184,12 +289,18 @@
           "type": "Num",
           "value": 1e-14
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "TotalLEF"
       },
       "Zeaxanthin": {
         "value": {
           "type": "Num",
           "value": 1e-14
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Zeaxanthin"
       }
@@ -200,12 +311,33 @@
           "type": "Num",
           "value": 0.25
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "prefix": "kilo",
+              "exponent": 2
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "crosssection"
       },
       "kEETLHP680QAox": {
         "value": {
           "type": "Num",
           "value": 5000000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kEETLHP680QAox"
       },
@@ -214,12 +346,28 @@
           "type": "Num",
           "value": 850000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kEETLHP680QAred"
       },
       "kQ": {
         "value": {
           "type": "Num",
           "value": 3000000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kQ"
       },
@@ -228,12 +376,28 @@
           "type": "Num",
           "value": 10000000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kEETLHP680revQAox"
       },
       "kEETLHP680revQAred": {
         "value": {
           "type": "Num",
           "value": 10000000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kEETLHP680revQAred"
       },
@@ -242,12 +406,28 @@
           "type": "Num",
           "value": 500000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kquenchP680plus"
       },
       "kNRantenna": {
         "value": {
           "type": "Num",
           "value": 500000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kNRantenna"
       },
@@ -256,12 +436,23 @@
           "type": "Num",
           "value": 100000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kNRP680"
       },
       "PsbSDose": {
         "value": {
           "type": "Num",
           "value": 0.6
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "PsbSDose"
       },
@@ -270,13 +461,23 @@
           "type": "Num",
           "value": 70000000
         },
-        "displayName": "kF",
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kF"
       },
       "alphaRC": {
         "value": {
           "type": "Num",
           "value": 0.4
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "alphaRC"
       },
@@ -285,12 +486,23 @@
           "type": "Num",
           "value": 0.1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "alphaQ"
       },
       "kETP680PheOpenRC": {
         "value": {
           "type": "Num",
           "value": 3000000000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kETP680PheOpenRC"
       },
@@ -299,12 +511,28 @@
           "type": "Num",
           "value": 10000000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kETP680PheClosedRC"
       },
       "kETPheToQA": {
         "value": {
           "type": "Num",
           "value": 3000000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kETPheToQA"
       },
@@ -313,12 +541,28 @@
           "type": "Num",
           "value": 30000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kETWaterOxidation"
       },
       "kP680Pherecombination": {
         "value": {
           "type": "Num",
           "value": 500000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kP680Pherecombination"
       },
@@ -327,12 +571,28 @@
           "type": "Num",
           "value": 30
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kP680QArecombination"
       },
       "kP680QArecombinationClosedRC": {
         "value": {
           "type": "Num",
           "value": 580
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kP680QArecombinationClosedRC"
       },
@@ -341,12 +601,28 @@
           "type": "Num",
           "value": 3500
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kETQAtoQB1"
       },
       "kETQB1toQA": {
         "value": {
           "type": "Num",
           "value": 350
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kETQB1toQA"
       },
@@ -355,12 +631,28 @@
           "type": "Num",
           "value": 1600
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kETQAtoQB2"
       },
       "kETQB2toQA": {
         "value": {
           "type": "Num",
           "value": 1600
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kETQB2toQA"
       },
@@ -369,12 +661,28 @@
           "type": "Num",
           "value": 800
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PQH2undock"
       },
       "QReoxidationRate": {
         "value": {
           "type": "Num",
           "value": 100
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "QReoxidationRate"
       },
@@ -383,12 +691,23 @@
           "type": "Num",
           "value": 500
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PQdockingrate"
       },
       "QuinonePoolSize": {
         "value": {
           "type": "Num",
           "value": 10
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "QuinonePoolSize"
       },
@@ -397,12 +716,18 @@
           "type": "Num",
           "value": 5.8
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "pKaC"
       },
       "nC": {
         "value": {
           "type": "Num",
           "value": 1.2
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "nC"
       },
@@ -411,12 +736,18 @@
           "type": "Num",
           "value": 7.2
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "pHStromaStart"
       },
       "pHLumenStart": {
         "value": {
           "type": "Num",
           "value": 7.2
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "pHLumenStart"
       },
@@ -425,12 +756,36 @@
           "type": "Num",
           "value": 1e-10
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "StromaProtonsStart"
       },
       "bufferCapacityStroma": {
         "value": {
           "type": "Num",
           "value": 0.1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "bufferCapacityStroma"
       },
@@ -439,12 +794,45 @@
           "type": "Num",
           "value": 0.03
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "bufferCapacityLumen"
       },
       "ATPConductivity": {
         "value": {
           "type": "Num",
           "value": 6e-10
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "prefix": "centi",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "volt",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "ATPConductivity"
       },
@@ -453,12 +841,28 @@
           "type": "Num",
           "value": 0.25
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kATPsActivate"
       },
       "kATPsInactivate": {
         "value": {
           "type": "Num",
           "value": 0.003
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kATPsInactivate"
       },
@@ -467,12 +871,28 @@
           "type": "Num",
           "value": 0.001
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "thresholdpmf"
       },
       "leakpmf": {
         "value": {
           "type": "Num",
           "value": 0.8
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "leakpmf"
       },
@@ -481,12 +901,50 @@
           "type": "Num",
           "value": 1e-7
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "prefix": "centi",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "volt",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "leakConductivity"
       },
       "PCl": {
         "value": {
           "type": "Num",
           "value": 1.8e-8
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "prefix": "centi",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "PCl"
       },
@@ -495,12 +953,46 @@
           "type": "Num",
           "value": 3.6e-8
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "prefix": "centi",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PMg"
       },
       "PK": {
         "value": {
           "type": "Num",
           "value": 1.8e-8
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "prefix": "centi",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "PK"
       },
@@ -509,12 +1001,18 @@
           "type": "Num",
           "value": -1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "zCl"
       },
       "zMg": {
         "value": {
           "type": "Num",
           "value": 2
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "zMg"
       },
@@ -523,12 +1021,27 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "zK"
       },
       "StromaClStart": {
         "value": {
           "type": "Num",
           "value": 0.01
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "StromaClStart"
       },
@@ -537,6 +1050,18 @@
           "type": "Num",
           "value": 0.01
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "StromaMgStart"
       },
       "StromaKStart": {
@@ -544,12 +1069,40 @@
           "type": "Num",
           "value": 0.01
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "StromaKStart"
       },
       "Rconst": {
         "value": {
           "type": "Num",
           "value": 8.314
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "R",
         "texName": "Rconst"
@@ -559,6 +1112,18 @@
           "type": "Num",
           "value": 96485
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "coulomb",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "F",
         "texName": "Fconst"
       },
@@ -566,6 +1131,14 @@
         "value": {
           "type": "Num",
           "value": 300
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
         },
         "displayName": "T",
         "texName": "Tconst"
@@ -575,12 +1148,28 @@
           "type": "Num",
           "value": 6.7e-21
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "LumenVolume"
       },
       "StromaVolume": {
         "value": {
           "type": "Num",
           "value": 5.36e-20
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "StromaVolume"
       },
@@ -589,12 +1178,42 @@
           "type": "Num",
           "value": 8e-10
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "prefix": "centi",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "lumenVolumePerArea"
       },
       "MembraneCapacitance": {
         "value": {
           "type": "Num",
           "value": 0.000001
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "coulomb",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "prefix": "centi",
+              "exponent": -2
+            },
+            {
+              "kind": "volt",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "MembraneCapacitance"
       },
@@ -603,12 +1222,28 @@
           "type": "Num",
           "value": 6.022e23
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Na"
       },
       "VDErateVioToAnth": {
         "value": {
           "type": "Num",
           "value": 0.04
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "VDErateVioToAnth"
       },
@@ -617,12 +1252,28 @@
           "type": "Num",
           "value": 0.02
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "VDErateAnthToZea"
       },
       "ZErate": {
         "value": {
           "type": "Num",
           "value": 0.0004
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "ZErate"
       },
@@ -631,12 +1282,18 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "TotalXanthophyll"
       },
       "VDEpKa": {
         "value": {
           "type": "Num",
           "value": 6
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "VDEpKa"
       },
@@ -645,12 +1302,18 @@
           "type": "Num",
           "value": 6
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "nVDE"
       },
       "PsbSpKa": {
         "value": {
           "type": "Num",
           "value": 6.4
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "PsbSpKa"
       },
@@ -659,12 +1322,18 @@
           "type": "Num",
           "value": 3
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "nPsbS"
       },
       "zfrac": {
         "value": {
           "type": "Num",
           "value": 0.8
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "zfrac"
       },
@@ -673,12 +1342,33 @@
           "type": "Num",
           "value": 0.1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "PsbSConvertRate"
       },
       "PSIcrossSection": {
         "value": {
           "type": "Num",
           "value": 0.35
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "prefix": "kilo",
+              "exponent": 2
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "PSIcrossSection"
       },
@@ -687,12 +1377,23 @@
           "type": "Num",
           "value": 6000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kETPCP700"
       },
       "kETP700Fdx": {
         "value": {
           "type": "Num",
           "value": 10
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "kETP700Fdx"
       },
@@ -701,12 +1402,18 @@
           "type": "Num",
           "value": 3
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "PCperPSI"
       },
       "ElectronsPerPC": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "ElectronsPerPC"
       },
@@ -715,6 +1422,9 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "fracIntactRC"
       },
       "voltsperlog": {
@@ -722,12 +1432,37 @@
           "type": "Num",
           "value": 0.02585065036015961
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "volt",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "voltsperlog"
       },
       "LightIntensity": {
         "value": {
           "type": "Num",
           "value": 100
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "displayName": "PPFD",
         "texName": "LightIntensity",
@@ -742,12 +1477,18 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "P680neut"
       },
       "qtrigg1": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "qtrigg1"
       },
@@ -756,12 +1497,18 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "qtrigg2"
       },
       "qtrigg3": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "qtrigg3"
       },
@@ -770,12 +1517,36 @@
           "type": "Num",
           "value": 1e-10
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "prefix": "centi",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "volt",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "ATPConductivityReverse"
       },
       "ATPperPSI": {
         "value": {
           "type": "Num",
           "value": 600
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "ATPperPSI"
       },
@@ -784,12 +1555,18 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "CytRegulateYesNO"
       },
       "F_PsbS": {
         "value": {
           "type": "Num",
           "value": 0.6
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "F\\_PsbS"
       },
@@ -798,12 +1575,18 @@
           "type": "Num",
           "value": 15
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "NADPperPSI"
       },
       "PsbSperPSII": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "PsbSperPSII"
       },
@@ -812,12 +1595,18 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "damageyesno"
       },
       "electronsPerNADPH": {
         "value": {
           "type": "Num",
           "value": 2
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "electronsPerNADPH"
       },
@@ -826,12 +1615,28 @@
           "type": "Num",
           "value": 14000000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kEETP700"
       },
       "kETFdxMV": {
         "value": {
           "type": "Num",
           "value": 1000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kETFdxMV"
       },
@@ -840,12 +1645,28 @@
           "type": "Num",
           "value": 0.005
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kETFdxPQ"
       },
       "kETFdxThrdx": {
         "value": {
           "type": "Num",
           "value": 1000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kETFdxThrdx"
       },
@@ -854,12 +1675,28 @@
           "type": "Num",
           "value": 100
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kETNADPHPQ"
       },
       "kETThrdxOx": {
         "value": {
           "type": "Num",
           "value": 100
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kETThrdxOx"
       },
@@ -868,12 +1705,28 @@
           "type": "Num",
           "value": 500
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kP680PherecombinationClosedRC"
       },
       "kP680PherecombinationOpenRC": {
         "value": {
           "type": "Num",
           "value": 200000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kP680PherecombinationOpenRC"
       },
@@ -882,12 +1735,28 @@
           "type": "Num",
           "value": 500
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kPheQArecombination"
       },
       "kQuenchDamage": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kQuenchDamage"
       },
@@ -896,12 +1765,23 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "repairyesno"
       },
       "tF": {
         "value": {
           "type": "Num",
           "value": 1.5e-9
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "tF"
       },
@@ -910,12 +1790,28 @@
           "type": "Num",
           "value": 1.7e-11
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "tHop"
       },
       "tauCS": {
         "value": {
           "type": "Num",
           "value": 5.5e-12
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "tauCS"
       },
@@ -924,12 +1820,23 @@
           "type": "Num",
           "value": 1e-11
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "tauqE"
       },
       "ATPperProton": {
         "value": {
           "type": "Num",
           "value": 0.25
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "ATPperProton"
       }
@@ -2646,7 +3553,6 @@
             }
           ]
         },
-        "displayName": "pH_lumen",
         "texName": "pH\\_lumen"
       },
       "total_charge_lumen": {
@@ -2843,7 +3749,6 @@
             }
           ]
         },
-        "displayName": "pmf",
         "texName": "pmf"
       },
       "deltamuCl": {
@@ -3612,7 +4517,9 @@
           ]
         },
         "texName": "InactiveATPs"
-      },
+      }
+    },
+    "readouts": {
       "light": {
         "fn": {
           "type": "Name",
@@ -3878,6 +4785,6 @@
         "texName": "phi\\_npq"
       }
     },
-    "readouts": {}
+    "nn_blocks": {}
   }
 }

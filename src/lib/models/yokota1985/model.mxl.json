@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "yokota1985",
   "model": {
@@ -10,12 +10,38 @@
           "type": "Num",
           "value": 0.09
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "glycolate"
       },
       "glyoxylate": {
         "value": {
           "type": "Num",
           "value": 0.7964601770483386
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "glyoxylate"
       },
@@ -24,12 +50,38 @@
           "type": "Num",
           "value": 8.999999999424611
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "glycine"
       },
       "serine": {
         "value": {
           "type": "Num",
           "value": 2.5385608670239126
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "serine"
       },
@@ -38,6 +90,19 @@
           "type": "Num",
           "value": 0.009782608695111009
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "hydroxypyruvate"
       },
       "H2O2": {
@@ -45,7 +110,19 @@
           "type": "Num",
           "value": 0.010880542843616855
         },
-        "displayName": "H2O2",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "H2O2"
       }
     },
@@ -54,6 +131,23 @@
         "value": {
           "type": "Num",
           "value": 60
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kf\\_phosphoglycolate\\_phosphatase",
         "slider": {
@@ -67,12 +161,33 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "E0\\_glycolate\\_oxidase"
       },
       "kcat_glycolate_oxidase": {
         "value": {
           "type": "Num",
           "value": 100
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kcat\\_glycolate\\_oxidase"
       },
@@ -81,12 +196,38 @@
           "type": "Num",
           "value": 0.06
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_glycolate\\_oxidase\\_s"
       },
       "E0_glycine_transaminase": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "E0\\_glycine\\_transaminase"
       },
@@ -95,12 +236,33 @@
           "type": "Num",
           "value": 143
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_glycine\\_transaminase"
       },
       "km_glycine_transaminase_s": {
         "value": {
           "type": "Num",
           "value": 3
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "km\\_glycine\\_transaminase\\_s"
       },
@@ -109,12 +271,33 @@
           "type": "Num",
           "value": 0.5
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "E0\\_glycine\\_decarboxylase"
       },
       "kcat_glycine_decarboxylase": {
         "value": {
           "type": "Num",
           "value": 100
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kcat\\_glycine\\_decarboxylase"
       },
@@ -123,12 +306,38 @@
           "type": "Num",
           "value": 6
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_glycine\\_decarboxylase\\_s"
       },
       "E0_serine_glyoxylate_transaminase": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "E0\\_serine\\_glyoxylate\\_transaminase"
       },
@@ -137,12 +346,33 @@
           "type": "Num",
           "value": 159
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_serine\\_glyoxylate\\_transaminase"
       },
       "km_serine_glyoxylate_transaminase_glyoxylate": {
         "value": {
           "type": "Num",
           "value": 0.15
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "km\\_serine\\_glyoxylate\\_transaminase\\_glyoxylate"
       },
@@ -151,12 +381,38 @@
           "type": "Num",
           "value": 2.72
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "km\\_serine\\_glyoxylate\\_transaminase\\_serine"
       },
       "E0_glycerate_dehydrogenase": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "E0\\_glycerate\\_dehydrogenase"
       },
@@ -165,12 +421,33 @@
           "type": "Num",
           "value": 398
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_glycerate\\_dehydrogenase"
       },
       "km_glycerate_dehydrogenase_s": {
         "value": {
           "type": "Num",
           "value": 0.12
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "km\\_glycerate\\_dehydrogenase\\_s"
       },
@@ -179,6 +456,19 @@
           "type": "Num",
           "value": 1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "E0\\_catalase"
       },
       "kcat_catalase": {
@@ -186,12 +476,33 @@
           "type": "Num",
           "value": 760500
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kcat\\_catalase"
       },
       "km_catalase_s": {
         "value": {
           "type": "Num",
           "value": 137.9
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "km\\_catalase\\_s"
       }
@@ -635,6 +946,7 @@
         "texName": "vmax\\_catalase"
       }
     },
-    "readouts": {}
+    "readouts": {},
+    "nn_blocks": {}
   }
 }

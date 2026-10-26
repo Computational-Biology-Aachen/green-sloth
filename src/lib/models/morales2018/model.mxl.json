@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "morales2018",
   "model": {
@@ -10,12 +10,36 @@
           "type": "Num",
           "value": 0.00005
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "PGA"
       },
       "RuBP": {
         "value": {
           "type": "Num",
           "value": 0.00005
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "RuBP"
       },
@@ -24,12 +48,18 @@
           "type": "Num",
           "value": 0.25
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "fRB"
       },
       "fP": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "fP"
       },
@@ -38,12 +68,18 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "fZ"
       },
       "alphar": {
         "value": {
           "type": "Num",
           "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "alphar"
       },
@@ -52,12 +88,18 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "PSIId"
       },
       "fR": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "fR"
       },
@@ -66,12 +108,27 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "PR"
       },
       "Cc": {
         "value": {
           "type": "Num",
           "value": 0.00038
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Cc"
       },
@@ -80,12 +137,18 @@
           "type": "Num",
           "value": 0.00038
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "Ccyt"
       },
       "Ci": {
         "value": {
           "type": "Num",
           "value": 0.00038
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Ci"
       },
@@ -94,12 +157,18 @@
           "type": "Num",
           "value": 0.00038
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "Ca"
       },
       "H2OS": {
         "value": {
           "type": "Num",
           "value": 0.02
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "H2OS"
       },
@@ -108,12 +177,40 @@
           "type": "Num",
           "value": 0.09
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "gsw"
       },
       "sumA": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "sumA"
       }
@@ -123,6 +220,22 @@
         "value": {
           "type": "Num",
           "value": 100
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "Ib",
         "slider": {
@@ -136,6 +249,22 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Ig",
         "slider": {
           "min": "0.0",
@@ -147,6 +276,22 @@
         "value": {
           "type": "Num",
           "value": 900
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "Ir",
         "slider": {
@@ -160,12 +305,28 @@
           "type": "Num",
           "value": 298.15
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "Ta"
       },
       "Tl": {
         "value": {
           "type": "Num",
           "value": 298.15
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "Tl"
       },
@@ -174,12 +335,18 @@
           "type": "Num",
           "value": 0.015
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "H2OR"
       },
       "CO2R": {
         "value": {
           "type": "Num",
           "value": 0.00038
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "CO2R"
       },
@@ -188,12 +355,31 @@
           "type": "Num",
           "value": 0.5
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "sigma2"
       },
       "Jmax25": {
         "value": {
           "type": "Num",
           "value": 0.00013928
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "Jmax25"
       },
@@ -202,12 +388,38 @@
           "type": "Num",
           "value": 36210000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHaJmax"
       },
       "DHdJmax": {
         "value": {
           "type": "Num",
           "value": 215900000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DHdJmax"
       },
@@ -216,12 +428,37 @@
           "type": "Num",
           "value": 690000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DsJmax"
       },
       "kD0": {
         "value": {
           "type": "Num",
           "value": 455000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kD0"
       },
@@ -230,12 +467,28 @@
           "type": "Num",
           "value": 5000000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kDinh"
       },
       "kf": {
         "value": {
           "type": "Num",
           "value": 56000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kf"
       },
@@ -244,12 +497,23 @@
           "type": "Num",
           "value": 2654000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "kp"
       },
       "fcyc": {
         "value": {
           "type": "Num",
           "value": 0.1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "fcyc"
       },
@@ -258,12 +522,18 @@
           "type": "Num",
           "value": 0.1
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "fpseudo"
       },
       "theta": {
         "value": {
           "type": "Num",
           "value": 0.7
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "theta"
       },
@@ -272,12 +542,18 @@
           "type": "Num",
           "value": 0.2
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "gamma1"
       },
       "gamma2": {
         "value": {
           "type": "Num",
           "value": 0.6
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "gamma2"
       },
@@ -286,12 +562,18 @@
           "type": "Num",
           "value": 0.2
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "gamma3"
       },
       "PhiqEmax": {
         "value": {
           "type": "Num",
           "value": 0.2
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "PhiqEmax"
       },
@@ -300,12 +582,28 @@
           "type": "Num",
           "value": 0.0187
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "KiqEp"
       },
       "KdqEp": {
         "value": {
           "type": "Num",
           "value": 0.0239
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "KdqEp"
       },
@@ -314,12 +612,28 @@
           "type": "Num",
           "value": 0.00187
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "KiqEz"
       },
       "KdqEz": {
         "value": {
           "type": "Num",
           "value": 0.00239
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "KdqEz"
       },
@@ -328,12 +642,36 @@
           "type": "Num",
           "value": 0.1
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Kinh0"
       },
       "fprot": {
         "value": {
           "type": "Num",
           "value": 0.1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "fprot"
       },
@@ -342,12 +680,33 @@
           "type": "Num",
           "value": 0.000192
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Krep25"
       },
       "DHaKrep": {
         "value": {
           "type": "Num",
           "value": 160800000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DHaKrep"
       },
@@ -356,12 +715,42 @@
           "type": "Num",
           "value": 233230000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHdKrep"
       },
       "DsKrep": {
         "value": {
           "type": "Num",
           "value": 780000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DsKrep"
       },
@@ -370,12 +759,41 @@
           "type": "Num",
           "value": 6550
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "second",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "alphar\\_alpha25"
       },
       "DHaAlphar": {
         "value": {
           "type": "Num",
           "value": 67320000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DHaAlphar"
       },
@@ -384,12 +802,42 @@
           "type": "Num",
           "value": 90500000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHaKalpha"
       },
       "DsKalpha": {
         "value": {
           "type": "Num",
           "value": 1080000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DsKalpha"
       },
@@ -398,12 +846,41 @@
           "type": "Num",
           "value": 328000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHdKalpha"
       },
       "Iac": {
         "value": {
           "type": "Num",
           "value": 0.0000016
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "Iac"
       },
@@ -412,12 +889,18 @@
           "type": "Num",
           "value": 0.05
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "alpharac"
       },
       "alpharav": {
         "value": {
           "type": "Num",
           "value": 0.25
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "alpharav"
       },
@@ -426,12 +909,23 @@
           "type": "Num",
           "value": 0.36
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "thetaalphar"
       },
       "Kialpha25": {
         "value": {
           "type": "Num",
           "value": 0.00149
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "Kialpha25"
       },
@@ -440,12 +934,23 @@
           "type": "Num",
           "value": 0.00186
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Kdalpha25"
       },
       "fR0": {
         "value": {
           "type": "Num",
           "value": 0.04
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "fR0"
       },
@@ -454,12 +959,31 @@
           "type": "Num",
           "value": 2500
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "second",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "alphafR"
       },
       "thetafR": {
         "value": {
           "type": "Num",
           "value": 0.96
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "thetafR"
       },
@@ -468,12 +992,28 @@
           "type": "Num",
           "value": 0.00628
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "KiR"
       },
       "KdR": {
         "value": {
           "type": "Num",
           "value": 0.0075
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "KdR"
       },
@@ -482,12 +1022,40 @@
           "type": "Num",
           "value": 0.00011865
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Vrmax"
       },
       "KmPGA": {
         "value": {
           "type": "Num",
           "value": 0.000005
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "KmPGA"
       },
@@ -496,12 +1064,32 @@
           "type": "Num",
           "value": 0.0000159
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "RB"
       },
       "Kc25": {
         "value": {
           "type": "Num",
           "value": 4.16
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "Kc25"
       },
@@ -510,12 +1098,33 @@
           "type": "Num",
           "value": 41820000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHaKc"
       },
       "Ko25": {
         "value": {
           "type": "Num",
           "value": 1.26
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "Ko25"
       },
@@ -524,12 +1133,28 @@
           "type": "Num",
           "value": 55150000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHaKo"
       },
       "Kmc25": {
         "value": {
           "type": "Num",
           "value": 0.0002617
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Kmc25"
       },
@@ -538,12 +1163,28 @@
           "type": "Num",
           "value": 49430000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHaKmc"
       },
       "Kmo25": {
         "value": {
           "type": "Num",
           "value": 0.1985
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Kmo25"
       },
@@ -552,12 +1193,37 @@
           "type": "Num",
           "value": 29080000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHaKmo"
       },
       "KaRCA": {
         "value": {
           "type": "Num",
           "value": 0.0102
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "gram",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "KaRCA"
       },
@@ -566,12 +1232,18 @@
           "type": "Num",
           "value": 0.27
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "ac"
       },
       "bc": {
         "value": {
           "type": "Num",
           "value": 14000
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "bc"
       },
@@ -580,12 +1252,36 @@
           "type": "Num",
           "value": 0.00068
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "KdRB"
       },
       "Krca": {
         "value": {
           "type": "Num",
           "value": 0.0863
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "gram",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "Krca"
       },
@@ -594,12 +1290,18 @@
           "type": "Num",
           "value": 0.48
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "fRBmin"
       },
       "O2": {
         "value": {
           "type": "Num",
           "value": 0.21
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "O2"
       },
@@ -608,12 +1310,37 @@
           "type": "Num",
           "value": 0.11737
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "gram",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "RCA"
       },
       "DHdRCA": {
         "value": {
           "type": "Num",
           "value": 290200000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DHdRCA"
       },
@@ -622,12 +1349,33 @@
           "type": "Num",
           "value": 300.4
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "ToRCA"
       },
       "DHaRCA": {
         "value": {
           "type": "Num",
           "value": 30000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DHaRCA"
       },
@@ -636,12 +1384,32 @@
           "type": "Num",
           "value": 0.02
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -3
+            }
+          ]
+        },
         "texName": "KmRuBP"
       },
       "Vch": {
         "value": {
           "type": "Num",
           "value": 0.00001
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "Vch"
       },
@@ -650,12 +1418,40 @@
           "type": "Num",
           "value": 0.84
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -3
+            }
+          ]
+        },
         "texName": "KiPGA"
       },
       "TPU25": {
         "value": {
           "type": "Num",
           "value": 0.00000747
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "TPU25"
       },
@@ -664,12 +1460,38 @@
           "type": "Num",
           "value": 57500000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHaTPU"
       },
       "DHdTPU": {
         "value": {
           "type": "Num",
           "value": 246700000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DHdTPU"
       },
@@ -678,12 +1500,42 @@
           "type": "Num",
           "value": 790000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DsTPU"
       },
       "DHaGc": {
         "value": {
           "type": "Num",
           "value": 70200000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DHaGc"
       },
@@ -692,12 +1544,42 @@
           "type": "Num",
           "value": 94000000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHdGc"
       },
       "DsGc": {
         "value": {
           "type": "Num",
           "value": 320000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DsGc"
       },
@@ -706,12 +1588,38 @@
           "type": "Num",
           "value": 70200000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHaGw"
       },
       "DHdGw": {
         "value": {
           "type": "Num",
           "value": 94000000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "DHdGw"
       },
@@ -720,12 +1628,45 @@
           "type": "Num",
           "value": 320000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DsGw"
       },
       "Rm25": {
         "value": {
           "type": "Num",
           "value": 9.9e-7
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "Rm25"
       },
@@ -734,12 +1675,33 @@
           "type": "Num",
           "value": 56200000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "DHaRm"
       },
       "kPR": {
         "value": {
           "type": "Num",
           "value": 0.024
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "kPR"
       },
@@ -748,12 +1710,23 @@
           "type": "Num",
           "value": 0.000155
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "Vref"
       },
       "Scm": {
         "value": {
           "type": "Num",
           "value": 7.1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Scm"
       },
@@ -762,12 +1735,18 @@
           "type": "Num",
           "value": 9.8
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "Sm"
       },
       "falphaSc": {
         "value": {
           "type": "Num",
           "value": 0.93
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "falphaSc"
       },
@@ -776,12 +1755,44 @@
           "type": "Num",
           "value": 0.39
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "gcm25"
       },
       "gw25": {
         "value": {
           "type": "Num",
           "value": 0.75
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "gw25"
       },
@@ -790,12 +1801,24 @@
           "type": "Num",
           "value": 740000
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "pascal",
+              "prefix": "milli",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "D0"
       },
       "fI0": {
         "value": {
           "type": "Num",
           "value": 0.39
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "fI0"
       },
@@ -804,12 +1827,44 @@
           "type": "Num",
           "value": 0.48
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "gswm"
       },
       "alphafI": {
         "value": {
           "type": "Num",
           "value": 767
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "second",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "alphafI"
       },
@@ -818,12 +1873,23 @@
           "type": "Num",
           "value": 0.88
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "thetafI"
       },
       "Kgsi": {
         "value": {
           "type": "Num",
           "value": 0.00114
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "Kgsi"
       },
@@ -832,12 +1898,36 @@
           "type": "Num",
           "value": 0.00114
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Kgsd"
       },
       "gbw": {
         "value": {
           "type": "Num",
           "value": 9.2
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "gbw"
       },
@@ -846,12 +1936,28 @@
           "type": "Num",
           "value": 0.00008
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 3
+            }
+          ]
+        },
         "texName": "volume\\_chamber"
       },
       "leaf_surface": {
         "value": {
           "type": "Num",
           "value": 0.0002
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            }
+          ]
         },
         "texName": "leaf\\_surface"
       },
@@ -860,12 +1966,27 @@
           "type": "Num",
           "value": 0.0005
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Flow"
       },
       "alphab": {
         "value": {
           "type": "Num",
           "value": 0.92
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "alphab"
       },
@@ -874,12 +1995,18 @@
           "type": "Num",
           "value": 0.72
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "alphag"
       },
       "alphared": {
         "value": {
           "type": "Num",
           "value": 0.83
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "alphared"
       },
@@ -888,6 +2015,9 @@
           "type": "Num",
           "value": 0.66
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "alphabp"
       },
       "alphagp": {
@@ -895,12 +2025,18 @@
           "type": "Num",
           "value": 0.6
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "alphagp"
       },
       "alpharp": {
         "value": {
           "type": "Num",
           "value": 0.8
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "alpharp"
       }
@@ -6456,8 +7592,17 @@
           "type": "Piecewise",
           "children": [
             {
-              "type": "Name",
-              "value": "fRBmin"
+              "type": "Min",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "fRBmax"
+                },
+                {
+                  "type": "Name",
+                  "value": "fRBmin"
+                }
+              ]
             },
             {
               "type": "LessEqual",
@@ -6473,70 +7618,79 @@
               ]
             },
             {
-              "type": "Divide",
+              "type": "Min",
               "children": [
                 {
-                  "type": "Min",
-                  "children": [
-                    {
-                      "type": "Name",
-                      "value": "VrJ"
-                    },
-                    {
-                      "type": "Name",
-                      "value": "VrTPU"
-                    }
-                  ]
+                  "type": "Name",
+                  "value": "fRBmax"
                 },
                 {
-                  "type": "Mul",
+                  "type": "Divide",
                   "children": [
                     {
-                      "type": "Add",
+                      "type": "Min",
                       "children": [
                         {
-                          "type": "Num",
-                          "value": 2
+                          "type": "Name",
+                          "value": "VrJ"
                         },
                         {
-                          "type": "Mul",
-                          "children": [
-                            {
-                              "type": "Num",
-                              "value": 1.5
-                            },
-                            {
-                              "type": "Name",
-                              "value": "phi"
-                            }
-                          ]
+                          "type": "Name",
+                          "value": "VrTPU"
                         }
                       ]
                     },
                     {
-                      "type": "Max",
+                      "type": "Mul",
                       "children": [
                         {
-                          "type": "Num",
-                          "value": 1e-30
-                        },
-                        {
-                          "type": "Divide",
+                          "type": "Add",
                           "children": [
                             {
-                              "type": "Name",
-                              "value": "Vc"
+                              "type": "Num",
+                              "value": 2
                             },
                             {
                               "type": "Mul",
                               "children": [
                                 {
-                                  "type": "Name",
-                                  "value": "fRB"
+                                  "type": "Num",
+                                  "value": 1.5
                                 },
                                 {
                                   "type": "Name",
-                                  "value": "fRuBP"
+                                  "value": "phi"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Max",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1e-30
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "Vc"
+                                },
+                                {
+                                  "type": "Mul",
+                                  "children": [
+                                    {
+                                      "type": "Name",
+                                      "value": "fRB"
+                                    },
+                                    {
+                                      "type": "Name",
+                                      "value": "fRuBP"
+                                    }
+                                  ]
                                 }
                               ]
                             }
@@ -6786,6 +7940,18 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 3
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Mv"
       },
       "ea": {
@@ -6799,6 +7965,15 @@
             {
               "type": "Name",
               "value": "H2OR"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "pascal",
+              "prefix": "milli",
+              "exponent": 1
             }
           ]
         },
@@ -6967,6 +8142,15 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "pascal",
+              "prefix": "milli",
+              "exponent": 1
+            }
+          ]
+        },
         "texName": "es\\_leaf"
       },
       "VPDleaf": {
@@ -7097,6 +8281,22 @@
             }
           ]
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "gtw"
       },
       "transpiration": {
@@ -7196,6 +8396,22 @@
                   ]
                 }
               ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -7439,6 +8655,7 @@
         "texName": "Cond"
       }
     },
-    "readouts": {}
+    "readouts": {},
+    "nn_blocks": {}
   }
 }

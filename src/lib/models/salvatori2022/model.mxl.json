@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.0",
+  "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "salvatori2022",
   "model": {
@@ -10,12 +10,38 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "E\\_PSII"
       },
       "Q": {
         "value": {
           "type": "Num",
           "value": 0
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "Q"
       },
@@ -24,6 +50,9 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "P\\_NPQ"
       },
       "NADP": {
@@ -31,7 +60,9 @@
           "type": "Num",
           "value": 5
         },
-        "displayName": "NADP",
+        "unit": {
+          "factors": []
+        },
         "texName": "NADP"
       },
       "NADPH": {
@@ -39,13 +70,18 @@
           "type": "Num",
           "value": 5
         },
-        "displayName": "NADPH",
+        "unit": {
+          "factors": []
+        },
         "texName": "NADPH"
       },
       "R": {
         "value": {
           "type": "Num",
           "value": 0.001
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "R"
       }
@@ -56,6 +92,23 @@
           "type": "Num",
           "value": 0
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "displayName": "PPFD",
         "texName": "PAR"
       },
@@ -64,12 +117,18 @@
           "type": "Num",
           "value": 0.78
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "alpha"
       },
       "c_in": {
         "value": {
           "type": "Num",
           "value": 0.23
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "c\\_in"
       },
@@ -78,12 +137,33 @@
           "type": "Num",
           "value": 157.56
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
+        },
         "texName": "Ec\\_PSII"
       },
       "v_ETR": {
         "value": {
           "type": "Num",
           "value": 0.78
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "v\\_ETR"
       },
@@ -92,12 +172,33 @@
           "type": "Num",
           "value": 0.08
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "v\\_d"
       },
       "Qc": {
         "value": {
           "type": "Num",
           "value": 0.07
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            }
+          ]
         },
         "texName": "Qc"
       },
@@ -106,12 +207,28 @@
           "type": "Num",
           "value": 70.58
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "v\\_NPQ"
       },
       "v_p": {
         "value": {
           "type": "Num",
           "value": 0.07
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "v\\_p"
       },
@@ -120,12 +237,23 @@
           "type": "Num",
           "value": 11.75
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "v\\_C"
       },
       "eta_NADPH": {
         "value": {
           "type": "Num",
           "value": 5.07
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "eta\\_NADPH"
       },
@@ -134,12 +262,23 @@
           "type": "Num",
           "value": 0.89
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "eta\\_NADP"
       },
       "v_R": {
         "value": {
           "type": "Num",
           "value": 0.00089
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "v\\_R"
       },
@@ -148,12 +287,18 @@
           "type": "Num",
           "value": 8.4
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "d"
       },
       "c_y": {
         "value": {
           "type": "Num",
           "value": -4
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "c\\_y"
       }
@@ -210,6 +355,23 @@
             "value": 1
           }
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Energy\\_input"
       },
       "ETR_out": {
@@ -235,6 +397,23 @@
             "type": "Num",
             "value": -1
           }
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "ETR\\_out"
       },
@@ -269,6 +448,23 @@
             "type": "Num",
             "value": 1
           }
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "ETR\\_in"
       },
@@ -327,6 +523,23 @@
             "value": 1
           }
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "energy\\_dissipation"
       },
       "NPQ": {
@@ -349,7 +562,23 @@
             "value": -1
           }
         },
-        "displayName": "NPQ",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "NPQ"
       },
       "NPQ_activation": {
@@ -475,6 +704,14 @@
             "value": 1
           }
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "NPQ\\_activation"
       },
       "Carbon_assimilation": {
@@ -509,16 +746,29 @@
             "value": 1
           }
         },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "Carbon\\_assimilation"
       },
       "RuBisCO_activation": {
         "fn": {
           "type": "Mul",
           "children": [
-            {
-              "type": "Name",
-              "value": "d"
-            },
             {
               "type": "Name",
               "value": "v_R"
@@ -540,6 +790,19 @@
                   ]
                 }
               ]
+            },
+            {
+              "type": "Min",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "d"
+                },
+                {
+                  "type": "Name",
+                  "value": "pH"
+                }
+              ]
             }
           ]
         },
@@ -548,6 +811,14 @@
             "type": "Num",
             "value": 1
           }
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "RuBisCO\\_activation"
       }
@@ -567,7 +838,9 @@
             }
           ]
         },
-        "displayName": "pH",
+        "unit": {
+          "factors": []
+        },
         "texName": "pH"
       },
       "ETR": {
@@ -585,6 +858,23 @@
             {
               "type": "Name",
               "value": "v_ETR"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
             }
           ]
         },
@@ -608,10 +898,27 @@
             }
           ]
         },
-        "displayName": "A",
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
         "texName": "A"
       }
     },
-    "readouts": {}
+    "readouts": {},
+    "nn_blocks": {}
   }
 }
