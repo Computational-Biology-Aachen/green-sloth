@@ -47,7 +47,7 @@ export const meta: ModelMeta = {
       type: "pam",
       title: "PAM fluorescence",
       ppfdKey: "LightIntensity",
-      fluoKey: "Fluo",
+      fluoKey: "fluorescenceyield",
       pamProtocol: defaultPamProtocol,
       showDerived: true,
       variables: ["fluorescenceyield"],

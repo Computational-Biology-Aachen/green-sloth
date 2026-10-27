@@ -28,7 +28,7 @@
     type SimulationResult,
   } from "@computational-biology-aachen/mxlweb-core/workers";
   import type { PlotLayout } from "../types";
-  import { arrayColumn } from "../utils";
+  import { arrayColumn, derivedKeys } from "../utils";
   import AnalysisChart from "./AnalysisChart.svelte";
   import { SimErrDisplay } from "@computational-biology-aachen/mxlweb-core/fit";
 
@@ -92,11 +92,11 @@
 
     const protocol = expandProtocol(pamProtocol, ppfdKey);
 
-    const order = model.sortDependencies();
-    const allDerivedSet = new Set(order);
+    const order = derivedKeys(model);
+    // In `order`, as the chart reads the derived columns back in that order.
     const derivedSelection =
       showDerived && selectedKeys
-        ? selectedKeys.filter((k) => allDerivedSet.has(k))
+        ? order.filter((k) => selectedKeys.includes(k))
         : undefined;
 
     const req = backend.buildRequest(model, {
@@ -146,9 +146,11 @@
   function maybeNormalize(key: string, data: number[]): number[] {
     return normalizedKeys?.includes(key) ? normalizeToMax(data) : data;
   }
-  function maybeRename(key: string): string {
-    return normalizedKeys?.includes(key) ? `Norm(${key})` : key;
+  function label(key: string): string {
+    const name = displayNames.get(key) ?? key;
+    return normalizedKeys?.includes(key) ? `Norm(${name})` : name;
   }
+  const displayNames = $derived(model.getDisplayNames());
 
   let lineData = $derived.by(() => {
     const nVars = model.variables.size;
@@ -159,24 +161,20 @@
       .map((name, idx) => ({ name, idx }))
       .filter(({ name }) => visible(name))
       .map(({ name, idx }) => ({
-        label: maybeRename(model.variables.get(name)?.displayName ?? name),
+        label: label(name),
         data: maybeNormalize(name, arrayColumn(result.values, idx) as number[]),
       }));
 
     if (!showDerived)
       return { labels: result.time as number[], datasets: varDatasets };
 
-    const allDerived = model.sortDependencies();
+    const allDerived = derivedKeys(model);
     const activeDerived = selectedKeys
       ? allDerived.filter((k) => selectedKeys.includes(k))
       : allDerived;
 
     const derivedDatasets = activeDerived.map((name, i) => ({
-      label: maybeRename(
-        model.assignments.get(name)?.displayName ??
-          model.reactions.get(name)?.displayName ??
-          name,
-      ),
+      label: label(name),
       data: maybeNormalize(
         name,
         arrayColumn(result.values, nVars + i) as number[],

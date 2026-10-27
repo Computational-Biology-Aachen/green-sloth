@@ -1,3 +1,15 @@
+/**
+ * Every derived key, in the order a simulation result's derived columns come
+ * in: mxlweb-core's `buildJsDerived` evaluates the intermediates (assignments,
+ * reactions) first, then the readouts.
+ */
+export function derivedKeys(model: {
+  sortDependencies(): string[];
+  sortReadoutDependencies(): string[];
+}): string[] {
+  return [...model.sortDependencies(), ...model.sortReadoutDependencies()];
+}
+
 export function arrayColumn<T>(arr: Array<Array<T>>, n: number): Array<T> {
   return arr.map((x) => x[n]);
 }

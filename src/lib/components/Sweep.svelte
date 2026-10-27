@@ -6,6 +6,7 @@
 
 <script lang="ts">
   import type { SweepAnalysis } from "#lib/types.js";
+  import { derivedKeys } from "#lib/utils.js";
   import { LineChart } from "@computational-biology-aachen/design";
   import type { SteadyStateModelBuilder } from "@computational-biology-aachen/mxlweb-core";
 
@@ -52,7 +53,7 @@
       const parNames = model.getParameterNames();
       const axisIdx = parNames.indexOf(analysis.parameter);
       const basePars = model.resolveParameters();
-      const keys = model.sortDependencies();
+      const keys = derivedKeys(model);
       const displayNames = model.getDisplayNames();
       const labels = keys.map((k) => displayNames.get(k) ?? k);
 
