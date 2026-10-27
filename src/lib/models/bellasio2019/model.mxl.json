@@ -3,7 +3,6 @@
   "spec_version": "1.1",
   "kind": "kinetic",
   "model_id": "bellasio2019",
-  "description": "",
   "model": {
     "variables": {
       "CO2": {
@@ -29,7 +28,6 @@
             }
           ]
         },
-        "texName": "CO2",
         "unit": {
           "factors": [
             {
@@ -42,14 +40,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "CO2"
       },
       "HCO3": {
         "value": {
           "type": "Num",
           "value": 0.1327
         },
-        "texName": "HCO3",
         "unit": {
           "factors": [
             {
@@ -62,14 +60,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "HCO3"
       },
       "RUBP": {
         "value": {
           "type": "Num",
-          "value": 2.0
+          "value": 2
         },
-        "texName": "RUBP",
         "unit": {
           "factors": [
             {
@@ -82,14 +80,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "RUBP"
       },
       "PGA": {
         "value": {
           "type": "Num",
-          "value": 4.0
+          "value": 4
         },
-        "texName": "PGA",
         "unit": {
           "factors": [
             {
@@ -102,14 +100,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "PGA"
       },
       "DHAP": {
         "value": {
           "type": "Num",
-          "value": 4.0
+          "value": 4
         },
-        "texName": "DHAP",
         "unit": {
           "factors": [
             {
@@ -122,15 +120,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "DHAP"
       },
       "ATP_st": {
         "value": {
           "type": "Num",
           "value": 0.68
         },
-        "displayName": "ATP",
-        "texName": "ATP\\_st",
         "unit": {
           "factors": [
             {
@@ -143,15 +140,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "ATP",
+        "texName": "ATP\\_st"
       },
       "NADPH_st": {
         "value": {
           "type": "Num",
           "value": 0.21
         },
-        "displayName": "NADPH",
-        "texName": "NADPH\\_st",
         "unit": {
           "factors": [
             {
@@ -164,14 +161,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "NADPH",
+        "texName": "NADPH\\_st"
       },
       "RU5P": {
         "value": {
           "type": "Num",
           "value": 0.34
         },
-        "texName": "RU5P",
         "unit": {
           "factors": [
             {
@@ -184,12 +182,16 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "RU5P"
       },
       "Ract": {
         "value": {
           "type": "Num",
-          "value": 1.0
+          "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "Ract"
       },
@@ -198,7 +200,6 @@
           "type": "Num",
           "value": 0.1
         },
-        "texName": "J\\_NADPH",
         "unit": {
           "factors": [
             {
@@ -215,14 +216,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "J\\_NADPH"
       },
       "J_ATP": {
         "value": {
           "type": "Num",
           "value": 0.16
         },
-        "texName": "J\\_ATP",
         "unit": {
           "factors": [
             {
@@ -239,7 +240,8 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "J\\_ATP"
       },
       "Ci": {
         "value": {
@@ -255,7 +257,6 @@
             }
           ]
         },
-        "texName": "Ci",
         "unit": {
           "factors": [
             {
@@ -264,14 +265,14 @@
               "exponent": 1
             }
           ]
-        }
+        },
+        "texName": "Ci"
       },
       "gs": {
         "value": {
           "type": "Num",
           "value": 0.334934046786077
         },
-        "texName": "gs",
         "unit": {
           "factors": [
             {
@@ -287,7 +288,8 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "gs"
       }
     },
     "parameters": {
@@ -296,7 +298,6 @@
           "type": "Num",
           "value": 1.5
         },
-        "texName": "AP\\_tot",
         "unit": {
           "factors": [
             {
@@ -309,14 +310,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "AP\\_tot"
       },
       "Pi_tot": {
         "value": {
           "type": "Num",
-          "value": 15.0
+          "value": 15
         },
-        "texName": "Pi\\_tot",
         "unit": {
           "factors": [
             {
@@ -329,14 +330,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "Pi\\_tot"
       },
       "p_o2": {
         "value": {
           "type": "Num",
-          "value": 210000.0
+          "value": 210000
         },
-        "texName": "p\\_o2",
         "unit": {
           "factors": [
             {
@@ -345,14 +346,14 @@
               "exponent": 1
             }
           ]
-        }
+        },
+        "texName": "p\\_o2"
       },
       "Kh_o2": {
         "value": {
           "type": "Num",
-          "value": 833300.0
+          "value": 833300
         },
-        "texName": "Kh\\_o2",
         "unit": {
           "factors": [
             {
@@ -361,22 +362,23 @@
             },
             {
               "kind": "bar",
+              "prefix": "micro",
               "exponent": 1
             },
             {
               "kind": "mole",
-              "prefix": "kilo",
+              "prefix": "milli",
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "Kh\\_o2"
       },
       "V_m": {
         "value": {
           "type": "Num",
           "value": 0.03
         },
-        "texName": "V\\_m",
         "unit": {
           "factors": [
             {
@@ -388,18 +390,13 @@
               "exponent": -2
             }
           ]
-        }
+        },
+        "texName": "V\\_m"
       },
       "PPFD": {
         "value": {
           "type": "Num",
-          "value": 1500.0
-        },
-        "texName": "PPFD",
-        "slider": {
-          "min": "100",
-          "max": "2000",
-          "step": "10"
+          "value": 1500
         },
         "unit": {
           "factors": [
@@ -417,6 +414,12 @@
               "exponent": -1
             }
           ]
+        },
+        "texName": "PPFD",
+        "slider": {
+          "min": "100",
+          "max": "2000",
+          "step": "10"
         }
       },
       "RLight": {
@@ -424,7 +427,6 @@
           "type": "Num",
           "value": 0.001
         },
-        "texName": "RLight",
         "unit": {
           "factors": [
             {
@@ -441,12 +443,16 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "RLight"
       },
       "s": {
         "value": {
           "type": "Num",
           "value": 0.43
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "s"
       },
@@ -455,12 +461,18 @@
           "type": "Num",
           "value": 0.72
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "PhiPSII\\_LL"
       },
       "PhiPSI_LL": {
         "value": {
           "type": "Num",
-          "value": 1.0
+          "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "PhiPSI\\_LL"
       },
@@ -469,12 +481,18 @@
           "type": "Num",
           "value": 0.00125
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "alpha\\_ppfd\\_PhiPSII"
       },
       "V0_ppfd_PhiPSII": {
         "value": {
           "type": "Num",
           "value": -0.8
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "V0\\_ppfd\\_PhiPSII"
       },
@@ -483,6 +501,9 @@
           "type": "Num",
           "value": 0.7
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "theta\\_ppfd\\_PhiPSII"
       },
       "f_pseudocycNR": {
@@ -490,44 +511,64 @@
           "type": "Num",
           "value": 0.01
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "f\\_pseudocycNR"
       },
       "fq": {
         "value": {
           "type": "Num",
-          "value": 1.0
+          "value": 1
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "fq"
       },
       "f_ndh": {
         "value": {
           "type": "Num",
-          "value": 0.0
+          "value": 0
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "f\\_ndh"
       },
       "h": {
         "value": {
           "type": "Num",
-          "value": 4.0
+          "value": 4
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "h"
       },
       "Ca": {
         "value": {
           "type": "Num",
-          "value": 350.0
+          "value": 350
         },
-        "texName": "Ca",
         "unit": {
-          "factors": [],
-          "multiplier": 1e-06
-        }
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "micro",
+              "exponent": 1
+            }
+          ]
+        },
+        "texName": "Ca"
       },
       "alpha_ppfd_rub": {
         "value": {
           "type": "Num",
           "value": 0.0018
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "alpha\\_ppfd\\_rub"
       },
@@ -536,6 +577,9 @@
           "type": "Num",
           "value": 0.16
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "V0\\_ppfd\\_rub"
       },
       "theta_ppfd_rub": {
@@ -543,12 +587,18 @@
           "type": "Num",
           "value": 0.95
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "theta\\_ppfd\\_rub"
       },
       "alpha_co2": {
         "value": {
           "type": "Num",
-          "value": 400.0
+          "value": 400
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "alpha\\_co2"
       },
@@ -557,6 +607,9 @@
           "type": "Num",
           "value": -0.2
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "V0\\_co2"
       },
       "theta_co2": {
@@ -564,14 +617,16 @@
           "type": "Num",
           "value": 0.98
         },
+        "unit": {
+          "factors": []
+        },
         "texName": "theta\\_co2"
       },
       "tau_i": {
         "value": {
           "type": "Num",
-          "value": 360.0
+          "value": 360
         },
-        "texName": "tau\\_i",
         "unit": {
           "factors": [
             {
@@ -579,14 +634,14 @@
               "exponent": 1
             }
           ]
-        }
+        },
+        "texName": "tau\\_i"
       },
       "tau_d": {
         "value": {
           "type": "Num",
-          "value": 1200.0
+          "value": 1200
         },
-        "texName": "tau\\_d",
         "unit": {
           "factors": [
             {
@@ -594,15 +649,14 @@
               "exponent": 1
             }
           ]
-        }
+        },
+        "texName": "tau\\_d"
       },
       "km_v_RuBisCO_c_CO2": {
         "value": {
           "type": "Num",
           "value": 0.014
         },
-        "displayName": "km_rubisco_carboxylase_CO2",
-        "texName": "km\\_v\\_RuBisCO\\_c\\_CO2",
         "unit": {
           "factors": [
             {
@@ -615,15 +669,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "km_rubisco_carboxylase_CO2",
+        "texName": "km\\_v\\_RuBisCO\\_c\\_CO2"
       },
       "km_v_RuBisCO_c_RUBP": {
         "value": {
           "type": "Num",
           "value": 0.02
         },
-        "displayName": "km_rubisco_carboxylase_RUBP",
-        "texName": "km\\_v\\_RuBisCO\\_c\\_RUBP",
         "unit": {
           "factors": [
             {
@@ -636,14 +690,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "km_rubisco_carboxylase_RUBP",
+        "texName": "km\\_v\\_RuBisCO\\_c\\_RUBP"
       },
       "km_v_RuBisCO_c_O2": {
         "value": {
           "type": "Num",
           "value": 0.222
         },
-        "texName": "km\\_v\\_RuBisCO\\_c\\_O2",
         "unit": {
           "factors": [
             {
@@ -656,15 +711,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_RuBisCO\\_c\\_O2"
       },
       "ki_v_RuBisCO_c_PGA": {
         "value": {
           "type": "Num",
           "value": 2.52
         },
-        "displayName": "ki_rubisco_carboxylase_3PGA",
-        "texName": "ki\\_v\\_RuBisCO\\_c\\_PGA",
         "unit": {
           "factors": [
             {
@@ -677,14 +731,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "ki_rubisco_carboxylase_3PGA",
+        "texName": "ki\\_v\\_RuBisCO\\_c\\_PGA"
       },
       "ki_v_RuBisCO_c_NADP_st": {
         "value": {
           "type": "Num",
           "value": 0.21
         },
-        "texName": "ki\\_v\\_RuBisCO\\_c\\_NADP\\_st",
         "unit": {
           "factors": [
             {
@@ -697,14 +752,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "ki\\_v\\_RuBisCO\\_c\\_NADP\\_st"
       },
       "ki_v_RuBisCO_c_ADP_st": {
         "value": {
           "type": "Num",
           "value": 0.2
         },
-        "texName": "ki\\_v\\_RuBisCO\\_c\\_ADP\\_st",
         "unit": {
           "factors": [
             {
@@ -717,15 +772,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "ki\\_v\\_RuBisCO\\_c\\_ADP\\_st"
       },
       "ki_v_RuBisCO_c_Pi_st": {
         "value": {
           "type": "Num",
           "value": 3.6
         },
-        "displayName": "ki_rubisco_carboxylase_Pi",
-        "texName": "ki\\_v\\_RuBisCO\\_c\\_Pi\\_st",
         "unit": {
           "factors": [
             {
@@ -738,15 +792,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "ki_rubisco_carboxylase_Pi",
+        "texName": "ki\\_v\\_RuBisCO\\_c\\_Pi\\_st"
       },
       "vmax_v_RuBisCO_c": {
         "value": {
           "type": "Num",
           "value": 0.2
         },
-        "displayName": "vmax_rubisco_carboxylase",
-        "texName": "vmax\\_v\\_RuBisCO\\_c",
         "unit": {
           "factors": [
             {
@@ -763,15 +817,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "vmax_rubisco_carboxylase",
+        "texName": "vmax\\_v\\_RuBisCO\\_c"
       },
       "kcat_v_RuBisCO_c": {
         "value": {
           "type": "Num",
           "value": 4.7
         },
-        "displayName": "kcat_rubisco_carboxylase",
-        "texName": "kcat\\_v\\_RuBisCO\\_c",
         "unit": {
           "factors": [
             {
@@ -779,12 +833,17 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "kcat_rubisco_carboxylase",
+        "texName": "kcat\\_v\\_RuBisCO\\_c"
       },
       "S_co_gas": {
         "value": {
           "type": "Num",
-          "value": 2200.0
+          "value": 2200
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "S\\_co\\_gas"
       },
@@ -793,8 +852,6 @@
           "type": "Num",
           "value": 1.17
         },
-        "displayName": "vmax_phosphoribulokinase",
-        "texName": "vmax\\_v\\_PRKase",
         "unit": {
           "factors": [
             {
@@ -811,12 +868,17 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "vmax_phosphoribulokinase",
+        "texName": "vmax\\_v\\_PRKase"
       },
       "keq_v_PRKase": {
         "value": {
           "type": "Num",
-          "value": 6846.0
+          "value": 6846
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "keq\\_v\\_PRKase"
       },
@@ -825,8 +887,6 @@
           "type": "Num",
           "value": 0.625
         },
-        "displayName": "km_phosphoribulokinase_ATP",
-        "texName": "km\\_v\\_PRKase\\_ATP\\_st",
         "unit": {
           "factors": [
             {
@@ -839,14 +899,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "km_phosphoribulokinase_ATP",
+        "texName": "km\\_v\\_PRKase\\_ATP\\_st"
       },
       "ki_v_PRKase_ADP_st": {
         "value": {
           "type": "Num",
           "value": 0.1
         },
-        "texName": "ki\\_v\\_PRKase\\_ADP\\_st",
         "unit": {
           "factors": [
             {
@@ -859,15 +920,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "ki\\_v\\_PRKase\\_ADP\\_st"
       },
       "km_v_PRKase_RU5P": {
         "value": {
           "type": "Num",
           "value": 0.034
         },
-        "displayName": "km_phosphoribulokinase_RU5P",
-        "texName": "km\\_v\\_PRKase\\_RU5P",
         "unit": {
           "factors": [
             {
@@ -880,15 +940,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "km_phosphoribulokinase_RU5P",
+        "texName": "km\\_v\\_PRKase\\_RU5P"
       },
       "ki_v_PRKase_PGA": {
         "value": {
           "type": "Num",
-          "value": 2.0
+          "value": 2
         },
-        "displayName": "ki_phosphoribulokinase_3PGA",
-        "texName": "ki\\_v\\_PRKase\\_PGA",
         "unit": {
           "factors": [
             {
@@ -901,15 +961,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "ki_phosphoribulokinase_3PGA",
+        "texName": "ki\\_v\\_PRKase\\_PGA"
       },
       "ki_v_PRKase_RUBP": {
         "value": {
           "type": "Num",
           "value": 0.7
         },
-        "displayName": "ki_phosphoribulokinase_RUBP",
-        "texName": "ki\\_v\\_PRKase\\_RUBP",
         "unit": {
           "factors": [
             {
@@ -922,15 +982,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "ki_phosphoribulokinase_RUBP",
+        "texName": "ki\\_v\\_PRKase\\_RUBP"
       },
       "ki_v_PRKase_Pi_st": {
         "value": {
           "type": "Num",
-          "value": 4.0
+          "value": 4
         },
-        "displayName": "ki_phosphoribulokinase_Pi",
-        "texName": "ki\\_v\\_PRKase\\_Pi\\_st",
         "unit": {
           "factors": [
             {
@@ -943,14 +1003,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "ki_phosphoribulokinase_Pi",
+        "texName": "ki\\_v\\_PRKase\\_Pi\\_st"
       },
       "vmax_v_pgareduction": {
         "value": {
           "type": "Num",
           "value": 0.4
         },
-        "texName": "vmax\\_v\\_pgareduction",
         "unit": {
           "factors": [
             {
@@ -967,14 +1028,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "vmax\\_v\\_pgareduction"
       },
       "km_v_pgareduction_ATP_st": {
         "value": {
           "type": "Num",
           "value": 0.3
         },
-        "texName": "km\\_v\\_pgareduction\\_ATP\\_st",
         "unit": {
           "factors": [
             {
@@ -987,14 +1048,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_pgareduction\\_ATP\\_st"
       },
       "km_v_pgareduction_PGA": {
         "value": {
           "type": "Num",
-          "value": 10.0
+          "value": 10
         },
-        "texName": "km\\_v\\_pgareduction\\_PGA",
         "unit": {
           "factors": [
             {
@@ -1007,14 +1068,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_pgareduction\\_PGA"
       },
       "km_v_pgareduction_NADPH_st": {
         "value": {
           "type": "Num",
           "value": 0.05
         },
-        "texName": "km\\_v\\_pgareduction\\_NADPH\\_st",
         "unit": {
           "factors": [
             {
@@ -1027,14 +1088,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_pgareduction\\_NADPH\\_st"
       },
       "ki_v_pgareduction_ADP_st": {
         "value": {
           "type": "Num",
           "value": 0.89
         },
-        "texName": "ki\\_v\\_pgareduction\\_ADP\\_st",
         "unit": {
           "factors": [
             {
@@ -1047,14 +1108,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "ki\\_v\\_pgareduction\\_ADP\\_st"
       },
       "vmax_v_carbohydrate_synthesis": {
         "value": {
           "type": "Num",
           "value": 0.2235
         },
-        "texName": "vmax\\_v\\_carbohydrate\\_synthesis",
         "unit": {
           "factors": [
             {
@@ -1071,14 +1132,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "vmax\\_v\\_carbohydrate\\_synthesis"
       },
       "keq_v_carbohydrate_synthesis": {
         "value": {
           "type": "Num",
           "value": 0.8
         },
-        "texName": "keq\\_v\\_carbohydrate\\_synthesis",
         "unit": {
           "factors": [
             {
@@ -1099,14 +1160,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "keq\\_v\\_carbohydrate\\_synthesis"
       },
       "km_v_carbohydrate_synthesis_DHAP": {
         "value": {
           "type": "Num",
-          "value": 22.0
+          "value": 22
         },
-        "texName": "km\\_v\\_carbohydrate\\_synthesis\\_DHAP",
         "unit": {
           "factors": [
             {
@@ -1119,14 +1180,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_carbohydrate\\_synthesis\\_DHAP"
       },
       "ki_v_carbohydrate_synthesis_ADP_st": {
         "value": {
           "type": "Num",
-          "value": 1.0
+          "value": 1
         },
-        "texName": "ki\\_v\\_carbohydrate\\_synthesis\\_ADP\\_st",
         "unit": {
           "factors": [
             {
@@ -1139,14 +1200,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "ki\\_v\\_carbohydrate\\_synthesis\\_ADP\\_st"
       },
       "vmax_v_rpp": {
         "value": {
           "type": "Num",
           "value": 0.0585
         },
-        "texName": "vmax\\_v\\_rpp",
         "unit": {
           "factors": [
             {
@@ -1163,12 +1224,16 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "vmax\\_v\\_rpp"
       },
       "keq_v_rpp": {
         "value": {
           "type": "Num",
           "value": 0.06
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "keq\\_v\\_rpp"
       },
@@ -1177,7 +1242,6 @@
           "type": "Num",
           "value": 0.5
         },
-        "texName": "km\\_v\\_rpp\\_DHAP",
         "unit": {
           "factors": [
             {
@@ -1190,14 +1254,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_rpp\\_DHAP"
       },
       "H": {
         "value": {
           "type": "Num",
-          "value": 5.012e-05
+          "value": 0.00005012
         },
-        "texName": "H",
         "unit": {
           "factors": [
             {
@@ -1210,14 +1274,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "H"
       },
       "vmax_v_co2_hydration": {
         "value": {
           "type": "Num",
-          "value": 200.0
+          "value": 200
         },
-        "texName": "vmax\\_v\\_co2\\_hydration",
         "unit": {
           "factors": [
             {
@@ -1234,14 +1298,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "vmax\\_v\\_co2\\_hydration"
       },
       "keq_v_co2_hydration": {
         "value": {
           "type": "Num",
           "value": 0.00056
         },
-        "texName": "keq\\_v\\_co2\\_hydration",
         "unit": {
           "factors": [
             {
@@ -1254,14 +1318,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "keq\\_v\\_co2\\_hydration"
       },
       "km_v_co2_hydration_CO2": {
         "value": {
           "type": "Num",
           "value": 2.8
         },
-        "texName": "km\\_v\\_co2\\_hydration\\_CO2",
         "unit": {
           "factors": [
             {
@@ -1274,14 +1338,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_co2\\_hydration\\_CO2"
       },
       "km_v_co2_hydration_HCO3": {
         "value": {
           "type": "Num",
-          "value": 34.0
+          "value": 34
         },
-        "texName": "km\\_v\\_co2\\_hydration\\_HCO3",
         "unit": {
           "factors": [
             {
@@ -1294,12 +1358,16 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_co2\\_hydration\\_HCO3"
       },
       "keq_v_FNR": {
         "value": {
           "type": "Num",
-          "value": 502.0
+          "value": 502
+        },
+        "unit": {
+          "factors": []
         },
         "texName": "keq\\_v\\_FNR"
       },
@@ -1308,8 +1376,6 @@
           "type": "Num",
           "value": 0.0072
         },
-        "displayName": "km_fnr_NADP",
-        "texName": "km\\_v\\_FNR\\_NADP\\_st",
         "unit": {
           "factors": [
             {
@@ -1322,14 +1388,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "km_fnr_NADP",
+        "texName": "km\\_v\\_FNR\\_NADP\\_st"
       },
       "km_v_FNR_NADPH_st": {
         "value": {
           "type": "Num",
           "value": 0.036
         },
-        "texName": "km\\_v\\_FNR\\_NADPH\\_st",
         "unit": {
           "factors": [
             {
@@ -1342,14 +1409,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_FNR\\_NADPH\\_st"
       },
       "Kj_NADPH": {
         "value": {
           "type": "Num",
-          "value": 200.0
+          "value": 200
         },
-        "texName": "Kj\\_NADPH",
         "unit": {
           "factors": [
             {
@@ -1357,15 +1424,14 @@
               "exponent": 1
             }
           ]
-        }
+        },
+        "texName": "Kj\\_NADPH"
       },
       "keq_v_ATPsynth": {
         "value": {
           "type": "Num",
-          "value": 5734.0
+          "value": 5734
         },
-        "displayName": "keq_atp_synthase",
-        "texName": "keq\\_v\\_ATPsynth",
         "unit": {
           "factors": [
             {
@@ -1378,14 +1444,15 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "displayName": "keq_atp_synthase",
+        "texName": "keq\\_v\\_ATPsynth"
       },
       "km_v_ATPsynth_ADP_st": {
         "value": {
           "type": "Num",
           "value": 0.014
         },
-        "texName": "km\\_v\\_ATPsynth\\_ADP\\_st",
         "unit": {
           "factors": [
             {
@@ -1398,14 +1465,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_ATPsynth\\_ADP\\_st"
       },
       "km_v_ATPsynth_Pi_st": {
         "value": {
           "type": "Num",
           "value": 0.3
         },
-        "texName": "km\\_v\\_ATPsynth\\_Pi\\_st",
         "unit": {
           "factors": [
             {
@@ -1418,14 +1485,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_ATPsynth\\_Pi\\_st"
       },
       "km_v_ATPsynth_ATP_st": {
         "value": {
           "type": "Num",
           "value": 0.3
         },
-        "texName": "km\\_v\\_ATPsynth\\_ATP\\_st",
         "unit": {
           "factors": [
             {
@@ -1438,14 +1505,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "km\\_v\\_ATPsynth\\_ATP\\_st"
       },
       "Kj_ATP": {
         "value": {
           "type": "Num",
-          "value": 200.0
+          "value": 200
         },
-        "texName": "Kj\\_ATP",
         "unit": {
           "factors": [
             {
@@ -1453,14 +1520,14 @@
               "exponent": 1
             }
           ]
-        }
+        },
+        "texName": "Kj\\_ATP"
       },
       "gm": {
         "value": {
           "type": "Num",
           "value": 0.5
         },
-        "texName": "gm",
         "unit": {
           "factors": [
             {
@@ -1476,14 +1543,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "gm"
       },
       "Kh_co2": {
         "value": {
           "type": "Num",
           "value": 30303.0303030303
         },
-        "texName": "Kh\\_co2",
         "unit": {
           "factors": [
             {
@@ -1492,22 +1559,23 @@
             },
             {
               "kind": "bar",
+              "prefix": "micro",
               "exponent": 1
             },
             {
               "kind": "mole",
-              "prefix": "kilo",
+              "prefix": "milli",
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "Kh\\_co2"
       },
       "Kd": {
         "value": {
           "type": "Num",
-          "value": 150.0
+          "value": 150
         },
-        "texName": "Kd",
         "unit": {
           "factors": [
             {
@@ -1515,14 +1583,14 @@
               "exponent": 1
             }
           ]
-        }
+        },
+        "texName": "Kd"
       },
       "Ki": {
         "value": {
           "type": "Num",
-          "value": 900.0
+          "value": 900
         },
-        "texName": "Ki",
         "unit": {
           "factors": [
             {
@@ -1530,12 +1598,22 @@
               "exponent": 1
             }
           ]
-        }
+        },
+        "texName": "Ki"
       },
       "tau0": {
         "value": {
           "type": "Num",
           "value": -0.1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "tau0"
       },
@@ -1544,35 +1622,26 @@
           "type": "Num",
           "value": 0.5
         },
-        "texName": "chi\\_beta",
         "unit": {
           "factors": [
             {
               "kind": "mole",
-              "prefix": "nano",
               "exponent": 1
             },
             {
-              "kind": "metre",
-              "exponent": -2
-            },
-            {
               "kind": "pascal",
-              "exponent": -1
-            },
-            {
-              "kind": "second",
+              "prefix": "mega",
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "chi\\_beta"
       },
       "phi": {
         "value": {
           "type": "Num",
-          "value": 0.0
+          "value": 0
         },
-        "texName": "phi",
         "unit": {
           "factors": [
             {
@@ -1581,14 +1650,14 @@
               "exponent": 1
             }
           ]
-        }
+        },
+        "texName": "phi"
       },
       "pi_e": {
         "value": {
           "type": "Num",
           "value": 1.2
         },
-        "texName": "pi\\_e",
         "unit": {
           "factors": [
             {
@@ -1597,19 +1666,19 @@
               "exponent": 1
             }
           ]
-        }
+        },
+        "texName": "pi\\_e"
       },
       "Kh": {
         "value": {
           "type": "Num",
-          "value": 12.0
+          "value": 12
         },
-        "texName": "Kh",
         "unit": {
           "factors": [
             {
               "kind": "mole",
-              "prefix": "nano",
+              "prefix": "milli",
               "exponent": 1
             },
             {
@@ -1618,6 +1687,7 @@
             },
             {
               "kind": "pascal",
+              "prefix": "mega",
               "exponent": -1
             },
             {
@@ -1625,25 +1695,30 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "Kh"
       },
       "Ds": {
         "value": {
           "type": "Num",
-          "value": 10.0
+          "value": 10
         },
-        "texName": "Ds",
         "unit": {
-          "factors": [],
-          "multiplier": 0.001
-        }
+          "factors": [
+            {
+              "kind": "pascal",
+              "prefix": "mega",
+              "exponent": 1
+            }
+          ]
+        },
+        "texName": "Ds"
       },
       "gs0": {
         "value": {
           "type": "Num",
           "value": 0.01
         },
-        "texName": "gs0",
         "unit": {
           "factors": [
             {
@@ -1659,14 +1734,14 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "gs0"
       },
       "NADP_tot": {
         "value": {
           "type": "Num",
           "value": 0.5
         },
-        "texName": "NADP\\_tot",
         "unit": {
           "factors": [
             {
@@ -1679,7 +1754,8 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "NADP\\_tot"
       }
     },
     "reactions": {
@@ -1759,7 +1835,7 @@
         "stoichiometry": {
           "Ract": {
             "type": "Num",
-            "value": 1.0
+            "value": 1
           }
         },
         "texName": "Ract\\_rate"
@@ -1819,7 +1895,7 @@
                       "children": [
                         {
                           "type": "Num",
-                          "value": 10.0
+                          "value": 10
                         },
                         {
                           "type": "Name",
@@ -1835,7 +1911,7 @@
                           "children": [
                             {
                               "type": "Num",
-                              "value": 10.0
+                              "value": 10
                             },
                             {
                               "type": "Name",
@@ -1858,7 +1934,7 @@
         "stoichiometry": {
           "J_NADPH": {
             "type": "Num",
-            "value": 1.0
+            "value": 1
           }
         },
         "texName": "v\\_J\\_NADPH"
@@ -1918,7 +1994,7 @@
                       "children": [
                         {
                           "type": "Num",
-                          "value": 10.0
+                          "value": 10
                         },
                         {
                           "type": "Name",
@@ -1934,7 +2010,7 @@
                           "children": [
                             {
                               "type": "Num",
-                              "value": 10.0
+                              "value": 10
                             },
                             {
                               "type": "Name",
@@ -1957,7 +2033,7 @@
         "stoichiometry": {
           "J_ATP": {
             "type": "Num",
-            "value": 1.0
+            "value": 1
           }
         },
         "texName": "v\\_J\\_ATP"
@@ -2038,7 +2114,7 @@
         "stoichiometry": {
           "gs": {
             "type": "Num",
-            "value": 1.0
+            "value": 1
           }
         },
         "texName": "v\\_gs"
@@ -2094,7 +2170,7 @@
                           "children": [
                             {
                               "type": "Num",
-                              "value": 1.0
+                              "value": 1
                             },
                             {
                               "type": "Divide",
@@ -2141,7 +2217,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -2159,7 +2235,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -2174,7 +2250,7 @@
             "children": [
               {
                 "type": "Num",
-                "value": 2.0
+                "value": 2
               },
               {
                 "type": "Name",
@@ -2195,7 +2271,7 @@
               "children": [
                 {
                   "type": "Num",
-                  "value": 1.0
+                  "value": 1
                 },
                 {
                   "type": "Name",
@@ -2239,7 +2315,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -2254,7 +2330,7 @@
             "children": [
               {
                 "type": "Num",
-                "value": 1.0
+                "value": 1
               },
               {
                 "type": "Name",
@@ -2270,7 +2346,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -2417,7 +2493,7 @@
                           "children": [
                             {
                               "type": "Num",
-                              "value": 1.0
+                              "value": 1
                             },
                             {
                               "type": "Divide",
@@ -2457,7 +2533,7 @@
                           "children": [
                             {
                               "type": "Num",
-                              "value": 1.0
+                              "value": 1
                             },
                             {
                               "type": "Divide",
@@ -2514,7 +2590,7 @@
             "children": [
               {
                 "type": "Num",
-                "value": 1.0
+                "value": 1
               },
               {
                 "type": "Name",
@@ -2548,7 +2624,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -2566,7 +2642,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -2627,7 +2703,7 @@
                           "children": [
                             {
                               "type": "Num",
-                              "value": 1.0
+                              "value": 1
                             },
                             {
                               "type": "Divide",
@@ -2667,7 +2743,7 @@
                           "children": [
                             {
                               "type": "Num",
-                              "value": 1.0
+                              "value": 1
                             },
                             {
                               "type": "Divide",
@@ -2707,7 +2783,7 @@
                           "children": [
                             {
                               "type": "Num",
-                              "value": 1.0
+                              "value": 1
                             },
                             {
                               "type": "Divide",
@@ -2741,7 +2817,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -2756,7 +2832,7 @@
             "children": [
               {
                 "type": "Num",
-                "value": 1.0
+                "value": 1
               },
               {
                 "type": "Name",
@@ -2772,7 +2848,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -2790,7 +2866,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -2819,7 +2895,7 @@
                   "children": [
                     {
                       "type": "Num",
-                      "value": 1.0
+                      "value": 1
                     },
                     {
                       "type": "Minus",
@@ -2887,7 +2963,7 @@
                       "children": [
                         {
                           "type": "Num",
-                          "value": 1.0
+                          "value": 1
                         },
                         {
                           "type": "Divide",
@@ -2919,7 +2995,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -3011,7 +3087,7 @@
             "children": [
               {
                 "type": "Num",
-                "value": 1.0
+                "value": 1
               },
               {
                 "type": "Name",
@@ -3083,7 +3159,7 @@
                   "children": [
                     {
                       "type": "Num",
-                      "value": 1.0
+                      "value": 1
                     },
                     {
                       "type": "Divide",
@@ -3126,7 +3202,7 @@
                 "children": [
                   {
                     "type": "Num",
-                    "value": 1.0
+                    "value": 1
                   },
                   {
                     "type": "Name",
@@ -3141,7 +3217,7 @@
             "children": [
               {
                 "type": "Num",
-                "value": 1.0
+                "value": 1
               },
               {
                 "type": "Name",
@@ -3163,7 +3239,7 @@
             "children": [
               {
                 "type": "Num",
-                "value": 1.0
+                "value": 1
               },
               {
                 "type": "Name",
@@ -3244,7 +3320,7 @@
                   "children": [
                     {
                       "type": "Num",
-                      "value": 1.0
+                      "value": 1
                     },
                     {
                       "type": "Divide",
@@ -3284,7 +3360,7 @@
             "children": [
               {
                 "type": "Num",
-                "value": 1.0
+                "value": 1
               },
               {
                 "type": "Name",
@@ -3361,7 +3437,7 @@
                   "children": [
                     {
                       "type": "Num",
-                      "value": 1.0
+                      "value": 1
                     },
                     {
                       "type": "Divide",
@@ -3445,7 +3521,7 @@
             "children": [
               {
                 "type": "Num",
-                "value": 1.0
+                "value": 1
               },
               {
                 "type": "Name",
@@ -3501,14 +3577,14 @@
         "stoichiometry": {
           "Ci": {
             "type": "Num",
-            "value": -1.0
+            "value": -1
           },
           "CO2": {
             "type": "Divide",
             "children": [
               {
                 "type": "Num",
-                "value": 1.0
+                "value": 1
               },
               {
                 "type": "Name",
@@ -3554,7 +3630,7 @@
         "stoichiometry": {
           "Ci": {
             "type": "Num",
-            "value": 1.0
+            "value": 1
           }
         },
         "texName": "CO2\\_stomatal\\_diffusion"
@@ -3657,7 +3733,7 @@
                   "children": [
                     {
                       "type": "Num",
-                      "value": 2.0
+                      "value": 2
                     },
                     {
                       "type": "Name",
@@ -3709,7 +3785,7 @@
               "children": [
                 {
                   "type": "Num",
-                  "value": 1.0
+                  "value": 1
                 },
                 {
                   "type": "Divide",
@@ -3826,8 +3902,8 @@
                           "value": 0.5
                         },
                         {
-                          "type": "Pow",
-                          "left": {
+                          "type": "Sqrt",
+                          "child": {
                             "type": "Add",
                             "children": [
                               {
@@ -3851,7 +3927,7 @@
                                 },
                                 "right": {
                                   "type": "Num",
-                                  "value": 2.0
+                                  "value": 2
                                 }
                               },
                               {
@@ -3862,7 +3938,7 @@
                                     "children": [
                                       {
                                         "type": "Num",
-                                        "value": 4.0
+                                        "value": 4
                                       },
                                       {
                                         "type": "Name",
@@ -3878,9 +3954,9 @@
                               }
                             ]
                           },
-                          "right": {
+                          "base": {
                             "type": "Num",
-                            "value": 0.5
+                            "value": 2
                           }
                         }
                       ]
@@ -3991,8 +4067,8 @@
                               "value": 0.5
                             },
                             {
-                              "type": "Pow",
-                              "left": {
+                              "type": "Sqrt",
+                              "child": {
                                 "type": "Add",
                                 "children": [
                                   {
@@ -4002,7 +4078,7 @@
                                       "children": [
                                         {
                                           "type": "Num",
-                                          "value": 1.0
+                                          "value": 1
                                         },
                                         {
                                           "type": "Minus",
@@ -4030,7 +4106,7 @@
                                     },
                                     "right": {
                                       "type": "Num",
-                                      "value": 2.0
+                                      "value": 2
                                     }
                                   },
                                   {
@@ -4041,7 +4117,7 @@
                                         "children": [
                                           {
                                             "type": "Num",
-                                            "value": 4.0
+                                            "value": 4
                                           },
                                           {
                                             "type": "Name",
@@ -4060,7 +4136,7 @@
                                             "children": [
                                               {
                                                 "type": "Num",
-                                                "value": 1.0
+                                                "value": 1
                                               },
                                               {
                                                 "type": "Minus",
@@ -4079,9 +4155,9 @@
                                   }
                                 ]
                               },
-                              "right": {
+                              "base": {
                                 "type": "Num",
-                                "value": 0.5
+                                "value": 2
                               }
                             }
                           ]
@@ -4170,8 +4246,8 @@
                               "value": 0.5
                             },
                             {
-                              "type": "Pow",
-                              "left": {
+                              "type": "Sqrt",
+                              "child": {
                                 "type": "Add",
                                 "children": [
                                   {
@@ -4181,7 +4257,7 @@
                                       "children": [
                                         {
                                           "type": "Num",
-                                          "value": 1.0
+                                          "value": 1
                                         },
                                         {
                                           "type": "Minus",
@@ -4209,7 +4285,7 @@
                                     },
                                     "right": {
                                       "type": "Num",
-                                      "value": 2.0
+                                      "value": 2
                                     }
                                   },
                                   {
@@ -4220,7 +4296,7 @@
                                         "children": [
                                           {
                                             "type": "Num",
-                                            "value": 4.0
+                                            "value": 4
                                           },
                                           {
                                             "type": "Name",
@@ -4239,7 +4315,7 @@
                                             "children": [
                                               {
                                                 "type": "Num",
-                                                "value": 1.0
+                                                "value": 1
                                               },
                                               {
                                                 "type": "Minus",
@@ -4258,9 +4334,9 @@
                                   }
                                 ]
                               },
-                              "right": {
+                              "base": {
                                 "type": "Num",
-                                "value": 0.5
+                                "value": 2
                               }
                             }
                           ]
@@ -4333,7 +4409,7 @@
               "children": [
                 {
                   "type": "Num",
-                  "value": 1.0
+                  "value": 1
                 },
                 {
                   "type": "Name",
@@ -4362,7 +4438,7 @@
               "children": [
                 {
                   "type": "Num",
-                  "value": 1.0
+                  "value": 1
                 },
                 {
                   "type": "Name",
@@ -4380,20 +4456,20 @@
           "children": [
             {
               "type": "Num",
-              "value": 0.0
+              "value": 0
             },
             {
               "type": "Add",
               "children": [
                 {
                   "type": "Num",
-                  "value": -1.0
+                  "value": -1
                 },
                 {
                   "type": "Pow",
                   "left": {
                     "type": "Num",
-                    "value": 15.0
+                    "value": 15
                   },
                   "right": {
                     "type": "Add",
@@ -4467,7 +4543,7 @@
                   "children": [
                     {
                       "type": "Num",
-                      "value": 1.0
+                      "value": 1
                     },
                     {
                       "type": "Name",
@@ -4505,7 +4581,7 @@
                   "children": [
                     {
                       "type": "Num",
-                      "value": 1.0
+                      "value": 1
                     },
                     {
                       "type": "Minus",
@@ -4515,7 +4591,7 @@
                           "children": [
                             {
                               "type": "Num",
-                              "value": 0.0
+                              "value": 0
                             },
                             {
                               "type": "Add",
@@ -4591,8 +4667,8 @@
                                               "value": 0.5
                                             },
                                             {
-                                              "type": "Pow",
-                                              "left": {
+                                              "type": "Sqrt",
+                                              "child": {
                                                 "type": "Add",
                                                 "children": [
                                                   {
@@ -4602,7 +4678,7 @@
                                                       "children": [
                                                         {
                                                           "type": "Num",
-                                                          "value": 1.0
+                                                          "value": 1
                                                         },
                                                         {
                                                           "type": "Minus",
@@ -4630,7 +4706,7 @@
                                                     },
                                                     "right": {
                                                       "type": "Num",
-                                                      "value": 2.0
+                                                      "value": 2
                                                     }
                                                   },
                                                   {
@@ -4641,7 +4717,7 @@
                                                         "children": [
                                                           {
                                                             "type": "Num",
-                                                            "value": 4.0
+                                                            "value": 4
                                                           },
                                                           {
                                                             "type": "Name",
@@ -4660,7 +4736,7 @@
                                                             "children": [
                                                               {
                                                                 "type": "Num",
-                                                                "value": 1.0
+                                                                "value": 1
                                                               },
                                                               {
                                                                 "type": "Minus",
@@ -4679,9 +4755,9 @@
                                                   }
                                                 ]
                                               },
-                                              "right": {
+                                              "base": {
                                                 "type": "Num",
-                                                "value": 0.5
+                                                "value": 2
                                               }
                                             }
                                           ]
@@ -4755,7 +4831,7 @@
               "children": [
                 {
                   "type": "Num",
-                  "value": 1.0
+                  "value": 1
                 },
                 {
                   "type": "Name",
@@ -4780,7 +4856,7 @@
               "children": [
                 {
                   "type": "Num",
-                  "value": 4.0
+                  "value": 4
                 },
                 {
                   "type": "Name",
@@ -4791,7 +4867,7 @@
                   "children": [
                     {
                       "type": "Num",
-                      "value": 1.0
+                      "value": 1
                     },
                     {
                       "type": "Minus",
@@ -4836,7 +4912,7 @@
               "children": [
                 {
                   "type": "Num",
-                  "value": 1.0
+                  "value": 1
                 },
                 {
                   "type": "Minus",
@@ -4860,7 +4936,6 @@
             }
           ]
         },
-        "texName": "J\\_NADPH\\_steady",
         "unit": {
           "factors": [
             {
@@ -4877,7 +4952,8 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "J\\_NADPH\\_steady"
       },
       "J_ATP_steady": {
         "fn": {
@@ -4915,7 +4991,7 @@
                       "children": [
                         {
                           "type": "Num",
-                          "value": 1.0
+                          "value": 1
                         },
                         {
                           "type": "Minus",
@@ -4976,7 +5052,6 @@
             }
           ]
         },
-        "texName": "J\\_ATP\\_steady",
         "unit": {
           "factors": [
             {
@@ -4993,7 +5068,8 @@
               "exponent": -1
             }
           ]
-        }
+        },
+        "texName": "J\\_ATP\\_steady"
       },
       "gs_steady": {
         "fn": {
@@ -5046,7 +5122,7 @@
                   "children": [
                     {
                       "type": "Num",
-                      "value": 1.0
+                      "value": 1
                     },
                     {
                       "type": "Divide",
@@ -5056,7 +5132,7 @@
                           "children": [
                             {
                               "type": "Num",
-                              "value": 1.0
+                              "value": 1
                             },
                             {
                               "type": "Name",
@@ -5135,6 +5211,7 @@
         "texName": "A"
       }
     },
-    "readouts": {}
+    "readouts": {},
+    "nn_blocks": {}
   }
 }

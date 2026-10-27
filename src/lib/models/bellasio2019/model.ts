@@ -190,7 +190,9 @@ export function initModel(): KineticModelBuilder {
     .addParameter("Ca", {
       value: 350.0,
       texName: "Ca",
-      unit: Unit.fromJson({ factors: [{ kind: "bar", prefix: "micro", exponent: 1 }] }),
+      unit: Unit.fromJson({
+        factors: [{ kind: "bar", prefix: "micro", exponent: 1 }],
+      }),
     })
     .addParameter("alpha_ppfd_rub", {
       value: 0.0018,
@@ -701,7 +703,9 @@ export function initModel(): KineticModelBuilder {
     .addParameter("tau0", {
       value: -0.1,
       texName: "tau0",
-      unit: Unit.fromJson({ factors: [{ kind: "mole", prefix: "milli", exponent: 1 }] }),
+      unit: Unit.fromJson({
+        factors: [{ kind: "mole", prefix: "milli", exponent: 1 }],
+      }),
     })
     .addParameter("chi_beta", {
       value: 0.5,
@@ -742,7 +746,9 @@ export function initModel(): KineticModelBuilder {
     .addParameter("Ds", {
       value: 10.0,
       texName: "Ds",
-      unit: Unit.fromJson({ factors: [{kind: "pascal", prefix: "mega", exponent: 1 }] }),
+      unit: Unit.fromJson({
+        factors: [{ kind: "pascal", prefix: "mega", exponent: 1 }],
+      }),
     })
     .addParameter("gs0", {
       value: 0.01,
