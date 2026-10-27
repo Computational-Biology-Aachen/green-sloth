@@ -52,10 +52,9 @@ import {
  */
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
-    .addParameter("PAR", {
+    .addParameter("PPFD", {
       value: 0.0,
-      displayName: "PPFD",
-      texName: "PAR",
+      texName: "PPFD",
       unit: Unit.fromJson({
         factors: [
           { kind: "mole", prefix: "micro", exponent: 1 },
@@ -213,7 +212,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addReaction("Energy_input", {
       fn: new Mul([
-        new Name("PAR"),
+        new Name("PPFD"),
         new Name("alpha"),
         new Name("c_in"),
         new Add([
@@ -315,7 +314,7 @@ export function initModel(): KineticModelBuilder {
               ]),
             ]),
             new Mul([
-              new Name("PAR"),
+              new Name("PPFD"),
               new Name("alpha"),
               new Name("c_in"),
               new Add([

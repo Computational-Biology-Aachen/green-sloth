@@ -87,7 +87,7 @@
       }
     },
     "parameters": {
-      "PAR": {
+      "PPFD": {
         "value": {
           "type": "Num",
           "value": 0
@@ -109,8 +109,7 @@
             }
           ]
         },
-        "displayName": "PPFD",
-        "texName": "PAR"
+        "texName": "PPFD"
       },
       "alpha": {
         "value": {
@@ -310,7 +309,7 @@
           "children": [
             {
               "type": "Name",
-              "value": "PAR"
+              "value": "PPFD"
             },
             {
               "type": "Name",
@@ -649,7 +648,7 @@
                       "children": [
                         {
                           "type": "Name",
-                          "value": "PAR"
+                          "value": "PPFD"
                         },
                         {
                           "type": "Name",
