@@ -315,11 +315,11 @@
           "factors": [
             {
               "kind": "metre",
-              "prefix": "kilo",
               "exponent": 2
             },
             {
               "kind": "mole",
+              "prefix": "micro",
               "exponent": -1
             }
           ]
@@ -1220,7 +1220,7 @@
       "Na": {
         "value": {
           "type": "Num",
-          "value": 6.022e23
+          "value": 6.022e+23
         },
         "unit": {
           "factors": [
@@ -1361,11 +1361,11 @@
           "factors": [
             {
               "kind": "metre",
-              "prefix": "kilo",
               "exponent": 2
             },
             {
               "kind": "mole",
+              "prefix": "micro",
               "exponent": -1
             }
           ]

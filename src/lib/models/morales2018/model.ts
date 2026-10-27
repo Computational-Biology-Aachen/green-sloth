@@ -124,8 +124,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaJmax",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -134,8 +134,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHdJmax",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -144,9 +144,9 @@ export function initModel(): KineticModelBuilder {
       texName: "DsJmax",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
+          { kind: "joule", exponent: 1 },
           { kind: "kelvin", exponent: -1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -255,8 +255,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaKrep",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -265,8 +265,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHdKrep",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -275,9 +275,9 @@ export function initModel(): KineticModelBuilder {
       texName: "DsKrep",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
+          { kind: "joule", exponent: 1 },
           { kind: "kelvin", exponent: -1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -297,8 +297,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaAlphar",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -307,8 +307,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaKalpha",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -317,9 +317,9 @@ export function initModel(): KineticModelBuilder {
       texName: "DsKalpha",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
+          { kind: "joule", exponent: 1 },
           { kind: "kelvin", exponent: -1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -328,8 +328,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHdKalpha",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -441,8 +441,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaKc",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -456,8 +456,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaKo",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -471,8 +471,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaKmc",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -486,8 +486,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaKmo",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -552,8 +552,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHdRCA",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -567,8 +567,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaRCA",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -613,8 +613,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaTPU",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -623,8 +623,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHdTPU",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -633,9 +633,9 @@ export function initModel(): KineticModelBuilder {
       texName: "DsTPU",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
+          { kind: "joule", exponent: 1 },
           { kind: "kelvin", exponent: -1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -644,8 +644,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaGc",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -654,8 +654,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHdGc",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -664,9 +664,9 @@ export function initModel(): KineticModelBuilder {
       texName: "DsGc",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
+          { kind: "joule", exponent: 1 },
           { kind: "kelvin", exponent: -1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -675,8 +675,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaGw",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -685,8 +685,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHdGw",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -695,9 +695,9 @@ export function initModel(): KineticModelBuilder {
       texName: "DsGw",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
+          { kind: "joule", exponent: 1 },
           { kind: "kelvin", exponent: -1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -717,8 +717,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DHaRm",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })

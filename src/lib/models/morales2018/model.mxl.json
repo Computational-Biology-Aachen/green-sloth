@@ -392,11 +392,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -412,11 +412,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -432,7 +432,6 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
@@ -441,6 +440,7 @@
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -699,11 +699,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -719,11 +719,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -739,7 +739,6 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
@@ -748,6 +747,7 @@
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -786,11 +786,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -806,11 +806,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -826,7 +826,6 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
@@ -835,6 +834,7 @@
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -850,11 +850,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1102,11 +1102,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1137,11 +1137,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1167,11 +1167,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1197,11 +1197,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1333,11 +1333,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1368,11 +1368,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1464,11 +1464,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1484,11 +1484,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1504,7 +1504,6 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
@@ -1513,6 +1512,7 @@
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1528,11 +1528,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1548,11 +1548,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1568,7 +1568,6 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
@@ -1577,6 +1576,7 @@
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1592,11 +1592,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1612,11 +1612,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1632,7 +1632,6 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
@@ -1641,6 +1640,7 @@
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1679,11 +1679,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "milli",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]

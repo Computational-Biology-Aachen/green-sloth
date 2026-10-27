@@ -226,8 +226,8 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_c",
       unit: Unit.fromJson({
         factors: [
-          { kind: "metre", prefix: "kilo", exponent: 2 },
-          { kind: "mole", exponent: -1 },
+          { kind: "metre", exponent: 2 },
+          { kind: "mole", prefix: "micro", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),

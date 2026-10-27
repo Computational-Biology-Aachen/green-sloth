@@ -486,11 +486,11 @@
           "factors": [
             {
               "kind": "joule",
-              "prefix": "kilo",
               "exponent": 1
             },
             {
               "kind": "mole",
+              "prefix": "milli",
               "exponent": -1
             }
           ]

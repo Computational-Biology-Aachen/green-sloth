@@ -92,8 +92,8 @@ export function initModel(): KineticModelBuilder {
       texName: "Kh\\_o2",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -154,9 +154,9 @@ export function initModel(): KineticModelBuilder {
       texName: "alpha\\_ppfd\\_PhiPSII",
       unit: Unit.fromJson({
         factors: [
-          { kind: "metre", prefix: "kilo", exponent: 2 },
+          { kind: "metre", exponent: 2 },
           { kind: "second", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mole", prefix: "micro", exponent: -1 },
         ],
       }),
     })
@@ -200,9 +200,9 @@ export function initModel(): KineticModelBuilder {
       texName: "alpha\\_ppfd\\_rub",
       unit: Unit.fromJson({
         factors: [
-          { kind: "metre", prefix: "kilo", exponent: 2 },
+          { kind: "metre", exponent: 2 },
           { kind: "second", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mole", prefix: "micro", exponent: -1 },
         ],
       }),
     })
@@ -221,8 +221,8 @@ export function initModel(): KineticModelBuilder {
       texName: "alpha\\_co2",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })
@@ -633,8 +633,8 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_v\\_ATPsynth",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })
@@ -689,8 +689,8 @@ export function initModel(): KineticModelBuilder {
       texName: "Kh\\_co2",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "milli", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -714,7 +714,7 @@ export function initModel(): KineticModelBuilder {
       texName: "chi\\_beta",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mole", exponent: 1 },
+          { kind: "mole", prefix: "micro", exponent: 1 },
           { kind: "metre", exponent: -2 },
           { kind: "pascal", exponent: -1 },
           { kind: "second", exponent: -1 },
@@ -724,19 +724,23 @@ export function initModel(): KineticModelBuilder {
     .addParameter("phi", {
       value: 0.0,
       texName: "phi",
-      unit: Unit.fromJson({ factors: [{ kind: "pascal", exponent: 1 }] }),
+      unit: Unit.fromJson({
+        factors: [{ kind: "pascal", prefix: "mega", exponent: 1 }],
+      }),
     })
     .addParameter("pi_e", {
       value: 1.2,
       texName: "pi\\_e",
-      unit: Unit.fromJson({ factors: [{ kind: "pascal", exponent: 1 }] }),
+      unit: Unit.fromJson({
+        factors: [{ kind: "pascal", prefix: "mega", exponent: 1 }],
+      }),
     })
     .addParameter("Kh", {
       value: 12.0,
       texName: "Kh",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mole", prefix: "nano", exponent: 1 },
           { kind: "metre", exponent: -2 },
           { kind: "pascal", exponent: -1 },
           { kind: "second", exponent: -1 },

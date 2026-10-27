@@ -69,8 +69,8 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_PV\\_f",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -85,8 +85,8 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_PA\\_f",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -101,8 +101,8 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_PZ\\_f",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -207,8 +207,8 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_PV\\_f\\_lut2",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -223,8 +223,8 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_PA\\_f\\_lut2",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -239,8 +239,8 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_PZ\\_f\\_lut2",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -325,8 +325,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kappa\\_QV",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -336,8 +336,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kappa\\_QA",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -347,8 +347,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kappa\\_QZ",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -358,8 +358,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kappa\\_QL",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -369,8 +369,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kappa\\_qZ",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),

@@ -191,8 +191,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DeltaGATP",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })

@@ -47,8 +47,8 @@ export function initModel(): KineticModelBuilder {
       texName: "crosssection",
       unit: Unit.fromJson({
         factors: [
-          { kind: "metre", prefix: "kilo", exponent: 2 },
-          { kind: "mole", exponent: -1 },
+          { kind: "metre", exponent: 2 },
+          { kind: "mole", prefix: "micro", exponent: -1 },
         ],
       }),
     })
@@ -479,8 +479,8 @@ export function initModel(): KineticModelBuilder {
       texName: "PSIcrossSection",
       unit: Unit.fromJson({
         factors: [
-          { kind: "metre", prefix: "kilo", exponent: 2 },
-          { kind: "mole", exponent: -1 },
+          { kind: "metre", exponent: 2 },
+          { kind: "mole", prefix: "micro", exponent: -1 },
         ],
       }),
     })

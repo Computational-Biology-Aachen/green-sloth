@@ -1262,11 +1262,11 @@
           "factors": [
             {
               "kind": "metre",
-              "prefix": "kilo",
               "exponent": 2
             },
             {
               "kind": "mole",
+              "prefix": "micro",
               "exponent": -1
             },
             {

@@ -187,8 +187,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_phosphoglycerate\\_kinase",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -203,8 +203,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_gadph",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 2 },
-          { kind: "mole", exponent: -2 },
+          { kind: "litre", exponent: 2 },
+          { kind: "mole", prefix: "milli", exponent: -2 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -229,8 +229,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_aldolase\\_dhap\\_gap",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -240,8 +240,8 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_aldolase\\_dhap\\_gap",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })
@@ -250,8 +250,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_aldolase\\_dhap\\_e4p",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -261,8 +261,8 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_aldolase\\_dhap\\_e4p",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })
@@ -317,8 +317,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_transketolase\\_gap\\_f6p",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -333,8 +333,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_transketolase\\_gap\\_s7p",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),

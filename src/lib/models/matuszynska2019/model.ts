@@ -102,8 +102,8 @@ export function initModel(): KineticModelBuilder {
       texName: "F",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "volt", exponent: -1 },
         ],
       }),
@@ -153,9 +153,9 @@ export function initModel(): KineticModelBuilder {
       texName: "R",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "joule", exponent: 1 },
           { kind: "kelvin", exponent: -1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })
@@ -311,8 +311,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DeltaG0\\_ATP",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })
@@ -321,8 +321,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kcat\\_b6f",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 2 },
-          { kind: "mole", exponent: -2 },
+          { kind: "mol_chl", exponent: 2 },
+          { kind: "mole", prefix: "milli", exponent: -2 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -352,8 +352,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kf\\_cyclic\\_electron\\_flow",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 2 },
-          { kind: "mole", exponent: -2 },
+          { kind: "mol_chl", exponent: 2 },
+          { kind: "mole", prefix: "milli", exponent: -2 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -454,8 +454,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kPQred",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -465,8 +465,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kPCox",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -476,8 +476,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kFdred",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -507,8 +507,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kPTOX",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -625,8 +625,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_phosphoglycerate\\_kinase",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -641,8 +641,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_gadph",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 2 },
-          { kind: "mole", exponent: -2 },
+          { kind: "litre", exponent: 2 },
+          { kind: "mole", prefix: "milli", exponent: -2 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -667,8 +667,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_aldolase\\_dhap\\_gap",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -678,8 +678,8 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_aldolase\\_dhap\\_gap",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })
@@ -688,8 +688,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_aldolase\\_dhap\\_e4p",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -699,8 +699,8 @@ export function initModel(): KineticModelBuilder {
       texName: "keq\\_aldolase\\_dhap\\_e4p",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })
@@ -755,8 +755,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_transketolase\\_gap\\_f6p",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -771,8 +771,8 @@ export function initModel(): KineticModelBuilder {
       texName: "kre\\_transketolase\\_gap\\_s7p",
       unit: Unit.fromJson({
         factors: [
-          { kind: "litre", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "litre", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -2706,6 +2706,12 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       texName: "B0",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("B1", {
       fn: new Divide([
@@ -2933,6 +2939,12 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       texName: "B1",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("B2", {
       fn: new Divide([
@@ -3232,6 +3244,12 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       texName: "B2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("B3", {
       fn: new Divide([
@@ -3480,6 +3498,12 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       texName: "B3",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addReadout("PQ_ox_per_tot", {
       fn: new Divide([new Name("Plastoquinone_reduced"), new Name("PQ_tot")]),

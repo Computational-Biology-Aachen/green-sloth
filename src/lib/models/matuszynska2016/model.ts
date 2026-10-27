@@ -35,6 +35,8 @@ import {
  * plastoquinone (PQ/PQH2) redox, lumenal proton buffering, ATP synthesis, PsbS
  * protonation, and xanthophyll de-epoxidation (zeaxanthin formation). Supports PAM
  * fluorescence protocol simulation to reproduce Fm/Fm' quenching.
+ *
+ * Ref: Matuszynska et al. (2016) Biochim Biophys Acta 1857:1948-1960
  */
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
@@ -124,8 +126,8 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_PQH2",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -154,8 +156,8 @@ export function initModel(): KineticModelBuilder {
       texName: "k\\_PTOX",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mol_chl", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mol_chl", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "second", exponent: -1 },
         ],
       }),
@@ -257,8 +259,8 @@ export function initModel(): KineticModelBuilder {
       texName: "F",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "volt", exponent: -1 },
         ],
       }),
@@ -268,9 +270,9 @@ export function initModel(): KineticModelBuilder {
       texName: "R",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "kilo", exponent: 1 },
+          { kind: "joule", exponent: 1 },
           { kind: "kelvin", exponent: -1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })
@@ -299,8 +301,8 @@ export function initModel(): KineticModelBuilder {
       texName: "DG\\_ATP",
       unit: Unit.fromJson({
         factors: [
-          { kind: "joule", prefix: "kilo", exponent: 1 },
-          { kind: "mole", exponent: -1 },
+          { kind: "joule", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
         ],
       }),
     })
@@ -850,6 +852,12 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       texName: "B0",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("B1", {
       fn: new Divide([
@@ -986,6 +994,12 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       texName: "B1",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("B2", {
       fn: new Divide([
@@ -1164,6 +1178,12 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       texName: "B2",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     })
     .addAssignment("B3", {
       fn: new Divide([
@@ -1307,5 +1327,11 @@ export function initModel(): KineticModelBuilder {
         ]),
       ]),
       texName: "B3",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mol_chl", exponent: -1 },
+        ],
+      }),
     });
 }
