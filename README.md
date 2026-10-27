@@ -1,6 +1,7 @@
 # GreenSloth
 
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
+[![mxl-e2e](https://img.shields.io/github/actions/workflow/status/Computational-Biology-Aachen/green-sloth/e2e.yml?branch=main&label=mxl-e2e&style=flat-square)](https://github.com/Computational-Biology-Aachen/green-sloth/actions/workflows/e2e.yml)
 
 Interactive explorer for photosynthesis ODE models. All compute is client-side — no server required. SvelteKit 5, adapter-static. Deployed at `/green-sloth`.
 
