@@ -1220,7 +1220,7 @@
       "Na": {
         "value": {
           "type": "Num",
-          "value": 6.022e+23
+          "value": 6.022e23
         },
         "unit": {
           "factors": [
