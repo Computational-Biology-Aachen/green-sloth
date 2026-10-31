@@ -22,13 +22,13 @@
  *   npm run sync:names -- suggest [out.json]
  *   npm run sync:names -- apply <edited.json>
  */
-import { readFileSync, writeFileSync } from "node:fs";
-import { execFileSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
 import {
   KineticModelBuilder,
   type ModelBuilderBase,
 } from "@computational-biology-aachen/mxlweb-core";
+import { execFileSync } from "node:child_process";
+import { readFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import * as ts from "typescript";
 
 type Category = "variables" | "parameters" | "assignments" | "reactions";
