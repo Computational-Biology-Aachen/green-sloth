@@ -180,6 +180,8 @@ export interface Validation {
   atol?: number;
   /** The scipy method of exported notebooks, where Radau can't start. */
   exportMethod?: string;
+  /** Tolerances of exported notebooks, where they need to differ from `rtol`/`atol`. */
+  exportTolerances?: { rtol: number; atol: number };
   /** Also return `ddt.<variable>` columns. */
   returnRhs?: boolean;
   /** Constant columns, such as measurements: `data.<name>`. */

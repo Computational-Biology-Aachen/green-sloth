@@ -303,6 +303,8 @@ export const validations: Validation[] = [
     // Differences of nearly equal steady states need more precise solves.
     rtol: 1e-10,
     atol: 1e-12,
+    // At those, MxlPy's oscillation detector misfires at PPFD 1000.
+    exportTolerances: { rtol: 1e-8, atol: 1e-8 },
     simulate: { kind: "steadyState" },
     scenarios: Object.assign({}, ...LIGHTS.map(mcaScenarios)),
     collect: Object.fromEntries(LIGHTS.map((l) => [`mca${l}`, mcaTable(l)])),
