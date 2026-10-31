@@ -90,6 +90,24 @@ describe("comparison", () => {
     expect(atX).toBe(1);
   });
 
+  it("doesn't divide by the range of a series flat to rounding noise", () => {
+    const { relativeError } = compareSeries([0, 1], [2, 2.0002], {
+      x: [0, 1],
+      y: [2, 2 + 1e-14],
+    });
+    expect(relativeError).toBeCloseTo(0.1);
+  });
+
+  it("can compare by position when peak times may differ by a sample", () => {
+    const { relativeError } = compareSeries(
+      [0.1, 1.1],
+      [1, 3],
+      { x: [0, 1], y: [1, 3] },
+      true,
+    );
+    expect(relativeError).toBe(0);
+  });
+
   it("fails on NaN", () => {
     const { relativeError } = compareSeries([0, 1], [1, NaN], {
       x: [0, 1],
@@ -144,17 +162,36 @@ describe.runIf(slugs.length > 0).each(slugs)("%s validation.ts", (slug) => {
     for (const v of validations) {
       const at = `${v.id}`;
       const ids = Object.keys(v.scenarios);
-      const opNames = new Set((v.ops ?? []).map((o) => o.as));
-      const eachNames = new Set(Object.keys(v.deriveEach ?? {}));
+      const opNames = new Set(
+        (v.ops ?? [])
+          .filter((o) => !o.into && o.op !== "column")
+          .map((o) => o.as),
+      );
+      const addedColumns = (v.ops ?? []).filter(
+        (o) => o.into || o.op === "column",
+      );
+      const eachNames = new Set([
+        ...Object.keys(v.deriveEach ?? {}),
+        ...addedColumns.map((o) => o.as),
+      ]);
       const derived = new Set(Object.keys(v.derive ?? {}));
 
+      const dataRef = (path: string[]) =>
+        path[0] === "data" && path[1] in (v.data ?? {});
+      const tableRef = (path: string[]) =>
+        path[0] in (v.collect ?? {}) &&
+        (path[1] === "x" || path[1] in v.collect![path[0]].columns);
       const scenarioRef = (path: string[]) =>
         path[0] === "param" ||
         path[0] === "init" ||
+        dataRef(path) ||
+        (path[0] === "ddt" && v.returnRhs === true) ||
         opNames.has(path[0]) ||
         (path.length === 1 && (columns.has(path[0]) || eachNames.has(path[0])));
       const globalRef = (path: string[]) =>
         (path.length === 1 && derived.has(path[0])) ||
+        dataRef(path) ||
+        tableRef(path) ||
         path[0] === "param" ||
         path[0] === "init" ||
         (ids.includes(path[0]) && scenarioRef(path.slice(1)));
@@ -187,7 +224,21 @@ describe.runIf(slugs.length > 0).each(slugs)("%s validation.ts", (slug) => {
         }
       }
       for (const op of v.ops ?? []) {
-        if (!(op.op in OPS)) missing.push(`${at} op: ${op.op}`);
+        if (op.op === "column") {
+          check(`ops.${op.as}`, op.expr as string, scenarioRef);
+        } else if (!(op.op in OPS)) {
+          missing.push(`${at} op: ${op.op}`);
+        }
+      }
+      for (const [name, table] of Object.entries(v.collect ?? {})) {
+        for (const [col, exprs] of Object.entries(table.columns)) {
+          if (exprs.length !== table.x.length) {
+            missing.push(`${at} collect.${name}.${col}: length`);
+          }
+          exprs.forEach((src) =>
+            check(`collect.${name}.${col}`, src, globalRef),
+          );
+        }
       }
       for (const [name, src] of Object.entries(v.deriveEach ?? {})) {
         check(`deriveEach.${name}`, src, scenarioRef);
@@ -196,10 +247,24 @@ describe.runIf(slugs.length > 0).each(slugs)("%s validation.ts", (slug) => {
         check(`derive.${name}`, src, globalRef);
       }
       for (const plot of v.plots) {
-        check("plot.x", plot.x, globalRef);
-        for (const s of plot.y) {
-          check("plot.y", s.of, globalRef);
-          if (s.x) check("plot.y.x", s.x, globalRef);
+        if (plot.type === "line") {
+          check("plot.x", plot.x, globalRef);
+          for (const line of plot.y) {
+            check("plot.y", line.of, globalRef);
+            if (line.x) check("plot.y.x", line.x, globalRef);
+            if (line.err) check("plot.y.err", line.err, globalRef);
+          }
+        } else if (plot.type === "scatter") {
+          for (const point of plot.series) {
+            check("plot.x", point.x, globalRef);
+            check("plot.y", point.y, globalRef);
+          }
+        } else if (plot.type === "stackedBar") {
+          plot.stacks.forEach((stack) =>
+            stack.of.forEach((src) => check("plot.stack", src, globalRef)),
+          );
+        } else {
+          plot.z.flat().forEach((src) => check("plot.z", src, globalRef));
         }
       }
       for (const [name, g] of Object.entries(v.golden ?? {})) {

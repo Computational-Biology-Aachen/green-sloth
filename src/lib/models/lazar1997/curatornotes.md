@@ -1,0 +1,1 @@
+The validation reproduces the original notebook's numbers, including a choice worth checking against the publication: Figure 8 locates the J and I steps on the undamaged curve of Figure 6, not on its own first curve.

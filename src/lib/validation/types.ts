@@ -11,13 +11,19 @@ export type ScenarioValue = number | string;
 export interface ProtocolStep {
   duration: number;
   set: Record<string, number>;
+  /** Output intervals for this step; overrides `pointsPerStep`. */
+  points?: number;
 }
 
-/** Sampling matches MxlPy's `time_points_per_step`: that many intervals per step. */
+/**
+ * Sampling matches MxlPy's `time_points_per_step`: that many intervals per step.
+ * With `tEval`, output is exactly those times instead.
+ */
 export interface ProtocolSimulation {
   kind: "protocol";
   steps: ProtocolStep[];
-  pointsPerStep: number;
+  pointsPerStep?: number;
+  tEval?: number[];
 }
 
 export interface TimeCourseSimulation {
@@ -36,9 +42,21 @@ export type Simulation =
 /** A structural change, applied to a clone of the model for one scenario. */
 export type ModelEdit =
   | { removeReaction: string }
-  | { setAssignment: string; to: string; args?: never }
+  /** Replace an assignment's formula with an expression over model ids. */
+  | { setAssignment: string; to: string }
+  /** Replace a parameter with an assignment, e.g. a light driven by `time`. */
+  | { parameterToAssignment: string; to: string }
   | { clampVariable: string; to: number }
   | { addParameter: string; value: number };
+
+/** A run handing its final state on, unrecorded; `set` applies only to it. */
+export type PreRun = Simulation & { set?: Record<string, number> };
+
+/** One recorded phase of a chain; its output times count on from the last. */
+export interface Stage {
+  edits?: ModelEdit[];
+  simulate: Simulation;
+}
 
 export interface Scenario {
   parameters?: Record<string, ScenarioValue>;
@@ -47,21 +65,34 @@ export interface Scenario {
   /** Overrides the validation's `simulate` for this scenario. */
   simulate?: Simulation;
   /** Runs first, unrecorded, and hands its final state on (acclimation). */
-  pre?: Simulation[];
+  pre?: PreRun[];
+  /** Replaces `simulate` with a chain of phases. */
+  stages?: Stage[];
+  /** A failed solve gives NaN columns instead of failing the validation. */
+  allowFailure?: boolean;
   rtol?: number;
   atol?: number;
 }
 
 /**
- * A named op applied per scenario (or only to `scenario`); see ops.ts. Runs after
- * `deriveEach`, and column arguments are plain column names, so every op maps
- * directly onto a pandas column in the export targets.
+ * One step of a scenario's data handling, run in order, per scenario (or only
+ * for `scenario`). `{op: "column", as, expr}` adds a column; any other `op` is a
+ * named op from ops.ts, whose column arguments are plain column names, and with
+ * `into: true` its `value` also becomes the scenario column `as`.
  */
 export interface OpSpec {
   op: string;
   as: string;
   scenario?: string;
+  into?: boolean;
   [arg: string]: unknown;
+}
+
+/** Values collected across scenarios into one table: `<name>.x`, `<name>.<col>`. */
+export interface Collect {
+  x: number[];
+  /** One expression per `x`. */
+  columns: Record<string, string[]>;
 }
 
 export interface LineSeries {
@@ -70,6 +101,10 @@ export interface LineSeries {
   /** Expression for the x values; defaults to the plot's `x`. */
   x?: string;
   label?: string;
+  axis?: "left" | "right";
+  style?: "line" | "markers";
+  /** Expressions for the error bars' half-widths. */
+  err?: string;
 }
 
 export interface LinePlot {
@@ -80,15 +115,55 @@ export interface LinePlot {
   y: LineSeries[];
   xLabel?: string;
   yLabel?: string;
+  yRightLabel?: string;
   xLim?: [number, number];
+  yLim?: [number, number];
+  yRightLim?: [number, number];
+  logX?: boolean;
+  /** Shaded time spans, e.g. dark phases. */
+  phases?: Array<{ from: number; to: number }>;
+}
+
+/** Points of `y` against `x`, optionally with the identity line. */
+export interface ScatterPlot {
+  type: "scatter";
+  title?: string;
+  series: Array<{ x: string; y: string; label?: string }>;
+  xLabel?: string;
+  yLabel?: string;
+  lim?: [number, number];
+  identity?: boolean;
+}
+
+export interface StackedBarPlot {
+  type: "stackedBar";
+  title?: string;
+  categories: string[];
+  /** One expression per category, per stacked segment. */
+  stacks: Array<{ label: string; of: string[] }>;
+  yLabel?: string;
   yLim?: [number, number];
 }
 
-export type Plot = LinePlot;
+export interface HeatmapPlot {
+  type: "heatmap";
+  title?: string;
+  rows: string[];
+  columns: string[];
+  /** `z[row][column]` expressions. */
+  z: string[][];
+}
+
+export type Plot = LinePlot | ScatterPlot | StackedBarPlot | HeatmapPlot;
 
 export interface GoldenSeries {
   x: string;
   y: string;
+  /**
+   * Compare point by point, ignoring `x`: a peak's time can land one sample away
+   * on a flat top without its value changing.
+   */
+  byIndex?: boolean;
   /**
    * Allowed max |sim - golden| / range(golden). Defaults to
    * {@link DEFAULT_TOLERANCE}; a looser value needs a comment saying why.
@@ -100,13 +175,21 @@ export interface Validation {
   id: string;
   title: string;
   scenarios: Record<string, Scenario>;
-  simulate: Simulation;
+  simulate?: Simulation;
   rtol?: number;
   atol?: number;
+  /** The scipy method of exported notebooks, where Radau can't start. */
+  exportMethod?: string;
+  /** Also return `ddt.<variable>` columns. */
+  returnRhs?: boolean;
+  /** Constant columns, such as measurements: `data.<name>`. */
+  data?: Record<string, number[]>;
+  /** Scenario data handling, see {@link OpSpec}. */
   ops?: OpSpec[];
-  /** Columns added to every scenario; bare names resolve in that scenario. */
+  /** Columns added to every scenario before `ops`. */
   deriveEach?: Record<string, string>;
-  /** Columns computed across scenarios. */
+  collect?: Record<string, Collect>;
+  /** Columns computed across scenarios, after `collect`. */
   derive?: Record<string, string>;
   plots: Plot[];
   golden?: Record<string, GoldenSeries>;

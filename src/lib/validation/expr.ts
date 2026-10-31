@@ -4,6 +4,21 @@
  * an AST that the engine evaluates and the export targets translate.
  */
 
+import {
+  Add,
+  type Base,
+  Divide,
+  Exp,
+  GreaterThan,
+  Minus,
+  Mul,
+  Name,
+  Num,
+  Piecewise,
+  Pow,
+  Sin,
+} from "@computational-biology-aachen/mxlweb-core/mathml";
+
 export type Expr =
   | { k: "num"; value: number }
   | { k: "ref"; path: string[] }
@@ -50,6 +65,9 @@ export const FUNCTIONS = new Set([
   ...Object.keys(ELEMENTWISE),
   ...Object.keys(AGGREGATES),
   "at",
+  "nth",
+  "slice",
+  "ifgt",
 ]);
 
 const TOKEN =
@@ -214,6 +232,18 @@ export function evaluate(e: Expr, resolve: (path: string[]) => Value): Value {
         });
         return asColumn(col, "at")[best];
       }
+      if (e.fn === "nth") {
+        const [col, i] = e.args.map(ev);
+        return asColumn(col, "nth")[i as number];
+      }
+      if (e.fn === "slice") {
+        const [col, from, to] = e.args.map(ev);
+        return asColumn(col, "slice").slice(from as number, to as number);
+      }
+      if (e.fn === "ifgt") {
+        const [a, b, x, y] = e.args.map(ev);
+        return (a as number) > (b as number) ? x : y;
+      }
       const arg = ev(e.args[0]);
       const aggregate = AGGREGATES[e.fn];
       if (aggregate) return aggregate(asColumn(arg, e.fn));
@@ -259,7 +289,53 @@ export function toPython(e: Expr, ref: (path: string[]) => string): string {
         const [col, t, times] = e.args.map(py);
         return `${col}[np.argmin(np.abs(${times} - ${t}))]`;
       }
+      if (e.fn === "nth") {
+        const [col, i] = e.args.map(py);
+        return `${col}[${i}]`;
+      }
+      if (e.fn === "slice") {
+        const [col, from, to] = e.args.map(py);
+        return `${col}[${from}:${to}]`;
+      }
+      if (e.fn === "ifgt") {
+        const [a, b, x, y] = e.args.map(py);
+        return `(${x} if ${a} > ${b} else ${y})`;
+      }
       if (e.fn in PY_AGGREGATES) return PY_AGGREGATES[e.fn](py(e.args[0]));
       return `${PY_ELEMENTWISE[e.fn]}(${py(e.args[0])})`;
+  }
+}
+
+/** The same expression as model math, for structural edits. */
+export function toMathml(e: Expr): Base {
+  switch (e.k) {
+    case "num":
+      return new Num(e.value);
+    case "ref":
+      return new Name(e.path.join("."));
+    case "neg":
+      return new Minus([new Num(0), toMathml(e.arg)]);
+    case "bin": {
+      const l = toMathml(e.l);
+      const r = toMathml(e.r);
+      if (e.op === "+") return new Add([l, r]);
+      if (e.op === "-") return new Minus([l, r]);
+      if (e.op === "*") return new Mul([l, r]);
+      if (e.op === "/") return new Divide([l, r]);
+      return new Pow(l, r);
+    }
+    case "call": {
+      const args = e.args.map(toMathml);
+      if (e.fn === "sin") return new Sin(args[0]);
+      if (e.fn === "exp") return new Exp(args[0]);
+      if (e.fn === "ifgt") {
+        return new Piecewise([
+          args[2],
+          new GreaterThan([args[0], args[1]]),
+          args[3],
+        ]);
+      }
+      throw new Error(`${e.fn}() can't be used in a model edit`);
+    }
   }
 }

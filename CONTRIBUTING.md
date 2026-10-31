@@ -15,6 +15,7 @@ src/lib/models/<slug>/
   meta.ts       # title, DOI, tags, dashboard analyses
   model.md      # prose description shown on the model page
   comment.md    # short validation note
+  validation.ts # publication figures as data, run on the site (optional)
   scheme.svg    # reaction scheme diagram
 ```
 

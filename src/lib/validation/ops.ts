@@ -105,6 +105,17 @@ function leftBases(x: number[], peaks: number[]): number[] {
   });
 }
 
+/** Math.min(...x) overflows the stack on long columns; these two extremes don't. */
+function minMaxSafe(x: number[]): [number, number] {
+  let lo = Infinity;
+  let hi = -Infinity;
+  for (const v of x) {
+    if (v < lo) lo = v;
+    if (v > hi) hi = v;
+  }
+  return [lo, hi];
+}
+
 /** Sample windows [from, to) around each saturating pulse. */
 function pulseWindows(
   time: number[],
@@ -334,6 +345,42 @@ export const OPS: Record<string, OpDef> = {
     },
   },
 
+  /**
+   * Times and values of the O, J, I and P steps of a fluorescence induction:
+   * global min, global max, and the first two local minima of the smoothed
+   * derivative over log time between them.
+   */
+  ojip: {
+    run(args, ctx) {
+      const f = ctx.column(args.of as string);
+      const time = ctx.column("time");
+      const iO = f.indexOf(Math.min(...minMaxSafe(f)));
+      const iP = f.indexOf(Math.max(...minMaxSafe(f)));
+      const slope = gradient(
+        gaussianFilter(f, args.sigma as number),
+        time.map(Math.log10),
+      );
+      const between = localMaxima(slope.map((v) => -v)).filter(
+        (v) => iO < v && v < iP,
+      );
+      const idx = [iO, between[0], between[1], iP];
+      return { time: idx.map((i) => time[i]), value: idx.map((i) => f[i]) };
+    },
+    python: {
+      name: "ojip",
+      source: `def ojip(frame, protocol, of, sigma):
+    f = frame[of].to_numpy()
+    time = frame["time"].to_numpy()
+    i_o, i_p = int(np.argmin(f)), int(np.argmax(f))
+    slope = np.gradient(gaussian_filter1d(f, sigma), np.log10(time))
+    found, _ = find_peaks(-slope)
+    between = [v for v in found if i_o < v < i_p]
+    idx = [i_o, between[0], between[1], i_p]
+    return pd.DataFrame({"time": time[idx], "value": f[idx]})
+`,
+    },
+  },
+
   /** max - min of `of` over `from <= time <= to`. */
   range: {
     run(args, ctx) {
@@ -342,7 +389,8 @@ export const OPS: Record<string, OpDef> = {
       const from = (args.from as number | undefined) ?? -Infinity;
       const to = (args.to as number | undefined) ?? Infinity;
       const inWindow = y.filter((_, i) => t[i] >= from && t[i] <= to);
-      return { value: [Math.max(...inWindow) - Math.min(...inWindow)] };
+      const [lo, hi] = minMaxSafe(inWindow);
+      return { value: [hi - lo] };
     },
     python: {
       name: "value_range",

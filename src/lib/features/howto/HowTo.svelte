@@ -239,6 +239,7 @@ plt.savefig("localfitting_resultplot.svg", bbox_inches="tight", dpi=300)`;
   scheme.svg        # reaction scheme diagram       (optional)
   figs/             # directory for the validation figures
   validation.*ipynb    # scripts for the validation figures (does not need to be Python)
+  validation.ts     # the validation figures as data, run on the site (optional)
   curatornotes.md   # notes for the validation      (optional)`;
   const metaTs = `import contributors from "#lib/contributors.js";
 import type { ModelMeta } from "#lib/types.js";
@@ -745,6 +746,12 @@ npm run dev               # open the model page, confirm the analyses run`;
       the validation, but the it is still considered a good addition to the
       GreenSloth website, a <Code>curatornotes.md</Code> file should be added to explain
       the errors and the reasoning behind it.
+    </Text>
+    <Text>
+      A model can also declare its figures as data in <Code>validation.ts</Code
+      >, next to <Code>meta.ts</Code>. These run from the model on the website
+      itself behind a Run button, can be downloaded as an MxlPy notebook, and are
+      checked against frozen reference values whenever the model changes.
     </Text>
     <H2>5. Verify and open a PR</H2>
     <Pre>{verifyCode}</Pre>

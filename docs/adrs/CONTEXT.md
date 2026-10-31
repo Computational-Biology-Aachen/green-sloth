@@ -27,6 +27,10 @@ artifact the site actually loads, with a mechanical correctness gate in between.
 
 → [ADR 0004 — Consumes mxlweb-core's prebuilt WASM, doesn't rebuild locally](0004-consumes-prebuilt-wasm-from-core.md)
 
+## Validation
+
+→ [ADR 0006 — Validations are declared as data and run from `model.ts`](0006-validations-as-data.md)
+
 ## Inherited from mxlweb-core
 
 This site does not re-decide: the no-server/all-client-side stance, the three compute
