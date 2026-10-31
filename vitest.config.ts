@@ -12,5 +12,7 @@ export default defineConfig({
   },
   test: {
     include: ["tests/**/*.test.ts"],
+    // Slow, and runs per model through scripts/validation-affected.ts.
+    exclude: process.env.VALIDATE_MODELS ? [] : ["tests/validation.test.ts"],
   },
 });
