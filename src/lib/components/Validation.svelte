@@ -6,13 +6,12 @@
 -->
 <script lang="ts">
   import {
+    Accordion,
     Button,
-    H3,
     HeatmapChart,
     PlotChart,
     StackedBarChart,
   } from "@computational-biology-aachen/design";
-  import H2 from "@computational-biology-aachen/design/H2.svelte";
   import Row from "@computational-biology-aachen/design/Row.svelte";
   import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import { buildModel } from "../loadModel";
@@ -20,7 +19,6 @@
     createValidationPool,
     type ValidationPool,
   } from "../validation/browser";
-  import { toMxlpyNotebook } from "../validation/export/mxlpy";
   import { decimate } from "../validation/decimate";
   import { runValidation, type ValidationResult } from "../validation/run";
   import type { LinePlot, Validation } from "../validation/types";
@@ -40,6 +38,8 @@
     | { state: "failed"; message: string };
 
   let statuses = $state<Record<string, Status>>({});
+  // Figures start closed; running one opens it so its result can be seen.
+  let opened = $state<Record<string, boolean>>({});
   let pool: ValidationPool | undefined;
   let running = $state(false);
   let cancelled = false;
@@ -48,6 +48,7 @@
   $effect.pre(() => {
     void slug;
     statuses = {};
+    opened = {};
     return () => {
       pool?.terminate();
       pool = undefined;
@@ -68,7 +69,10 @@
     cancelled = false;
     pool = createValidationPool();
     const active = pool;
-    for (const v of targets) statuses[v.id] = { state: "idle" };
+    for (const v of targets) {
+      statuses[v.id] = { state: "idle" };
+      opened[v.id] = true;
+    }
     try {
       for (const v of targets) {
         if (cancelled) break;
@@ -139,47 +143,27 @@
 
   const asNumber = (result: ValidationResult, src: string) =>
     result.value(src) as number;
-
-  async function downloadNotebook() {
-    const notebook = toMxlpyNotebook(slug, await freshModel(), validations);
-    const url = URL.createObjectURL(
-      new Blob([JSON.stringify(notebook, null, 1)], {
-        type: "application/x-ipynb+json",
-      }),
-    );
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${slug}_validation.ipynb`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
 </script>
 
-<Row
-  justify="between"
-  wrap
->
-  <H2>Validation</H2>
+<div class="validations">
   <Row justify="end">
-    <Button onclick={downloadNotebook}>MxlPy notebook</Button>
     {#if running}
       <Button onclick={cancel}>Cancel</Button>
     {:else}
       <Button onclick={() => run(validations)}>Run all</Button>
     {/if}
   </Row>
-</Row>
-
-<div class="validations">
   {#each validations as validation (validation.id)}
     {@const status = statuses[validation.id] ?? { state: "idle" }}
-    <div class="validation">
-      <Row
-        justify="between"
-        wrap
-      >
-        <H3>{validation.title}</H3>
-        <Row justify="end">
+    <Accordion
+      title={validation.title}
+      open={opened[validation.id] ?? false}
+    >
+      <div class="validation">
+        <Row
+          justify="end"
+          wrap
+        >
           {#if status.state === "running"}
             <span>{status.done} / {status.total} simulations</span>
           {:else if status.state === "done"}
@@ -190,64 +174,64 @@
             onclick={() => run([validation])}>Run</Button
           >
         </Row>
-      </Row>
-      {#if status.state === "failed"}
-        <p role="alert">{status.message}</p>
-      {:else if status.state === "done"}
-        <div class="plots">
-          {#each validation.plots as plot, i (i)}
-            <div class:wide={plot.type === "heatmap"}>
-              {#if plot.title}<p class="plot-title">{plot.title}</p>{/if}
-              {#if plot.type === "line"}
-                <PlotChart
-                  series={lineSeries(plot, status.result)}
-                  xLabel={plot.xLabel}
-                  yLabel={plot.yLabel}
-                  yRightLabel={plot.yRightLabel}
-                  xLim={plot.xLim}
-                  yLim={plot.yLim}
-                  yRightLim={plot.yRightLim}
-                  logX={plot.logX}
-                  phases={plot.phases}
-                />
-              {:else if plot.type === "scatter"}
-                <PlotChart
-                  series={plot.series.map((s) => ({
-                    x: thin(status.result.column(s.x)),
-                    y: thin(status.result.column(s.y)),
-                    style: "markers" as const,
-                    ...(s.label ? { label: s.label } : {}),
-                  }))}
-                  xLabel={plot.xLabel}
-                  yLabel={plot.yLabel}
-                  xLim={plot.lim}
-                  yLim={plot.lim}
-                  identity={plot.identity ? plot.lim : undefined}
-                />
-              {:else if plot.type === "stackedBar"}
-                <StackedBarChart
-                  categories={plot.categories}
-                  stacks={plot.stacks.map((stack) => ({
-                    label: stack.label,
-                    values: stack.of.map((e) => asNumber(status.result, e)),
-                  }))}
-                  yLabel={plot.yLabel}
-                  yLim={plot.yLim}
-                />
-              {:else}
-                <HeatmapChart
-                  rows={plot.rows}
-                  columns={plot.columns}
-                  values={plot.z.map((row) =>
-                    row.map((e) => asNumber(status.result, e)),
-                  )}
-                />
-              {/if}
-            </div>
-          {/each}
-        </div>
-      {/if}
-    </div>
+        {#if status.state === "failed"}
+          <p role="alert">{status.message}</p>
+        {:else if status.state === "done"}
+          <div class="plots">
+            {#each validation.plots as plot, i (i)}
+              <div class:wide={plot.type === "heatmap"}>
+                {#if plot.title}<p class="plot-title">{plot.title}</p>{/if}
+                {#if plot.type === "line"}
+                  <PlotChart
+                    series={lineSeries(plot, status.result)}
+                    xLabel={plot.xLabel}
+                    yLabel={plot.yLabel}
+                    yRightLabel={plot.yRightLabel}
+                    xLim={plot.xLim}
+                    yLim={plot.yLim}
+                    yRightLim={plot.yRightLim}
+                    logX={plot.logX}
+                    phases={plot.phases}
+                  />
+                {:else if plot.type === "scatter"}
+                  <PlotChart
+                    series={plot.series.map((s) => ({
+                      x: thin(status.result.column(s.x)),
+                      y: thin(status.result.column(s.y)),
+                      style: "markers" as const,
+                      ...(s.label ? { label: s.label } : {}),
+                    }))}
+                    xLabel={plot.xLabel}
+                    yLabel={plot.yLabel}
+                    xLim={plot.lim}
+                    yLim={plot.lim}
+                    identity={plot.identity ? plot.lim : undefined}
+                  />
+                {:else if plot.type === "stackedBar"}
+                  <StackedBarChart
+                    categories={plot.categories}
+                    stacks={plot.stacks.map((stack) => ({
+                      label: stack.label,
+                      values: stack.of.map((e) => asNumber(status.result, e)),
+                    }))}
+                    yLabel={plot.yLabel}
+                    yLim={plot.yLim}
+                  />
+                {:else}
+                  <HeatmapChart
+                    rows={plot.rows}
+                    columns={plot.columns}
+                    values={plot.z.map((row) =>
+                      row.map((e) => asNumber(status.result, e)),
+                    )}
+                  />
+                {/if}
+              </div>
+            {/each}
+          </div>
+        {/if}
+      </div>
+    </Accordion>
   {/each}
 </div>
 
