@@ -89,8 +89,11 @@ const outputTimes = (sim: Simulation): number[] | undefined => {
   return undefined;
 };
 
-const integrator = (scenario: Scenario, v: Validation) =>
-  `partial(Scipy, method=${str(v.exportMethod ?? "Radau")}, rtol=${scenario.rtol ?? v.rtol ?? 1e-8}, atol=${scenario.atol ?? v.atol ?? 1e-8})`;
+function integrator(scenario: Scenario, v: Validation): string {
+  const rtol = v.exportTolerances?.rtol ?? scenario.rtol ?? v.rtol ?? 1e-8;
+  const atol = v.exportTolerances?.atol ?? scenario.atol ?? v.atol ?? 1e-8;
+  return `partial(Scipy, method=${str(v.exportMethod ?? "Radau")}, rtol=${rtol}, atol=${atol})`;
+}
 
 function preRun(pre: PreRun, scenario: Scenario, v: Validation): string[] {
   const set = pre.set ? [`pre.update_parameters(${literal(pre.set)})`] : [];
