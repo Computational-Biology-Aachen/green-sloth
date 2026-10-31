@@ -37,9 +37,8 @@ const ojip = (scenario: string) => ({
   scenario,
 });
 
-const curves = (ids: string[], labels: string[], title: string): Plot => ({
+const curves = (ids: string[], labels: string[]): Plot => ({
   type: "line",
-  title,
   x: `${ids[0]}.time`,
   y: ids.map((id, i) => ({ of: `${id}.F`, label: labels[i] })),
   xLabel: "Time (s)",
@@ -82,7 +81,7 @@ const figure = (
     scenarios,
     ops: [...new Set([ends, steps])].map(ojip),
     collect: { rF: rF(ids, xs, ends, steps) },
-    plots: [curves(ids, xs.map(String), title), rFPlot("rF", xLabel)],
+    plots: [curves(ids, xs.map(String)), rFPlot("rF", xLabel)],
     golden,
   };
 };

@@ -5,6 +5,7 @@ import { evaluate, parse, refs, toPython } from "../src/lib/validation/expr";
 import { OPS, type Frame } from "../src/lib/validation/ops";
 import { protocolGrid } from "../src/lib/validation/run";
 import { compareSeries } from "../src/lib/validation/compare";
+import { decimate } from "../src/lib/validation/decimate";
 import type { Validation } from "../src/lib/validation/types";
 import { derivedKeys } from "../src/lib/utils";
 
@@ -77,6 +78,26 @@ describe("ops match the numpy/scipy reference", () => {
       expect(out[col]).toHaveLength(want.length);
       want.forEach((v, i) => expect(out[col][i]).toBeCloseTo(v, 9));
     }
+  });
+});
+
+describe("decimate", () => {
+  const x = Array.from({ length: 10000 }, (_, i) => i + 1);
+
+  it("keeps a one-sample pulse", () => {
+    const y = x.map((v) => (v === 5001 ? 100 : 0));
+    const out = decimate(x, y, { buckets: 10 });
+    expect(out.x.length).toBeLessThan(50);
+    expect(Math.max(...out.y)).toBe(100);
+  });
+
+  it("keeps early detail on a log axis", () => {
+    const out = decimate(x, x, { log: true, buckets: 10 });
+    expect(out.x.filter((v) => v <= 10).length).toBeGreaterThan(3);
+  });
+
+  it("leaves short lines alone", () => {
+    expect(decimate([1, 2], [3, 4]).x).toEqual([1, 2]);
   });
 });
 

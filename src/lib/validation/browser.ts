@@ -22,6 +22,7 @@ export function createValidationPool(): ValidationPool {
     string,
     { resolve(r: SimulateResult): void; reject(e: Error): void }
   >();
+  let terminated = false;
   const rejectAll = (message: string) => {
     for (const { reject } of pending.values()) reject(new Error(message));
     pending.clear();
@@ -39,11 +40,16 @@ export function createValidationPool(): ValidationPool {
     concurrency,
     simulate: (req) =>
       new Promise((resolve, reject) => {
+        if (terminated) {
+          reject(new Error("Cancelled"));
+          return;
+        }
         const requestId = WorkerPool.generateRequestId();
         pending.set(requestId, { resolve, reject });
         pool.postMessage({ ...req, requestId });
       }),
     terminate() {
+      terminated = true;
       pool.terminate();
       rejectAll("Cancelled");
     },

@@ -105,7 +105,7 @@
   const validationSpecs = import.meta.glob<{ validations: ValidationSpec[] }>(
     "/src/lib/models/*/validation.ts",
   );
-  let validations = $state<ValidationSpec[]>([]);
+  let validations = $state.raw<ValidationSpec[]>([]);
   $effect(() => {
     const slug = data.slug;
     validations = [];
