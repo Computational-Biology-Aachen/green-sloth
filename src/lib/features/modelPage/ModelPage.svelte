@@ -3,6 +3,8 @@
   import KineticModelDashboard from "#lib/components/KineticModelDashboard.svelte";
   import KineticModelTables from "#lib/components/KineticModelTables.svelte";
   import SSModelDashboard from "#lib/components/SSModelDashboard.svelte";
+  import Validation from "#lib/components/Validation.svelte";
+  import type { Validation as ValidationSpec } from "#lib/validation/types.js";
   import SSModelTables from "#lib/components/SSModelTables.svelte";
   import InfoButton from "#lib/components/InfoButton.svelte";
   import type { ModelMeta } from "#lib/types.js";
@@ -99,11 +101,29 @@
     },
   ];
 
-  const validationFiles = import.meta.glob("/src/lib/models/*/validation.*", {
-    query: "?url",
-    import: "default",
-    eager: true,
+  // Lazy: a model's protocols and data only load on its own page.
+  const validationSpecs = import.meta.glob<{ validations: ValidationSpec[] }>(
+    "/src/lib/models/*/validation.ts",
+  );
+  let validations = $state<ValidationSpec[]>([]);
+  $effect(() => {
+    const slug = data.slug;
+    validations = [];
+    void validationSpecs[`/src/lib/models/${slug}/validation.ts`]?.().then(
+      (mod) => {
+        if (data.slug === slug) validations = mod.validations;
+      },
+    );
   });
+
+  const validationFiles = import.meta.glob(
+    "/src/lib/models/*/validation.{ipynb,py,cpp,jl,R,m}",
+    {
+      query: "?url",
+      import: "default",
+      eager: true,
+    },
+  );
 
   let validationFile = $derived.by(() => {
     // We are looking for a path that contains this specific folder and base name
@@ -402,6 +422,19 @@
     <Text>Model could not be loaded.</Text>
   {/if}
 </Section>
+
+<!-- Publication figures, run on request -->
+{#if validations.length > 0}
+  <Section
+    variant="surface"
+    width="narrow"
+  >
+    <Validation
+      slug={data.slug}
+      validations={validations}
+    />
+  </Section>
+{/if}
 
 <!-- Model definition tables -->
 {#if model}

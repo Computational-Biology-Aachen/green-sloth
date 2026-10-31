@@ -1,0 +1,45 @@
+name: validation
+
+# Re-runs a model's publication figures when it, its configuration, or the shared
+# engine changed (scripts/validation-affected.ts), against frozen goldens.
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.15
+          cache: npm
+
+      - name: Upgrade npm
+        run: npm install -g "npm@==12.2.0"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Restore passes
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/validation
+          key: validation-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: validation-
+
+      - name: Validate affected models
+        run: npm run test:validation
