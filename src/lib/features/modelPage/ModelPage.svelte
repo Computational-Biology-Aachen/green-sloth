@@ -4,6 +4,8 @@
   import KineticModelTables from "#lib/components/KineticModelTables.svelte";
   import SSModelDashboard from "#lib/components/SSModelDashboard.svelte";
   import Validation from "#lib/components/Validation.svelte";
+  import { buildModel } from "#lib/loadModel.js";
+  import { toMxlpyNotebook } from "#lib/validation/export/mxlpy.js";
   import type { Validation as ValidationSpec } from "#lib/validation/types.js";
   import SSModelTables from "#lib/components/SSModelTables.svelte";
   import InfoButton from "#lib/components/InfoButton.svelte";
@@ -105,16 +107,28 @@
   const validationSpecs = import.meta.glob<{ validations: ValidationSpec[] }>(
     "/src/lib/models/*/validation.ts",
   );
+  const validationPath = $derived(`/src/lib/models/${data.slug}/validation.ts`);
+  const hasValidation = $derived(validationPath in validationSpecs);
   let validations = $state.raw<ValidationSpec[]>([]);
   $effect(() => {
     const slug = data.slug;
     validations = [];
-    void validationSpecs[`/src/lib/models/${slug}/validation.ts`]?.().then(
-      (mod) => {
-        if (data.slug === slug) validations = mod.validations;
-      },
-    );
+    void validationSpecs[validationPath]?.().then((mod) => {
+      if (data.slug === slug) validations = mod.validations;
+    });
   });
+
+  async function downloadNotebook() {
+    // A freshly built model: `model` carries the dashboard's slider values.
+    const fresh = await buildModel(data.slug);
+    if (!(fresh instanceof KineticModelBuilder)) return;
+    const notebook = toMxlpyNotebook(data.slug, fresh, validations);
+    downloadText(
+      JSON.stringify(notebook, null, 1),
+      `${data.slug}_validation.ipynb`,
+      "application/x-ipynb+json",
+    );
+  }
 
   const validationFiles = import.meta.glob(
     "/src/lib/models/*/validation.{ipynb,py,cpp,jl,R,m}",
@@ -423,19 +437,6 @@
   {/if}
 </Section>
 
-<!-- Publication figures, run on request -->
-{#if validations.length > 0}
-  <Section
-    variant="surface"
-    width="narrow"
-  >
-    <Validation
-      slug={data.slug}
-      validations={validations}
-    />
-  </Section>
-{/if}
-
 <!-- Model definition tables -->
 {#if model}
   <Section
@@ -483,7 +484,7 @@
       {/each}
     </Ul>
   {/if}
-  {#if paperFigures.length !== 0}
+  {#if hasValidation || paperFigures.length !== 0}
     <InfoBox header="Curator's note">
       {#if validationFile}
         <Button
@@ -492,11 +493,22 @@
           ><Icon>download</Icon> Download code</Button
         >
       {/if}
+      {#if hasValidation}
+        <Button
+          variant="inverted"
+          onclick={downloadNotebook}
+          ><Icon>download</Icon> Download as MxlPy notebook</Button
+        >
+      {/if}
       <Text
         >This model was validated by reproducing the following figures of the <Link
           href="https://doi.org/{data.meta.DOI}">original publication</Link
         >. Due to copyright restrictions, a side-by-side comparison of the
         original figures is not shown here.
+        {#if hasValidation}
+          Each figure is simulated from this model in your browser when you run
+          it.
+        {/if}
       </Text>
       {#if data.curatornotes}
         <Markdown
@@ -506,14 +518,21 @@
       {/if}
 
       <Accordion title="Figures">
-        {#each paperFigures as fig (fig.src)}
-          <Accordion title={fig.title}>
-            <Image
-              src={fig.src}
-              alt={fig.title}
-            />
-          </Accordion>
-        {/each}
+        {#if hasValidation}
+          <Validation
+            slug={data.slug}
+            validations={validations}
+          />
+        {:else}
+          {#each paperFigures as fig (fig.src)}
+            <Accordion title={fig.title}>
+              <Image
+                src={fig.src}
+                alt={fig.title}
+              />
+            </Accordion>
+          {/each}
+        {/if}
       </Accordion>
     </InfoBox>
   {:else}
