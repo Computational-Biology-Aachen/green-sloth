@@ -21,8 +21,9 @@
     type ValidationPool,
   } from "../validation/browser";
   import { toMxlpyNotebook } from "../validation/export/mxlpy";
+  import { decimate } from "../validation/decimate";
   import { runValidation, type ValidationResult } from "../validation/run";
-  import type { Validation } from "../validation/types";
+  import type { LinePlot, Validation } from "../validation/types";
 
   let {
     slug,
@@ -41,6 +42,7 @@
   let statuses = $state<Record<string, Status>>({});
   let pool: ValidationPool | undefined;
   let running = $state(false);
+  let cancelled = false;
 
   // Slugs share this component across navigation; a new model starts clean.
   $effect.pre(() => {
@@ -63,11 +65,13 @@
 
   async function run(targets: Validation[]) {
     running = true;
+    cancelled = false;
     pool = createValidationPool();
     const active = pool;
     for (const v of targets) statuses[v.id] = { state: "idle" };
     try {
       for (const v of targets) {
+        if (cancelled) break;
         const total = Object.keys(v.scenarios).length;
         statuses[v.id] = { state: "running", done: 0, total };
         const started = performance.now();
@@ -89,10 +93,12 @@
             result,
           };
         } catch (e) {
-          statuses[v.id] = {
-            state: "failed",
-            message: e instanceof Error ? e.message : String(e),
-          };
+          statuses[v.id] = cancelled
+            ? { state: "idle" }
+            : {
+                state: "failed",
+                message: e instanceof Error ? e.message : String(e),
+              };
         }
       }
     } finally {
@@ -105,15 +111,30 @@
   }
 
   function cancel() {
+    cancelled = true;
     pool?.terminate();
   }
 
-  const MAX_CHART_POINTS = 1000;
+  const MAX_CHART_POINTS = 2000;
 
-  /** Thins long columns for drawing; validations can return 1e5 samples. */
+  /** A scatter has no order to decimate along, so take evenly spaced points. */
   function thin(col: number[]): number[] {
     const stride = Math.ceil(col.length / MAX_CHART_POINTS);
     return stride <= 1 ? col : col.filter((_, i) => i % stride === 0);
+  }
+
+  function lineSeries(plot: LinePlot, result: ValidationResult) {
+    return plot.y.map((line) => ({
+      ...decimate(
+        result.column(line.x ?? plot.x),
+        result.column(line.of),
+        plot.logX ? { log: true } : {},
+      ),
+      ...(line.label ? { label: line.label } : {}),
+      ...(line.axis ? { axis: line.axis } : {}),
+      ...(line.style ? { style: line.style } : {}),
+      ...(line.err ? { err: result.column(line.err) } : {}),
+    }));
   }
 
   const asNumber = (result: ValidationResult, src: string) =>
@@ -175,20 +196,11 @@
       {:else if status.state === "done"}
         <div class="plots">
           {#each validation.plots as plot, i (i)}
-            <div>
+            <div class:wide={plot.type === "heatmap"}>
               {#if plot.title}<p class="plot-title">{plot.title}</p>{/if}
               {#if plot.type === "line"}
                 <PlotChart
-                  series={plot.y.map((line) => ({
-                    x: thin(status.result.column(line.x ?? plot.x)),
-                    y: thin(status.result.column(line.of)),
-                    ...(line.label ? { label: line.label } : {}),
-                    ...(line.axis ? { axis: line.axis } : {}),
-                    ...(line.style ? { style: line.style } : {}),
-                    ...(line.err
-                      ? { err: thin(status.result.column(line.err)) }
-                      : {}),
-                  }))}
+                  series={lineSeries(plot, status.result)}
                   xLabel={plot.xLabel}
                   yLabel={plot.yLabel}
                   yRightLabel={plot.yRightLabel}
@@ -252,6 +264,10 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--space-3);
+  }
+
+  .wide {
+    grid-column: 1 / -1;
   }
 
   .plot-title {
