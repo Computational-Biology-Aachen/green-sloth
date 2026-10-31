@@ -7,9 +7,8 @@ import type {
   KineticModelBuilder,
   SimulationRequest,
 } from "@computational-biology-aachen/mxlweb-core";
-import { Name, Num } from "@computational-biology-aachen/mxlweb-core/mathml";
 import { derivedKeys } from "../utils";
-import { evaluate, parse, type Value } from "./expr";
+import { evaluate, parse, toMathml, type Value } from "./expr";
 import { evalColumn, OPS, type Frame } from "./ops";
 import type {
   ModelEdit,
@@ -24,6 +23,7 @@ export type SimulateResult = {
   time: number[];
   values: number[][];
   finalState?: number[];
+  rhs?: number[][];
   err?: { message: string };
 };
 export type Simulate = (req: SimulationRequest) => Promise<SimulateResult>;
@@ -49,17 +49,17 @@ type ScenarioState = {
   init: Map<string, number>;
 };
 
-const TIME_EPS = 1e-12;
-
 /** MxlPy's sampling: `points` intervals per step, boundaries not repeated. */
-export function protocolGrid(steps: ProtocolStep[], points: number): number[] {
+export function protocolGrid(steps: ProtocolStep[], perStep = 10): number[] {
   const out: number[] = [];
   let t = 0;
   steps.forEach((step, s) => {
+    const points = step.points ?? perStep;
     const end = t + step.duration;
-    for (let i = s === 0 ? 0 : 1; i <= points; i++) {
+    for (let i = s === 0 ? 0 : 1; i < points; i++) {
       out.push(t + (i / points) * step.duration);
     }
+    out.push(end);
     t = end;
   });
   return out;
@@ -98,15 +98,19 @@ function applyEdit(model: KineticModelBuilder, edit: ModelEdit) {
   } else if ("clampVariable" in edit) {
     model.removeVariable(edit.clampVariable);
     model.addParameter(edit.clampVariable, { value: edit.to });
+  } else if ("parameterToAssignment" in edit) {
+    model.removeParameter(edit.parameterToAssignment);
+    model.addAssignment(edit.parameterToAssignment, {
+      fn: toMathml(parse(edit.to)),
+    });
   } else {
     const current = model.assignments.get(edit.setAssignment);
     if (!current) {
       throw new Error(`Unknown assignment "${edit.setAssignment}"`);
     }
-    const asNumber = Number(edit.to);
     model.updateAssignment(edit.setAssignment, {
       ...current,
-      fn: Number.isNaN(asNumber) ? new Name(edit.to) : new Num(asNumber),
+      fn: toMathml(parse(edit.to)),
     });
   }
 }
@@ -172,15 +176,98 @@ function buildRequest(
     req.steadyState = sim.tol === undefined ? {} : { tol: sim.tol };
   } else if (sim.kind === "timeCourse") {
     req.tEval = sim.tEval;
-    req.tEnd = sim.tEval[sim.tEval.length - 1] * (1 + TIME_EPS);
+    req.tEnd = sim.tEval[sim.tEval.length - 1];
   } else {
     req.protocol = protocolSegments(sim.steps);
-    req.tEval = protocolGrid(sim.steps, sim.pointsPerStep);
-    // Rounding must not push the last grid time past the final step's end.
-    const last = req.protocol[req.protocol.length - 1];
-    last.t_end = Math.max(last.t_end, req.tEval[req.tEval.length - 1]);
+    req.tEval = sim.tEval ?? protocolGrid(sim.steps, sim.pointsPerStep);
   }
+  if (validation.returnRhs) req.returnRhs = true;
   return req;
+}
+
+function toFrame(
+  model: KineticModelBuilder,
+  res: SimulateResult,
+  allNames: string[],
+): Frame {
+  const names = model.getNames();
+  const columns = [...names, ...derivedKeys(model)];
+  const frame: Frame = { time: res.time };
+  columns.forEach((name, j) => {
+    frame[name] = res.values.map((row) => row[j]);
+  });
+  // A clamped variable has no column in that phase of a chain.
+  for (const name of allNames) {
+    frame[name] ??= res.time.map(() => NaN);
+  }
+  if (res.rhs) {
+    names.forEach((name, j) => {
+      frame[`ddt.${name}`] = res.rhs!.map((row) => row[j]);
+    });
+  }
+  return frame;
+}
+
+function shiftSim(sim: Simulation, by: number): number[] {
+  if (sim.kind === "timeCourse") return sim.tEval.map((t) => t + by);
+  if (sim.kind === "protocol") {
+    return (sim.tEval ?? protocolGrid(sim.steps, sim.pointsPerStep)).map(
+      (t) => t + by,
+    );
+  }
+  throw new Error("A steady state can't be a stage of a chain");
+}
+
+async function runStages(
+  id: string,
+  scenario: Scenario,
+  built: ReturnType<typeof buildScenario>,
+  validation: Validation,
+  simulate: Simulate,
+): Promise<Frame> {
+  const { model: first } = built;
+  const allNames = [...first.getNames(), ...derivedKeys(first)];
+  // As in MxlPy, a chain hands on what the last phase simulated: a variable a
+  // phase clamped starts the next one from its initial value again.
+  const initial = new Map(
+    first.getNames().map((name, i) => [name, first.resolveInitialValues()[i]]),
+  );
+  let state = initial;
+  const out: Frame = {};
+  let offset = 0;
+  for (const [s, stage] of (scenario.stages ?? []).entries()) {
+    const model = first.clone() as KineticModelBuilder;
+    stage.edits?.forEach((edit) => applyEdit(model, edit));
+    const y0 = model.getNames().map((name) => {
+      const value = state.get(name) ?? initial.get(name);
+      if (value === undefined) throw new Error(`No state for "${name}"`);
+      return value;
+    });
+    const res = await simulate(
+      buildRequest(
+        model,
+        stage.simulate,
+        y0,
+        scenario,
+        validation,
+        `${id}/${s}`,
+      ),
+    );
+    if (res.err) throw new Error(`${id} stage ${s}: ${res.err.message}`);
+    if (!res.finalState) throw new Error(`${id}: backend has no final state`);
+    state = new Map(
+      model.getNames().map((name, i) => [name, res.finalState![i]]),
+    );
+
+    const frame = toFrame(model, res, allNames);
+    frame.time = shiftSim(stage.simulate, offset);
+    const skip = s === 0 ? 0 : 1;
+    for (const [name, col] of Object.entries(frame)) {
+      (out[name] ??= []).push(...col.slice(skip));
+    }
+    offset = frame.time[frame.time.length - 1];
+  }
+  return out;
 }
 
 async function runScenario(
@@ -190,31 +277,45 @@ async function runScenario(
   validation: Validation,
   simulate: Simulate,
 ): Promise<ScenarioState> {
-  const { model, params, init } = buildScenario(base, scenario);
+  const built = buildScenario(base, scenario);
+  const { model, params, init } = built;
   const sim = scenario.simulate ?? validation.simulate;
-  let y0 = model.resolveInitialValues();
 
+  if (scenario.stages) {
+    const frame = await runStages(id, scenario, built, validation, simulate);
+    return { frame, ops: {}, protocol: undefined, params, init };
+  }
+  if (!sim) throw new Error(`${id}: no simulation`);
+
+  let y0 = model.resolveInitialValues();
   for (const pre of scenario.pre ?? []) {
-    const res = await simulate(
-      buildRequest(model, pre, y0, scenario, validation, `${id}/pre`),
-    );
+    const req = buildRequest(model, pre, y0, scenario, validation, `${id}/pre`);
+    for (const [key, value] of Object.entries(pre.set ?? {})) {
+      const i = req.parNames!.indexOf(key);
+      if (i < 0) throw new Error(`Unknown parameter "${key}"`);
+      req.pars[i] = value;
+    }
+    const res = await simulate(req);
     if (res.err) throw new Error(`${id} (pre): ${res.err.message}`);
     if (!res.finalState) throw new Error(`${id}: backend has no final state`);
     y0 = res.finalState;
   }
 
-  const res = await simulate(
+  // Headless, a failed solve throws; through a worker it comes back as `err`.
+  let res = await simulate(
     buildRequest(model, sim, y0, scenario, validation, id),
-  );
-  if (res.err) throw new Error(`${id}: ${res.err.message}`);
-
-  const columns = [...model.getNames(), ...derivedKeys(model)];
-  const frame: Frame = { time: res.time };
-  columns.forEach((name, j) => {
-    frame[name] = res.values.map((row) => row[j]);
-  });
+  ).catch((e: Error): SimulateResult => ({
+    time: [],
+    values: [],
+    err: { message: e.message },
+  }));
+  if (res.err) {
+    if (!scenario.allowFailure) throw new Error(`${id}: ${res.err.message}`);
+    const width = model.getNames().length + derivedKeys(model).length;
+    res = { time: [NaN], values: [Array(width).fill(NaN)] };
+  }
   return {
-    frame,
+    frame: toFrame(model, res, []),
     ops: {},
     protocol: sim.kind === "protocol" ? sim.steps : undefined,
     params,
@@ -261,9 +362,17 @@ export async function runValidation(
   });
   const scenarios = Object.fromEntries(ids.map((id, i) => [id, states[i]]));
   const derived: Frame = {};
+  const tables: Record<string, Frame> = {};
+
+  const data = (name: string) => {
+    const col = validation.data?.[name];
+    if (!col) throw new Error(`Unknown data column "${name}"`);
+    return col;
+  };
 
   const inScenario = (state: ScenarioState) => (path: string[]) => {
     const [a, b] = path;
+    if (a === "data") return data(b);
     if (a === "param" || a === "init") {
       const value = (a === "param" ? state.params : state.init).get(b);
       if (value === undefined) throw new Error(`Unknown ${path.join(".")}`);
@@ -272,6 +381,8 @@ export async function runValidation(
     if (a in state.ops) {
       const col = state.ops[a][b ?? "value"];
       if (col) return col;
+    } else if (a === "ddt" && `ddt.${b}` in state.frame) {
+      return state.frame[`ddt.${b}`];
     } else if (path.length === 1 && a in state.frame) {
       return state.frame[a];
     }
@@ -280,6 +391,12 @@ export async function runValidation(
 
   const global = (path: string[]): Value => {
     if (path.length === 1 && path[0] in derived) return derived[path[0]];
+    if (path[0] === "data") return data(path[1]);
+    const table = tables[path[0]];
+    if (table) {
+      if (path[1] in table) return table[path[1]];
+      throw new Error(`Unknown column "${path.join(".")}"`);
+    }
     const state = scenarios[path[0]];
     if (state) return inScenario(state)(path.slice(1));
     if (path[0] === "param" || path[0] === "init") {
@@ -296,16 +413,33 @@ export async function runValidation(
     }
   }
   for (const spec of validation.ops ?? []) {
-    const def = OPS[spec.op];
-    if (!def) throw new Error(`Unknown op "${spec.op}"`);
-    const targets = spec.scenario ? [spec.scenario] : ids;
-    for (const id of targets) {
+    for (const id of spec.scenario ? [spec.scenario] : ids) {
       const state = scenarios[id];
-      state.ops[spec.as] = def.run(spec, {
+      const resolve = inScenario(state);
+      if (spec.op === "column") {
+        state.frame[spec.as] = evalColumn(spec.expr as string, resolve);
+        continue;
+      }
+      const def = OPS[spec.op];
+      if (!def) throw new Error(`Unknown op "${spec.op}"`);
+      const out = def.run(spec, {
         protocol: state.protocol,
-        column: (src) => evalColumn(src, inScenario(state)),
+        column: (src) => evalColumn(src, resolve),
+      });
+      state.ops[spec.as] = out;
+      if (spec.into) state.frame[spec.as] = out.value;
+    }
+  }
+  for (const [name, table] of Object.entries(validation.collect ?? {})) {
+    const frame: Frame = { x: table.x };
+    for (const [col, exprs] of Object.entries(table.columns)) {
+      frame[col] = exprs.map((src) => {
+        const v = evaluate(parse(src), global);
+        if (typeof v !== "number") throw new Error(`"${src}" is not a number`);
+        return v;
       });
     }
+    tables[name] = frame;
   }
   for (const [name, src] of Object.entries(validation.derive ?? {})) {
     derived[name] = evalColumn(src, global);

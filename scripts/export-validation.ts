@@ -4,16 +4,20 @@
  *
  *   vite-node scripts/export-validation.ts <slug> <out.ipynb>
  *   vite-node scripts/export-validation.ts --ops <out.py>
+ *   vite-node scripts/export-validation.ts --model <slug> <out.py>
  */
 import { writeFileSync } from "node:fs";
 import { OPS } from "../src/lib/validation/ops";
 import { toMxlpyNotebook } from "../src/lib/validation/export/mxlpy";
 
-const [first, second] = process.argv.slice(2);
+const [first, second, third] = process.argv.slice(2);
 
 if (first === "--ops") {
   const sources = Object.values(OPS).map((op) => op.python.source);
   writeFileSync(second, sources.join("\n"));
+} else if (first === "--model") {
+  const { initModel } = await import(`../src/lib/models/${second}/model.ts`);
+  writeFileSync(third, initModel().buildMxlpy());
 } else {
   const { initModel } = await import(`../src/lib/models/${first}/model.ts`);
   const { validations } = await import(

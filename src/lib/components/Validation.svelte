@@ -5,19 +5,24 @@
  always on a freshly built model, so sliders and fits don't affect them.
 -->
 <script lang="ts">
-  import { Button, H3, LineChart } from "@computational-biology-aachen/design";
+  import {
+    Button,
+    H3,
+    HeatmapChart,
+    PlotChart,
+    StackedBarChart,
+  } from "@computational-biology-aachen/design";
   import H2 from "@computational-biology-aachen/design/H2.svelte";
   import Row from "@computational-biology-aachen/design/Row.svelte";
   import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
   import { buildModel } from "../loadModel";
-  import type { LineChartData } from "../utils";
   import {
     createValidationPool,
     type ValidationPool,
   } from "../validation/browser";
   import { toMxlpyNotebook } from "../validation/export/mxlpy";
   import { runValidation, type ValidationResult } from "../validation/run";
-  import type { LinePlot, Validation } from "../validation/types";
+  import type { Validation } from "../validation/types";
 
   let {
     slug,
@@ -105,18 +110,14 @@
 
   const MAX_CHART_POINTS = 1000;
 
-  function chartData(plot: LinePlot, result: ValidationResult): LineChartData {
-    const x = result.column(plot.x);
-    const stride = Math.max(1, Math.ceil(x.length / MAX_CHART_POINTS));
-    const thin = (col: number[]) => col.filter((_, i) => i % stride === 0);
-    return {
-      labels: thin(x),
-      datasets: plot.y.map((s) => ({
-        label: s.label ?? s.of,
-        data: thin(result.column(s.of)),
-      })),
-    };
+  /** Thins long columns for drawing; validations can return 1e5 samples. */
+  function thin(col: number[]): number[] {
+    const stride = Math.ceil(col.length / MAX_CHART_POINTS);
+    return stride <= 1 ? col : col.filter((_, i) => i % stride === 0);
   }
+
+  const asNumber = (result: ValidationResult, src: string) =>
+    result.value(src) as number;
 
   async function downloadNotebook() {
     const notebook = toMxlpyNotebook(slug, await freshModel(), validations);
@@ -176,12 +177,60 @@
           {#each validation.plots as plot, i (i)}
             <div>
               {#if plot.title}<p class="plot-title">{plot.title}</p>{/if}
-              <LineChart
-                data={chartData(plot, status.result)}
-                loading={false}
-                yMax={plot.yLim?.[1]}
-                lineDisplay="current"
-              />
+              {#if plot.type === "line"}
+                <PlotChart
+                  series={plot.y.map((line) => ({
+                    x: thin(status.result.column(line.x ?? plot.x)),
+                    y: thin(status.result.column(line.of)),
+                    ...(line.label ? { label: line.label } : {}),
+                    ...(line.axis ? { axis: line.axis } : {}),
+                    ...(line.style ? { style: line.style } : {}),
+                    ...(line.err
+                      ? { err: thin(status.result.column(line.err)) }
+                      : {}),
+                  }))}
+                  xLabel={plot.xLabel}
+                  yLabel={plot.yLabel}
+                  yRightLabel={plot.yRightLabel}
+                  xLim={plot.xLim}
+                  yLim={plot.yLim}
+                  yRightLim={plot.yRightLim}
+                  logX={plot.logX}
+                  phases={plot.phases}
+                />
+              {:else if plot.type === "scatter"}
+                <PlotChart
+                  series={plot.series.map((s) => ({
+                    x: thin(status.result.column(s.x)),
+                    y: thin(status.result.column(s.y)),
+                    style: "markers" as const,
+                    ...(s.label ? { label: s.label } : {}),
+                  }))}
+                  xLabel={plot.xLabel}
+                  yLabel={plot.yLabel}
+                  xLim={plot.lim}
+                  yLim={plot.lim}
+                  identity={plot.identity ? plot.lim : undefined}
+                />
+              {:else if plot.type === "stackedBar"}
+                <StackedBarChart
+                  categories={plot.categories}
+                  stacks={plot.stacks.map((stack) => ({
+                    label: stack.label,
+                    values: stack.of.map((e) => asNumber(status.result, e)),
+                  }))}
+                  yLabel={plot.yLabel}
+                  yLim={plot.yLim}
+                />
+              {:else}
+                <HeatmapChart
+                  rows={plot.rows}
+                  columns={plot.columns}
+                  values={plot.z.map((row) =>
+                    row.map((e) => asNumber(status.result, e)),
+                  )}
+                />
+              {/if}
             </div>
           {/each}
         </div>

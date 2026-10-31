@@ -1,0 +1,1 @@
+The validation reproduces the original notebook's numbers. Its traces labelled Fd red, PQ red and PC red plotted the oxidised fractions (`Fd_ox_per_tot`, `PQ_ox_per_tot`, `PC_ox_per_tot`), so they are labelled as oxidised here.

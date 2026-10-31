@@ -1,7 +1,8 @@
 /**
  * Compares a validation's series with its frozen golden. The metric is
- * max |sim - golden| / range(golden) per series; an exactly flat golden has no
- * range, so it falls back to max(|golden|), or 1 if that is zero too.
+ * max |sim - golden| / scale per series, where scale is range(golden), but at
+ * least 1e-3 of max(|golden|): a series flat to rounding noise has no meaningful
+ * range. An all-zero golden uses a scale of 1.
  */
 import { DEFAULT_TOLERANCE, type Validation } from "./types";
 import type { ValidationResult } from "./run";
@@ -21,23 +22,39 @@ export interface SeriesComparison {
 }
 
 const X_MATCH = 1e-9;
+const FLAT_FLOOR = 1e-3;
 
 export function compareSeries(
   simX: number[],
   simY: number[],
   golden: { x: number[]; y: number[] },
+  byIndex = false,
 ): { relativeError: number; atX: number } {
-  const lo = Math.min(...golden.y);
-  const hi = Math.max(...golden.y);
-  const scale = hi - lo || Math.max(Math.abs(lo), Math.abs(hi)) || 1;
+  const lo = golden.y.reduce((a, b) => Math.min(a, b));
+  const hi = golden.y.reduce((a, b) => Math.max(a, b));
+  const scale =
+    Math.max(hi - lo, FLAT_FLOOR * Math.max(Math.abs(lo), Math.abs(hi))) || 1;
   let relativeError = 0;
   let atX = NaN;
   let j = 0;
+  if (byIndex && simX.length !== golden.x.length) {
+    throw new Error(`${simX.length} points, golden has ${golden.x.length}`);
+  }
   golden.x.forEach((x, i) => {
-    const tol = X_MATCH * (1 + Math.abs(x));
-    while (j < simX.length - 1 && simX[j] < x - tol) j++;
-    if (Math.abs(simX[j] - x) > tol) {
-      throw new Error(`No simulated point at x=${x} (nearest ${simX[j]})`);
+    if (byIndex) {
+      j = i;
+    } else {
+      const tol = X_MATCH * (1 + Math.abs(x));
+      // Nearest, not first within `tol`: that spans several samples at tiny x.
+      while (
+        j < simX.length - 1 &&
+        Math.abs(simX[j + 1] - x) <= Math.abs(simX[j] - x)
+      ) {
+        j++;
+      }
+      if (Math.abs(simX[j] - x) > tol) {
+        throw new Error(`No simulated point at x=${x} (nearest ${simX[j]})`);
+      }
     }
     const err = Math.abs(simY[j] - golden.y[i]) / scale;
     // NaN must fail, and comparisons with it are always false.
@@ -63,6 +80,7 @@ export function compareValidation(
       result.column(spec.x),
       result.column(spec.y),
       want,
+      spec.byIndex,
     );
     const tolerance = spec.tolerance ?? DEFAULT_TOLERANCE;
     return {
