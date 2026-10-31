@@ -1,0 +1,801 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" xmlns:math="http://www.w3.org/1998/Math/MathML" level="3" version="1">
+  <model id="seydoux2022_WT_NPQ_live" name="Seydoux et al. 2022 WT: NPQ reporter timecourse (virtual saturating probe)">
+    <notes>
+      <html:body xmlns:html="http://www.w3.org/1999/xhtml">
+        <html:p>Source: user-provided Seydoux2022_MxlPy.ipynb, based on Seydoux et al. 2022, DOI 10.1111/nph.18003.</html:p>
+        <html:p>The MxlPy quasi-steady PSII 4x4 linear solve is represented by mathematically equivalent algebraic assignment rules B0-B3.</html:p>
+        <html:p>The stored PPFD value is constant for simple timecourses; notebook Figures 3b/3c require a segmented PAM pulse schedule plus computation of NPQ from pulse maxima. NPQ is not a dynamic species.</html:p>
+        <html:p>Reaction stoichiometries assume the original b_H=100 and HPR=14/3 values. If changing either parameter, re-export the SBML stoichiometry.</html:p>
+      <html:p>NPQ is an auxiliary mathematical readout species (not a biological compound). No original ODE or reaction has been altered. The reporter derivative follows the chain rule exactly.</html:p><html:p>Preview: PPFD=200 begins from the WT state after 1000 s dark adaptation. Model output NPQ=(Fm_dark_virtual-Fm_sat_virtual(t))/Fm_sat_virtual(t), using a virtual instantaneous 5000 PPFD fluorescence probe.</html:p><html:p>IMPORTANT: This is an instantaneous NPQ proxy for live display, not an exact recreation of the 0.8 s pulse maxima from Seydoux notebook. The original published Figure 3b/3c reproduction still requires the PAM protocol and analysis script.</html:p></html:body>
+    </notes>
+    <listOfCompartments>
+      <compartment id="cell" size="1" spatialDimensions="3" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="pq_red" compartment="cell" initialAmount="5" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="protons" compartment="cell" initialAmount="0.00049518034925131462" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="atpase_activity" compartment="cell" initialAmount="0.067667668166171924" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="atp" compartment="cell" initialAmount="2.1165727010884825e-06" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="dd" compartment="cell" initialAmount="0.99999999273561224" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+    <species id="NPQ" name="NPQ (instantaneous virtual-pulse estimate)" compartment="cell" initialAmount="0" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/></listOfSpecies>
+    <listOfParameters>
+      <parameter id="PSII_total" value="2.5" constant="true"/>
+      <parameter id="PQ_total" value="20" constant="true"/>
+      <parameter id="AP_total" value="50" constant="true"/>
+      <parameter id="LHCX_total" value="0.5" constant="true"/>
+      <parameter id="X_total" value="1" constant="true"/>
+      <parameter id="O2_ex" value="8" constant="true"/>
+      <parameter id="Pi" value="0.01" constant="true"/>
+      <parameter id="k_KEA_fraction" value="0.7" constant="true"/>
+      <parameter id="k_Cytb6f" value="0.104" constant="true"/>
+      <parameter id="k_ActATPase" value="0.01" constant="true"/>
+      <parameter id="k_DeactATPase" value="0.002" constant="true"/>
+      <parameter id="k_ATPsynthase" value="20.0" constant="true"/>
+      <parameter id="k_ATPconsumption" value="10.0" constant="true"/>
+      <parameter id="k_PQred" value="250.0" constant="true"/>
+      <parameter id="k_H" value="5000000000.0" constant="true"/>
+      <parameter id="k_F" value="625000000.0" constant="true"/>
+      <parameter id="k_P" value="1200000000.0" constant="true"/>
+      <parameter id="pH_stroma" value="7.8" constant="true"/>
+      <parameter id="k_leak" value="1000.0" constant="true"/>
+      <parameter id="b_H" value="100.0" constant="true"/>
+      <parameter id="HPR" value="4.666666666666667" constant="true"/>
+      <parameter id="k_deepoxidation" value="0.025" constant="true"/>
+      <parameter id="k_epoxidation" value="0.0096" constant="true"/>
+      <parameter id="pH_deepoxidase_half" value="6.3" constant="true"/>
+      <parameter id="n_HX" value="5.0" constant="true"/>
+      <parameter id="k_ETC" value="2.0" constant="true"/>
+      <parameter id="F" value="96.485" constant="true"/>
+      <parameter id="R" value="0.0083" constant="true"/>
+      <parameter id="T" value="298.0" constant="true"/>
+      <parameter id="E0_QA" value="-0.14" constant="true"/>
+      <parameter id="E0_PQ" value="0.354" constant="true"/>
+      <parameter id="E0_PC" value="0.35" constant="true"/>
+      <parameter id="DG0_ATP" value="30.6" constant="true"/>
+      <parameter id="PPFD" value="200.0" constant="true"/>
+      <parameter id="H_stroma" constant="false"/>
+      <parameter id="H_beta" constant="false"/>
+      <parameter id="pH_lumen" constant="false"/>
+      <parameter id="pq_ox" constant="false"/>
+      <parameter id="adp" constant="false"/>
+      <parameter id="dt" constant="false"/>
+      <parameter id="Q" constant="false"/>
+      <parameter id="K_QAPQ" constant="false"/>
+      <parameter id="K_cytb6f" constant="false"/>
+      <parameter id="K_ATPsynthase" constant="false"/>
+      <parameter id="k_deepoxidase" constant="false"/>
+      <parameter id="psii_u" constant="false"/>
+      <parameter id="psii_b0" constant="false"/>
+      <parameter id="psii_b1" constant="false"/>
+      <parameter id="psii_b2" constant="false"/>
+      <parameter id="psii_w0" constant="false"/>
+      <parameter id="psii_w1" constant="false"/>
+      <parameter id="psii_w2" constant="false"/>
+      <parameter id="psii_w3" constant="false"/>
+      <parameter id="psii_norm" constant="false"/>
+      <parameter id="B0" constant="false"/>
+      <parameter id="B1" constant="false"/>
+      <parameter id="B2" constant="false"/>
+      <parameter id="B3" constant="false"/>
+      <parameter id="Fluo" constant="false"/>
+    <parameter id="PPFD_virtual_pulse" value="5000" constant="true"/><parameter id="Fm_dark_reference" value="1.6352539112509574" constant="true"/><parameter id="u_sat" constant="false"/><parameter id="b0_sat" constant="false"/><parameter id="b1_sat" constant="false"/><parameter id="b2_sat" constant="false"/><parameter id="w0_sat" constant="false"/><parameter id="w1_sat" constant="false"/><parameter id="w2_sat" constant="false"/><parameter id="w3_sat" constant="false"/><parameter id="norm_sat" constant="false"/><parameter id="B0_sat" constant="false"/><parameter id="B2_sat" constant="false"/><parameter id="Fm_sat_virtual" constant="false"/><parameter id="db0_dp" constant="false"/><parameter id="du_dp" constant="false"/><parameter id="db1_dd" constant="false"/><parameter id="w0_dp" constant="false"/><parameter id="w2_dp" constant="false"/><parameter id="w0_dd" constant="false"/><parameter id="w2_dd" constant="false"/><parameter id="norm_dp" constant="false"/><parameter id="norm_dd" constant="false"/><parameter id="dB0_dp" constant="false"/><parameter id="dB2_dp" constant="false"/><parameter id="dB0_dd" constant="false"/><parameter id="dB2_dd" constant="false"/><parameter id="dFm_dp" constant="false"/><parameter id="dFm_dd" constant="false"/></listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="H_stroma">
+        <math:math>
+          <math:apply>
+            <math:divide/>
+            <math:cn>31250.0</math:cn>
+            <math:apply>
+              <math:power/>
+              <math:cn>10</math:cn>
+              <math:ci>pH_stroma</math:ci>
+            </math:apply>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="H_beta">
+        <math:math>
+          <math:apply>
+            <math:times/>
+            <math:ci>k_KEA_fraction</math:ci>
+            <math:ci>protons</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="pH_lumen">
+        <math:math>
+          <math:apply>
+            <math:minus/>
+            <math:apply>
+              <math:divide/>
+              <math:apply>
+                <math:ln/>
+                <math:apply>
+                  <math:times/>
+                  <math:cn>0.000032</math:cn>
+                  <math:ci>H_beta</math:ci>
+                </math:apply>
+              </math:apply>
+              <math:apply>
+                <math:ln/>
+                <math:cn>10</math:cn>
+              </math:apply>
+            </math:apply>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="pq_ox">
+        <math:math>
+          <math:apply>
+            <math:minus/>
+            <math:ci>PQ_total</math:ci>
+            <math:ci>pq_red</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="adp">
+        <math:math>
+          <math:apply>
+            <math:minus/>
+            <math:ci>AP_total</math:ci>
+            <math:ci>atp</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="dt">
+        <math:math>
+          <math:apply>
+            <math:minus/>
+            <math:ci>X_total</math:ci>
+            <math:ci>dd</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="Q">
+        <math:math>
+          <math:apply>
+            <math:times/>
+            <math:ci>LHCX_total</math:ci>
+            <math:ci>dt</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="K_QAPQ">
+        <math:math>
+          <math:apply>
+            <math:exp/>
+            <math:apply>
+              <math:divide/>
+              <math:apply>
+                <math:minus/>
+                <math:apply>
+                  <math:minus/>
+                  <math:apply>
+                    <math:times/>
+                    <math:cn>2</math:cn>
+                    <math:ci>E0_PQ</math:ci>
+                    <math:ci>F</math:ci>
+                  </math:apply>
+                  <math:apply>
+                    <math:times/>
+                    <math:cn>2</math:cn>
+                    <math:ci>E0_QA</math:ci>
+                    <math:ci>F</math:ci>
+                  </math:apply>
+                </math:apply>
+                <math:apply>
+                  <math:times/>
+                  <math:cn>2</math:cn>
+                  <math:ci>R</math:ci>
+                  <math:ci>T</math:ci>
+                  <math:ci>pH_stroma</math:ci>
+                  <math:apply>
+                    <math:ln/>
+                    <math:cn>10</math:cn>
+                  </math:apply>
+                </math:apply>
+              </math:apply>
+              <math:apply>
+                <math:times/>
+                <math:ci>R</math:ci>
+                <math:ci>T</math:ci>
+              </math:apply>
+            </math:apply>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="K_cytb6f">
+        <math:math>
+          <math:apply>
+            <math:exp/>
+            <math:apply>
+              <math:divide/>
+              <math:apply>
+                <math:plus/>
+                <math:apply>
+                  <math:minus/>
+                  <math:apply>
+                    <math:times/>
+                    <math:cn>2</math:cn>
+                    <math:ci>E0_PC</math:ci>
+                    <math:ci>F</math:ci>
+                  </math:apply>
+                  <math:apply>
+                    <math:times/>
+                    <math:cn>2</math:cn>
+                    <math:ci>E0_PQ</math:ci>
+                    <math:ci>F</math:ci>
+                  </math:apply>
+                </math:apply>
+                <math:apply>
+                  <math:minus/>
+                  <math:apply>
+                    <math:times/>
+                    <math:cn>2</math:cn>
+                    <math:ci>R</math:ci>
+                    <math:ci>T</math:ci>
+                    <math:ci>pH_lumen</math:ci>
+                    <math:apply>
+                      <math:ln/>
+                      <math:cn>10</math:cn>
+                    </math:apply>
+                  </math:apply>
+                  <math:apply>
+                    <math:times/>
+                    <math:cn>2</math:cn>
+                    <math:ci>R</math:ci>
+                    <math:ci>T</math:ci>
+                    <math:apply>
+                      <math:plus/>
+                      <math:apply>
+                        <math:minus/>
+                        <math:ci>pH_lumen</math:ci>
+                      </math:apply>
+                      <math:ci>pH_stroma</math:ci>
+                    </math:apply>
+                    <math:apply>
+                      <math:ln/>
+                      <math:cn>10</math:cn>
+                    </math:apply>
+                  </math:apply>
+                </math:apply>
+              </math:apply>
+              <math:apply>
+                <math:times/>
+                <math:ci>R</math:ci>
+                <math:ci>T</math:ci>
+              </math:apply>
+            </math:apply>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="K_ATPsynthase">
+        <math:math>
+          <math:apply>
+            <math:times/>
+            <math:ci>Pi</math:ci>
+            <math:apply>
+              <math:exp/>
+              <math:apply>
+                <math:divide/>
+                <math:apply>
+                  <math:plus/>
+                  <math:apply>
+                    <math:minus/>
+                    <math:ci>DG0_ATP</math:ci>
+                  </math:apply>
+                  <math:apply>
+                    <math:divide/>
+                    <math:apply>
+                      <math:times/>
+                      <math:cn>14</math:cn>
+                      <math:ci>R</math:ci>
+                      <math:ci>T</math:ci>
+                      <math:apply>
+                        <math:plus/>
+                        <math:ci>pH_stroma</math:ci>
+                        <math:apply>
+                          <math:divide/>
+                          <math:apply>
+                            <math:ln/>
+                            <math:apply>
+                              <math:times/>
+                              <math:cn>0.000032</math:cn>
+                              <math:ci>protons</math:ci>
+                            </math:apply>
+                          </math:apply>
+                          <math:apply>
+                            <math:ln/>
+                            <math:cn>10</math:cn>
+                          </math:apply>
+                        </math:apply>
+                      </math:apply>
+                      <math:apply>
+                        <math:ln/>
+                        <math:cn>10</math:cn>
+                      </math:apply>
+                    </math:apply>
+                    <math:cn>3</math:cn>
+                  </math:apply>
+                </math:apply>
+                <math:apply>
+                  <math:times/>
+                  <math:ci>R</math:ci>
+                  <math:ci>T</math:ci>
+                </math:apply>
+              </math:apply>
+            </math:apply>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="k_deepoxidase">
+        <math:math>
+          <math:apply>
+            <math:divide/>
+            <math:apply>
+              <math:times/>
+              <math:apply>
+                <math:power/>
+                <math:ci>H_beta</math:ci>
+                <math:ci>n_HX</math:ci>
+              </math:apply>
+              <math:ci>k_deepoxidation</math:ci>
+            </math:apply>
+            <math:apply>
+              <math:plus/>
+              <math:apply>
+                <math:power/>
+                <math:ci>H_beta</math:ci>
+                <math:ci>n_HX</math:ci>
+              </math:apply>
+              <math:apply>
+                <math:power/>
+                <math:apply>
+                  <math:divide/>
+                  <math:cn>31250.0</math:cn>
+                  <math:apply>
+                    <math:power/>
+                    <math:cn>10</math:cn>
+                    <math:ci>pH_deepoxidase_half</math:ci>
+                  </math:apply>
+                </math:apply>
+                <math:ci>n_HX</math:ci>
+              </math:apply>
+            </math:apply>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="psii_u">
+        <math:math>
+          <math:apply>
+            <math:times/>
+            <math:ci>k_PQred</math:ci>
+            <math:ci>pq_ox</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="psii_b0">
+        <math:math>
+          <math:apply>
+            <math:plus/>
+            <math:ci>PPFD</math:ci>
+            <math:apply>
+              <math:divide/>
+              <math:apply>
+                <math:times/>
+                <math:ci>k_PQred</math:ci>
+                <math:ci>pq_red</math:ci>
+              </math:apply>
+              <math:ci>K_QAPQ</math:ci>
+            </math:apply>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="psii_b1">
+        <math:math>
+          <math:apply>
+            <math:plus/>
+            <math:apply>
+              <math:times/>
+              <math:ci>Q</math:ci>
+              <math:ci>k_H</math:ci>
+            </math:apply>
+            <math:ci>k_F</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="psii_b2">
+        <math:math>
+          <math:apply>
+            <math:plus/>
+            <math:ci>k_P</math:ci>
+            <math:ci>psii_b1</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="psii_w0">
+        <math:math>
+          <math:apply>
+            <math:times/>
+            <math:ci>psii_b1</math:ci>
+            <math:ci>psii_b2</math:ci>
+            <math:ci>psii_u</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="psii_w1">
+        <math:math>
+          <math:apply>
+            <math:times/>
+            <math:ci>PPFD</math:ci>
+            <math:ci>psii_b1</math:ci>
+            <math:ci>psii_u</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="psii_w2">
+        <math:math>
+          <math:apply>
+            <math:times/>
+            <math:ci>psii_b1</math:ci>
+            <math:apply>
+              <math:plus/>
+              <math:apply>
+                <math:minus/>
+                <math:apply>
+                  <math:times/>
+                  <math:ci>PPFD</math:ci>
+                  <math:ci>psii_b1</math:ci>
+                </math:apply>
+              </math:apply>
+              <math:apply>
+                <math:times/>
+                <math:ci>psii_b0</math:ci>
+                <math:ci>psii_b2</math:ci>
+              </math:apply>
+            </math:apply>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="psii_w3">
+        <math:math>
+          <math:apply>
+            <math:times/>
+            <math:ci>PPFD</math:ci>
+            <math:apply>
+              <math:plus/>
+              <math:apply>
+                <math:minus/>
+                <math:apply>
+                  <math:times/>
+                  <math:ci>PPFD</math:ci>
+                  <math:ci>psii_b1</math:ci>
+                </math:apply>
+              </math:apply>
+              <math:apply>
+                <math:times/>
+                <math:ci>psii_b0</math:ci>
+                <math:ci>psii_b2</math:ci>
+              </math:apply>
+            </math:apply>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="psii_norm">
+        <math:math>
+          <math:apply>
+            <math:plus/>
+            <math:ci>psii_w0</math:ci>
+            <math:ci>psii_w1</math:ci>
+            <math:ci>psii_w2</math:ci>
+            <math:ci>psii_w3</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="B0">
+        <math:math>
+          <math:apply>
+            <math:divide/>
+            <math:apply>
+              <math:times/>
+              <math:ci>PSII_total</math:ci>
+              <math:ci>psii_w0</math:ci>
+            </math:apply>
+            <math:ci>psii_norm</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="B1">
+        <math:math>
+          <math:apply>
+            <math:divide/>
+            <math:apply>
+              <math:times/>
+              <math:ci>PSII_total</math:ci>
+              <math:ci>psii_w1</math:ci>
+            </math:apply>
+            <math:ci>psii_norm</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="B2">
+        <math:math>
+          <math:apply>
+            <math:divide/>
+            <math:apply>
+              <math:times/>
+              <math:ci>PSII_total</math:ci>
+              <math:ci>psii_w2</math:ci>
+            </math:apply>
+            <math:ci>psii_norm</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="B3">
+        <math:math>
+          <math:apply>
+            <math:divide/>
+            <math:apply>
+              <math:times/>
+              <math:ci>PSII_total</math:ci>
+              <math:ci>psii_w3</math:ci>
+            </math:apply>
+            <math:ci>psii_norm</math:ci>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+      <assignmentRule variable="Fluo">
+        <math:math>
+          <math:apply>
+            <math:plus/>
+            <math:apply>
+              <math:divide/>
+              <math:apply>
+                <math:times/>
+                <math:ci>B0</math:ci>
+                <math:ci>k_F</math:ci>
+              </math:apply>
+              <math:apply>
+                <math:plus/>
+                <math:apply>
+                  <math:times/>
+                  <math:ci>Q</math:ci>
+                  <math:ci>k_H</math:ci>
+                </math:apply>
+                <math:ci>k_F</math:ci>
+                <math:ci>k_P</math:ci>
+              </math:apply>
+            </math:apply>
+            <math:apply>
+              <math:divide/>
+              <math:apply>
+                <math:times/>
+                <math:ci>B2</math:ci>
+                <math:ci>k_F</math:ci>
+              </math:apply>
+              <math:apply>
+                <math:plus/>
+                <math:apply>
+                  <math:times/>
+                  <math:ci>Q</math:ci>
+                  <math:ci>k_H</math:ci>
+                </math:apply>
+                <math:ci>k_F</math:ci>
+              </math:apply>
+            </math:apply>
+          </math:apply>
+        </math:math>
+      </assignmentRule>
+    <assignmentRule variable="u_sat"><math:math><math:apply><math:times/><math:ci>k_PQred</math:ci><math:ci>pq_ox</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="b0_sat"><math:math><math:apply><math:plus/><math:ci>PPFD_virtual_pulse</math:ci><math:apply><math:divide/><math:apply><math:times/><math:ci>k_PQred</math:ci><math:ci>pq_red</math:ci></math:apply><math:ci>K_QAPQ</math:ci></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="b1_sat"><math:math><math:apply><math:plus/><math:apply><math:times/><math:ci>Q</math:ci><math:ci>k_H</math:ci></math:apply><math:ci>k_F</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="b2_sat"><math:math><math:apply><math:plus/><math:ci>b1_sat</math:ci><math:ci>k_P</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="w0_sat"><math:math><math:apply><math:times/><math:ci>b1_sat</math:ci><math:ci>b2_sat</math:ci><math:ci>u_sat</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="w1_sat"><math:math><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:ci>b1_sat</math:ci><math:ci>u_sat</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="w2_sat"><math:math><math:apply><math:times/><math:ci>b1_sat</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:ci>b1_sat</math:ci></math:apply></math:apply><math:apply><math:times/><math:ci>b0_sat</math:ci><math:ci>b2_sat</math:ci></math:apply></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="w3_sat"><math:math><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:ci>b1_sat</math:ci></math:apply></math:apply><math:apply><math:times/><math:ci>b0_sat</math:ci><math:ci>b2_sat</math:ci></math:apply></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="norm_sat"><math:math><math:apply><math:plus/><math:ci>w0_sat</math:ci><math:ci>w1_sat</math:ci><math:ci>w2_sat</math:ci><math:ci>w3_sat</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="B0_sat"><math:math><math:apply><math:divide/><math:apply><math:times/><math:ci>PSII_total</math:ci><math:ci>w0_sat</math:ci></math:apply><math:ci>norm_sat</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="B2_sat"><math:math><math:apply><math:divide/><math:apply><math:times/><math:ci>PSII_total</math:ci><math:ci>w2_sat</math:ci></math:apply><math:ci>norm_sat</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="Fm_sat_virtual"><math:math><math:apply><math:times/><math:ci>k_F</math:ci><math:apply><math:plus/><math:apply><math:divide/><math:ci>B0_sat</math:ci><math:ci>b2_sat</math:ci></math:apply><math:apply><math:divide/><math:ci>B2_sat</math:ci><math:ci>b1_sat</math:ci></math:apply></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="db0_dp"><math:math><math:apply><math:divide/><math:ci>k_PQred</math:ci><math:ci>K_QAPQ</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="du_dp"><math:math><math:apply><math:minus/><math:ci>k_PQred</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="db1_dd"><math:math><math:apply><math:minus/><math:apply><math:times/><math:ci>LHCX_total</math:ci><math:ci>k_H</math:ci></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="w0_dp"><math:math><math:apply><math:times/><math:ci>b1_sat</math:ci><math:ci>b2_sat</math:ci><math:ci>du_dp</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="w2_dp"><math:math><math:apply><math:times/><math:ci>b1_sat</math:ci><math:ci>b2_sat</math:ci><math:ci>db0_dp</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="w0_dd"><math:math><math:apply><math:times/><math:ci>u_sat</math:ci><math:apply><math:plus/><math:apply><math:times/><math:ci>b1_sat</math:ci><math:ci>db1_dd</math:ci></math:apply><math:apply><math:times/><math:ci>b2_sat</math:ci><math:ci>db1_dd</math:ci></math:apply></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="w2_dd"><math:math><math:apply><math:plus/><math:apply><math:times/><math:ci>b1_sat</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:ci>db1_dd</math:ci></math:apply></math:apply><math:apply><math:times/><math:ci>b0_sat</math:ci><math:ci>db1_dd</math:ci></math:apply></math:apply></math:apply><math:apply><math:times/><math:ci>db1_dd</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:ci>b1_sat</math:ci></math:apply></math:apply><math:apply><math:times/><math:ci>b0_sat</math:ci><math:ci>b2_sat</math:ci></math:apply></math:apply></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="norm_dp"><math:math><math:apply><math:plus/><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:ci>b1_sat</math:ci><math:ci>du_dp</math:ci></math:apply><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:ci>b2_sat</math:ci><math:ci>db0_dp</math:ci></math:apply><math:ci>w0_dp</math:ci><math:ci>w2_dp</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="norm_dd"><math:math><math:apply><math:plus/><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:ci>db1_dd</math:ci><math:ci>u_sat</math:ci></math:apply><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>PPFD_virtual_pulse</math:ci><math:ci>db1_dd</math:ci></math:apply></math:apply><math:apply><math:times/><math:ci>b0_sat</math:ci><math:ci>db1_dd</math:ci></math:apply></math:apply></math:apply><math:ci>w0_dd</math:ci><math:ci>w2_dd</math:ci></math:apply></math:math></assignmentRule><assignmentRule variable="dB0_dp"><math:math><math:apply><math:divide/><math:apply><math:times/><math:ci>PSII_total</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>norm_dp</math:ci><math:ci>w0_sat</math:ci></math:apply></math:apply><math:apply><math:times/><math:ci>norm_sat</math:ci><math:ci>w0_dp</math:ci></math:apply></math:apply></math:apply><math:apply><math:power/><math:ci>norm_sat</math:ci><math:cn>2</math:cn></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="dB2_dp"><math:math><math:apply><math:divide/><math:apply><math:times/><math:ci>PSII_total</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>norm_dp</math:ci><math:ci>w2_sat</math:ci></math:apply></math:apply><math:apply><math:times/><math:ci>norm_sat</math:ci><math:ci>w2_dp</math:ci></math:apply></math:apply></math:apply><math:apply><math:power/><math:ci>norm_sat</math:ci><math:cn>2</math:cn></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="dB0_dd"><math:math><math:apply><math:divide/><math:apply><math:times/><math:ci>PSII_total</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>norm_dd</math:ci><math:ci>w0_sat</math:ci></math:apply></math:apply><math:apply><math:times/><math:ci>norm_sat</math:ci><math:ci>w0_dd</math:ci></math:apply></math:apply></math:apply><math:apply><math:power/><math:ci>norm_sat</math:ci><math:cn>2</math:cn></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="dB2_dd"><math:math><math:apply><math:divide/><math:apply><math:times/><math:ci>PSII_total</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>norm_dd</math:ci><math:ci>w2_sat</math:ci></math:apply></math:apply><math:apply><math:times/><math:ci>norm_sat</math:ci><math:ci>w2_dd</math:ci></math:apply></math:apply></math:apply><math:apply><math:power/><math:ci>norm_sat</math:ci><math:cn>2</math:cn></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="dFm_dp"><math:math><math:apply><math:times/><math:ci>k_F</math:ci><math:apply><math:plus/><math:apply><math:divide/><math:ci>dB0_dp</math:ci><math:ci>b2_sat</math:ci></math:apply><math:apply><math:divide/><math:ci>dB2_dp</math:ci><math:ci>b1_sat</math:ci></math:apply></math:apply></math:apply></math:math></assignmentRule><assignmentRule variable="dFm_dd"><math:math><math:apply><math:times/><math:ci>k_F</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:minus/><math:apply><math:divide/><math:apply><math:times/><math:ci>B0_sat</math:ci><math:ci>db1_dd</math:ci></math:apply><math:apply><math:power/><math:ci>b2_sat</math:ci><math:cn>2</math:cn></math:apply></math:apply></math:apply><math:apply><math:divide/><math:apply><math:times/><math:ci>B2_sat</math:ci><math:ci>db1_dd</math:ci></math:apply><math:apply><math:power/><math:ci>b1_sat</math:ci><math:cn>2</math:cn></math:apply></math:apply></math:apply><math:apply><math:divide/><math:ci>dB0_dd</math:ci><math:ci>b2_sat</math:ci></math:apply><math:apply><math:divide/><math:ci>dB2_dd</math:ci><math:ci>b1_sat</math:ci></math:apply></math:apply></math:apply></math:math></assignmentRule></listOfRules>
+    <listOfReactions>
+      <reaction id="v_PSII" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="pq_red" stoichiometry="1" constant="true"/>
+          <speciesReference species="protons" stoichiometry="0.02" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math:math>
+            <math:apply>
+              <math:divide/>
+              <math:apply>
+                <math:times/>
+                <math:ci>B1</math:ci>
+                <math:ci>k_P</math:ci>
+              </math:apply>
+              <math:cn>2</math:cn>
+            </math:apply>
+          </math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="v_PQ_oxidation" reversible="true" fast="false">
+        <listOfReactants>
+          <speciesReference species="pq_red" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="protons" stoichiometry="0.040000000000000001" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math:math>
+            <math:apply>
+              <math:divide/>
+              <math:apply>
+                <math:times/>
+                <math:ci>PPFD</math:ci>
+                <math:ci>k_Cytb6f</math:ci>
+                <math:apply>
+                  <math:plus/>
+                  <math:apply>
+                    <math:minus/>
+                    <math:apply>
+                      <math:times/>
+                      <math:ci>K_cytb6f</math:ci>
+                      <math:ci>pq_red</math:ci>
+                    </math:apply>
+                    <math:ci>PQ_total</math:ci>
+                  </math:apply>
+                  <math:ci>pq_red</math:ci>
+                </math:apply>
+              </math:apply>
+              <math:apply>
+                <math:plus/>
+                <math:ci>K_cytb6f</math:ci>
+                <math:cn>1</math:cn>
+              </math:apply>
+            </math:apply>
+          </math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="v_ATPase_activity" reversible="true" fast="false">
+        <listOfProducts>
+          <speciesReference species="atpase_activity" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math:math>
+            <math:piecewise>
+              <math:piece>
+                <math:apply>
+                  <math:times/>
+                  <math:ci>k_ActATPase</math:ci>
+                  <math:apply>
+                    <math:minus/>
+                    <math:cn>1</math:cn>
+                    <math:ci>atpase_activity</math:ci>
+                  </math:apply>
+                </math:apply>
+                <math:apply>
+                  <math:gt/>
+                  <math:ci>PPFD</math:ci>
+                  <math:cn>0</math:cn>
+                </math:apply>
+              </math:piece>
+              <math:otherwise>
+                <math:apply>
+                  <math:minus/>
+                  <math:apply>
+                    <math:times/>
+                    <math:ci>atpase_activity</math:ci>
+                    <math:ci>k_DeactATPase</math:ci>
+                  </math:apply>
+                </math:apply>
+              </math:otherwise>
+            </math:piecewise>
+          </math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="v_ATP_synthase" reversible="true" fast="false">
+        <listOfReactants>
+          <speciesReference species="protons" stoichiometry="0.046666666666666669" constant="true"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="atp" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="atpase_activity"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math:math>
+            <math:apply>
+              <math:times/>
+              <math:ci>atpase_activity</math:ci>
+              <math:ci>k_ATPsynthase</math:ci>
+              <math:apply>
+                <math:minus/>
+                <math:apply>
+                  <math:minus/>
+                  <math:ci>AP_total</math:ci>
+                  <math:ci>atp</math:ci>
+                </math:apply>
+                <math:apply>
+                  <math:divide/>
+                  <math:ci>atp</math:ci>
+                  <math:ci>K_ATPsynthase</math:ci>
+                </math:apply>
+              </math:apply>
+            </math:apply>
+          </math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="v_ATP_consumption" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="atp" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math:math>
+            <math:apply>
+              <math:times/>
+              <math:ci>atp</math:ci>
+              <math:ci>k_ATPconsumption</math:ci>
+            </math:apply>
+          </math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="v_KEA3" reversible="true" fast="false">
+        <listOfReactants>
+          <speciesReference species="protons" stoichiometry="0.01" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math:math>
+            <math:apply>
+              <math:times/>
+              <math:ci>k_leak</math:ci>
+              <math:apply>
+                <math:plus/>
+                <math:apply>
+                  <math:minus/>
+                  <math:ci>H_stroma</math:ci>
+                </math:apply>
+                <math:ci>protons</math:ci>
+              </math:apply>
+            </math:apply>
+          </math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="v_Dd_deepoxidation" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="dd" stoichiometry="1" constant="true"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math:math>
+            <math:apply>
+              <math:times/>
+              <math:ci>dd</math:ci>
+              <math:ci>k_deepoxidase</math:ci>
+            </math:apply>
+          </math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="v_Dt_epoxidation" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="dd" stoichiometry="1" constant="true"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math:math>
+            <math:piecewise>
+              <math:piece>
+                <math:apply>
+                  <math:times/>
+                  <math:ci>dt</math:ci>
+                  <math:ci>k_ETC</math:ci>
+                  <math:ci>k_epoxidation</math:ci>
+                </math:apply>
+                <math:apply>
+                  <math:leq/>
+                  <math:ci>PPFD</math:ci>
+                  <math:cn>50</math:cn>
+                </math:apply>
+              </math:piece>
+              <math:otherwise>
+                <math:apply>
+                  <math:times/>
+                  <math:ci>dt</math:ci>
+                  <math:ci>k_epoxidation</math:ci>
+                </math:apply>
+              </math:otherwise>
+            </math:piecewise>
+          </math:math>
+        </kineticLaw>
+      </reaction>
+    <reaction id="v_NPQ_mathematical_reporter" name="Exact chain-rule derivative of instantaneous NPQ observable (not a biochemical reaction)" reversible="true" fast="false"><listOfProducts><speciesReference species="NPQ" stoichiometry="1" constant="true"/></listOfProducts><listOfModifiers><modifierSpeciesReference species="pq_red"/><modifierSpeciesReference species="dd"/></listOfModifiers><kineticLaw><math:math><math:apply><math:minus/><math:apply><math:divide/><math:apply><math:times/><math:ci>Fm_dark_reference</math:ci><math:apply><math:plus/><math:apply><math:times/><math:ci>dFm_dd</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>dd</math:ci><math:ci>k_deepoxidase</math:ci></math:apply></math:apply><math:piecewise><math:piece><math:apply><math:times/><math:ci>dt</math:ci><math:ci>k_ETC</math:ci><math:ci>k_epoxidation</math:ci></math:apply><math:apply><math:leq/><math:ci>PPFD</math:ci><math:cn>50.0</math:cn></math:apply></math:piece><math:otherwise><math:apply><math:times/><math:ci>dt</math:ci><math:ci>k_epoxidation</math:ci></math:apply></math:otherwise></math:piecewise></math:apply></math:apply><math:apply><math:times/><math:ci>dFm_dp</math:ci><math:apply><math:minus/><math:apply><math:times/><math:cn>0.5</math:cn><math:ci>B1</math:ci><math:ci>k_P</math:ci></math:apply><math:apply><math:divide/><math:apply><math:times/><math:ci>PPFD</math:ci><math:ci>k_Cytb6f</math:ci><math:apply><math:plus/><math:apply><math:minus/><math:apply><math:times/><math:ci>K_cytb6f</math:ci><math:ci>pq_red</math:ci></math:apply><math:ci>PQ_total</math:ci></math:apply><math:ci>pq_red</math:ci></math:apply></math:apply><math:apply><math:plus/><math:ci>K_cytb6f</math:ci><math:cn>1.0</math:cn></math:apply></math:apply></math:apply></math:apply></math:apply></math:apply><math:apply><math:power/><math:ci>Fm_sat_virtual</math:ci><math:cn>2</math:cn></math:apply></math:apply></math:apply></math:math></kineticLaw></reaction></listOfReactions>
+  </model>
+</sbml>
