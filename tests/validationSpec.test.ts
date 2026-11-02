@@ -7,6 +7,7 @@ import { expandScans } from "../src/lib/validation/helpers";
 import { protocolGrid } from "../src/lib/validation/run";
 import { compareSeries } from "../src/lib/validation/compare";
 import { decimate } from "../src/lib/validation/decimate";
+import { eigenvalues } from "../src/lib/validation/eigen";
 import type { Validation } from "../src/lib/validation/types";
 import { derivedKeys } from "../src/lib/utils";
 
@@ -79,6 +80,45 @@ describe("ops match the numpy/scipy reference", () => {
       expect(out[col]).toHaveLength(want.length);
       want.forEach((v, i) => expect(out[col][i]).toBeCloseTo(v, 9));
     }
+  });
+});
+
+describe("eigenvalues", () => {
+  it("finds real eigenvalues of a triangular matrix, sorted", () => {
+    const { real, imag } = eigenvalues([
+      [3, 1, 2],
+      [0, -1, 4],
+      [0, 0, 2],
+    ]);
+    real.forEach((v, i) => expect(v).toBeCloseTo([-1, 2, 3][i], 12));
+    expect(imag).toEqual([0, 0, 0]);
+  });
+
+  it("finds a complex pair", () => {
+    const { real, imag } = eigenvalues([
+      [-1, -2],
+      [2, -1],
+    ]);
+    real.forEach((v) => expect(v).toBeCloseTo(-1, 12));
+    imag.forEach((v, i) => expect(v).toBeCloseTo([-2, 2][i], 12));
+  });
+
+  it("keeps the trace and the sum of squares of a full matrix", () => {
+    // A fixed pseudo-random 6x6 matrix; sum(l) = tr(A), sum(l^2) = tr(A^2).
+    let seed = 7;
+    const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647 - 0.5;
+    const a = Array.from({ length: 6 }, () => Array.from({ length: 6 }, rand));
+    const { real, imag } = eigenvalues(a);
+    const trace = a.reduce((t, row, i) => t + row[i], 0);
+    const trace2 = a.reduce(
+      (t, row, i) => t + row.reduce((u, v, k) => u + v * a[k][i], 0),
+      0,
+    );
+    expect(real.reduce((t, v) => t + v, 0)).toBeCloseTo(trace, 12);
+    expect(
+      real.reduce((t, v, i) => t + v * v - imag[i] * imag[i], 0),
+    ).toBeCloseTo(trace2, 12);
+    expect(imag.reduce((t, v) => t + v, 0)).toBeCloseTo(0, 12);
   });
 });
 
@@ -200,9 +240,14 @@ describe.runIf(slugs.length > 0).each(slugs)("%s validation.ts", (slug) => {
 
       const dataRef = (path: string[]) =>
         path[0] === "data" && path[1] in (v.data ?? {});
+      const pointColumns = (name: string): string[] | undefined =>
+        v.mca?.[name]?.outputs ??
+        (v.stability?.[name] ? ["real", "imag"] : undefined);
       const tableRef = (path: string[]) =>
-        path[0] in (v.collect ?? {}) &&
-        (path[1] === "x" || path[1] in v.collect![path[0]].columns);
+        (path[0] in (v.collect ?? {}) &&
+          (path[1] === "x" || path[1] in v.collect![path[0]].columns)) ||
+        (pointColumns(path[0]) !== undefined &&
+          (path[1] === "x" || pointColumns(path[0])!.includes(path[1])));
       const scenarioRef = (path: string[]) =>
         path[0] === "param" ||
         path[0] === "init" ||

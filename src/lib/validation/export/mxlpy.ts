@@ -8,7 +8,9 @@ import { parse, refs, toPython } from "../expr";
 import { scanX } from "../helpers";
 import { OPS } from "../ops";
 import type {
+  Mca,
   ModelEdit,
+  PointSetup,
   Plot,
   PreRun,
   ProtocolSimulation,
@@ -286,11 +288,92 @@ function scanCell(name: string, scan: Scan, v: Validation): string[] {
   return lines;
 }
 
+/** A point analysis' model: a fresh one with its changes applied. */
+function pointModel(setup: PointSetup): string[] {
+  return [
+    "m = get_model()",
+    ...(setup.edits ?? []).map((e) => edit(e)),
+    ...(setup.set ? [`m.update_parameters(${values(setup.set)})`] : []),
+    ...(setup.initial ? [`m.update_variables(${values(setup.initial)})`] : []),
+  ];
+}
+
+function steadyStateLines(v: Validation): string[] {
+  return [
+    `s = Simulator(m, integrator=${integrator({}, v)})`,
+    "s.simulate_to_steady_state()",
+    "y = s.get_result().unwrap_or_err().get_new_y0()",
+  ];
+}
+
+function mcaCell(name: string, spec: Mca, v: Validation): string[] {
+  const options = [
+    ...(spec.normalized !== undefined
+      ? [`    normalized=${spec.normalized ? "True" : "False"},`]
+      : []),
+    ...(spec.displacement !== undefined
+      ? [`    displacement=${spec.displacement},`]
+      : []),
+  ];
+  const lines = [`# MCA ${name}`, ...pointModel(spec)];
+  if (spec.type === "responseCoefficients") {
+    lines.push(
+      "coefs = mca.response_coefficients(",
+      "    m,",
+      `    to_scan=${literal(spec.wrt)},`,
+      ...options,
+      `    runner=KineticRunner(integrator=${integrator({}, v)}),`,
+      ").combined.T",
+    );
+  } else {
+    const steady = spec.at === "steadyState";
+    if (steady) lines.push(...steadyStateLines(v));
+    const fn =
+      spec.type === "variableElasticities"
+        ? "variable_elasticities"
+        : "parameter_elasticities";
+    lines.push(
+      `coefs = mca.${fn}(`,
+      "    m,",
+      `    to_scan=${literal(spec.wrt)},`,
+      ...(steady ? ["    variables=y,"] : []),
+      ...options,
+      ").T",
+    );
+  }
+  const columns = spec.outputs.map(
+    (c) => `    ${str(c)}: coefs[${str(c)}].to_numpy(),`,
+  );
+  lines.push(
+    `tables[${str(name)}] = {`,
+    '    "x": np.arange(len(coefs)),',
+    ...columns,
+    "}",
+  );
+  return lines;
+}
+
+function stabilityCell(
+  name: string,
+  setup: PointSetup,
+  v: Validation,
+): string[] {
+  return [
+    `# Stability ${name}`,
+    ...pointModel(setup),
+    ...steadyStateLines(v),
+    "eig = np.sort_complex(mca.steady_state_stability(m, y).eigenvalues)",
+    `tables[${str(name)}] = {"x": np.arange(len(eig)), "real": eig.real, "imag": eig.imag}`,
+  ];
+}
+
 function refMapper(v: Validation, scope?: string) {
   const ids = new Set(Object.keys(v.scenarios ?? {}));
   const tables = new Set([
     ...Object.keys(v.collect ?? {}),
     ...Object.keys(v.scans ?? {}),
+    ...Object.keys(v.mca ?? {}),
+    ...Object.keys(v.stability ?? {}),
   ]);
   const opNames = new Set(
     (v.ops ?? []).filter((o) => !o.into && o.op !== "column").map((o) => o.as),
@@ -428,12 +511,18 @@ function validationCells(v: Validation, goldenSeries: boolean): string[][] {
   }
   if (ids.length > 0) sim.push("res = {}");
   if (namedOps) sim.push("protocols = {}");
-  if (v.collect || v.scans) sim.push("tables = {}");
+  if (v.collect || v.scans || v.mca || v.stability) sim.push("tables = {}");
   for (const id of ids) {
     sim.push("", ...scenarioCell(id, v.scenarios![id], v, namedOps));
   }
   for (const [name, scan] of Object.entries(v.scans ?? {})) {
     sim.push("", ...scanCell(name, scan, v));
+  }
+  for (const [name, spec] of Object.entries(v.mca ?? {})) {
+    sim.push("", ...mcaCell(name, spec, v));
+  }
+  for (const [name, setup] of Object.entries(v.stability ?? {})) {
+    sim.push("", ...stabilityCell(name, setup, v));
   }
 
   const lines: string[] = [];
@@ -494,6 +583,7 @@ function importLines(source: string): string[] {
   const mxlpy = ["Scipy", "Simulator", "cartesian_product", "make_protocol"]
     .filter(uses)
     .concat(/\bscan\.(steady_state|time_course)\(/.test(source) ? ["scan"] : [])
+    .concat(/\bmca\.\w+\(/.test(source) ? ["mca"] : [])
     .sort();
   const scipySignal = ["find_peaks", "peak_prominences"].filter(uses);
   const third = [
