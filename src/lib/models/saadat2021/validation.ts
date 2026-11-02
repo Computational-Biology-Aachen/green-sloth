@@ -1,9 +1,5 @@
 import { linspace, repeat, step } from "#lib/validation/helpers.js";
-import type {
-  GoldenSeries,
-  Scenario,
-  Validation,
-} from "#lib/validation/types.js";
+import type { GoldenSeries, Mca, Validation } from "#lib/validation/types.js";
 
 const PULSE = 5000;
 const period = (light: number) => [
@@ -90,33 +86,13 @@ const CONTROL_ROWS = [...CONTROL_VARIABLES, ...CONTROL_FLUXES];
 const DISPLACEMENT = 0.01;
 const LIGHTS = [100, 1000];
 
-/** MxlPy's normalised response coefficients: central differences at steady state. */
-const mcaScenarios = (pfd: number): Record<string, Scenario> => {
-  const out: Record<string, Scenario> = {
-    [`ref${pfd}`]: { parameters: { PPFD: pfd } },
-  };
-  CONTROL_PARAMS.forEach((p, i) => {
-    out[`up${pfd}_${i}`] = {
-      parameters: { PPFD: pfd, [p]: `param.${p} * ${1 + DISPLACEMENT}` },
-    };
-    out[`down${pfd}_${i}`] = {
-      parameters: { PPFD: pfd, [p]: `param.${p} * ${1 - DISPLACEMENT}` },
-    };
-  });
-  return out;
-};
-
-const mcaTable = (pfd: number) => ({
-  x: CONTROL_PARAMS.map((_, i) => i),
-  columns: Object.fromEntries(
-    CONTROL_ROWS.map((row) => [
-      row,
-      CONTROL_PARAMS.map(
-        (_, i) =>
-          `(last(up${pfd}_${i}.${row}) - last(down${pfd}_${i}.${row})) / ${2 * DISPLACEMENT} / last(ref${pfd}.${row})`,
-      ),
-    ]),
-  ),
+/** MxlPy's normalised response coefficients at each light. */
+const mcaAt = (pfd: number): Mca => ({
+  type: "responseCoefficients",
+  set: { PPFD: pfd },
+  wrt: CONTROL_PARAMS,
+  outputs: CONTROL_ROWS,
+  displacement: DISPLACEMENT,
 });
 
 const heatmap = (pfd: number, title: string, rows: string[]) => ({
@@ -306,8 +282,7 @@ export const validations: Validation[] = [
     // At those, MxlPy's oscillation detector misfires at PPFD 1000.
     exportTolerances: { rtol: 1e-8, atol: 1e-8 },
     simulate: { kind: "steadyState" },
-    scenarios: Object.assign({}, ...LIGHTS.map(mcaScenarios)),
-    collect: Object.fromEntries(LIGHTS.map((l) => [`mca${l}`, mcaTable(l)])),
+    mca: Object.fromEntries(LIGHTS.map((l) => [`mca${l}`, mcaAt(l)])),
     plots: LIGHTS.flatMap((l) => [
       heatmap(l, "Flux control", CONTROL_FLUXES),
       heatmap(l, "Concentration control", CONTROL_VARIABLES),

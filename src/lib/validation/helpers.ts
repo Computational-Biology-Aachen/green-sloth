@@ -1,6 +1,7 @@
 /** Helpers for writing a model's `validation.ts`; each returns plain data. */
 import type {
   Collect,
+  Mca,
   ModelEdit,
   ProtocolStep,
   Scan,
@@ -127,13 +128,22 @@ function expandScan(
   return { scenarios, table };
 }
 
-/** The validation with its scans as plain scenarios and `collect` tables. */
+/**
+ * The validation with its scans and response coefficients as plain scenarios
+ * and `collect` tables. Elasticities and stability evaluate the model directly
+ * and stay as they are, for run.ts.
+ */
 export function expandScans(
   v: Validation,
 ): Validation & { scenarios: Record<string, Scenario> } {
-  const scans = Object.entries(v.scans ?? {}).map(
-    ([name, scan]) => [name, expandScan(name, scan, v.simulate)] as const,
-  );
+  const scans = [
+    ...Object.entries(v.scans ?? {}).map(
+      ([name, scan]) => [name, expandScan(name, scan, v.simulate)] as const,
+    ),
+    ...Object.entries(v.mca ?? {})
+      .filter(([, mca]) => mca.type === "responseCoefficients")
+      .map(([name, mca]) => [name, expandResponse(name, mca)] as const),
+  ];
   return {
     ...v,
     scenarios: Object.assign(
@@ -146,4 +156,54 @@ export function expandScans(
       ...Object.fromEntries(scans.map(([name, s]) => [name, s.table])),
     },
   };
+}
+
+/** MxlPy's defaults for `mca`. */
+export const MCA_DEFAULTS = { normalized: true, displacement: 1e-4 };
+
+/**
+ * Response coefficients as central-difference scenarios plus their table:
+ * `(y(p(1 + d)) - y(p(1 - d))) / (2 d p)`, times `p / y(p)` when normalised.
+ */
+export function expandResponse(name: string, mca: Mca) {
+  const { normalized, displacement: d } = { ...MCA_DEFAULTS, ...mca };
+  const simulate = { kind: "steadyState" } as const;
+  const base: Scenario = {
+    ...(mca.set ? { parameters: mca.set } : {}),
+    ...(mca.initial ? { initial: mca.initial } : {}),
+    ...(mca.edits ? { edits: mca.edits } : {}),
+    simulate,
+  };
+  const ref = `${name}_ref`;
+  const old = (p: string) => {
+    const v = mca.set?.[p];
+    return v === undefined ? `param.${p}` : `(${v})`;
+  };
+  const scenarios: Record<string, Scenario> = { [ref]: base };
+  mca.wrt.forEach((p, i) => {
+    for (const [dir, factor] of [
+      ["up", 1 + d],
+      ["down", 1 - d],
+    ] as const) {
+      scenarios[`${name}_${dir}${i}`] = {
+        ...base,
+        parameters: { ...mca.set, [p]: `${old(p)} * ${factor}` },
+      };
+    }
+  });
+  const table: Collect = {
+    x: mca.wrt.map((_, i) => i),
+    columns: Object.fromEntries(
+      mca.outputs.map((out) => [
+        out,
+        mca.wrt.map((p, i) => {
+          const diff = `(last(${name}_up${i}.${out}) - last(${name}_down${i}.${out}))`;
+          return normalized
+            ? `${diff} / ${2 * d} / last(${ref}.${out})`
+            : `${diff} / (${2 * d} * ${old(p)})`;
+        }),
+      ]),
+    ),
+  };
+  return { scenarios, table };
 }

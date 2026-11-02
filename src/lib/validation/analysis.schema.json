@@ -1,0 +1,1285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/analysis.schema.json",
+  "title": "Mxl analysis format",
+  "description": "Simulations, data handling, plots and checks for one .mxl.json model, as plain data that runs on several backends (mxlweb, MxlPy). Analyses not possible for the model's kind (e.g. a time course of a steady-state model) are rejected by the schema; whether ids exist in the model is left to consumers.",
+  "type": "object",
+  "required": ["spec_version", "kind", "model", "analyses"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "URI of this schema, for editor tooling."
+    },
+    "spec_version": {
+      "type": "string",
+      "enum": ["1.0"],
+      "description": "Version of the analysis format."
+    },
+    "kind": {
+      "type": "string",
+      "const": "analysis",
+      "description": "Discriminator identifying an analysis file."
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description."
+    },
+    "model": {
+      "type": "object",
+      "required": ["model_id", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "type": "string",
+          "description": "`model_id` of the .mxl.json model analysed."
+        },
+        "kind": {
+          "enum": ["kinetic", "ode", "steady-state"],
+          "description": "`kind` of that model; decides which analyses are possible."
+        }
+      }
+    },
+    "analyses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/analysis"
+      },
+      "minItems": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "model": {
+            "properties": {
+              "kind": {
+                "const": "steady-state"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "analyses": {
+            "items": {
+              "$ref": "#/$defs/steadyStateRules"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "model": {
+            "properties": {
+              "kind": {
+                "const": "ode"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "analyses": {
+            "items": {
+              "$ref": "#/$defs/odeRules"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "expression": {
+      "type": "string",
+      "minLength": 1,
+      "description": "An expression in the mxl analysis expression language (README: Expressions): numbers, + - * / ^, unary minus, parentheses, references (`col`, `scenario.col`, `table.col`, `param.id`, `init.id`, `data.name`, `ddt.var`), element-wise functions and aggregates."
+    },
+    "scenarioValue": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "$ref": "#/$defs/expression"
+        }
+      ],
+      "description": "A number, or an expression over `param.<id>` / `init.<id>` (the model's defaults)."
+    },
+    "simulation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Integrate and report at `tEval`.",
+          "required": ["kind", "tEval"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "timeCourse"
+            },
+            "tEval": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 1,
+              "description": "Output times; the run ends at the last."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "Hold each step's parameter values for its duration.",
+          "required": ["kind", "steps"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "protocol"
+            },
+            "steps": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/protocolStep"
+              },
+              "minItems": 1
+            },
+            "pointsPerStep": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Output intervals per step, as MxlPy's `time_points_per_step` (default 10)."
+            },
+            "tEval": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "description": "Output exactly these times instead of per-step sampling."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "Integrate to dx/dt ≈ 0; for a steady-state model, evaluate it.",
+          "required": ["kind"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "steadyState"
+            },
+            "tol": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Steady-state tolerance."
+            }
+          }
+        }
+      ]
+    },
+    "protocolStep": {
+      "type": "object",
+      "required": ["duration", "set"],
+      "additionalProperties": false,
+      "properties": {
+        "duration": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "set": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          },
+          "description": "Parameter values held during this step."
+        },
+        "points": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Output intervals for this step; overrides `pointsPerStep`."
+        }
+      }
+    },
+    "modelEdit": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Remove a reaction (kinetic models only).",
+          "required": ["removeReaction"],
+          "additionalProperties": false,
+          "properties": {
+            "removeReaction": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "Replace a derived quantity's formula with an expression over model ids.",
+          "required": ["setAssignment", "to"],
+          "additionalProperties": false,
+          "properties": {
+            "setAssignment": {
+              "type": "string"
+            },
+            "to": {
+              "$ref": "#/$defs/expression"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "Replace a parameter with a derived quantity, e.g. a light driven by `time`.",
+          "required": ["parameterToAssignment", "to"],
+          "additionalProperties": false,
+          "properties": {
+            "parameterToAssignment": {
+              "type": "string"
+            },
+            "to": {
+              "$ref": "#/$defs/expression"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "Replace a variable with a constant parameter.",
+          "required": ["clampVariable", "to"],
+          "additionalProperties": false,
+          "properties": {
+            "clampVariable": {
+              "type": "string"
+            },
+            "to": {
+              "type": "number"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "Add a parameter.",
+          "required": ["addParameter", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "addParameter": {
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          }
+        }
+      ]
+    },
+    "preRun": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Integrate and report at `tEval`.",
+          "required": ["kind", "tEval"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "timeCourse"
+            },
+            "tEval": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 1,
+              "description": "Output times; the run ends at the last."
+            },
+            "set": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number"
+              },
+              "description": "Parameter values for this run only."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "Hold each step's parameter values for its duration.",
+          "required": ["kind", "steps"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "protocol"
+            },
+            "steps": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/protocolStep"
+              },
+              "minItems": 1
+            },
+            "pointsPerStep": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Output intervals per step, as MxlPy's `time_points_per_step` (default 10)."
+            },
+            "tEval": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "description": "Output exactly these times instead of per-step sampling."
+            },
+            "set": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number"
+              },
+              "description": "Parameter values for this run only."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "Integrate to dx/dt ≈ 0; for a steady-state model, evaluate it.",
+          "required": ["kind"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "steadyState"
+            },
+            "tol": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Steady-state tolerance."
+            },
+            "set": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number"
+              },
+              "description": "Parameter values for this run only."
+            }
+          }
+        }
+      ],
+      "description": "A run whose final state is handed on, unrecorded (acclimation)."
+    },
+    "stage": {
+      "type": "object",
+      "description": "One recorded phase of a chain; its output times count on from the last.",
+      "required": ["simulate"],
+      "additionalProperties": false,
+      "properties": {
+        "edits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/modelEdit"
+          }
+        },
+        "simulate": {
+          "$ref": "#/$defs/simulation"
+        }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "description": "One simulation of a modified copy of the model; its columns are `<scenario>.<column>`.",
+      "additionalProperties": false,
+      "properties": {
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/scenarioValue"
+          },
+          "description": "Parameter values."
+        },
+        "initial": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/scenarioValue"
+          },
+          "description": "Initial values of variables."
+        },
+        "edits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/modelEdit"
+          },
+          "description": "Structural changes, applied to a copy of the model."
+        },
+        "simulate": {
+          "$ref": "#/$defs/simulation",
+          "description": "Overrides the analysis' `simulate`."
+        },
+        "pre": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/preRun"
+          },
+          "description": "Runs first, unrecorded, handing on their final state."
+        },
+        "stages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stage"
+          },
+          "minItems": 1,
+          "description": "Replaces `simulate` with a chain of phases."
+        },
+        "allowFailure": {
+          "type": "boolean",
+          "description": "A failed solve gives NaN instead of failing the analysis."
+        },
+        "rtol": {
+          "type": "number"
+        },
+        "atol": {
+          "type": "number"
+        }
+      }
+    },
+    "scan": {
+      "type": "object",
+      "description": "One run per row of scanned values, as MxlPy's `scan.steady_state` / `scan.time_course`; gives the table `<name>.x`, `<name>.index` and `<name>.<column>`.",
+      "required": ["over", "columns"],
+      "additionalProperties": false,
+      "properties": {
+        "over": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 1
+          },
+          "description": "Absolute values per parameter; a single value is held over the whole scan."
+        },
+        "scale": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 1
+          },
+          "description": "Factors on a parameter's default value."
+        },
+        "grid": {
+          "type": "boolean",
+          "description": "`over` holds the axes of a cartesian product, the last varying fastest."
+        },
+        "x": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "description": "The table's `x`; defaults to the first column of `over` with more than one value."
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "Outputs whose final value is collected."
+        },
+        "simulate": {
+          "oneOf": [
+            {
+              "type": "object",
+              "description": "Integrate and report at `tEval`.",
+              "required": ["kind", "tEval"],
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "timeCourse"
+                },
+                "tEval": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 1,
+                  "description": "Output times; the run ends at the last."
+                }
+              }
+            },
+            {
+              "type": "object",
+              "description": "Integrate to dx/dt ≈ 0; for a steady-state model, evaluate it.",
+              "required": ["kind"],
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "steadyState"
+                },
+                "tol": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "description": "Steady-state tolerance."
+                }
+              }
+            }
+          ]
+        },
+        "edits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/modelEdit"
+          },
+          "description": "Applied once to the model; `addParameter` creates a parameter to scan."
+        },
+        "allowFailure": {
+          "type": "boolean",
+          "description": "A failed point gives NaN instead of failing the analysis."
+        }
+      }
+    },
+    "mca": {
+      "type": "object",
+      "description": "Metabolic control analysis by central differences, as MxlPy's `mca`; gives the table `<name>.x` (index into `wrt`) and `<name>.<output>`.",
+      "required": ["type", "wrt", "outputs"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "responseCoefficients",
+            "parameterElasticities",
+            "variableElasticities"
+          ],
+          "description": "Response coefficients: outputs at steady state against parameters. Elasticities: reaction rates against parameters or variables, without simulating (kinetic models only)."
+        },
+        "wrt": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "The parameters or variables perturbed."
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "Outputs reported, one table column each."
+        },
+        "normalized": {
+          "type": "boolean",
+          "description": "Scale by p / y (default true)."
+        },
+        "displacement": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1,
+          "description": "Relative central-difference step (default 1e-4)."
+        },
+        "at": {
+          "enum": ["initial", "steadyState"],
+          "description": "Elasticities only: the state they are evaluated at (default initial)."
+        },
+        "set": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/scenarioValue"
+          },
+          "description": "Parameter values."
+        },
+        "initial": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/scenarioValue"
+          },
+          "description": "Initial values of variables."
+        },
+        "edits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/modelEdit"
+          },
+          "description": "Structural changes, applied to a copy of the model."
+        }
+      }
+    },
+    "stability": {
+      "type": "object",
+      "description": "Jacobian eigenvalues at the steady state, sorted by real then imaginary part; gives the table `<name>.x`, `<name>.real`, `<name>.imag`.",
+      "additionalProperties": false,
+      "properties": {
+        "set": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/scenarioValue"
+          },
+          "description": "Parameter values."
+        },
+        "initial": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/scenarioValue"
+          },
+          "description": "Initial values of variables."
+        },
+        "edits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/modelEdit"
+          },
+          "description": "Structural changes, applied to a copy of the model."
+        }
+      }
+    },
+    "opSpec": {
+      "type": "object",
+      "required": ["op", "as"],
+      "additionalProperties": true,
+      "description": "One step of per-scenario data handling. `op: \"column\"` adds the column `as` from `expr`; any other `op` is a named op (README: Named ops) taking its own arguments.",
+      "properties": {
+        "op": {
+          "type": "string"
+        },
+        "as": {
+          "type": "string"
+        },
+        "scenario": {
+          "type": "string",
+          "description": "Only for this scenario."
+        },
+        "into": {
+          "type": "boolean",
+          "description": "Also store the op's `value` as the scenario column `as`."
+        },
+        "expr": {
+          "$ref": "#/$defs/expression"
+        }
+      },
+      "if": {
+        "properties": {
+          "op": {
+            "const": "column"
+          }
+        }
+      },
+      "then": {
+        "required": ["expr"]
+      }
+    },
+    "collect": {
+      "type": "object",
+      "description": "Values collected across scenarios into the table `<name>.x`, `<name>.<column>`.",
+      "required": ["x", "columns"],
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "columns": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/expression"
+            }
+          },
+          "description": "One expression per `x`."
+        }
+      }
+    },
+    "lineSeries": {
+      "type": "object",
+      "required": ["of"],
+      "additionalProperties": false,
+      "properties": {
+        "of": {
+          "$ref": "#/$defs/expression"
+        },
+        "x": {
+          "$ref": "#/$defs/expression"
+        },
+        "label": {
+          "type": "string"
+        },
+        "axis": {
+          "enum": ["left", "right"]
+        },
+        "style": {
+          "enum": ["line", "markers"]
+        },
+        "err": {
+          "$ref": "#/$defs/expression",
+          "description": "Error bar half-widths."
+        }
+      }
+    },
+    "plot": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["type", "x", "y"],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "line"
+            },
+            "title": {
+              "type": "string"
+            },
+            "x": {
+              "$ref": "#/$defs/expression"
+            },
+            "y": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/lineSeries"
+              },
+              "minItems": 1
+            },
+            "xLabel": {
+              "type": "string"
+            },
+            "yLabel": {
+              "type": "string"
+            },
+            "yRightLabel": {
+              "type": "string"
+            },
+            "xLim": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "yLim": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "yRightLim": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "logX": {
+              "type": "boolean"
+            },
+            "phases": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["from", "to"],
+                "additionalProperties": false,
+                "properties": {
+                  "from": {
+                    "type": "number"
+                  },
+                  "to": {
+                    "type": "number"
+                  }
+                }
+              },
+              "description": "Shaded spans, e.g. dark phases."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "series"],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "scatter"
+            },
+            "title": {
+              "type": "string"
+            },
+            "series": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["x", "y"],
+                "additionalProperties": false,
+                "properties": {
+                  "x": {
+                    "$ref": "#/$defs/expression"
+                  },
+                  "y": {
+                    "$ref": "#/$defs/expression"
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                }
+              },
+              "minItems": 1
+            },
+            "xLabel": {
+              "type": "string"
+            },
+            "yLabel": {
+              "type": "string"
+            },
+            "lim": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "identity": {
+              "type": "boolean",
+              "description": "Draw the identity line."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "categories", "stacks"],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "stackedBar"
+            },
+            "title": {
+              "type": "string"
+            },
+            "categories": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "stacks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["label", "of"],
+                "additionalProperties": false,
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "of": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/expression"
+                    }
+                  }
+                }
+              },
+              "minItems": 1
+            },
+            "yLabel": {
+              "type": "string"
+            },
+            "yLim": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "rows", "columns", "z"],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "heatmap"
+            },
+            "title": {
+              "type": "string"
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "columns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "z": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/expression"
+                }
+              },
+              "description": "`z[row][column]`."
+            }
+          }
+        }
+      ]
+    },
+    "goldenSeries": {
+      "type": "object",
+      "description": "A series checked against stored reference values.",
+      "required": ["x", "y"],
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "$ref": "#/$defs/expression"
+        },
+        "y": {
+          "$ref": "#/$defs/expression"
+        },
+        "byIndex": {
+          "type": "boolean",
+          "description": "Compare point by point, ignoring `x`."
+        },
+        "tolerance": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Allowed max |sim - reference| / range(reference); default 0.01."
+        }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "description": "One figure or experiment: simulations, data handling, plots and checks.",
+      "required": ["id"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "scenarios": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/scenario"
+          },
+          "description": "Named simulations of modified copies of the model."
+        },
+        "scans": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/scan"
+          }
+        },
+        "mca": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/mca"
+          }
+        },
+        "stability": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/stability"
+          }
+        },
+        "simulate": {
+          "$ref": "#/$defs/simulation",
+          "description": "Default simulation of scenarios and scans."
+        },
+        "rtol": {
+          "type": "number"
+        },
+        "atol": {
+          "type": "number"
+        },
+        "exportMethod": {
+          "type": "string",
+          "description": "Hint for MxlPy exports: the scipy method, where Radau can't start."
+        },
+        "exportTolerances": {
+          "type": "object",
+          "description": "Hint for MxlPy exports: tolerances where they need to differ from `rtol`/`atol`.",
+          "required": ["rtol", "atol"],
+          "additionalProperties": false,
+          "properties": {
+            "rtol": {
+              "type": "number"
+            },
+            "atol": {
+              "type": "number"
+            }
+          }
+        },
+        "returnRhs": {
+          "type": "boolean",
+          "description": "Also give `ddt.<variable>` columns."
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "description": "Constant columns, such as measurements: `data.<name>`."
+        },
+        "deriveEach": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/expression"
+          },
+          "description": "Columns added to every scenario before `ops`."
+        },
+        "ops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/opSpec"
+          },
+          "description": "Per-scenario data handling, in order."
+        },
+        "collect": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/collect"
+          }
+        },
+        "derive": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/expression"
+          },
+          "description": "Columns computed across scenarios and tables, after `collect`."
+        },
+        "plots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/plot"
+          },
+          "description": "Optional presentation."
+        },
+        "golden": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/goldenSeries"
+          },
+          "description": "Optional checks against stored reference values."
+        }
+      }
+    },
+    "steadyStateRules": {
+      "description": "No time, no variables, no reactions.",
+      "properties": {
+        "simulate": {
+          "properties": {
+            "kind": {
+              "const": "steadyState"
+            }
+          }
+        },
+        "returnRhs": false,
+        "stability": false,
+        "ops": {
+          "items": {
+            "properties": {
+              "op": {
+                "const": "column"
+              }
+            }
+          }
+        },
+        "scenarios": {
+          "additionalProperties": {
+            "properties": {
+              "simulate": {
+                "properties": {
+                  "kind": {
+                    "const": "steadyState"
+                  }
+                }
+              },
+              "pre": false,
+              "stages": false,
+              "initial": false,
+              "edits": {
+                "items": {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": ["removeReaction"]
+                      },
+                      {
+                        "required": ["clampVariable"]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "scans": {
+          "additionalProperties": {
+            "properties": {
+              "simulate": {
+                "properties": {
+                  "kind": {
+                    "const": "steadyState"
+                  }
+                }
+              },
+              "edits": {
+                "items": {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": ["removeReaction"]
+                      },
+                      {
+                        "required": ["clampVariable"]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "mca": {
+          "additionalProperties": {
+            "properties": {
+              "type": {
+                "const": "responseCoefficients"
+              },
+              "at": false,
+              "initial": false,
+              "edits": {
+                "items": {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": ["removeReaction"]
+                      },
+                      {
+                        "required": ["clampVariable"]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "odeRules": {
+      "description": "No reactions: no removeReaction, no elasticities.",
+      "properties": {
+        "scenarios": {
+          "additionalProperties": {
+            "properties": {
+              "edits": {
+                "items": {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": ["removeReaction"]
+                      }
+                    ]
+                  }
+                }
+              },
+              "stages": {
+                "items": {
+                  "properties": {
+                    "edits": {
+                      "items": {
+                        "not": {
+                          "anyOf": [
+                            {
+                              "required": ["removeReaction"]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "scans": {
+          "additionalProperties": {
+            "properties": {
+              "edits": {
+                "items": {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": ["removeReaction"]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "mca": {
+          "additionalProperties": {
+            "properties": {
+              "type": {
+                "const": "responseCoefficients"
+              },
+              "edits": {
+                "items": {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": ["removeReaction"]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "stability": {
+          "additionalProperties": {
+            "properties": {
+              "edits": {
+                "items": {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": ["removeReaction"]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

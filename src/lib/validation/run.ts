@@ -9,10 +9,13 @@ import type {
 } from "@computational-biology-aachen/mxlweb-core";
 import { derivedKeys } from "../utils";
 import { evaluate, parse, toMathml, type Value } from "./expr";
-import { expandScans } from "./helpers";
+import { eigenvalues } from "./eigen";
+import { expandScans, MCA_DEFAULTS } from "./helpers";
 import { evalColumn, OPS, type Frame } from "./ops";
 import type {
+  Mca,
   ModelEdit,
+  PointSetup,
   ProtocolStep,
   Scenario,
   ScenarioValue,
@@ -324,6 +327,122 @@ async function runScenario(
   };
 }
 
+type Fn = (time: number, y: number[], pars: number[]) => number[];
+const compile = <T>(src: string) => new Function(`return (${src})`)() as T;
+
+/** A model's rhs and derived values at any state, without integrating. */
+function evaluator(model: KineticModelBuilder) {
+  const rhs = compile<Fn>(model.buildJs());
+  const outputs = derivedKeys(model);
+  const { allDerived, selectDerived } = model.buildJsDerived(outputs);
+  const all = compile<Fn>(allDerived);
+  const select = compile<(all: number[]) => number[]>(selectDerived);
+  return {
+    variables: model.getNames(),
+    parNames: model.getParameterNames(),
+    outputs,
+    rhs: (y: number[], pars: number[]) => rhs(0, y, pars),
+    derived: (y: number[], pars: number[]) => select(all(0, y, pars)),
+  };
+}
+
+/** The state a point analysis is evaluated at. */
+async function pointState(
+  id: string,
+  model: KineticModelBuilder,
+  at: "initial" | "steadyState",
+  validation: Validation,
+  simulate: Simulate,
+): Promise<number[]> {
+  const y0 = model.resolveInitialValues();
+  if (at === "initial") return y0;
+  const sim: Simulation = { kind: "steadyState" };
+  const res = await simulate(buildRequest(model, sim, y0, {}, validation, id));
+  if (res.err) throw new Error(`${id}: ${res.err.message}`);
+  if (!res.finalState) throw new Error(`${id}: backend has no final state`);
+  return res.finalState;
+}
+
+const setupScenario = (setup: PointSetup): Scenario => ({
+  ...(setup.set ? { parameters: setup.set } : {}),
+  ...(setup.initial ? { initial: setup.initial } : {}),
+  ...(setup.edits ? { edits: setup.edits } : {}),
+});
+
+/** Elasticities as MxlPy's `mca.*_elasticities`, by central differences. */
+async function elasticities(
+  name: string,
+  mca: Mca,
+  base: KineticModelBuilder,
+  validation: Validation,
+  simulate: Simulate,
+): Promise<Frame> {
+  const { normalized, displacement: d } = { ...MCA_DEFAULTS, ...mca };
+  const { model } = buildScenario(base, setupScenario(mca));
+  const f = evaluator(model);
+  const y = await pointState(
+    name,
+    model,
+    mca.at ?? "initial",
+    validation,
+    simulate,
+  );
+  const pars = model.resolveParameters();
+  const index = (names: string[], id: string) => {
+    const i = names.indexOf(id);
+    if (i < 0) throw new Error(`${name}: unknown "${id}"`);
+    return i;
+  };
+  const rows = mca.outputs.map((out) => index(f.outputs, out));
+  const reference = f.derived(y, pars);
+  const columns = mca.outputs.map((): number[] => []);
+  for (const id of mca.wrt) {
+    const byVariable = mca.type === "variableElasticities";
+    const j = index(byVariable ? f.variables : f.parNames, id);
+    const old = byVariable ? y[j] : pars[j];
+    const at = (factor: number) => {
+      const ys = [...y];
+      const ps = [...pars];
+      (byVariable ? ys : ps)[j] = old * factor;
+      return f.derived(ys, ps);
+    };
+    const upper = at(1 + d);
+    const lower = at(1 - d);
+    rows.forEach((r, k) => {
+      const coef = (upper[r] - lower[r]) / (2 * d * old);
+      columns[k].push(normalized ? (coef * old) / reference[r] : coef);
+    });
+  }
+  return {
+    x: mca.wrt.map((_, i) => i),
+    ...Object.fromEntries(mca.outputs.map((out, k) => [out, columns[k]])),
+  };
+}
+
+/** Eigenvalues of the Jacobian at the steady state; central differences. */
+async function stability(
+  name: string,
+  setup: PointSetup,
+  base: KineticModelBuilder,
+  validation: Validation,
+  simulate: Simulate,
+): Promise<Frame> {
+  const { model } = buildScenario(base, setupScenario(setup));
+  const f = evaluator(model);
+  const y = await pointState(name, model, "steadyState", validation, simulate);
+  const pars = model.resolveParameters();
+  const columns = y.map((yj, j) => {
+    const h = 1e-6 * Math.max(Math.abs(yj), 1e-9);
+    const shifted = (by: number) => f.rhs(y.with(j, yj + by), pars);
+    const upper = shifted(h);
+    const lower = shifted(-h);
+    return upper.map((u, i) => (u - lower[i]) / (2 * h));
+  });
+  const jacobian = y.map((_, i) => columns.map((col) => col[i]));
+  const { real, imag } = eigenvalues(jacobian);
+  return { x: real.map((_, i) => i), real, imag };
+}
+
 /** Maps `items` to promises with at most `limit` running at once. */
 async function mapLimited<T, R>(
   items: T[],
@@ -431,6 +550,13 @@ export async function runValidation(
       state.ops[opSpec.as] = out;
       if (opSpec.into) state.frame[opSpec.as] = out.value;
     }
+  }
+  for (const [name, mca] of Object.entries(validation.mca ?? {})) {
+    if (mca.type === "responseCoefficients") continue;
+    tables[name] = await elasticities(name, mca, base, validation, simulate);
+  }
+  for (const [name, setup] of Object.entries(validation.stability ?? {})) {
+    tables[name] = await stability(name, setup, base, validation, simulate);
   }
   for (const [name, table] of Object.entries(validation.collect ?? {})) {
     const frame: Frame = { x: table.x };

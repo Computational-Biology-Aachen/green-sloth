@@ -117,6 +117,41 @@ export interface Scan {
   allowFailure?: boolean;
 }
 
+/** Model changes for one point analysis, applied as in a {@link Scenario}. */
+export interface PointSetup {
+  set?: Record<string, ScenarioValue>;
+  initial?: Record<string, ScenarioValue>;
+  edits?: ModelEdit[];
+}
+
+/**
+ * Metabolic control analysis by central differences, as MxlPy's `mca`. Gives
+ * the table `<name>.x` (index of `wrt`) and one column `<name>.<output>` per
+ * output, each holding one coefficient per entry of `wrt`.
+ *
+ * - `responseCoefficients`: outputs at steady state against parameters `wrt`
+ * - `parameterElasticities`: reaction rates against parameters `wrt`
+ * - `variableElasticities`: reaction rates against variables `wrt`
+ *
+ * Elasticities are evaluated without simulating, at the initial state or, with
+ * `at: "steadyState"`, at the steady state.
+ */
+export interface Mca extends PointSetup {
+  type:
+    "responseCoefficients" | "parameterElasticities" | "variableElasticities";
+  wrt: string[];
+  outputs: string[];
+  normalized?: boolean;
+  displacement?: number;
+  at?: "initial" | "steadyState";
+}
+
+/**
+ * Local stability at the steady state: eigenvalues of the Jacobian, sorted by
+ * real then imaginary part, as the table `<name>.real`, `<name>.imag`.
+ */
+export type Stability = PointSetup;
+
 export interface LineSeries {
   /** Expression for the y values. */
   of: string;
@@ -198,6 +233,8 @@ export interface Validation {
   title: string;
   scenarios?: Record<string, Scenario>;
   scans?: Record<string, Scan>;
+  mca?: Record<string, Mca>;
+  stability?: Record<string, Stability>;
   simulate?: Simulation;
   rtol?: number;
   atol?: number;
