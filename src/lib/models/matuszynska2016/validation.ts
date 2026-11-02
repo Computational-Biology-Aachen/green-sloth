@@ -1,4 +1,4 @@
-import { lastOf, sweep, sweepIds, step } from "#lib/validation/helpers.js";
+import { step } from "#lib/validation/helpers.js";
 import type {
   GoldenSeries,
   Plot,
@@ -177,14 +177,14 @@ export const validations: Validation[] = [
           },
         ]),
       ),
-      ...sweep("s", scanLight, (value) => ({
-        parameters: { PPFD: value },
+    },
+    scans: {
+      scan: {
+        over: { PPFD: scanLight },
+        columns: ["pH_lu", "Q"],
         simulate: { kind: "steadyState" },
         allowFailure: true,
-      })),
-    },
-    collect: {
-      scan: lastOf(sweepIds("s", scanLight.length), scanLight, ["pH_lu", "Q"]),
+      },
     },
     plots: [
       {

@@ -1,11 +1,4 @@
-import {
-  lastOf,
-  linspace,
-  repeat,
-  step,
-  sweep,
-  sweepIds,
-} from "#lib/validation/helpers.js";
+import { linspace, repeat, step } from "#lib/validation/helpers.js";
 import type {
   GoldenSeries,
   Scenario,
@@ -188,8 +181,14 @@ export const validations: Validation[] = [
     id: "fig3",
     title: "Figure 3: light response at steady state",
     simulate: { kind: "steadyState" },
-    scenarios: sweep("p", ppfd, (value) => ({ parameters: { PPFD: value } })),
-    collect: { scan: lastOf(sweepIds("p", 100), ppfd, fig3Columns) },
+    scans: {
+      scan: {
+        over: { PPFD: ppfd },
+        columns: fig3Columns,
+        // MxlPy detects oscillations at some lights; the notebook drops those.
+        allowFailure: true,
+      },
+    },
     plots: [
       {
         type: "line",
@@ -230,15 +229,16 @@ export const validations: Validation[] = [
     id: "fig4",
     title: "Figure 4: PGR5 activity at 1000 µmol",
     simulate: { kind: "steadyState" },
-    scenarios: sweep("k", log2Fold, (e) => ({
-      // The notebook drops the points that don't converge.
-      allowFailure: true,
-      parameters: {
-        PPFD: 1000,
-        kf_cyclic_electron_flow: `param.kf_cyclic_electron_flow * ${2 ** e}`,
+    scans: {
+      scan: {
+        over: { PPFD: [1000] },
+        scale: { kf_cyclic_electron_flow: log2Fold.map((e) => 2 ** e) },
+        x: log2Fold,
+        columns: fig4Columns,
+        // The notebook drops the points that don't converge.
+        allowFailure: true,
       },
-    })),
-    collect: { scan: lastOf(sweepIds("k", 200), log2Fold, fig4Columns) },
+    },
     plots: [
       {
         type: "line",

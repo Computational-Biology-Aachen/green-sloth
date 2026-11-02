@@ -4,6 +4,7 @@ import type {
   ModelEdit,
   Plot,
   ProtocolStep,
+  Scan,
   Scenario,
   Validation,
 } from "#lib/validation/types.js";
@@ -78,27 +79,16 @@ for (const g of FIG4_GENOTYPES) {
 
 // Figure 5, row A.
 const SCAN_LIGHTS = [50, 100, 250, 500, 1000];
-const SCAN_MODELS: Record<string, Scenario> = {
-  wt: {},
-  kea3: { parameters: { k_KEA3: 0 } },
-  noreg: { edits: NO_REGULATION },
-};
 const twoMinutes = {
   kind: "timeCourse" as const,
   tEval: [120],
 };
-const scanScenarios: Record<string, Scenario> = {};
-for (const [name, base] of Object.entries(SCAN_MODELS)) {
-  SCAN_LIGHTS.forEach((pfd) => {
-    scanScenarios[`scan_${name}_${pfd}`] = {
-      ...base,
-      parameters: { ...base.parameters, PPFD: pfd },
-      simulate: twoMinutes,
-    };
-  });
-}
-const scanColumn = (name: string) =>
-  SCAN_LIGHTS.map((pfd) => `last(scan_${name}_${pfd}.NPQ)`);
+const scanOf = (over: Scan["over"], edits?: ModelEdit[]): Scan => ({
+  over: { PPFD: SCAN_LIGHTS, ...over },
+  ...(edits ? { edits } : {}),
+  columns: ["NPQ"],
+  simulate: twoMinutes,
+});
 
 // Figure 5, row B: PPFD oscillates around 500 once `pfd_add` is switched on.
 const PERIODS = [5, 75, 100, 120, 200, 300, 600, 900];
@@ -257,25 +247,23 @@ const figures: Validation[] = [
   {
     id: "fig5a",
     title: "Figure 5, row A: KEA3 regulation",
-    scenarios: { ...FIG5_A, ...scanScenarios },
-    collect: {
-      scan: {
-        x: SCAN_LIGHTS,
-        columns: {
-          wt: scanColumn("wt"),
-          kea3: scanColumn("kea3"),
-          noreg: scanColumn("noreg"),
-        },
-      },
+    scenarios: FIG5_A,
+    scans: {
+      scan_wt: scanOf({}),
+      scan_kea3: scanOf({ k_KEA3: [0] }),
+      scan_noreg: scanOf({}, NO_REGULATION),
     },
     plots: [
       {
         type: "line",
         title: "ΔNPQ after 2 min",
-        x: "scan.x",
+        x: "scan_wt.x",
         y: [
-          { of: "scan.kea3 - scan.wt", label: "With KEA3 regulation" },
-          { of: "scan.kea3 - scan.noreg", label: "Without KEA3 regulation" },
+          { of: "scan_kea3.NPQ - scan_wt.NPQ", label: "With KEA3 regulation" },
+          {
+            of: "scan_kea3.NPQ - scan_noreg.NPQ",
+            label: "Without KEA3 regulation",
+          },
         ],
         xLabel: "Light intensity (µmol quanta m⁻² s⁻¹)",
         yLabel: "ΔNPQ",
@@ -288,9 +276,9 @@ const figures: Validation[] = [
           { x: `k_noreg_${pfd}.time`, y: `k_noreg_${pfd}.NPQ` },
         ]),
       ),
-      scan_wt: { x: "scan.x", y: "scan.wt" },
-      scan_kea3: { x: "scan.x", y: "scan.kea3" },
-      scan_noreg: { x: "scan.x", y: "scan.noreg" },
+      scan_wt: { x: "scan_wt.x", y: "scan_wt.NPQ" },
+      scan_kea3: { x: "scan_kea3.x", y: "scan_kea3.NPQ" },
+      scan_noreg: { x: "scan_noreg.x", y: "scan_noreg.NPQ" },
     },
   },
   {

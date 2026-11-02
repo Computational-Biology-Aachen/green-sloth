@@ -23,8 +23,6 @@ const O2 = 8;
 
 const cross = Array.from({ length: 20 }, (_, i) => i * 0.05);
 const light = Array.from({ length: 20 }, (_, i) => i * 25);
-const grid = cross.flatMap((c) => light.map((l) => [c, l] as const));
-const pqRed = grid.map((_, i) => `last(g${i}.Plastoquinone_reduced)`);
 
 export const validations: Validation[] = [
   {
@@ -91,22 +89,16 @@ export const validations: Validation[] = [
     rtol: 1e-8,
     atol: 1e-8,
     simulate: { kind: "steadyState" },
-    scenarios: Object.fromEntries(
-      grid.map(([c, l], i) => [
-        `g${i}`,
-        {
-          edits: [
-            { addParameter: "steady_cross_section", value: c },
-            { setAssignment: "PSII_cross_section", to: "steady_cross_section" },
-          ],
-          parameters: { PPFD: l },
-        },
-      ]),
-    ),
-    collect: {
+    scans: {
       surface: {
-        x: grid.map((_, i) => i),
-        columns: { pqRed: pqRed.map((e) => `${e} / param.PQ_tot`) },
+        over: { steady_cross_section: cross, PPFD: light },
+        grid: true,
+        x: Array.from({ length: cross.length * light.length }, (_, i) => i),
+        edits: [
+          { addParameter: "steady_cross_section", value: 0 },
+          { setAssignment: "PSII_cross_section", to: "steady_cross_section" },
+        ],
+        columns: ["Plastoquinone_reduced"],
       },
     },
     plots: [
@@ -116,10 +108,18 @@ export const validations: Validation[] = [
         rows: cross.map(String),
         columns: light.map(String),
         z: cross.map((_, r) =>
-          light.map((__, c) => `nth(surface.pqRed, ${r * light.length + c})`),
+          light.map(
+            (__, c) =>
+              `nth(surface.Plastoquinone_reduced, ${r * light.length + c}) / param.PQ_tot`,
+          ),
         ),
       },
     ],
-    golden: { pqRed: { x: "surface.x", y: "surface.pqRed" } },
+    golden: {
+      pqRed: {
+        x: "surface.x",
+        y: "surface.Plastoquinone_reduced / param.PQ_tot",
+      },
+    },
   },
 ];

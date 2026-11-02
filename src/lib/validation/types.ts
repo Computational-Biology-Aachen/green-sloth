@@ -95,6 +95,28 @@ export interface Collect {
   columns: Record<string, string[]>;
 }
 
+/**
+ * One simulation per row of scanned values, with the final values of `columns`
+ * collected into the table `<name>.x`, `<name>.index`, `<name>.<column>`.
+ */
+export interface Scan {
+  /** Absolute values per parameter; one value is held over the whole scan. */
+  over: Record<string, number[]>;
+  /** Factors on a parameter's default value. */
+  scale?: Record<string, number[]>;
+  /** `over` holds the axes of a cartesian product, the last varying fastest. */
+  grid?: boolean;
+  /** The table's `x`; defaults to the first scanned column of `over`. */
+  x?: number[];
+  columns: string[];
+  /** Overrides the validation's `simulate`; a steady state or a time course. */
+  simulate?: SteadyStateSimulation | TimeCourseSimulation;
+  /** Applied once to the model; `addParameter` makes a parameter to scan. */
+  edits?: ModelEdit[];
+  /** A failed point gives NaN instead of failing the validation. */
+  allowFailure?: boolean;
+}
+
 export interface LineSeries {
   /** Expression for the y values. */
   of: string;
@@ -174,7 +196,8 @@ export interface GoldenSeries {
 export interface Validation {
   id: string;
   title: string;
-  scenarios: Record<string, Scenario>;
+  scenarios?: Record<string, Scenario>;
+  scans?: Record<string, Scan>;
   simulate?: Simulation;
   rtol?: number;
   atol?: number;

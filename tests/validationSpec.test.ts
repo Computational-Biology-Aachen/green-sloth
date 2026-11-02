@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { evaluate, parse, refs, toPython } from "../src/lib/validation/expr";
 import { OPS, type Frame } from "../src/lib/validation/ops";
+import { expandScans } from "../src/lib/validation/helpers";
 import { protocolGrid } from "../src/lib/validation/run";
 import { compareSeries } from "../src/lib/validation/compare";
 import { decimate } from "../src/lib/validation/decimate";
@@ -180,7 +181,7 @@ describe.runIf(slugs.length > 0).each(slugs)("%s validation.ts", (slug) => {
     ]);
     const missing: string[] = [];
 
-    for (const v of validations) {
+    for (const v of validations.map(expandScans)) {
       const at = `${v.id}`;
       const ids = Object.keys(v.scenarios);
       const opNames = new Set(

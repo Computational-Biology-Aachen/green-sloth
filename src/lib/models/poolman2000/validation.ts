@@ -1,13 +1,5 @@
-import {
-  defaultGrid,
-  lastOf,
-  linspace,
-  sweep,
-  sweepIds,
-} from "#lib/validation/helpers.js";
+import { defaultGrid, linspace } from "#lib/validation/helpers.js";
 import type { Validation } from "#lib/validation/types.js";
-
-const phosphate = linspace(0.05, 0.7, 21);
 
 export const validations: Validation[] = [
   {
@@ -37,10 +29,12 @@ export const validations: Validation[] = [
     id: "fig3",
     title: "Figure 3: effect of cytosolic phosphate",
     simulate: { kind: "steadyState" },
-    scenarios: sweep("p", phosphate, (value) => ({
-      parameters: { Orthophosphate_external: value },
-    })),
-    collect: { scan: lastOf(sweepIds("p", 21), phosphate, ["ex_g1p"]) },
+    scans: {
+      scan: {
+        over: { Orthophosphate_external: linspace(0.05, 0.7, 21) },
+        columns: ["ex_g1p"],
+      },
+    },
     plots: [
       {
         type: "line",

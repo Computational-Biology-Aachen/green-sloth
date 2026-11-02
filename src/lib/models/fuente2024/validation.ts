@@ -1,10 +1,4 @@
-import {
-  defaultGrid,
-  lastOf,
-  linspace,
-  sweep,
-  sweepIds,
-} from "#lib/validation/helpers.js";
+import { defaultGrid, linspace } from "#lib/validation/helpers.js";
 import type {
   GoldenSeries,
   Scenario,
@@ -87,10 +81,9 @@ export const validations: Validation[] = [
     id: "fig3",
     title: "Figure 3: light response at steady state",
     simulate: { kind: "steadyState" },
-    scenarios: sweep("p", pfd, (value) => ({
-      parameters: { PPFD: value, PPFD_add: 0 },
-    })),
-    collect: { scan: lastOf(sweepIds("p", 100), pfd, fig3Columns) },
+    scans: {
+      scan: { over: { PPFD: pfd, PPFD_add: [0] }, columns: fig3Columns },
+    },
     plots: [
       {
         type: "line",
