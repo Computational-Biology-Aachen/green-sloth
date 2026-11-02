@@ -1,9 +1,9 @@
-import { lastOf, step } from "#lib/validation/helpers.js";
+import { step } from "#lib/validation/helpers.js";
 import type {
   GoldenSeries,
   Plot,
-  Scenario,
-  Simulation,
+  Scan,
+  TimeCourseSimulation,
   Validation,
 } from "#lib/validation/types.js";
 
@@ -16,27 +16,22 @@ const O2 = [210000, 20000];
 const SCAN_COLUMNS = ["A", "gs", "v_FNR", "RUBP", "PGA", "Ract", "f_rubp"];
 
 /** Each point is a 30 min simulation; only its end state is used. */
-const halfHour: Simulation = { kind: "timeCourse", tEval: [1800] };
+const halfHour: TimeCourseSimulation = { kind: "timeCourse", tEval: [1800] };
 
-function scan(prefix: string, param: "PPFD" | "Ca", values: number[]) {
-  const scenarios: Record<string, Scenario> = {};
-  const ids: string[] = [];
-  for (const value of values) {
-    for (const o2 of O2) {
-      const id = `${prefix}${ids.length}`;
-      ids.push(id);
-      scenarios[id] = {
-        parameters: { Ca: 400, PPFD: 1500, [param]: value, p_o2: o2 },
-        simulate: halfHour,
-      };
-    }
-  }
-  return { scenarios, ids };
+const seq = (n: number) => Array.from({ length: n }, (_, i) => i);
+
+function scan(param: "PPFD" | "Ca", values: number[]): Scan {
+  return {
+    over: { Ca: [400], PPFD: [1500], [param]: values, p_o2: O2 },
+    grid: true,
+    x: seq(values.length * O2.length),
+    columns: SCAN_COLUMNS,
+    simulate: halfHour,
+  };
 }
 
-const pfd = scan("pfd", "PPFD", PPFD);
-const ca = scan("ca", "Ca", CA);
-const seq = (n: number) => Array.from({ length: n }, (_, i) => i);
+const pfd = scan("PPFD", PPFD);
+const ca = scan("Ca", CA);
 
 const scanPlot = (table: string, of: string, yLabel: string): Plot => ({
   type: "line",
@@ -89,11 +84,7 @@ export const validations: Validation[] = [
   {
     id: "fig3",
     title: "Figures 3 and 4: response to PPFD and Ca",
-    scenarios: { ...pfd.scenarios, ...ca.scenarios },
-    collect: {
-      pfd: lastOf(pfd.ids, seq(pfd.ids.length), SCAN_COLUMNS),
-      ca: lastOf(ca.ids, seq(ca.ids.length), SCAN_COLUMNS),
-    },
+    scans: { pfd, ca },
     plots: [
       scanPlot("pfd", "pfd.A * 1000", "A (µmol m⁻² s⁻¹)"),
       scanPlot("ca", "ca.A * 1000", "A (µmol m⁻² s⁻¹)"),

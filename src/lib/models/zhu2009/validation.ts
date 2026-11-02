@@ -1,9 +1,4 @@
-import {
-  defaultGrid,
-  lastOf,
-  sweep,
-  sweepIds,
-} from "#lib/validation/helpers.js";
+import { defaultGrid } from "#lib/validation/helpers.js";
 import type { GoldenSeries, Validation } from "#lib/validation/types.js";
 
 const COLUMNS = ["RuBP", "PGA", "DPGA", "Ru5P"];
@@ -20,26 +15,16 @@ function scan(id: string, title: string, params: string[]): Validation {
     id,
     title,
     simulate: { kind: "steadyState" },
-    scenarios: Object.assign(
-      {},
-      ...params.map((p) =>
-        sweep(`${p}_`, percent, (pct) => ({
-          // The notebook leaves out points that don't settle.
-          allowFailure: true,
-          parameters: { [p]: `param.${p} * ${pct / 100}` },
-        })),
-      ),
-    ),
-    collect: Object.fromEntries(
+    scans: Object.fromEntries(
       params.map((p) => [
         p,
         {
-          ...lastOf(sweepIds(`${p}_`, percent.length), percent, COLUMNS),
-          columns: {
-            ...lastOf(sweepIds(`${p}_`, percent.length), percent, COLUMNS)
-              .columns,
-            index: percent.map((_, i) => String(i)),
-          },
+          over: {},
+          scale: { [p]: percent.map((pct) => pct / 100) },
+          x: percent,
+          columns: COLUMNS,
+          // The notebook leaves out points that don't settle.
+          allowFailure: true,
         },
       ]),
     ),

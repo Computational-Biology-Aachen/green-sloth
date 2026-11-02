@@ -5,11 +5,14 @@
  */
 import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
 import { parse, refs, toPython } from "../expr";
+import { scanX } from "../helpers";
 import { OPS } from "../ops";
 import type {
   ModelEdit,
   Plot,
   PreRun,
+  ProtocolSimulation,
+  Scan,
   Scenario,
   ScenarioValue,
   Simulation,
@@ -20,6 +23,26 @@ const str = JSON.stringify;
 
 /** JSON is Python, apart from `null` and non-finite numbers, which specs lack. */
 const literal = (v: unknown) => (v === null ? "None" : JSON.stringify(v));
+
+const closeTo = (a: number[], b: (i: number) => number) => {
+  const scale = Math.max(...a.map(Math.abs));
+  return a.every((v, i) => Math.abs(v - b(i)) <= 1e-12 * scale);
+};
+
+/** An array as numpy would generate it, or else as a list. */
+function pyArray(xs: number[]): string {
+  const n = xs.length;
+  const [from, to] = [xs[0], xs[n - 1]];
+  if (n >= 3 && from !== to) {
+    const linear = (i: number) => from + (i * (to - from)) / (n - 1);
+    if (closeTo(xs, linear)) return `np.linspace(${from}, ${to}, ${n})`;
+    if (from > 0 && to > 0) {
+      const geometric = (i: number) => from * (to / from) ** (i / (n - 1));
+      if (closeTo(xs, geometric)) return `np.geomspace(${from}, ${to}, ${n})`;
+    }
+  }
+  return `np.array(${literal(xs)})`;
+}
 
 function values(o: Record<string, ScenarioValue>): string {
   const body = Object.entries(o).map(([k, v]) => {
@@ -60,26 +83,43 @@ function edit(e: ModelEdit, model = "m"): string {
   return `${model}.update_derived(${str(e.setAssignment)}, ${rule(e.to)})`;
 }
 
-const stepRows = (sim: Simulation) =>
-  sim.kind === "protocol"
-    ? `[${sim.steps
-        .map(
-          (s) =>
-            `(${s.duration}, ${literal(s.set)}, ${s.points ?? sim.pointsPerStep ?? 10})`,
-        )
-        .join(", ")}]`
-    : "None";
+const stepRows = (sim: ProtocolSimulation) =>
+  `[${sim.steps.map((s) => `(${s.duration}, ${literal(s.set)})`).join(", ")}]`;
+
+/**
+ * Calls of `simulate_protocol`. A protocol table holds one value per step, so
+ * steps setting other parameters, or sampled differently, start a new call.
+ */
+function protocolLines(sim: ProtocolSimulation): string[] {
+  const perStep = sim.pointsPerStep ?? 10;
+  const signature = (s: ProtocolSimulation["steps"][number]) =>
+    `${s.points ?? perStep}|${Object.keys(s.set).join()}`;
+  const runs: ProtocolSimulation["steps"][] = [];
+  sim.steps.forEach((step, i) => {
+    if (i > 0 && signature(step) === signature(sim.steps[i - 1])) {
+      runs[runs.length - 1].push(step);
+    } else {
+      runs.push([step]);
+    }
+  });
+  return runs.map(
+    (steps) =>
+      `s.simulate_protocol(make_protocol(${stepRows({ ...sim, steps })}), time_points_per_step=${steps[0].points ?? perStep})`,
+  );
+}
 
 /** Code running `sim` on simulator `s`. */
-function simulateLine(sim: Simulation): string {
-  if (sim.kind === "steadyState") return "s.simulate_to_steady_state()";
+function simulateLines(sim: Simulation): string[] {
+  if (sim.kind === "steadyState") return ["s.simulate_to_steady_state()"];
   if (sim.kind === "timeCourse") {
-    return `s.simulate_time_course(${literal(sim.tEval)})`;
+    return [`s.simulate_time_course(${pyArray(sim.tEval)})`];
   }
   if (sim.tEval) {
-    return `s.simulate_protocol_time_course(make_protocol([(d, p) for d, p, _ in ${stepRows(sim)}]), ${literal(sim.tEval)})`;
+    return [
+      `s.simulate_protocol_time_course(make_protocol(${stepRows(sim)}), ${pyArray(sim.tEval)})`,
+    ];
   }
-  return `run_protocol(s, ${stepRows(sim)})`;
+  return protocolLines(sim);
 }
 
 /** The times a run reports; MxlPy may also return its start and step ends. */
@@ -89,9 +129,12 @@ const outputTimes = (sim: Simulation): number[] | undefined => {
   return undefined;
 };
 
-function integrator(scenario: Scenario, v: Validation): string {
-  const rtol = v.exportTolerances?.rtol ?? scenario.rtol ?? v.rtol ?? 1e-8;
-  const atol = v.exportTolerances?.atol ?? scenario.atol ?? v.atol ?? 1e-8;
+function integrator(
+  tolerances: { rtol?: number; atol?: number },
+  v: Validation,
+): string {
+  const rtol = v.exportTolerances?.rtol ?? tolerances.rtol ?? v.rtol ?? 1e-8;
+  const atol = v.exportTolerances?.atol ?? tolerances.atol ?? v.atol ?? 1e-8;
   return `partial(Scipy, method=${str(v.exportMethod ?? "Radau")}, rtol=${rtol}, atol=${atol})`;
 }
 
@@ -101,12 +144,34 @@ function preRun(pre: PreRun, scenario: Scenario, v: Validation): string[] {
     "pre = copy.deepcopy(m)",
     ...set,
     `s = Simulator(pre, integrator=${integrator(scenario, v)})`,
-    simulateLine(pre),
+    ...simulateLines(pre),
     "m.update_variables(s.get_result().unwrap_or_err().get_new_y0())",
   ];
 }
 
-function scenarioCell(id: string, scenario: Scenario, v: Validation): string[] {
+/** `r` as one table: time, variables, derived values and maybe dy/dt. */
+function frameOf(sim: Simulation, v: Validation): string {
+  const combined = v.returnRhs
+    ? `pd.concat([r.get_combined(), r.get_right_hand_side().add_prefix("ddt.")], axis=1)`
+    : "r.get_combined()";
+  const times = outputTimes(sim);
+  // MxlPy also returns the start and each step's end; keep the requested times.
+  const selected =
+    times && !(sim.kind === "timeCourse" && times[0] === 0)
+      ? `${combined}.reindex(${pyArray(times)}, method="nearest")`
+      : combined;
+  return `${selected}.rename_axis("time").reset_index()`;
+}
+
+function scenarioCell(
+  id: string,
+  scenario: Scenario,
+  v: Validation,
+  withProtocols: boolean,
+): string[] {
+  if (scenario.allowFailure) {
+    throw new Error(`${id}: only a scan can allow failures in an export`);
+  }
   const key = str(id);
   const lines = [`# Scenario ${id}`, "m = get_model()"];
   scenario.edits?.forEach((e) => lines.push(edit(e)));
@@ -116,9 +181,9 @@ function scenarioCell(id: string, scenario: Scenario, v: Validation): string[] {
   if (scenario.initial) {
     lines.push(`m.update_variables(${values(scenario.initial)})`);
   }
-  lines.push(`protocols[${key}] = None`);
 
   if (scenario.stages) {
+    if (withProtocols) lines.push(`protocols[${key}] = None`);
     lines.push("frames, y, offset = [], None, 0.0");
     scenario.stages.forEach((stage) => {
       lines.push("stage = copy.deepcopy(m)");
@@ -127,11 +192,10 @@ function scenarioCell(id: string, scenario: Scenario, v: Validation): string[] {
         "if y is not None:",
         "    stage.update_variables({k: v for k, v in y.items() if k in stage.get_variable_names()})",
         `s = Simulator(stage, integrator=${integrator(scenario, v)})`,
-        simulateLine(stage.simulate),
+        ...simulateLines(stage.simulate),
         "r = s.get_result().unwrap_or_err()",
         "y = r.get_new_y0()",
-        "frame = frame_of(r, s, " +
-          `${literal(outputTimes(stage.simulate) ?? null)}, ${v.returnRhs ? "True" : "False"})`,
+        `frame = ${frameOf(stage.simulate, v)}`,
         "frame['time'] += offset",
         "offset = frame['time'].iloc[-1]",
         "frames.append(frame if not frames else frame.iloc[1:])",
@@ -144,32 +208,90 @@ function scenarioCell(id: string, scenario: Scenario, v: Validation): string[] {
   const sim = scenario.simulate ?? v.simulate;
   if (!sim) throw new Error(`${id}: no simulation`);
   scenario.pre?.forEach((pre) => lines.push(...preRun(pre, scenario, v)));
-  if (sim.kind === "protocol")
-    lines.push(`protocols[${key}] = [(d, p) for d, p, _ in ${stepRows(sim)}]`);
-  const finish = `res[${key}] = frame_of(r, s, ${literal(outputTimes(sim) ?? null)}, ${v.returnRhs ? "True" : "False"})`;
-  const run = [
-    `s = Simulator(m, integrator=${integrator(scenario, v)})`,
-    simulateLine(sim),
-    "r = s.get_result().unwrap_or_err()",
-  ];
-  // MxlPy's scans leave out what doesn't settle, such as oscillating points.
-  if (scenario.allowFailure || sim.kind === "steadyState") {
+  if (withProtocols) {
     lines.push(
-      "try:",
-      ...run.map((l) => `    ${l}`),
-      `    ${finish}`,
-      "except Exception:",
-      `    res[${key}] = None`,
+      `protocols[${key}] = ${sim.kind === "protocol" ? stepRows(sim) : "None"}`,
     );
-  } else {
-    lines.push(...run, finish);
   }
+  lines.push(
+    `s = Simulator(m, integrator=${integrator(scenario, v)})`,
+    ...simulateLines(sim),
+    "r = s.get_result().unwrap_or_err()",
+    `res[${key}] = ${frameOf(sim, v)}`,
+  );
+  return lines;
+}
+
+function toScan(scan: Scan): string {
+  const column = (xs: number[]) =>
+    xs.length === 1 ? String(xs[0]) : pyArray(xs);
+  const over = Object.entries(scan.over).map(
+    ([id, xs]) => `${str(id)}: ${scan.grid ? pyArray(xs) : column(xs)}`,
+  );
+  const scale = Object.entries(scan.scale ?? {}).map(
+    ([id, xs]) =>
+      `${str(id)}: base.get_parameter_values()[${str(id)}] * ${column(xs)}`,
+  );
+  const body = `{${[...over, ...scale].join(", ")}}`;
+  return scan.grid ? `cartesian_product(${body})` : `pd.DataFrame(${body})`;
+}
+
+function scanCell(name: string, scan: Scan, v: Validation): string[] {
+  const sim = scan.simulate ?? v.simulate;
+  if (sim?.kind !== "steadyState" && sim?.kind !== "timeCourse") {
+    throw new Error(`${name}: a scan runs a steady state or a time course`);
+  }
+  const steady = sim.kind === "steadyState";
+  const lines = [`# Scan ${name}`];
+  const model = scan.edits ? "m" : "get_model()";
+  if (scan.edits) {
+    lines.push("m = get_model()");
+    scan.edits.forEach((e) => lines.push(edit(e)));
+  }
+  lines.push(
+    `to_scan = ${toScan(scan)}`,
+    `result = scan.${steady ? "steady_state" : "time_course"}(`,
+    `    ${model},`,
+    "    to_scan=to_scan,",
+    ...(steady ? [] : [`    time_points=${pyArray(sim.tEval)},`]),
+    `    runner=KineticRunner(integrator=${integrator({}, v)}),`,
+    ")",
+    steady
+      ? "frame = result.combined"
+      : `frame = result.combined.groupby(level="n").last()`,
+  );
+  if (!scan.allowFailure) {
+    lines.push(
+      `assert not frame[${literal(scan.columns)}].isna().any(axis=None)`,
+    );
+  }
+  const firstColumn = Object.entries(scan.over).find(([, xs]) => xs.length > 1);
+  const x =
+    !scan.x && !scan.grid && firstColumn
+      ? `to_scan[${str(firstColumn[0])}].to_numpy()`
+      : pyArray(scanX(scan));
+  const usesIndex = Object.values(v.golden ?? {}).some(
+    (g) => g.x === `${name}.index`,
+  );
+  const columns = scan.columns.map(
+    (c) => `    ${str(c)}: frame[${str(c)}].to_numpy(),`,
+  );
+  lines.push(
+    `tables[${str(name)}] = {`,
+    `    "x": ${x},`,
+    ...(usesIndex ? ['    "index": np.arange(len(to_scan)),'] : []),
+    ...columns,
+    "}",
+  );
   return lines;
 }
 
 function refMapper(v: Validation, scope?: string) {
-  const ids = new Set(Object.keys(v.scenarios));
-  const tables = new Set(Object.keys(v.collect ?? {}));
+  const ids = new Set(Object.keys(v.scenarios ?? {}));
+  const tables = new Set([
+    ...Object.keys(v.collect ?? {}),
+    ...Object.keys(v.scans ?? {}),
+  ]);
   const opNames = new Set(
     (v.ops ?? []).filter((o) => !o.into && o.op !== "column").map((o) => o.as),
   );
@@ -182,7 +304,7 @@ function refMapper(v: Validation, scope?: string) {
     if (opNames.has(a)) {
       return `ops[${key}][${str(a)}][${str(b ?? "value")}].to_numpy()`;
     }
-    return `column(res[${key}], ${str(path.join("."))})`;
+    return `res[${key}][${str(path.join("."))}].to_numpy()`;
   };
   return (path: string[]): string => {
     if (scope) return inScenario(scope, path);
@@ -196,7 +318,12 @@ function refMapper(v: Validation, scope?: string) {
 }
 
 function plotLines(plot: Plot, ax: string, v: Validation): string[] {
-  const py = (src: string) => toPython(parse(src), refMapper(v));
+  const py = (src: string) => {
+    const expr = parse(src);
+    const code = toPython(expr, refMapper(v));
+    // matplotlib takes a bare column as it is.
+    return expr.k === "ref" ? code.replace(/\.to_numpy\(\)$/, "") : code;
+  };
   const lines: string[] = [];
   if (plot.title) lines.push(`${ax}.set_title(${str(plot.title)})`);
   if (plot.type === "line") {
@@ -289,19 +416,29 @@ function plotCell(v: Validation): string[] {
   return lines;
 }
 
-function validationCells(v: Validation): string[][] {
-  const ids = Object.keys(v.scenarios);
-  const sim = [
-    `data = ${literal(v.data ?? {})}`,
-    "data = {k: np.array(c) for k, c in data.items()}",
-    "res = {}",
-    "protocols = {}",
-  ];
+function validationCells(v: Validation, goldenSeries: boolean): string[][] {
+  const ids = Object.keys(v.scenarios ?? {});
+  const namedOps = (v.ops ?? []).some((o) => o.op !== "column");
+  const sim: string[] = [];
+  if (v.data) {
+    sim.push(
+      `data = ${literal(v.data)}`,
+      "data = {k: np.array(c) for k, c in data.items()}",
+    );
+  }
+  if (ids.length > 0) sim.push("res = {}");
+  if (namedOps) sim.push("protocols = {}");
+  if (v.collect || v.scans) sim.push("tables = {}");
   for (const id of ids) {
-    sim.push("", ...scenarioCell(id, v.scenarios[id], v));
+    sim.push("", ...scenarioCell(id, v.scenarios![id], v, namedOps));
+  }
+  for (const [name, scan] of Object.entries(v.scans ?? {})) {
+    sim.push("", ...scanCell(name, scan, v));
   }
 
-  const lines = ["ops = {id: {} for id in res}", "tables = {}", "derived = {}"];
+  const lines: string[] = [];
+  if (namedOps) lines.push("ops = {id: {} for id in res}");
+  if (v.derive) lines.push("derived = {}");
   const expr = (src: string, scope?: string) =>
     toPython(parse(src), refMapper(v, scope));
   for (const id of ids) {
@@ -335,49 +472,55 @@ function validationCells(v: Validation): string[][] {
         `${str(col)}: np.array([${exprs.map((e) => expr(e)).join(", ")}])`,
     );
     lines.push(
-      `tables[${str(name)}] = {"x": np.array(${literal(table.x)}), ${columns.join(", ")}}`,
+      `tables[${str(name)}] = {"x": ${pyArray(table.x)}, ${columns.join(", ")}}`,
     );
   }
   for (const [name, src] of Object.entries(v.derive ?? {})) {
     lines.push(`derived[${str(name)}] = ${expr(src)}`);
   }
-  const golden = Object.entries(v.golden ?? {}).map(
-    ([name, g]) => `    ${str(name)}: (${expr(g.x)}, ${expr(g.y)}),`,
-  );
-  lines.push(`validation_series[${str(v.id)}] = {`, ...golden, "}");
-  return [sim, lines, plotCell(v)];
+  if (goldenSeries) {
+    const golden = Object.entries(v.golden ?? {}).map(
+      ([name, g]) => `    ${str(name)}: (${expr(g.x)}, ${expr(g.y)}),`,
+    );
+    lines.push(`validation_series[${str(v.id)}] = {`, ...golden, "}");
+  }
+  return [sim, lines, plotCell(v)].filter((cell) => cell.length > 0);
 }
 
-const SUPPORT = `def run_protocol(s, steps):
-    """Hold each step's parameters for its duration, as MxlPy's simulate_protocol."""
-    t = 0.0
-    for duration, parameters, points in steps:
-        t += duration
-        s.update_parameters(parameters)
-        s.simulate(t, steps=points)
-
-
-def frame_of(result, s, times, with_rhs):
-    """One table per run: time, variables, derived values and dy/dt."""
-    frame = result.get_combined()
-    if with_rhs:
-        frame = pd.concat([frame, result.get_right_hand_side().add_prefix("ddt.")], axis=1)
-    frame = frame.rename_axis("time").reset_index()
-    if times is not None:
-        idx = [int(np.argmin(np.abs(frame["time"].to_numpy() - t))) for t in times]
-        frame = frame.iloc[idx].reset_index(drop=True)
-    return frame
-
-
-def column(frame, name):
-    """A column as an array; a failed run has only NaN."""
-    return np.array([np.nan]) if frame is None else frame[name].to_numpy()`;
+/** The imports a notebook's code uses. */
+function importLines(source: string): string[] {
+  const uses = (name: string) =>
+    new RegExp(`(?<![\\w."])${name}\\b`).test(source);
+  const mxlpy = ["Scipy", "Simulator", "cartesian_product", "make_protocol"]
+    .filter(uses)
+    .concat(/\bscan\.(steady_state|time_course)\(/.test(source) ? ["scan"] : [])
+    .sort();
+  const scipySignal = ["find_peaks", "peak_prominences"].filter(uses);
+  const third = [
+    uses("plt") && "import matplotlib.pyplot as plt",
+    uses("np") && "import numpy as np",
+    uses("pd") && "import pandas as pd",
+    mxlpy.length > 0 && `from mxlpy import ${mxlpy.join(", ")}`,
+    uses("KineticRunner") && "from mxlpy.runners import KineticRunner",
+    uses("cumulative_trapezoid") &&
+      "from scipy.integrate import cumulative_trapezoid",
+    uses("gaussian_filter1d") && "from scipy.ndimage import gaussian_filter1d",
+    scipySignal.length > 0 &&
+      `from scipy.signal import ${scipySignal.join(", ")}`,
+  ].filter((l): l is string => Boolean(l));
+  const std = [
+    uses("copy") && "import copy",
+    uses("partial") && "from functools import partial",
+  ].filter((l): l is string => Boolean(l));
+  return [...std, ...(std.length > 0 ? [""] : []), ...third];
+}
 
 /** A notebook as a plain .ipynb object. */
 export function toMxlpyNotebook(
   title: string,
   model: KineticModelBuilder,
   validations: Validation[],
+  { goldenSeries = false }: { goldenSeries?: boolean } = {},
 ): object {
   const code = (lines: string[]) => ({
     cell_type: "code",
@@ -396,6 +539,20 @@ export function toMxlpyNotebook(
       (v.ops ?? []).map((o) => o.op).filter((op) => op !== "column"),
     ),
   );
+  const opCells =
+    used.size > 0 ? [[...used].map((op) => OPS[op].python.source)] : [];
+  const figures = validations.map((v) => ({
+    title: v.title,
+    cells: validationCells(v, goldenSeries),
+  }));
+  const body = [...opCells, ...figures.flatMap((f) => f.cells)]
+    .flat()
+    .join("\n");
+  const usesBase = /\bbase\./.test(body);
+  const setup = [
+    ...(usesBase ? ["", "base = get_model()"] : []),
+    ...(goldenSeries ? ["validation_series = {}"] : []),
+  ];
   return {
     nbformat: 4,
     nbformat_minor: 5,
@@ -404,31 +561,12 @@ export function toMxlpyNotebook(
       markdown(
         `# ${title}\n\nGenerated by GreenSloth from this model's validations.`,
       ),
-      code([
-        "import copy",
-        "from functools import partial",
-        "",
-        "import matplotlib.pyplot as plt",
-        "import numpy as np",
-        "import pandas as pd",
-        "from mxlpy import Model, Scipy, Simulator, make_protocol",
-        "from scipy.integrate import cumulative_trapezoid",
-        "from scipy.ndimage import gaussian_filter1d",
-        "from scipy.signal import find_peaks, peak_prominences",
-      ]),
-      code([
-        model.buildMxlpy(),
-        "",
-        "base = get_model()",
-        "validation_series = {}",
-      ]),
-      code([SUPPORT]),
-      ...(used.size > 0
-        ? [code([...used].map((op) => OPS[op].python.source))]
-        : []),
-      ...validations.flatMap((v) => [
-        markdown(`## ${v.title}`),
-        ...validationCells(v).map(code),
+      code(importLines(body)),
+      code([model.buildMxlpy(), ...setup]),
+      ...opCells.map(code),
+      ...figures.flatMap((f) => [
+        markdown(`## ${f.title}`),
+        ...f.cells.map(code),
       ]),
     ],
   };

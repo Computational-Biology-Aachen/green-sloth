@@ -1,5 +1,12 @@
 /** Helpers for writing a model's `validation.ts`; each returns plain data. */
-import type { Collect, ProtocolStep, Scenario } from "./types";
+import type {
+  Collect,
+  ModelEdit,
+  ProtocolStep,
+  Scan,
+  Scenario,
+  Validation,
+} from "./types";
 
 export function linspace(from: number, to: number, n: number): number[] {
   return Array.from({ length: n }, (_, i) =>
@@ -22,11 +29,8 @@ export function sweep<T>(
   );
 }
 
-export const sweepIds = (prefix: string, n: number): string[] =>
-  Array.from({ length: n }, (_, i) => `${prefix}${i}`);
-
 /** The final value of each column per scenario, as one table against `x`. */
-export function lastOf(ids: string[], x: number[], columns: string[]): Collect {
+function lastOf(ids: string[], x: number[], columns: string[]): Collect {
   return {
     x,
     columns: Object.fromEntries(
@@ -43,3 +47,103 @@ export const step = (
 
 /** MxlPy's `simulate(t)` without `steps`: 100 samples. */
 export const defaultGrid = (tEnd: number): number[] => linspace(0, tEnd, 100);
+
+/** The rows of a scan's `to_scan` table, without its `scale` columns. */
+function scanRows(scan: Scan): Record<string, number>[] {
+  const columns = Object.entries(scan.over);
+  if (scan.grid) {
+    return columns.reduce<Record<string, number>[]>(
+      (rows, [id, values]) =>
+        rows.flatMap((row) => values.map((v) => ({ ...row, [id]: v }))),
+      [{}],
+    );
+  }
+  const lengths = [...columns, ...Object.entries(scan.scale ?? {})].map(
+    ([, values]) => values.length,
+  );
+  const n = Math.max(...lengths);
+  if (lengths.some((l) => l !== n && l !== 1)) {
+    throw new Error("A scan's columns differ in length");
+  }
+  return Array.from({ length: n }, (_, i) =>
+    Object.fromEntries(
+      columns.map(([id, v]) => [id, v.length === 1 ? v[0] : v[i]]),
+    ),
+  );
+}
+
+/** The table's `x`: as given, or the first column that varies. */
+export function scanX(scan: Scan): number[] {
+  const x =
+    scan.x ?? Object.values(scan.over).find((values) => values.length > 1);
+  if (!x) throw new Error("A scan without a varying column needs `x`");
+  return x;
+}
+
+/** A scan as its per-point scenarios and table, as the engine runs them. */
+function expandScan(
+  name: string,
+  scan: Scan,
+  simulate: Validation["simulate"],
+) {
+  const rows = scanRows(scan);
+  const ids = rows.map((_, i) => `${name}_${i}`);
+  const scenarios = Object.fromEntries(
+    rows.map((row, i): [string, Scenario] => {
+      const edits = scan.edits?.map((e): ModelEdit =>
+        "addParameter" in e && e.addParameter in row
+          ? { ...e, value: row[e.addParameter] }
+          : e,
+      );
+      const added = new Set(
+        edits?.flatMap((e) => ("addParameter" in e ? [e.addParameter] : [])),
+      );
+      return [
+        ids[i],
+        {
+          parameters: {
+            ...Object.fromEntries(
+              Object.entries(row).filter(([id]) => !added.has(id)),
+            ),
+            ...Object.fromEntries(
+              Object.entries(scan.scale ?? {}).map(([id, f]) => [
+                id,
+                `param.${id} * ${f.length === 1 ? f[0] : f[i]}`,
+              ]),
+            ),
+          },
+          ...(edits ? { edits } : {}),
+          simulate: scan.simulate ?? simulate,
+          ...(scan.allowFailure ? { allowFailure: true } : {}),
+        },
+      ];
+    }),
+  );
+  const { columns, x } = lastOf(ids, scanX(scan), scan.columns);
+  const table: Collect = {
+    x,
+    columns: { index: ids.map((_, i) => String(i)), ...columns },
+  };
+  return { scenarios, table };
+}
+
+/** The validation with its scans as plain scenarios and `collect` tables. */
+export function expandScans(
+  v: Validation,
+): Validation & { scenarios: Record<string, Scenario> } {
+  const scans = Object.entries(v.scans ?? {}).map(
+    ([name, scan]) => [name, expandScan(name, scan, v.simulate)] as const,
+  );
+  return {
+    ...v,
+    scenarios: Object.assign(
+      {},
+      v.scenarios,
+      ...scans.map(([, s]) => s.scenarios),
+    ),
+    collect: {
+      ...v.collect,
+      ...Object.fromEntries(scans.map(([name, s]) => [name, s.table])),
+    },
+  };
+}

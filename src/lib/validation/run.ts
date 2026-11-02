@@ -9,6 +9,7 @@ import type {
 } from "@computational-biology-aachen/mxlweb-core";
 import { derivedKeys } from "../utils";
 import { evaluate, parse, toMathml, type Value } from "./expr";
+import { expandScans } from "./helpers";
 import { evalColumn, OPS, type Frame } from "./ops";
 import type {
   ModelEdit,
@@ -342,11 +343,12 @@ async function mapLimited<T, R>(
 }
 
 export async function runValidation(
-  validation: Validation,
+  spec: Validation,
   base: KineticModelBuilder,
   simulate: Simulate,
   { concurrency = 1, onProgress }: RunOptions = {},
 ): Promise<ValidationResult> {
+  const validation = expandScans(spec);
   const ids = Object.keys(validation.scenarios);
   let done = 0;
   const states = await mapLimited(ids, concurrency, async (id) => {
@@ -412,22 +414,22 @@ export async function runValidation(
       state.frame[name] = evalColumn(src, inScenario(state));
     }
   }
-  for (const spec of validation.ops ?? []) {
-    for (const id of spec.scenario ? [spec.scenario] : ids) {
+  for (const opSpec of validation.ops ?? []) {
+    for (const id of opSpec.scenario ? [opSpec.scenario] : ids) {
       const state = scenarios[id];
       const resolve = inScenario(state);
-      if (spec.op === "column") {
-        state.frame[spec.as] = evalColumn(spec.expr as string, resolve);
+      if (opSpec.op === "column") {
+        state.frame[opSpec.as] = evalColumn(opSpec.expr as string, resolve);
         continue;
       }
-      const def = OPS[spec.op];
-      if (!def) throw new Error(`Unknown op "${spec.op}"`);
-      const out = def.run(spec, {
+      const def = OPS[opSpec.op];
+      if (!def) throw new Error(`Unknown op "${opSpec.op}"`);
+      const out = def.run(opSpec, {
         protocol: state.protocol,
         column: (src) => evalColumn(src, resolve),
       });
-      state.ops[spec.as] = out;
-      if (spec.into) state.frame[spec.as] = out.value;
+      state.ops[opSpec.as] = out;
+      if (opSpec.into) state.frame[opSpec.as] = out.value;
     }
   }
   for (const [name, table] of Object.entries(validation.collect ?? {})) {

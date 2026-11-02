@@ -20,6 +20,7 @@
     type ValidationPool,
   } from "../validation/browser";
   import { decimate } from "../validation/decimate";
+  import { expandScans } from "../validation/helpers";
   import { runValidation, type ValidationResult } from "../validation/run";
   import type { LinePlot, Validation } from "../validation/types";
 
@@ -76,7 +77,7 @@
     try {
       for (const v of targets) {
         if (cancelled) break;
-        const total = Object.keys(v.scenarios).length;
+        const total = Object.keys(expandScans(v).scenarios).length;
         statuses[v.id] = { state: "running", done: 0, total };
         const started = performance.now();
         try {

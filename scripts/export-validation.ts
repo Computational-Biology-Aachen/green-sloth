@@ -2,7 +2,7 @@
  * Writes a model's validations as an MxlPy notebook, or with --ops the Python op
  * helpers, for misc/mxl-e2e to execute:
  *
- *   vite-node scripts/export-validation.ts <slug> <out.ipynb>
+ *   vite-node scripts/export-validation.ts <slug> <out.ipynb> [--golden-series]
  *   vite-node scripts/export-validation.ts --ops <out.py>
  *   vite-node scripts/export-validation.ts --model <slug> <out.py>
  */
@@ -23,6 +23,8 @@ if (first === "--ops") {
   const { validations } = await import(
     `../src/lib/models/${first}/validation.ts`
   );
-  const notebook = toMxlpyNotebook(first, initModel(), validations);
+  const notebook = toMxlpyNotebook(first, initModel(), validations, {
+    goldenSeries: third === "--golden-series",
+  });
   writeFileSync(second, JSON.stringify(notebook, null, 1));
 }
