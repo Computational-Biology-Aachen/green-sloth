@@ -33,6 +33,7 @@
     SectionHeader,
     Sub,
     Table,
+    Tabs,
     Tbody,
     Td,
     Text,
@@ -192,6 +193,11 @@
       }),
   );
 
+  const figureTabs = [
+    { key: "notebook", label: "Notebook figures" },
+    { key: "native", label: "Interactive" },
+  ];
+
   const repo = "https://github.com/Computational-Biology-Aachen/green-sloth";
   const editUrl = $derived(`${repo}/tree/main/src/lib/models/${data.slug}`);
 
@@ -289,6 +295,23 @@
     );
   }
 </script>
+
+{#snippet notebookFigures()}
+  {#each paperFigures as fig (fig.src)}
+    <Accordion title={fig.title}>
+      <Image
+        src={fig.src}
+        alt={fig.title}
+      />
+    </Accordion>
+  {/each}
+{/snippet}
+{#snippet nativeFigures()}
+  <Validation
+    slug={data.slug}
+    validations={validations}
+  />
+{/snippet}
 
 <svelte:head>
   <title>{data.meta.title} - GreenSloth</title>
@@ -505,7 +528,10 @@
           href="https://doi.org/{data.meta.DOI}">original publication</Link
         >. Due to copyright restrictions, a side-by-side comparison of the
         original figures is not shown here.
-        {#if hasValidation}
+        {#if hasValidation && paperFigures.length !== 0}
+          In the <i>Interactive</i> tab, each figure is simulated from this model
+          in your browser.
+        {:else if hasValidation}
           Each figure is simulated from this model in your browser when you run
           it.
         {/if}
@@ -518,20 +544,22 @@
       {/if}
 
       <Accordion title="Figures">
-        {#if hasValidation}
-          <Validation
-            slug={data.slug}
-            validations={validations}
-          />
+        <!-- Transition: the notebook figures stay the default until the
+             native validations replace them. -->
+        {#if hasValidation && paperFigures.length !== 0}
+          <Tabs tabs={figureTabs}>
+            {#snippet children(key)}
+              {#if key === "native"}
+                {@render nativeFigures()}
+              {:else}
+                {@render notebookFigures()}
+              {/if}
+            {/snippet}
+          </Tabs>
+        {:else if hasValidation}
+          {@render nativeFigures()}
         {:else}
-          {#each paperFigures as fig (fig.src)}
-            <Accordion title={fig.title}>
-              <Image
-                src={fig.src}
-                alt={fig.title}
-              />
-            </Accordion>
-          {/each}
+          {@render notebookFigures()}
         {/if}
       </Accordion>
     </InfoBox>
