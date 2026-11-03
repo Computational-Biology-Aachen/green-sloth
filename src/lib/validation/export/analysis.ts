@@ -74,36 +74,72 @@ function scenario(s: Scenario) {
   };
 }
 
+/** Only the listed keys of `o`: presentation fields stay out of the document. */
+function pick<T extends object, K extends keyof T>(
+  o: T,
+  keys: K[],
+): Pick<T, K> {
+  return Object.fromEntries(
+    keys.filter((k) => k in o).map((k) => [k, o[k]]),
+  ) as Pick<T, K>;
+}
+
+/**
+ * A plot as the schema has it. Styling (colours, markers, ticks, annotations, …)
+ * reproduces a publication's look on the website only, so it is dropped.
+ */
 function plot(p: Plot) {
   switch (p.type) {
     case "line":
       return {
-        ...p,
+        ...pick(p, [
+          "type",
+          "title",
+          "xLabel",
+          "yLabel",
+          "yRightLabel",
+          "xLim",
+          "yLim",
+          "yRightLim",
+          "logX",
+        ]),
         x: tree(p.x),
         y: p.y.map((s) => ({
-          ...s,
+          ...pick(s, ["label", "style"]),
+          // A further twin axis counts as the right one.
+          ...(s.axis === undefined
+            ? {}
+            : { axis: s.axis === "left" ? "left" : "right" }),
           of: tree(s.of),
           x: s.x === undefined ? undefined : tree(s.x),
           err: s.err === undefined ? undefined : tree(s.err),
         })),
+        phases: p.phases?.map((ph) => pick(ph, ["from", "to"])),
       };
     case "scatter":
       return {
-        ...p,
-        series: p.series.map((s) => ({ ...s, x: tree(s.x), y: tree(s.y) })),
+        ...pick(p, ["type", "title", "xLabel", "yLabel", "lim", "identity"]),
+        series: p.series.map((s) => ({
+          ...pick(s, ["label"]),
+          x: tree(s.x),
+          y: tree(s.y),
+        })),
       };
     case "stackedBar":
       return {
-        ...p,
-        stacks: p.stacks.map((s) => ({ ...s, of: trees(s.of) })),
+        ...pick(p, ["type", "title", "categories", "yLabel", "yLim"]),
+        stacks: p.stacks.map((s) => ({ label: s.label, of: trees(s.of) })),
       };
     case "heatmap":
-      return { ...p, z: p.z.map(trees) };
+      return {
+        ...pick(p, ["type", "title", "rows", "columns"]),
+        z: p.z.map(trees),
+      };
   }
 }
 
 /** One validation with every expression string replaced by its node tree. */
-export function treeify(v: Validation): object {
+export function treeify({ columns: _layout, ...v }: Validation): object {
   return {
     ...v,
     scenarios: mapValues(v.scenarios, scenario),

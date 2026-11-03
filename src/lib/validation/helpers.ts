@@ -151,9 +151,10 @@ export function expandScans(
       v.scenarios,
       ...scans.map(([, s]) => s.scenarios),
     ),
+    // Scan tables first, so a figure's own tables can regroup them.
     collect: {
-      ...v.collect,
       ...Object.fromEntries(scans.map(([name, s]) => [name, s.table])),
+      ...v.collect,
     },
   };
 }

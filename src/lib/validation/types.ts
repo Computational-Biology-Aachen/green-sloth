@@ -152,19 +152,118 @@ export interface Mca extends PointSetup {
  */
 export type Stability = PointSetup;
 
-export interface LineSeries {
+/**
+ * How a series is drawn, in matplotlib's terms so a notebook figure carries over
+ * one to one. Presentation only: the analysis export drops it.
+ */
+export interface SeriesStyle {
+  /** Any CSS colour; unset series take matplotlib's tab10 cycle, per axis. */
+  color?: string;
+  /** A matplotlib marker; on a line it marks every point. */
+  marker?:
+    "o" | "s" | "^" | "v" | "<" | ">" | "D" | "d" | "x" | "+" | "*" | ".";
+  /** matplotlib `markersize`, in points (diameter); default 6. */
+  markerSize?: number;
+  /** matplotlib `markerfacecolor`; `"none"` draws hollow markers. */
+  markerFace?: string;
+  /** matplotlib `markeredgecolor`; defaults to `color`. */
+  markerEdge?: string;
+  /**
+   * matplotlib `linestyle`; default solid. An array is a custom pattern, on/off
+   * lengths in line widths, as matplotlib's `(0, (3, 1, 1, 1))`.
+   */
+  dash?: "solid" | "dashed" | "dotted" | "dashdot" | number[];
+  /** matplotlib `linewidth`, in points; default 1.5, 0 draws no line. */
+  lineWidth?: number;
+  alpha?: number;
+  /** Draw above (higher) or below lower-`zorder` series; matplotlib's default 2. */
+  zorder?: number;
+  /** Mark only every n-th point, as matplotlib's `markevery`. */
+  markEvery?: number;
+}
+
+export interface LineSeries extends SeriesStyle {
   /** Expression for the y values. */
   of: string;
   /** Expression for the x values; defaults to the plot's `x`. */
   x?: string;
   label?: string;
-  axis?: "left" | "right";
+  /** `"left"` (default), `"right"`, or the `id` of one of the plot's `axes`. */
+  axis?: string;
   style?: "line" | "markers";
   /** Expressions for the error bars' half-widths. */
   err?: string;
+  /** matplotlib `elinewidth` and `capsize`, in points. */
+  errLineWidth?: number;
+  capSize?: number;
+  /** Fill between `of` and this expression (matplotlib's `fill_between`). */
+  fillTo?: string;
+  /**
+   * Colour each segment by the sign of an expression at its first point, as a
+   * notebook's `LineCollection` does: e.g. rising versus falling light.
+   */
+  colorBySign?: { of: string; positive: string; negative: string };
+  /** Text written just right of the series' last point, as a direct label. */
+  endLabel?: string;
+  /** Draw only the points whose x lies in this range, as a notebook's `.loc[...]` does. */
+  xRange?: [number, number];
 }
 
-export interface LinePlot {
+/** A reference line across the plot (matplotlib's `axhline` / `axvline`). */
+export interface Rule {
+  value: number;
+  color?: string;
+  dash?: SeriesStyle["dash"];
+  lineWidth?: number;
+  axis?: string;
+}
+
+/**
+ * Text in the plot, at data coordinates or (`coords: "axes"`) 0–1 of the plot
+ * area. A data position may be an expression, e.g. a computed peak.
+ */
+export interface Annotation {
+  text: string;
+  x: number | string;
+  y: number | string;
+  coords?: "data" | "axes";
+  color?: string;
+  /** Font size in points. */
+  size?: number;
+  bold?: boolean;
+  align?: "left" | "center" | "right";
+}
+
+/** A shaded span; `y` limits it vertically (a filled rectangle), `text` labels it. */
+export interface Phase {
+  from: number;
+  to: number;
+  color?: string;
+  alpha?: number;
+  y?: [number, number];
+  /** Outline colour, e.g. for light/dark bars. */
+  edgeColor?: string;
+  /** Draw as a bar above the plot area (matplotlib's unclipped patch). */
+  above?: boolean;
+  text?: string;
+  textColor?: string;
+}
+
+/** Presentation shared by plots; dropped by the analysis export. */
+interface PlotLayout {
+  /** The panel letter of a multi-panel figure, shown before the title. */
+  panel?: string;
+  /** Show the legend; defaults to when more than one series is labelled. */
+  legend?: boolean;
+  legendTitle?: string;
+  /** Where the legend goes; default top. */
+  legendPosition?: "top" | "bottom" | "right";
+  /** Grid lines; off by default, as in matplotlib. */
+  grid?: boolean;
+  annotations?: Annotation[];
+}
+
+export interface LinePlot extends PlotLayout {
   type: "line";
   title?: string;
   /** Expression for the x values. */
@@ -176,39 +275,77 @@ export interface LinePlot {
   xLim?: [number, number];
   yLim?: [number, number];
   yRightLim?: [number, number];
+  /** Colour of the left / right axis title and ticks. */
+  yColor?: string;
+  yRightColor?: string;
   logX?: boolean;
+  logY?: boolean;
+  reverseX?: boolean;
+  reverseY?: boolean;
+  xTicks?: number[];
+  /** Labels for `xTicks`, one each. */
+  xTickLabels?: string[];
+  yTicks?: number[];
+  yRightTicks?: number[];
   /** Shaded time spans, e.g. dark phases. */
-  phases?: Array<{ from: number; to: number }>;
+  phases?: Phase[];
+  hLines?: Rule[];
+  vLines?: Rule[];
+  /** Further y axes, stacked outside the left or right one (matplotlib twins). */
+  axes?: Array<{
+    id: string;
+    position?: "left" | "right";
+    label?: string;
+    lim?: [number, number];
+    ticks?: number[];
+    color?: string;
+  }>;
 }
 
 /** Points of `y` against `x`, optionally with the identity line. */
-export interface ScatterPlot {
+export interface ScatterPlot extends PlotLayout {
   type: "scatter";
   title?: string;
-  series: Array<{ x: string; y: string; label?: string }>;
+  series: Array<{ x: string; y: string; label?: string } & SeriesStyle>;
   xLabel?: string;
   yLabel?: string;
   lim?: [number, number];
+  /** Separate axis bounds, overriding `lim`. */
+  xLim?: [number, number];
+  yLim?: [number, number];
+  xTicks?: number[];
+  yTicks?: number[];
   identity?: boolean;
 }
 
-export interface StackedBarPlot {
+export interface StackedBarPlot extends PlotLayout {
   type: "stackedBar";
   title?: string;
   categories: string[];
   /** One expression per category, per stacked segment. */
-  stacks: Array<{ label: string; of: string[] }>;
+  stacks: Array<{ label: string; of: string[]; color?: string }>;
   yLabel?: string;
   yLim?: [number, number];
+  yTicks?: number[];
+  /** List the segments top to bottom in the legend. */
+  reverseLegend?: boolean;
 }
 
-export interface HeatmapPlot {
+export interface HeatmapPlot extends PlotLayout {
   type: "heatmap";
   title?: string;
   rows: string[];
   columns: string[];
   /** `z[row][column]` expressions. */
   z: string[][];
+  /**
+   * Diverging around zero (default), matplotlib's `rainbow`, or its `RdBu_r`
+   * (symmetric around zero, as MxlPy's `plot.heatmap`).
+   */
+  colormap?: "diverging" | "rainbow" | "RdBu_r";
+  /** Titles of the columns and the rows. */
+  xLabel?: string;
+  yLabel?: string;
 }
 
 export type Plot = LinePlot | ScatterPlot | StackedBarPlot | HeatmapPlot;
@@ -231,6 +368,11 @@ export interface GoldenSeries {
 export interface Validation {
   id: string;
   title: string;
+  /**
+   * Panels per row, as the figure's subplot columns, or one count per row for
+   * rows of different lengths; presentation only.
+   */
+  columns?: number | number[];
   scenarios?: Record<string, Scenario>;
   scans?: Record<string, Scan>;
   mca?: Record<string, Mca>;
