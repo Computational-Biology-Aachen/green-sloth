@@ -4,7 +4,7 @@
  * it to the same goldens as the TS engine.
  */
 import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
-import { parse, refs, toPython } from "../expr";
+import { isRef, parse, refs, toPython } from "../expr";
 import { scanX } from "../helpers";
 import { OPS } from "../ops";
 import type {
@@ -405,7 +405,7 @@ function plotLines(plot: Plot, ax: string, v: Validation): string[] {
     const expr = parse(src);
     const code = toPython(expr, refMapper(v));
     // matplotlib takes a bare column as it is.
-    return expr.k === "ref" ? code.replace(/\.to_numpy\(\)$/, "") : code;
+    return isRef(expr) ? code.replace(/\.to_numpy\(\)$/, "") : code;
   };
   const lines: string[] = [];
   if (plot.title) lines.push(`${ax}.set_title(${str(plot.title)})`);

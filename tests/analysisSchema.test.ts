@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import { Ajv2020 } from "ajv/dist/2020.js";
 import { describe, expect, it } from "vitest";
 import schema from "../src/lib/validation/analysis.schema.json";
+import { nodeFromJson } from "@computational-biology-aachen/mxlweb-core/mathml";
 import { evaluate, parse } from "../src/lib/validation/expr";
 import {
   modelKind,
@@ -62,7 +63,7 @@ describe.runIf(hasSchemas)("mxl-schemas", () => {
 
   type Expressions = {
     columns: Record<string, number | number[]>;
-    cases: Array<{ src: string; value: number | number[] }>;
+    cases: Array<{ src: string; tree: unknown; value: number | number[] }>;
     errors: string[];
   };
   const expressions = (
@@ -71,7 +72,10 @@ describe.runIf(hasSchemas)("mxl-schemas", () => {
   it.each((expressions.cases ?? []).map((c) => [c.src, c] as const))(
     "expression %s",
     (_, c) => {
-      const got = evaluate(parse(c.src), (path) => {
+      // The string parses to the stored tree, and the tree evaluates to `value`.
+      expect(parse(c.src).toJson()).toEqual(c.tree);
+      const tree = nodeFromJson(c.tree as Parameters<typeof nodeFromJson>[0]);
+      const got = evaluate(tree, (path) => {
         const v = expressions.columns[path.join(".")];
         if (v === undefined) throw new Error(`Unknown ${path.join(".")}`);
         return v;

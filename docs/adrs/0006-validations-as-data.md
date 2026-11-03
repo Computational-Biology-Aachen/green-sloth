@@ -17,7 +17,7 @@ A model declares each publication figure as plain data in `validation.ts`:
 - **Scenarios** on a clone of the unchanged `model.ts`: parameter and initial values, and
   structural edits (remove a reaction, replace a rule, clamp a variable). Shared models stay
   generated (ADR 0005); nothing here changes them.
-- **Expressions** (`expr.ts`, parsed by hand, no `eval`) for column maths, and **named ops**
+- **Expressions** for column maths: strings in `validation.ts`, parsed (no `eval`) by mxlweb-core's reference parser to the shared mxl node trees (mxl-schemas ADR 0014), which the engine evaluates and the analysis export stores; `expr.ts` adapts them to dotted reference paths. And **named ops**
   (`ops.ts`) for anything non-scalar. Authoring in TS may compute values, such as a protocol
   or a CSV-derived constant, but no function reaches the engine.
 - **Output grid:** exact times from RADAU5's dense output, so results line up with MxlPy's.

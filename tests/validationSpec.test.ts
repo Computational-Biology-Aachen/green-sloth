@@ -47,7 +47,7 @@ describe("expressions", () => {
 
   it("keeps precedence when translated to Python", () => {
     expect(toPython(parse("-(a + 1) ^ 2"), (p) => p.join("."))).toBe(
-      "(-((a + 1) ** 2))",
+      "- ((a + 1) ** (2))",
     );
   });
 });

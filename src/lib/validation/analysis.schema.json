@@ -13,8 +13,8 @@
     },
     "spec_version": {
       "type": "string",
-      "enum": ["1.0"],
-      "description": "Version of the analysis format."
+      "enum": ["1.1"],
+      "description": "Version of the analysis format. 1.1 stores expressions as node trees (ADR 0014); the experimental 1.0 string expressions are no longer accepted."
     },
     "kind": {
       "type": "string",
@@ -96,9 +96,93 @@
   ],
   "$defs": {
     "expression": {
-      "type": "string",
-      "minLength": 1,
-      "description": "An expression in the mxl analysis expression language (README: Expressions): numbers, + - * / ^, unary minus, parentheses, references (`col`, `scenario.col`, `table.col`, `param.id`, `init.id`, `data.name`, `ddt.var`), element-wise functions and aggregates."
+      "$ref": "#/$defs/node",
+      "description": "An expression as a node tree (ADR 0014): the MathML-style nodes of the model formats plus the array nodes. A `Name` is a reference resolved by the consumer: `col` (inside a scenario), `scenario.col`, `table.col`, `param.<id>`, `init.<id>`, `data.<name>`, `ddt.<variable>`. Element-wise nodes broadcast over arrays; array nodes reduce or select. The README's string syntax is the authoring form; mxlweb-core's `parseExpression` is its reference parser."
+    },
+    "node": {
+      "type": "object",
+      "description": "A math expression node, as in the model formats (kinetic-model.schema.json `$defs/node`). The 'type' discriminator selects the operand fields.",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": ["number", "string", "boolean"],
+          "description": "Payload of a leaf node (Num/Name/Bool)."
+        },
+        "child": {
+          "$ref": "#/$defs/node"
+        },
+        "base": {
+          "$ref": "#/$defs/node"
+        },
+        "left": {
+          "$ref": "#/$defs/node"
+        },
+        "right": {
+          "$ref": "#/$defs/node"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "Num"
+              }
+            }
+          },
+          "then": {
+            "required": ["value"],
+            "properties": {
+              "value": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "Name"
+              }
+            }
+          },
+          "then": {
+            "required": ["value"],
+            "properties": {
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "Bool"
+              }
+            }
+          },
+          "then": {
+            "required": ["value"],
+            "properties": {
+              "value": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      ]
     },
     "scenarioValue": {
       "oneOf": [
