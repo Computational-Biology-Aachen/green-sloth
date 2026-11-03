@@ -134,14 +134,65 @@ const table = (masks: { 60: string; 120: string }) => {
   };
 };
 
-const scatter = (t: string, lim: [number, number], title: string): Plot => ({
+const COLORS: Record<string, string> = {
+  col: "black",
+  npq1: "red",
+  npq4: "limegreen",
+  rca2: "blue",
+  rwt43: "cyan",
+  spsa: "magenta",
+};
+// The notebook swaps the rca-2 and rwt43 labels; these follow the genotypes.
+const LABELS: Record<string, string> = {
+  col: "Col-0 (100, 200, 500)",
+  npq1: "npq1-2 (100, 200, 500)",
+  npq4: "npq4-1 (100, 200, 500)",
+  rca2: "rca-2 (100, 200, 500)",
+  rwt43: "rwt43 (100, 200, 500)",
+  spsa: "spsa1 (100, 200, 500)",
+};
+const MARKERS: Record<number, "o" | "^" | "+"> = {
+  100: "o",
+  200: "^",
+  500: "+",
+};
+
+/**
+ * Measured against simulated LFUE: per genotype a colour, per amplitude a
+ * marker (hollow, or a filled "+"), each the two periods' points of a run.
+ */
+const scatter = (
+  t: string,
+  lim: [number, number],
+  panel: string,
+  xLabel: string,
+  yLabel: string,
+  legend = false,
+): Plot => ({
   type: "scatter",
-  title,
-  series: [{ x: `${t}.measured`, y: `${t}.sim` }],
-  xLabel: "Measured LFUE",
-  yLabel: "Simulated LFUE",
+  series: ids.map((id, k) => {
+    const [g, a] = id.split("_");
+    const marker = MARKERS[Number(a)];
+    const pair = (c: string) => `slice(${t}.${c}, ${2 * k}, ${2 * k + 2})`;
+    return {
+      x: pair("measured"),
+      y: pair("sim"),
+      color: COLORS[g],
+      marker,
+      // matplotlib's `s=60` is an area of 60 pt².
+      markerSize: Math.sqrt(60),
+      ...(marker === "+" ? {} : { markerFace: "none" }),
+      ...(legend && a === "100" ? { label: LABELS[g] } : {}),
+    };
+  }),
+  xLabel,
+  yLabel,
   lim,
   identity: true,
+  annotations: [
+    { text: panel, x: 0.04, y: 0.94, coords: "axes", align: "left", size: 13 },
+  ],
+  legend,
 });
 
 const golden: Record<string, GoldenSeries> = {
@@ -164,10 +215,30 @@ export const validations: Validation[] = [
       up: table({ 60: "up60", 120: "up120" }),
       down: table({ 60: "down60", 120: "down120" }),
     },
+    columns: 1,
     plots: [
-      scatter("whole", [0.8, 1.05], "Whole cycles"),
-      scatter("up", [0.5, 1.1], "Increasing-light half cycles"),
-      scatter("down", [1, 2.7], "Decreasing-light half cycles"),
+      scatter(
+        "whole",
+        [0.8, 1.05],
+        "(a)",
+        "Measured LFUE",
+        "Simulated LFUE",
+        true,
+      ),
+      scatter(
+        "up",
+        [0.5, 1.1],
+        "(b)",
+        "Measured half-cycle LFUE",
+        "Simulated half-cycle LFUE",
+      ),
+      scatter(
+        "down",
+        [1, 2.7],
+        "(c)",
+        "Measured half-cycle LFUE",
+        "Simulated half-cycle LFUE",
+      ),
     ],
     golden,
   },

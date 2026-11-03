@@ -11,8 +11,31 @@ for (const i of intensities) {
   }
 }
 
+const COLORS: Record<number, string> = {
+  20: "royalblue",
+  50: "forestgreen",
+  100: "indianred",
+  150: "darkorange",
+  200: "black",
+};
+
 const lines = (of: (scenario: string) => string) =>
-  intensities.map((i) => ({ of: of(id(i)), label: `${i} PFD` }));
+  intensities.map((i) => ({
+    of: of(id(i)),
+    label: `${i}PFD`,
+    color: COLORS[i],
+    dash: "dashdot" as const,
+    lineWidth: 2,
+  }));
+
+/** Shared by the three stacked panels, as the notebook's `sharex`. */
+const PANEL = {
+  type: "line" as const,
+  x: "pfd20.time",
+  xLim: [200, 850] as [number, number],
+  phases: [{ from: 300, to: 500, color: "dimgray", alpha: 0.4 }],
+  grid: true,
+};
 
 export const validations: Validation[] = [
   {
@@ -34,36 +57,32 @@ export const validations: Validation[] = [
         })),
       ).map((s, k) => [id(intensities[k]), s]),
     ),
+    columns: 1,
     plots: [
       {
-        type: "line",
-        title: "Internal free orthophosphate",
-        x: "pfd20.time",
+        ...PANEL,
         y: lines((s) => `${s}.Orthophosphate / 15`),
-        xLabel: "Time (s)",
         yLabel: "Int. free [PO4³⁻] (mM)",
-        xLim: [200, 850],
-        phases: [{ from: 300, to: 500 }],
+        annotations: [
+          { text: "L", x: 245, y: 1.07, align: "left" },
+          { text: "D", x: 390, y: 1.07, align: "left" },
+          { text: "L", x: 590, y: 1.07, align: "left" },
+        ],
+        legend: false,
       },
       {
-        type: "line",
-        title: "TPT export",
-        x: "pfd20.time",
+        ...PANEL,
         y: lines((s) => `${s}.ex_pga + ${s}.ex_gap + ${s}.ex_dhap`),
-        xLabel: "Time (s)",
         yLabel: "TPT translocators (mM/s)",
-        xLim: [200, 850],
-        phases: [{ from: 300, to: 500 }],
+        legend: true,
+        legendPosition: "right",
       },
       {
-        type: "line",
-        title: "Carbon fixation",
-        x: "pfd20.time",
+        ...PANEL,
         y: lines((s) => `${s}.rubisco_carboxylase`),
         xLabel: "Time (s)",
         yLabel: "RuBisCO (mM/s)",
-        xLim: [200, 850],
-        phases: [{ from: 300, to: 500 }],
+        legend: false,
       },
     ],
     golden,

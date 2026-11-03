@@ -18,6 +18,17 @@ const pool = figure3.P680Pheo_total;
 
 const logTime = linspace(-8, 0, 401);
 
+/**
+ * The notebook draws F in the paper's units: held at its value at log t = -7
+ * before then, and scaled so that span maps onto the printed 0.942 to 7.917.
+ */
+const BASELINE = logTime.findIndex((t) => t >= -7 - 1e-9);
+const F0 = `nth(induction.F, ${BASELINE})`;
+// 1 from log t = -7 on: a mask works element-wise in both engines.
+const AFTER = logTime.map((_, i) => (i >= BASELINE ? 1 : 0));
+const HELD = `induction.F * data.after + ${F0} * (1 - data.after)`;
+const PAPER_UNITS = `0.942 + (${HELD} - ${F0}) / (last(induction.F) - ${F0}) * ${7.917 - 0.942}`;
+
 export const validations: Validation[] = [
   {
     id: "fig3",
@@ -48,23 +59,37 @@ export const validations: Validation[] = [
       },
     },
     deriveEach: { logT: "log10(time)" },
+    data: { after: AFTER },
     plots: [
       {
         type: "line",
         x: "induction.logT",
         y: [
-          { of: "induction.F", label: "Fluorescence" },
+          {
+            of: PAPER_UNITS,
+            label: "Fluorescence (a)",
+            color: "black",
+            lineWidth: 2,
+          },
           {
             of: "induction.QA_reduction_fraction",
-            label: "Reduced QA",
+            label: "Reduced QA (b)",
             axis: "right",
+            color: "black",
+            dash: "dotted",
+            marker: "v",
+            markEvery: 8,
+            markerSize: 3,
           },
         ],
-        xLabel: "Log time (s)",
-        yLabel: "Fluorescence emission",
+        xLabel: "Log Time (s)",
+        yLabel: "Fluorescence Emission (arbitrary unit)",
         yRightLabel: "Proportion of reduced QA",
         xLim: [-8, 0],
+        yLim: [0, 10],
         yRightLim: [0, 1],
+        grid: true,
+        legend: true,
       },
     ],
     golden: {

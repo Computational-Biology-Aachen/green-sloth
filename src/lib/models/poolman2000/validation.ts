@@ -55,9 +55,12 @@ export const validations: Validation[] = [
       {
         type: "line",
         x: "scan.x",
-        y: [{ of: "scan.ex_g1p", label: "Starch flux" }],
-        xLabel: "External orthophosphate (mM)",
+        y: [{ of: "scan.ex_g1p", label: "ex_g1p" }],
+        xLabel: "Orthophosphate (external)",
         yLabel: "Starch flux",
+        // MxlPy's plot.lines draws a grid and a legend.
+        grid: true,
+        legend: true,
       },
     ],
     golden: { starch: { x: "scan.x", y: "scan.ex_g1p" } },

@@ -1,4 +1,4 @@
-import { repeat, step } from "#lib/validation/helpers.js";
+import { linspace, repeat, step } from "#lib/validation/helpers.js";
 import type { Scenario, Validation } from "#lib/validation/types.js";
 
 const FLASH = 0.8;
@@ -28,6 +28,7 @@ export const validations: Validation[] = [
   {
     id: "fig2",
     title: "Figure 2: state transitions",
+    columns: 1,
     rtol: 1e-8,
     atol: 1e-8,
     scenarios: {
@@ -59,23 +60,42 @@ export const validations: Validation[] = [
     plots: [
       {
         type: "line",
-        title: "Light-induced state transitions",
+        title: "light-induced state transitions",
         x: "normal.time",
-        y: [{ of: "normal.Fluo / max(normal.Fluo)", label: "Simulation" }],
-        xLabel: "Time (s)",
-        yLabel: "Fluorescence",
+        y: [
+          {
+            of: "normal.Fluo / max(normal.Fluo)",
+            label: "Simulation",
+            color: "#a7a9ac",
+            lineWidth: 0.8,
+          },
+        ],
+        yLabel: "fluorescence",
         xLim: [0, 1800],
+        xTicks: linspace(0, 1800, 10),
         yLim: [0, 1],
+        yTicks: linspace(0, 1, 6),
+        legend: false,
       },
       {
         type: "line",
-        title: "Anoxia-induced state transitions",
+        title: "anoxia-induced state transitions",
         x: "anoxia.time",
-        y: [{ of: "anoxia.Fluo / max(anoxia.Fluo)", label: "Simulation" }],
-        xLabel: "Time (s)",
-        yLabel: "Fluorescence",
+        y: [
+          {
+            of: "anoxia.Fluo / max(anoxia.Fluo)",
+            label: "Simulation",
+            color: "#a7a9ac",
+            lineWidth: 0.8,
+          },
+        ],
+        xLabel: "time, s",
+        yLabel: "fluorescence",
         xLim: [0, 3200],
+        xTicks: linspace(0, 3000, 7),
         yLim: [0, 1],
+        yTicks: linspace(0, 1, 6),
+        legend: false,
       },
     ],
     golden: {
@@ -103,9 +123,14 @@ export const validations: Validation[] = [
     },
     plots: [
       {
+        // The notebook draws a 3D surface (rainbow, both axes inverted); a
+        // heatmap of the same grid stands in for it.
         type: "heatmap",
-        title: "Fraction of reduced PQ",
-        rows: cross.map(String),
+        title: "steady-state PQ redox state",
+        colormap: "rainbow",
+        xLabel: "light intensity",
+        yLabel: "relative antenna cross section of PSII",
+        rows: cross.map((v) => String(+v.toFixed(2))),
         columns: light.map(String),
         z: cross.map((_, r) =>
           light.map(

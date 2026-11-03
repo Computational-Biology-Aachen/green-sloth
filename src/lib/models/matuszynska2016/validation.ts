@@ -1,6 +1,7 @@
-import { step } from "#lib/validation/helpers.js";
+import { linspace, step } from "#lib/validation/helpers.js";
 import type {
   GoldenSeries,
+  Phase,
   Plot,
   ProtocolStep,
   Validation,
@@ -69,6 +70,51 @@ function pulseEnds(steps: ProtocolStep[]): number[] {
   return out;
 }
 
+/**
+ * The notebook's light bars above a plot: black while dark, white while lit,
+ * pulses ignored, from `xMin` and cut at `xMax`. `offset` shifts the times.
+ */
+function lightBars(
+  steps: ProtocolStep[],
+  xMin: number,
+  xMax: number,
+  offset = 0,
+): Phase[] {
+  const bars: Phase[] = [];
+  let t = offset;
+  for (const s of steps) {
+    t += s.duration;
+    if (s.set.PPFD === PULSE) continue;
+    const color = s.set.PPFD === 0 ? "black" : "white";
+    const end = Math.min(t, xMax);
+    const last = bars[bars.length - 1];
+    if (last?.color === color) last.to = end;
+    else
+      bars.push({
+        from: last?.to ?? xMin,
+        to: end,
+        color,
+        edgeColor: "black",
+        above: true,
+      });
+  }
+  return bars;
+}
+
+/** Seconds on the axis, labelled in minutes. */
+const minuteTicks = (minutes: number[]) => ({
+  xTicks: minutes.map((m) => m * 60),
+  xTickLabels: minutes.map(String),
+});
+
+const MEASURED = {
+  style: "markers" as const,
+  marker: "^" as const,
+  markerSize: 3.5,
+  errLineWidth: 0.5,
+  capSize: 2.5,
+};
+
 const fig4Lights: Array<[number, number]> = [
   [100, 15],
   [300, 30],
@@ -90,34 +136,63 @@ for (const [pfd, darkMinutes] of fig4Lights) {
   fig4Data[`fmStd${pfd}`] = rows.Fm_rel_std.slice(0, -1);
   fig4Data[`ft${pfd}`] = rows.Ft_rel_mean.slice(0, -1);
   fig4Data[`ftStd${pfd}`] = rows.Ft_rel_std.slice(0, -1);
+  const xMax = (darkMinutes + 21) * 60;
+  const bars = lightBars(steps, -60, xMax);
+  // The first light bar names the intensity, the dark one its length.
+  bars[1].text = pfd === 100 ? `${pfd} µE m⁻² s⁻¹` : String(pfd);
+  bars[2].text = `${Math.ceil((bars[2].to - bars[2].from) / 60)} min`;
+  bars[2].textColor = "white";
   fig4Plots.push({
     type: "line",
-    title: `${pfd} µE m⁻² s⁻¹`,
     x: `${id}.time`,
     y: [
-      { of: `${id}.Fluo / max(${id}.Fluo)`, label: "Simulated trace" },
+      {
+        of: `${id}.Fluo / max(${id}.Fluo)`,
+        color: "#db85d8",
+        ...(pfd === 100 ? { label: "Simulated trace" } : {}),
+      },
       {
         of: `data.fm${pfd}`,
         x: `data.t${pfd}`,
         err: `data.fmStd${pfd}`,
-        label: "Fm' measured",
-        style: "markers",
+        color: "black",
+        ...MEASURED,
+        ...(pfd === 100 ? { label: "F_M' measured" } : {}),
       },
       {
         of: `data.ft${pfd}`,
         x: `data.t${pfd}`,
         err: `data.ftStd${pfd}`,
-        label: "Fs measured",
-        style: "markers",
+        color: "#0071ad",
+        ...MEASURED,
+        ...(pfd === 100 ? { label: "F_S measured" } : {}),
       },
     ],
-    xLabel: "Time (s)",
-    yLabel: "Fluorescence (Fm' / Fm)",
+    xLabel: "Time (min)",
+    ...(pfd === 100 ? { yLabel: "Fluorescence (F_M' / F_M)" } : {}),
+    xLim: [-60, xMax],
+    ...minuteTicks([0, 14, darkMinutes + 15, darkMinutes + 20]),
     yLim: [0, 1.01],
+    yTicks: linspace(0, 1, 6),
+    phases: bars,
+    // The notebook's figure-wide legend.
+    legend: pfd === 100,
+    legendPosition: "bottom",
   });
 }
 
 const fig5Lights = [100, 300, 900];
+const fig5Steps = (pfd: number) => [
+  step(30, { PPFD: 0 }),
+  step(840, { PPFD: arabidopsis(pfd) }),
+  step(960, { PPFD: 0 }),
+  step(300, { PPFD: arabidopsis(pfd) }),
+];
+const FIG5_STYLE: Record<number, { color: string; marker: "x" | "o" | "s" }> = {
+  100: { color: "#e09a05", marker: "x" },
+  300: { color: "#06966b", marker: "o" },
+  900: { color: "#1571a3", marker: "s" },
+};
 const fig5Columns = ["pH_lu", "zx", "psbs_pr", "Q"];
 const scanLight = [
   ...new Set(
@@ -141,11 +216,17 @@ for (const pfd of fig5Lights) {
 }
 
 const pothosSteps = pamSteps(pothos(100), 16);
+const FIG6_X = {
+  xLabel: "Time (min)",
+  xLim: [-120, 36 * 60] as [number, number],
+  ...minuteTicks([0, 14, 30, 35]),
+};
 
 export const validations: Validation[] = [
   {
     id: "fig4",
     title: "Figure 4: PAM traces against measurements",
+    columns: 3,
     data: fig4Data,
     scenarios: fig4Scenarios,
     plots: fig4Plots,
@@ -167,12 +248,7 @@ export const validations: Validation[] = [
             simulate: {
               kind: "protocol" as const,
               pointsPerStep: 1000,
-              steps: [
-                step(30, { PPFD: 0 }),
-                step(840, { PPFD: arabidopsis(pfd) }),
-                step(960, { PPFD: 0 }),
-                step(300, { PPFD: arabidopsis(pfd) }),
-              ],
+              steps: fig5Steps(pfd),
             },
           },
         ]),
@@ -186,28 +262,91 @@ export const validations: Validation[] = [
         allowFailure: true,
       },
     },
+    columns: 1,
+    deriveEach: { t: "time - 30" },
+    collect: {
+      // The steady states at the three lights, marked on the curve.
+      marked: {
+        x: fig5Lights,
+        columns: Object.fromEntries(
+          ["Q", "pH_lu"].map((c) => [
+            c,
+            fig5Lights.map(
+              (pfd) => `nth(scan.${c}, ${scanLight.indexOf(pfd)})`,
+            ),
+          ]),
+        ),
+      },
+    },
     plots: [
       {
         type: "line",
-        x: "t100.time",
-        y: fig5Lights.map((pfd) => ({ of: `t${pfd}.pH_lu`, label: `${pfd}` })),
-        xLabel: "Time (s)",
-        yLabel: "Lumen pH",
+        x: "t100.t",
+        y: fig5Lights.map((pfd) => ({
+          of: `t${pfd}.pH_lu`,
+          x: `t${pfd}.t`,
+          label: String(pfd),
+          color: FIG5_STYLE[pfd].color,
+        })),
+        yLabel: "lumen pH",
+        xLim: [-20, 2100],
+        // The notebook hides this axis' tick labels; the panel below shares it.
+        xTicks: [0, 840, 1800, 2100],
+        xTickLabels: ["", "", "", ""],
         yLim: [2, 8],
+        yTicks: linspace(3, 8, 6),
+        phases: lightBars(fig5Steps(100), -20, 2100, -30),
+        legend: true,
+        legendPosition: "right",
       },
       {
-        type: "scatter",
-        title: "Quencher against lumen pH",
-        series: [
-          ...fig5Lights.map((pfd) => ({
-            x: `t${pfd}.Q`,
-            y: `t${pfd}.pH_lu`,
-            label: `${pfd}`,
+        type: "line",
+        x: "t100.t",
+        y: (["psbs_pr", "zx"] as const).flatMap((c) =>
+          fig5Lights.map((pfd) => ({
+            of: `t${pfd}.${c}`,
+            x: `t${pfd}.t`,
+            label: `${c === "zx" ? "Zx" : "PsbSᴾ"} ${pfd}`,
+            color: FIG5_STYLE[pfd].color,
+            ...(c === "psbs_pr" ? { dash: "dashed" as const } : {}),
           })),
-          { x: "scan.Q", y: "scan.pH_lu", label: "Steady state" },
+        ),
+        xLabel: "Time [min]",
+        yLabel: "Q components",
+        xLim: [-20, 2100],
+        xTicks: [0, 840, 1800, 2100],
+        xTickLabels: ["0", "14", "30", "35"],
+        yLim: [0, 0.9],
+        yTicks: [0, 0.2, 0.5, 0.8],
+        legend: true,
+        legendPosition: "right",
+      },
+      {
+        type: "line",
+        x: "t100.Q",
+        y: [
+          ...fig5Lights.map((pfd) => ({
+            of: `t${pfd}.pH_lu`,
+            x: `t${pfd}.Q`,
+            label: String(pfd),
+            color: FIG5_STYLE[pfd].color,
+            marker: FIG5_STYLE[pfd].marker,
+            markerEdge: pfd === 100 ? FIG5_STYLE[pfd].color : "black",
+          })),
+          { of: "scan.pH_lu", x: "scan.Q", color: "red" },
+          {
+            of: "marked.pH_lu",
+            x: "marked.Q",
+            color: "red",
+            style: "markers" as const,
+            zorder: 1,
+          },
         ],
-        xLabel: "Quencher activity [Q]",
-        yLabel: "Lumen pH",
+        xLabel: "quencher activity [Q]",
+        xLim: [0.05, 0.4],
+        xTicks: linspace(0.1, 0.4, 4),
+        legend: true,
+        legendPosition: "right",
       },
     ],
     golden: fig5Golden,
@@ -239,46 +378,65 @@ export const validations: Validation[] = [
         window: "between",
       },
     ],
+    columns: 1,
     plots: [
       {
         type: "line",
         x: "pothos.time",
         y: [
-          { of: "pothos.Fluo / max(pothos.Fluo)", label: "Simulated trace" },
+          {
+            of: "pothos.Fluo / max(pothos.Fluo)",
+            label: "Simulated trace",
+            color: "#fa0100",
+          },
           {
             of: "data.fm",
             x: "data.t",
             err: "data.fmStd",
-            label: "Fm' measured",
-            style: "markers",
+            label: "F_M' measured",
+            color: "black",
+            ...MEASURED,
           },
           {
             of: "data.ft",
             x: "data.t",
             err: "data.ftStd",
-            label: "Fs measured",
-            style: "markers",
+            label: "F_S measured",
+            color: "#0071ad",
+            ...MEASURED,
           },
         ],
-        xLabel: "Time (s)",
+        ...FIG6_X,
         yLabel: "Fluorescence (a.u.)",
         yLim: [0, 1],
+        yTicks: linspace(0, 1, 6),
+        phases: lightBars(pothosSteps, -120, 36 * 60),
+        legend: true,
       },
       {
         type: "line",
         x: "pothos.NPQ.time",
         y: [
-          { of: "pothos.NPQ.phiPSII", label: "Simulation", style: "markers" },
+          {
+            of: "pothos.NPQ.phiPSII",
+            label: "Simulation",
+            color: "#fa0100",
+            marker: "o",
+          },
           {
             of: "data.yield",
             x: "data.yieldTime",
             label: "Experiment",
-            style: "markers",
+            color: "#0071ad",
+            marker: "^",
           },
         ],
-        xLabel: "Time (s)",
+        ...FIG6_X,
         yLabel: "ΦPSII",
         yLim: [0, 0.9],
+        yTicks: linspace(0, 0.8, 5),
+        phases: lightBars(pothosSteps, -120, 36 * 60),
+        legend: true,
       },
     ],
     golden: {
