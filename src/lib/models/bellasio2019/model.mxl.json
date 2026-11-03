@@ -258,8 +258,13 @@
           ]
         },
         "unit": {
-          "factors": [],
-          "multiplier": 0.000001
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "micro",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "Ci"
       },
@@ -334,8 +339,13 @@
           "value": 210000
         },
         "unit": {
-          "factors": [],
-          "multiplier": 0.000001
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "micro",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "p\\_o2"
       },
@@ -351,8 +361,13 @@
               "exponent": 1
             },
             {
+              "kind": "bar",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
               "kind": "mole",
-              "prefix": "kilo",
+              "prefix": "milli",
               "exponent": -1
             }
           ]
@@ -416,7 +431,7 @@
           "factors": [
             {
               "kind": "mole",
-              "prefix": "milli",
+              "prefix": "micro",
               "exponent": 1
             },
             {
@@ -551,8 +566,13 @@
           "value": 350
         },
         "unit": {
-          "factors": [],
-          "multiplier": 0.000001
+          "factors": [
+            {
+              "kind": "bar",
+              "prefix": "micro",
+              "exponent": 1
+            }
+          ]
         },
         "texName": "Ca"
       },
@@ -896,7 +916,17 @@
           "value": 6846
         },
         "unit": {
-          "factors": []
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "keq\\_v\\_PRKase"
       },
@@ -1385,7 +1415,17 @@
           "value": 502
         },
         "unit": {
-          "factors": []
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "keq\\_v\\_FNR"
       },
@@ -1576,8 +1616,13 @@
               "exponent": 1
             },
             {
+              "kind": "bar",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
               "kind": "mole",
-              "prefix": "kilo",
+              "prefix": "milli",
               "exponent": -1
             }
           ]
@@ -1620,7 +1665,17 @@
           "value": -0.1
         },
         "unit": {
-          "factors": []
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": 1
+            },
+            {
+              "kind": "litre",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "tau0"
       },
@@ -1633,19 +1688,11 @@
           "factors": [
             {
               "kind": "mole",
-              "prefix": "micro",
               "exponent": 1
             },
             {
-              "kind": "metre",
-              "exponent": -2
-            },
-            {
               "kind": "pascal",
-              "exponent": -1
-            },
-            {
-              "kind": "second",
+              "prefix": "mega",
               "exponent": -1
             }
           ]
@@ -1693,7 +1740,7 @@
           "factors": [
             {
               "kind": "mole",
-              "prefix": "nano",
+              "prefix": "milli",
               "exponent": 1
             },
             {
@@ -1702,6 +1749,7 @@
             },
             {
               "kind": "pascal",
+              "prefix": "mega",
               "exponent": -1
             },
             {

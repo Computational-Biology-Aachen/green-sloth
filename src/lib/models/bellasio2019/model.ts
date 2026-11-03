@@ -85,15 +85,18 @@ export function initModel(): KineticModelBuilder {
     .addParameter("p_o2", {
       value: 210000.0,
       texName: "p\\_o2",
-      unit: Unit.fromJson({ factors: [], multiplier: 1e-6 }),
+      unit: Unit.fromJson({
+        factors: [{ kind: "bar", prefix: "micro", exponent: 1 }],
+      }),
     })
     .addParameter("Kh_o2", {
       value: 833300.0,
       texName: "Kh\\_o2",
       unit: Unit.fromJson({
         factors: [
+          { kind: "bar", prefix: "micro", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "litre", exponent: 1 },
-          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -128,7 +131,7 @@ export function initModel(): KineticModelBuilder {
       texName: "RLight",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "mole", prefix: "micro", exponent: 1 },
           { kind: "metre", exponent: -2 },
           { kind: "second", exponent: -1 },
         ],
@@ -193,7 +196,9 @@ export function initModel(): KineticModelBuilder {
     .addParameter("Ca", {
       value: 350.0,
       texName: "Ca",
-      unit: Unit.fromJson({ factors: [], multiplier: 1e-6 }),
+      unit: Unit.fromJson({
+        factors: [{ kind: "bar", prefix: "micro", exponent: 1 }],
+      }),
     })
     .addParameter("alpha_ppfd_rub", {
       value: 0.0018,
@@ -341,7 +346,12 @@ export function initModel(): KineticModelBuilder {
     .addParameter("S_co_gas", {
       value: 2200.0,
       texName: "S\\_co\\_gas",
-      unit: Unit.fromJson({ factors: [] }),
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "bar", exponent: 1 },
+          { kind: "bar", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("vmax_v_PRKase", {
       value: 1.17,
@@ -358,7 +368,12 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_v_PRKase", {
       value: 6846.0,
       texName: "keq\\_v\\_PRKase",
-      unit: Unit.fromJson({ factors: [] }),
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_PRKase_ATP_st", {
       value: 0.625,
@@ -599,7 +614,12 @@ export function initModel(): KineticModelBuilder {
     .addParameter("keq_v_FNR", {
       value: 502.0,
       texName: "keq\\_v\\_FNR",
-      unit: Unit.fromJson({ factors: [] }),
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("km_v_FNR_NADP_st", {
       value: 0.0072,
@@ -689,8 +709,9 @@ export function initModel(): KineticModelBuilder {
       texName: "Kh\\_co2",
       unit: Unit.fromJson({
         factors: [
+          { kind: "bar", prefix: "micro", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: -1 },
           { kind: "litre", exponent: 1 },
-          { kind: "mole", prefix: "kilo", exponent: -1 },
         ],
       }),
     })
@@ -707,17 +728,20 @@ export function initModel(): KineticModelBuilder {
     .addParameter("tau0", {
       value: -0.1,
       texName: "tau0",
-      unit: Unit.fromJson({ factors: [] }),
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "milli", exponent: 1 },
+          { kind: "litre", exponent: -1 },
+        ],
+      }),
     })
     .addParameter("chi_beta", {
       value: 0.5,
       texName: "chi\\_beta",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mole", prefix: "micro", exponent: 1 },
-          { kind: "metre", exponent: -2 },
-          { kind: "pascal", exponent: -1 },
-          { kind: "second", exponent: -1 },
+          { kind: "mole", exponent: 1 },
+          { kind: "pascal", prefix: "mega", exponent: -1 },
         ],
       }),
     })
@@ -740,10 +764,10 @@ export function initModel(): KineticModelBuilder {
       texName: "Kh",
       unit: Unit.fromJson({
         factors: [
-          { kind: "mole", prefix: "nano", exponent: 1 },
+          { kind: "mole", prefix: "milli", exponent: 1 },
           { kind: "metre", exponent: -2 },
-          { kind: "pascal", exponent: -1 },
           { kind: "second", exponent: -1 },
+          { kind: "pascal", prefix: "mega", exponent: -1 },
         ],
       }),
     })
@@ -888,7 +912,9 @@ export function initModel(): KineticModelBuilder {
     .addVariable("Ci", {
       value: new Mul([new Num(0.65), new Name("Ca")]),
       texName: "Ci",
-      unit: Unit.fromJson({ factors: [], multiplier: 1e-6 }),
+      unit: Unit.fromJson({
+        factors: [{ kind: "bar", prefix: "micro", exponent: 1 }],
+      }),
     })
     .addVariable("gs", {
       value: 0.334934046786077,
