@@ -258,13 +258,8 @@
           ]
         },
         "unit": {
-          "factors": [
-            {
-              "kind": "bar",
-              "prefix": "micro",
-              "exponent": 1
-            }
-          ]
+          "factors": [],
+          "multiplier": 0.000001
         },
         "texName": "Ci"
       },
@@ -339,13 +334,8 @@
           "value": 210000
         },
         "unit": {
-          "factors": [
-            {
-              "kind": "bar",
-              "prefix": "micro",
-              "exponent": 1
-            }
-          ]
+          "factors": [],
+          "multiplier": 0.000001
         },
         "texName": "p\\_o2"
       },
@@ -361,13 +351,8 @@
               "exponent": 1
             },
             {
-              "kind": "bar",
-              "prefix": "micro",
-              "exponent": 1
-            },
-            {
               "kind": "mole",
-              "prefix": "milli",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -431,7 +416,7 @@
           "factors": [
             {
               "kind": "mole",
-              "prefix": "micro",
+              "prefix": "milli",
               "exponent": 1
             },
             {
@@ -482,7 +467,21 @@
           "value": 0.00125
         },
         "unit": {
-          "factors": []
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "second",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "alpha\\_ppfd\\_PhiPSII"
       },
@@ -552,13 +551,8 @@
           "value": 350
         },
         "unit": {
-          "factors": [
-            {
-              "kind": "bar",
-              "prefix": "micro",
-              "exponent": 1
-            }
-          ]
+          "factors": [],
+          "multiplier": 0.000001
         },
         "texName": "Ca"
       },
@@ -568,7 +562,21 @@
           "value": 0.0018
         },
         "unit": {
-          "factors": []
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "second",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "alpha\\_ppfd\\_rub"
       },
@@ -598,7 +606,17 @@
           "value": 400
         },
         "unit": {
-          "factors": []
+          "factors": [
+            {
+              "kind": "litre",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "prefix": "milli",
+              "exponent": -1
+            }
+          ]
         },
         "texName": "alpha\\_co2"
       },
@@ -1558,13 +1576,8 @@
               "exponent": 1
             },
             {
-              "kind": "bar",
-              "prefix": "micro",
-              "exponent": 1
-            },
-            {
               "kind": "mole",
-              "prefix": "milli",
+              "prefix": "kilo",
               "exponent": -1
             }
           ]
@@ -1607,13 +1620,7 @@
           "value": -0.1
         },
         "unit": {
-          "factors": [
-            {
-              "kind": "mole",
-              "prefix": "milli",
-              "exponent": 1
-            }
-          ]
+          "factors": []
         },
         "texName": "tau0"
       },
@@ -1626,11 +1633,19 @@
           "factors": [
             {
               "kind": "mole",
+              "prefix": "micro",
               "exponent": 1
             },
             {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
               "kind": "pascal",
-              "prefix": "mega",
+              "exponent": -1
+            },
+            {
+              "kind": "second",
               "exponent": -1
             }
           ]
@@ -1678,7 +1693,7 @@
           "factors": [
             {
               "kind": "mole",
-              "prefix": "milli",
+              "prefix": "nano",
               "exponent": 1
             },
             {
@@ -1687,7 +1702,6 @@
             },
             {
               "kind": "pascal",
-              "prefix": "mega",
               "exponent": -1
             },
             {
@@ -1704,13 +1718,8 @@
           "value": 10
         },
         "unit": {
-          "factors": [
-            {
-              "kind": "pascal",
-              "prefix": "mega",
-              "exponent": 1
-            }
-          ]
+          "factors": [],
+          "multiplier": 0.001
         },
         "texName": "Ds"
       },
