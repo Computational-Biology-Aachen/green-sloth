@@ -4,6 +4,7 @@ import type {
   LineSeries,
   OpSpec,
   Plot,
+  PreRun,
   Scenario,
   Validation,
 } from "#lib/validation/types.js";
@@ -31,6 +32,12 @@ const fig3Columns = [
   "Fluo",
 ];
 
+/**
+ * As the paper starts every oscillating-light run (Section 3.2): from the
+ * steady state in the constant light u0, i.e. PPFD without its oscillation.
+ */
+const ACCLIMATED: PreRun = { kind: "steadyState", set: { PPFD_add: 0 } };
+
 const PERIODS = [10000, 1000, 100, 1, 0.1, 0.001];
 const ENDS = [50000, 5000, 500, 5, 0.5, 0.005];
 const AMPLITUDES: Array<[number, number]> = [
@@ -47,6 +54,7 @@ for (const [lo, hi] of AMPLITUDES) {
     const id = `h${hi}_t${k}`;
     fig4Scenarios[id] = {
       parameters: { PPFD: mean, PPFD_add: hi - mean, f: 1 / T },
+      pre: [ACCLIMATED],
       simulate: course(ENDS[k]),
     };
     for (const c of fig4Columns) {
@@ -129,7 +137,10 @@ export const validations: Validation[] = [
     columns: 2,
     simulate: course(40000),
     scenarios: {
-      osc: { parameters: { f: 1 / 10000, PPFD: 500, PPFD_add: 450 } },
+      osc: {
+        parameters: { f: 1 / 10000, PPFD: 500, PPFD_add: 450 },
+        pre: [ACCLIMATED],
+      },
     },
     deriveEach: { pH: "-log10(H_lumen * 1e-6)" },
     ops: LIGHT_RATE,
