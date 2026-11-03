@@ -28,13 +28,25 @@ import {
 } from "@computational-biology-aachen/mxlweb-core";
 import { mxlJsonToModel } from "@computational-biology-aachen/mxlweb-core/mxl";
 
+type MxlDataDocument = NonNullable<Parameters<typeof mxlJsonToModel>[2]>;
+
 const jsonModules = import.meta.glob<string>(
   "../src/lib/models/*/model.mxl.json",
   { eager: true, query: "?raw", import: "default" },
 );
 
+// Data sidecars (ADR 0014), keyed by slug; models with `data_ref`s need them.
+const dataModules = import.meta.glob<MxlDataDocument>(
+  "../src/lib/models/*/model.data.json",
+  { eager: true, import: "default" },
+);
+
 const slugFromPath = (path: string): string =>
-  path.match(/\/models\/([^/]+)\/model\.mxl\.json$/)?.[1] ?? path;
+  path.match(/\/models\/([^/]+)\/model\.(?:mxl|data)\.json$/)?.[1] ?? path;
+
+const dataBySlug = new Map(
+  Object.entries(dataModules).map(([path, doc]) => [slugFromPath(path), doc]),
+);
 
 function checkKinetic(model: KineticModelBuilder): void {
   if (model.getNames().length === 0) {
@@ -62,7 +74,8 @@ const failures: string[] = [];
 for (const [path, raw] of Object.entries(jsonModules)) {
   const slug = slugFromPath(path);
   try {
-    const model = mxlJsonToModel(raw); // throws on schema violation
+    // throws on schema violation
+    const model = mxlJsonToModel(raw, new Map(), dataBySlug.get(slug));
     if (model instanceof KineticModelBuilder) {
       checkKinetic(model);
     } else if (model instanceof SteadyStateModelBuilder) {
