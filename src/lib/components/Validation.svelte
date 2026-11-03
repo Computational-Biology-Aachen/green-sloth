@@ -1,9 +1,23 @@
 <!--
  @component
  A model's validations: the figures reproducing its publication. Unlike the
- dashboard's analyses these are slow, so they only run on an explicit click, and
- always on a freshly built model, so sliders and fits don't affect them.
+ dashboard's analyses these are slow, so a figure only runs when it is opened,
+ and always on a freshly built model, so sliders and fits don't affect them.
 -->
+<script
+  lang="ts"
+  module
+>
+  import type { ValidationResult as Result } from "../validation/run";
+
+  // Finished figures of the model shown last; outlives the component, which the
+  // page's tabs unmount. One model at a time keeps it small.
+  const cache: {
+    slug: string;
+    done: Map<string, { seconds: number; result: Result }>;
+  } = { slug: "", done: new Map() };
+</script>
+
 <script lang="ts">
   import {
     Accordion,
@@ -38,29 +52,38 @@
     validations: Validation[];
   } = $props();
 
+  type Done = { seconds: number; result: ValidationResult };
   type Status =
     | { state: "idle" }
+    | { state: "queued" }
     | { state: "running"; done: number; total: number }
-    | { state: "done"; seconds: number; result: ValidationResult }
-    | { state: "failed"; message: string };
+    | ({ state: "done" } & Done)
+    | { state: "failed"; message: string }
+    | { state: "cancelled" };
 
   let statuses = $state<Record<string, Status>>({});
-  // Figures start closed; running one opens it so its result can be seen.
   let opened = $state<Record<string, boolean>>({});
+  // Waiting figures, run one after another on a shared worker pool.
+  let queue: Validation[] = [];
   let pool: ValidationPool | undefined;
-  let running = $state(false);
-  let cancelled = false;
+  // The figure being simulated; its token goes stale when it is cancelled.
+  let current: { id: string; token: object } | undefined;
+  let draining = false;
+  let busy = $state(false);
 
   // Slugs share this component across navigation; a new model starts clean.
+  // Finished figures of the same model come back from the cache, e.g. after a
+  // tab switch unmounted this component.
   $effect.pre(() => {
-    void slug;
-    statuses = {};
-    opened = {};
-    return () => {
-      pool?.terminate();
-      pool = undefined;
-      running = false;
-    };
+    if (cache.slug !== slug) {
+      cache.slug = slug;
+      cache.done = new Map();
+    }
+    statuses = Object.fromEntries(
+      [...cache.done].map(([id, d]) => [id, { state: "done", ...d }]),
+    );
+    opened = Object.fromEntries([...cache.done.keys()].map((id) => [id, true]));
+    return () => stopAll("idle");
   });
 
   async function freshModel(): Promise<KineticModelBuilder> {
@@ -71,59 +94,97 @@
     return model;
   }
 
-  async function run(targets: Validation[]) {
-    running = true;
-    cancelled = false;
-    pool = createValidationPool();
-    const active = pool;
-    for (const v of targets) {
-      statuses[v.id] = { state: "idle" };
-      opened[v.id] = true;
-    }
+  function enqueue(v: Validation) {
+    const state = statuses[v.id]?.state ?? "idle";
+    if (state === "done" || state === "queued" || state === "running") return;
+    statuses[v.id] = { state: "queued" };
+    queue.push(v);
+    busy = true;
+    if (!draining) void drain();
+  }
+
+  async function drain() {
+    draining = true;
     try {
-      for (const v of targets) {
-        if (cancelled) break;
-        const total = Object.keys(expandScans(v).scenarios).length;
-        statuses[v.id] = { state: "running", done: 0, total };
-        const started = performance.now();
-        try {
-          const result = await runValidation(
-            v,
-            await freshModel(),
-            active.simulate,
-            {
-              concurrency: active.concurrency,
-              onProgress: (done, total) => {
-                statuses[v.id] = { state: "running", done, total };
-              },
-            },
-          );
-          statuses[v.id] = {
-            state: "done",
-            seconds: (performance.now() - started) / 1000,
-            result,
-          };
-        } catch (e) {
-          statuses[v.id] = cancelled
-            ? { state: "idle" }
-            : {
-                state: "failed",
-                message: e instanceof Error ? e.message : String(e),
-              };
-        }
-      }
+      for (let v = queue.shift(); v; v = queue.shift()) await runOne(v);
     } finally {
-      active.terminate();
-      if (pool === active) {
-        pool = undefined;
-        running = false;
-      }
+      draining = false;
+      busy = false;
+      pool?.terminate();
+      pool = undefined;
     }
   }
 
-  function cancel() {
-    cancelled = true;
-    pool?.terminate();
+  async function runOne(v: Validation) {
+    const token = {};
+    current = { id: v.id, token };
+    const live = () => current?.token === token;
+    const active = (pool ??= createValidationPool());
+    const total = Object.keys(expandScans(v).scenarios).length;
+    statuses[v.id] = { state: "running", done: 0, total };
+    const started = performance.now();
+    try {
+      const result = await runValidation(
+        v,
+        await freshModel(),
+        active.simulate,
+        {
+          concurrency: active.concurrency,
+          onProgress: (done, total) => {
+            if (live()) statuses[v.id] = { state: "running", done, total };
+          },
+        },
+      );
+      if (!live()) return;
+      const done = { seconds: (performance.now() - started) / 1000, result };
+      cache.done.set(v.id, done);
+      statuses[v.id] = { state: "done", ...done };
+    } catch (e) {
+      if (!live()) return;
+      statuses[v.id] = {
+        state: "failed",
+        message: e instanceof Error ? e.message : String(e),
+      };
+    } finally {
+      if (live()) current = undefined;
+    }
+  }
+
+  /** Stop one figure: drop it from the queue, or kill the run it is in. */
+  function stop(id: string, state: "idle" | "cancelled") {
+    const waiting = queue.findIndex((v) => v.id === id);
+    if (waiting >= 0) {
+      queue.splice(waiting, 1);
+      statuses[id] = { state };
+    } else if (current?.id === id) {
+      current = undefined;
+      // Terminating the workers is the only way to stop a solve; the next
+      // queued figure gets a fresh pool.
+      pool?.terminate();
+      pool = undefined;
+      statuses[id] = { state };
+    }
+  }
+
+  function stopAll(state: "idle" | "cancelled") {
+    for (const v of [...queue]) stop(v.id, state);
+    if (current) stop(current.id, state);
+  }
+
+  // Opening a figure runs it; closing it before it finishes cancels it.
+  function toggled(v: Validation, e: Event) {
+    const details = e.target as HTMLDetailsElement;
+    if (details.parentElement !== e.currentTarget) return;
+    opened[v.id] = details.open;
+    if (details.open) enqueue(v);
+    else stop(v.id, "idle");
+  }
+
+  function runAll() {
+    for (const v of validations) {
+      opened[v.id] = true;
+      enqueue(v);
+    }
   }
 
   const MAX_CHART_POINTS = 2000;
@@ -238,139 +299,147 @@
 
 <div class="validations">
   <Row justify="end">
-    {#if running}
-      <Button onclick={cancel}>Cancel</Button>
+    {#if busy}
+      <Button onclick={() => stopAll("cancelled")}>Cancel</Button>
     {:else}
-      <Button onclick={() => run(validations)}>Run all</Button>
+      <Button onclick={runAll}>Run all</Button>
     {/if}
   </Row>
   {#each validations as validation (validation.id)}
     {@const status = statuses[validation.id] ?? { state: "idle" }}
-    <Accordion
-      title={validation.title}
-      open={opened[validation.id] ?? false}
-    >
-      <div class="validation">
-        <Row
-          justify="end"
-          wrap
-        >
-          {#if status.state === "running"}
-            <span>{status.done} / {status.total} simulations</span>
+    <div ontogglecapture={(e) => toggled(validation, e)}>
+      <Accordion
+        title={validation.title}
+        open={opened[validation.id] ?? false}
+      >
+        <div class="validation">
+          <Row
+            justify="end"
+            wrap
+          >
+            <span aria-live="polite">
+              {#if status.state === "queued"}
+                Queued
+              {:else if status.state === "running"}
+                {status.done} / {status.total} simulations
+              {:else if status.state === "done"}
+                {status.seconds.toFixed(1)} s
+              {/if}
+            </span>
+          </Row>
+          {#if status.state === "failed" || status.state === "cancelled"}
+            <p role={status.state === "failed" ? "alert" : undefined}>
+              {status.state === "failed" ? status.message : "Cancelled."}
+            </p>
+            <Row justify="end">
+              <Button onclick={() => enqueue(validation)}>Retry</Button>
+            </Row>
           {:else if status.state === "done"}
-            <span>{status.seconds.toFixed(1)} s</span>
+            {@const grid = layout(validation)}
+            <div
+              class="plots"
+              class:fixed={grid !== undefined}
+              style:--columns={grid?.columns}
+            >
+              {#each validation.plots as plot, i (i)}
+                <div
+                  class:wide={plot.type === "heatmap" && grid === undefined}
+                  style:--span={grid?.spans[i] ?? 1}
+                >
+                  {#if plot.title || plot.panel}
+                    <p class="plot-title">
+                      {#if plot.panel}<span class="panel">{plot.panel}</span
+                        >{/if}
+                      {plot.title ?? ""}
+                    </p>
+                  {/if}
+                  {#if plot.type === "line"}
+                    <PlotChart
+                      series={lineSeries(plot, status.result)}
+                      xLabel={plot.xLabel}
+                      yLabel={plot.yLabel}
+                      yRightLabel={plot.yRightLabel}
+                      xLim={plot.xLim}
+                      yLim={plot.yLim}
+                      yRightLim={plot.yRightLim}
+                      yColor={plot.yColor}
+                      yRightColor={plot.yRightColor}
+                      axes={plot.axes}
+                      xTicks={plot.xTicks}
+                      xTickLabels={plot.xTickLabels}
+                      yTicks={plot.yTicks}
+                      yRightTicks={plot.yRightTicks}
+                      logX={plot.logX}
+                      logY={plot.logY}
+                      reverseX={plot.reverseX}
+                      reverseY={plot.reverseY}
+                      phases={plot.phases}
+                      hLines={rules(plot.hLines)}
+                      vLines={rules(plot.vLines)}
+                      annotations={annotations(plot, status.result)}
+                      legend={plot.legend}
+                      legendTitle={plot.legendTitle}
+                      legendPosition={plot.legendPosition}
+                      grid={plot.grid ?? false}
+                      margin={0.05}
+                    />
+                  {:else if plot.type === "scatter"}
+                    <PlotChart
+                      series={plot.series.map((s) => ({
+                        x: thin(status.result.column(s.x)),
+                        y: thin(status.result.column(s.y)),
+                        style: "markers" as const,
+                        ...(s.label ? { label: s.label } : {}),
+                        ...style(s, true),
+                        zorder: s.zorder ?? 1,
+                      }))}
+                      xLabel={plot.xLabel}
+                      yLabel={plot.yLabel}
+                      xLim={plot.xLim ?? plot.lim}
+                      yLim={plot.yLim ?? plot.lim}
+                      xTicks={plot.xTicks}
+                      yTicks={plot.yTicks}
+                      identity={plot.identity ? plot.lim : undefined}
+                      annotations={annotations(plot, status.result)}
+                      legend={plot.legend}
+                      legendTitle={plot.legendTitle}
+                      legendPosition={plot.legendPosition}
+                      grid={plot.grid ?? false}
+                      margin={0.05}
+                    />
+                  {:else if plot.type === "stackedBar"}
+                    <StackedBarChart
+                      categories={plot.categories}
+                      stacks={plot.stacks.map((stack) => ({
+                        label: stack.label,
+                        values: stack.of.map((e) => asNumber(status.result, e)),
+                        ...(stack.color ? { color: stack.color } : {}),
+                      }))}
+                      yLabel={plot.yLabel}
+                      yLim={plot.yLim}
+                      yTicks={plot.yTicks}
+                      reverseLegend={plot.reverseLegend}
+                      grid={plot.grid ?? false}
+                    />
+                  {:else}
+                    <HeatmapChart
+                      rows={plot.rows}
+                      columns={plot.columns}
+                      colormap={plot.colormap}
+                      xLabel={plot.xLabel}
+                      yLabel={plot.yLabel}
+                      values={plot.z.map((row) =>
+                        row.map((e) => asNumber(status.result, e)),
+                      )}
+                    />
+                  {/if}
+                </div>
+              {/each}
+            </div>
           {/if}
-          <Button
-            disabled={running}
-            onclick={() => run([validation])}>Run</Button
-          >
-        </Row>
-        {#if status.state === "failed"}
-          <p role="alert">{status.message}</p>
-        {:else if status.state === "done"}
-          {@const grid = layout(validation)}
-          <div
-            class="plots"
-            class:fixed={grid !== undefined}
-            style:--columns={grid?.columns}
-          >
-            {#each validation.plots as plot, i (i)}
-              <div
-                class:wide={plot.type === "heatmap" && grid === undefined}
-                style:--span={grid?.spans[i] ?? 1}
-              >
-                {#if plot.title || plot.panel}
-                  <p class="plot-title">
-                    {#if plot.panel}<span class="panel">{plot.panel}</span>{/if}
-                    {plot.title ?? ""}
-                  </p>
-                {/if}
-                {#if plot.type === "line"}
-                  <PlotChart
-                    series={lineSeries(plot, status.result)}
-                    xLabel={plot.xLabel}
-                    yLabel={plot.yLabel}
-                    yRightLabel={plot.yRightLabel}
-                    xLim={plot.xLim}
-                    yLim={plot.yLim}
-                    yRightLim={plot.yRightLim}
-                    yColor={plot.yColor}
-                    yRightColor={plot.yRightColor}
-                    axes={plot.axes}
-                    xTicks={plot.xTicks}
-                    xTickLabels={plot.xTickLabels}
-                    yTicks={plot.yTicks}
-                    yRightTicks={plot.yRightTicks}
-                    logX={plot.logX}
-                    logY={plot.logY}
-                    reverseX={plot.reverseX}
-                    reverseY={plot.reverseY}
-                    phases={plot.phases}
-                    hLines={rules(plot.hLines)}
-                    vLines={rules(plot.vLines)}
-                    annotations={annotations(plot, status.result)}
-                    legend={plot.legend}
-                    legendTitle={plot.legendTitle}
-                    legendPosition={plot.legendPosition}
-                    grid={plot.grid ?? false}
-                    margin={0.05}
-                  />
-                {:else if plot.type === "scatter"}
-                  <PlotChart
-                    series={plot.series.map((s) => ({
-                      x: thin(status.result.column(s.x)),
-                      y: thin(status.result.column(s.y)),
-                      style: "markers" as const,
-                      ...(s.label ? { label: s.label } : {}),
-                      ...style(s, true),
-                      zorder: s.zorder ?? 1,
-                    }))}
-                    xLabel={plot.xLabel}
-                    yLabel={plot.yLabel}
-                    xLim={plot.xLim ?? plot.lim}
-                    yLim={plot.yLim ?? plot.lim}
-                    xTicks={plot.xTicks}
-                    yTicks={plot.yTicks}
-                    identity={plot.identity ? plot.lim : undefined}
-                    annotations={annotations(plot, status.result)}
-                    legend={plot.legend}
-                    legendTitle={plot.legendTitle}
-                    legendPosition={plot.legendPosition}
-                    grid={plot.grid ?? false}
-                    margin={0.05}
-                  />
-                {:else if plot.type === "stackedBar"}
-                  <StackedBarChart
-                    categories={plot.categories}
-                    stacks={plot.stacks.map((stack) => ({
-                      label: stack.label,
-                      values: stack.of.map((e) => asNumber(status.result, e)),
-                      ...(stack.color ? { color: stack.color } : {}),
-                    }))}
-                    yLabel={plot.yLabel}
-                    yLim={plot.yLim}
-                    yTicks={plot.yTicks}
-                    reverseLegend={plot.reverseLegend}
-                    grid={plot.grid ?? false}
-                  />
-                {:else}
-                  <HeatmapChart
-                    rows={plot.rows}
-                    columns={plot.columns}
-                    colormap={plot.colormap}
-                    xLabel={plot.xLabel}
-                    yLabel={plot.yLabel}
-                    values={plot.z.map((row) =>
-                      row.map((e) => asNumber(status.result, e)),
-                    )}
-                  />
-                {/if}
-              </div>
-            {/each}
-          </div>
-        {/if}
-      </div>
-    </Accordion>
+        </div>
+      </Accordion>
+    </div>
   {/each}
 </div>
 

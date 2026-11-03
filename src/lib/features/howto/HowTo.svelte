@@ -750,8 +750,9 @@ npm run dev               # open the model page, confirm the analyses run`;
     <Text>
       A model can also declare its figures as data in <Code>validation.ts</Code
       >, next to <Code>meta.ts</Code>. These run from the model on the website
-      itself behind a Run button, can be downloaded as an MxlPy notebook, and are
-      checked against frozen reference values whenever the model changes.
+      itself when a figure is opened, can be downloaded as an MxlPy notebook,
+      and are checked against frozen reference values whenever the model
+      changes.
     </Text>
     <H2>5. Verify and open a PR</H2>
     <Pre>{verifyCode}</Pre>
