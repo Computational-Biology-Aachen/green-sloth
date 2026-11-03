@@ -530,9 +530,9 @@
         original figures is not shown here.
         {#if hasValidation && paperFigures.length !== 0}
           In the <i>Interactive</i> tab, each figure is simulated from this model
-          in your browser.
+          in your browser when you open it.
         {:else if hasValidation}
-          Each figure is simulated from this model in your browser when you run
+          Each figure is simulated from this model in your browser when you open
           it.
         {/if}
       </Text>
