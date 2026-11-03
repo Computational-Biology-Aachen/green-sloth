@@ -36,6 +36,7 @@ export const ORGANISMS = [
   "Nicotiana tabacum",
   "Raphanus sativus",
   "Spinacia oleracea",
+  "Synechocystis sp. PCC 6803",
   "Triticum aestivum",
   "Generic C3 plant",
   "Theoretical",
@@ -75,7 +76,7 @@ export const ORGANISM_GROUPS: Record<string, string[]> = {
     "Chlorella sorokiniana",
     "Euglena gracilis",
   ],
-  Cyanobacteria: [],
+  Cyanobacteria: ["Synechocystis sp. PCC 6803"],
 };
 
 export type TagValues = {

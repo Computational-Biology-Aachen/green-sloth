@@ -5,7 +5,8 @@
  *
  *   1. `model.ts`       — hand-written builder, the authoring source
  *   2. `model.mxl.json` — canonical mxl-schemas format (committed, generated from
- *      `model.ts` via `npm run generate:mxl`). The format the app normally loads.
+ *      `model.ts` via `npm run generate:mxl`), with its `model.data.json`
+ *      sidecar if the model has data. The format the app normally loads.
  *   3. `model.sbml`     — SBML, for models contributed in the field standard.
  *
  * The globs are lazy: each model's file becomes its own chunk, so building one
@@ -16,6 +17,7 @@
 import {
   KineticModelBuilder,
   ModelBuilderBase,
+  type MxlDataDocument,
 } from "@computational-biology-aachen/mxlweb-core";
 import { mxlJsonToModel } from "@computational-biology-aachen/mxlweb-core/mxl";
 import { sbmlToModel } from "@computational-biology-aachen/mxlweb-core/sbml";
@@ -24,6 +26,9 @@ const jsonLoaders = import.meta.glob("#lib/models/*/model.mxl.json", {
   query: "?raw",
   import: "default",
 }) as Record<string, () => Promise<string>>;
+const dataLoaders = import.meta.glob("#lib/models/*/model.data.json", {
+  import: "default",
+}) as Record<string, () => Promise<MxlDataDocument>>;
 const sbmlLoaders = import.meta.glob("#lib/models/*/model.sbml", {
   query: "?raw",
   import: "default",
@@ -46,6 +51,7 @@ function indexBySlug<T>(modules: Record<string, T>): Map<string, T> {
 }
 
 const jsonBySlug = indexBySlug(jsonLoaders);
+const dataBySlug = indexBySlug(dataLoaders);
 const sbmlBySlug = indexBySlug(sbmlLoaders);
 const tsBySlug = indexBySlug(tsLoaders);
 
@@ -60,7 +66,14 @@ export async function buildModel(
   if (ts !== undefined) return (await ts()).initModel();
 
   const json = jsonBySlug.get(slug);
-  if (json !== undefined) return mxlJsonToModel(await json());
+  if (json !== undefined) {
+    const data = dataBySlug.get(slug);
+    return mxlJsonToModel(
+      await json(),
+      new Map(),
+      data === undefined ? undefined : await data(),
+    );
+  }
 
   const sbml = sbmlBySlug.get(slug);
   if (sbml !== undefined) return sbmlToModel(await sbml());

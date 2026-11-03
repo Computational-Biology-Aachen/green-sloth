@@ -58,8 +58,14 @@ for (const [path, mod] of Object.entries(modelModules)) {
     const source = mod.initModel();
     const json = source.buildMxlJson(slug);
 
-    // Reload from the emitted JSON and prove it round-trips losslessly...
-    const reloaded = mxlJsonToModel(json);
+    // Reload from the emitted JSON (plus its data sidecar, which the model.ts
+    // imports) and prove it round-trips losslessly...
+    const dataFile = source.buildDataFile();
+    const reloaded = mxlJsonToModel(
+      json,
+      new Map(),
+      dataFile === undefined ? undefined : JSON.parse(dataFile),
+    );
     if (reloaded.constructor !== source.constructor) {
       throw new Error(
         `reloaded model is ${reloaded.constructor.name}, expected ${source.constructor.name}`,
