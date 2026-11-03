@@ -65,11 +65,18 @@ function makeWasmBackend(method: string, label: string): Backend {
 export const wasmRadau5 = makeWasmBackend("radau5", "RADAU5");
 export const wasmDop853 = makeWasmBackend("dop853", "DOP853");
 export const wasmDopri5 = makeWasmBackend("dopri5", "DOPRI5");
+export const wasmLsoda = makeWasmBackend("lsoda", "LSODA");
 
-export const allBackends: Backend[] = [wasmRadau5, wasmDop853, wasmDopri5];
+export const allBackends: Backend[] = [
+  wasmRadau5,
+  wasmDop853,
+  wasmDopri5,
+  wasmLsoda,
+];
 
 export const backends = {
   wasmRadau5,
   wasmDop853,
   wasmDopri5,
+  wasmLsoda,
 };
