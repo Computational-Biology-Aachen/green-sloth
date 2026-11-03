@@ -59,21 +59,89 @@ function goldens(ids: string[]): Record<string, GoldenSeries> {
   return out;
 }
 
-function panels(ids: string[], labels: string[]): Validation["plots"] {
-  const panel = (col: string, yLabel: string, yLim: [number, number]) => ({
+interface Bar {
+  from: number;
+  to: number;
+  color: string;
+  label?: string;
+}
+
+/**
+ * The notebook's three stacked panels. `legendAt` is the panel with the line
+ * legend; `bars` are its light protocol lines above the top panel, which get
+ * legend entries of their own.
+ */
+function panels(
+  ids: string[],
+  labels: string[],
+  colors: string[],
+  legendAt: number,
+  bars: Bar[] = [],
+): Validation["plots"] {
+  const barLegend = bars
+    .filter((b) => b.label)
+    .map((b) => ({
+      of: "data.none",
+      x: "data.none",
+      label: b.label,
+      color: b.color,
+    }));
+  const panel = (
+    k: number,
+    col: string,
+    yLabel: string,
+    yLim: [number, number],
+    yTicks: number[],
+  ) => ({
     type: "line" as const,
     x: `${ids[0]}.time`,
-    y: ids.map((id, i) => ({ of: `${id}.${col}`, label: labels[i] })),
-    xLabel: "Time (min)",
+    y: [
+      ...ids.map((id, i) => ({
+        of: `${id}.${col}`,
+        color: colors[i],
+        ...(k === legendAt ? { label: labels[i] } : {}),
+      })),
+      ...(k === 0 ? barLegend : []),
+    ],
+    ...(k === 2 ? { xLabel: "time [min]" } : {}),
     yLabel,
     xLim: [0, 60] as [number, number],
     yLim,
+    yTicks,
+    ...(k === 0 && bars.length
+      ? {
+          phases: bars.map((b) => ({
+            from: b.from,
+            to: b.to,
+            color: b.color,
+            above: true,
+          })),
+        }
+      : {}),
+    legend: k === legendAt || (k === 0 && bars.length > 0),
   });
   return [
-    panel("ETR_out", "ETR (µmol m⁻² s⁻¹)", [0, 110]),
-    panel("A", "A (µmol m⁻² s⁻¹)", [0, 20]),
-    panel("NPQ", "NPQ", [0, 2.5]),
+    panel(0, "ETR_out", "ETR [µmol m⁻² s⁻¹]", [0, 110], [0, 50, 100]),
+    panel(1, "A", "A [µmol m⁻² s⁻¹]", [0, 20], [0, 5, 10, 15, 20]),
+    // The notebook labels NPQ in µmol m⁻² s⁻¹, but it has no unit.
+    panel(2, "NPQ", "NPQ", [0, 2.5], [0, 0.5, 1, 1.5, 2, 2.5]),
   ];
+}
+
+const LEAF_COLORS = ["forestgreen", "lightgreen"];
+const FIG3_BARS: Bar[] = fig3Steps.map((st, i) => ({
+  from: i,
+  to: i + 1,
+  color: st.set.PPFD === 0 ? "gray" : st.set.PPFD === 520 ? "yellow" : "orange",
+}));
+// One legend entry per light, as the notebook labels its first bar of each.
+for (const [light, label] of [
+  ["gray", "Dark"],
+  ["yellow", "520 PPFD"],
+  ["orange", "780 PPFD"],
+]) {
+  const first = FIG3_BARS.find((b) => b.color === light);
+  if (first) first.label = label;
 }
 
 const fromMinn = (scenario: Scenario): Scenario => ({
@@ -90,7 +158,15 @@ export const validations: Validation[] = [
       eiko: { pre: [settle] },
       minn: { parameters: MINN, pre: [settle] },
     },
-    plots: panels(["eiko", "minn"], ["Eiko", "MinnGold"]),
+    columns: 1,
+    data: { none: [] },
+    plots: panels(
+      ["eiko", "minn"],
+      ["Eiko", "MinnGold"],
+      LEAF_COLORS,
+      2,
+      FIG3_BARS,
+    ),
     golden: goldens(["eiko", "minn"]),
   },
   {
@@ -104,7 +180,12 @@ export const validations: Validation[] = [
       eiko: fromMinn({}),
       minn: fromMinn({ parameters: MINN }),
     },
-    plots: panels(["eiko", "minn"], ["Eiko", "MinnGold"]),
+    columns: 1,
+    data: { none: [] },
+    plots: panels(["eiko", "minn"], ["Eiko", "MinnGold"], LEAF_COLORS, 2, [
+      { from: 0, to: 1, color: "black", label: "dark" },
+      { from: 1, to: 60, color: "yellow", label: "650 PPFD" },
+    ]),
     golden: goldens(["eiko", "minn"]),
   },
   {
@@ -120,9 +201,12 @@ export const validations: Validation[] = [
       p1: fromMinn({ simulate: { kind: "protocol", steps: wave(square(1)) } }),
       p4: fromMinn({ simulate: { kind: "protocol", steps: wave(square(4)) } }),
     },
+    columns: 1,
     plots: panels(
       ["constant", "p05", "p1", "p4"],
-      ["constant", "30 s", "1 min", "4 min"],
+      ["constant", "30s", "1 min", "4 min"],
+      ["black", "blue", "red", "lightgreen"],
+      0,
     ),
     golden: goldens(["constant", "p05", "p1", "p4"]),
   },

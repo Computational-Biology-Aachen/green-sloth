@@ -1,6 +1,7 @@
-import { step } from "#lib/validation/helpers.js";
+import { linspace, step } from "#lib/validation/helpers.js";
 import type {
   GoldenSeries,
+  LinePlot,
   Plot,
   Scenario,
   Validation,
@@ -175,15 +176,45 @@ const standard = protocol([1, 5, 10, 5]);
 const base = protocol([1, 20]);
 const mix = protocol([1, 3, 1, 1, 3, 9, 3]);
 
-const tauPlot = (id: string): Plot => ({
+/**
+ * The notebook's light bars: white while lit, black while dark, from the
+ * axis' left edge, the first step ending at time 0.
+ */
+function lightBars(durations: number[], y: [number, number], xMin = -1) {
+  let end = -durations[0];
+  return durations.map((d, i) => {
+    const from = i === 0 ? xMin : end;
+    end += d;
+    return {
+      from,
+      to: end,
+      y,
+      color: i % 2 === 1 ? "white" : "black",
+      edgeColor: "black",
+    };
+  });
+}
+
+const STANDARD = [1, 5, 10, 5];
+
+/** One genotype's τ, from the onset of light on, as Figures 2 and 3 draw it. */
+const tauPlot = (
+  id: string,
+  panel: string,
+  color: string,
+  durations: number[],
+  layout: Partial<LinePlot>,
+): Plot => ({
   type: "line",
+  panel,
   title: id,
   x: `${id}.t`,
-  y: [{ of: `${id}.tau_Fluo` }],
-  xLabel: "Time (min)",
-  yLabel: "τ avg",
+  y: [{ of: `${id}.tau_Fluo`, color, lineWidth: 3, xRange: [0, Infinity] }],
+  yLabel: "τ_avg",
   xLim: [-1, 20],
-  yLim: [0, 2],
+  yTicks: linspace(0, 1.5, 4),
+  phases: lightBars(durations, [0, 0.1]),
+  ...layout,
 });
 
 const tauGolden = (ids: string[]): Record<string, GoldenSeries> =>
@@ -265,10 +296,19 @@ for (const [panel, rows] of Object.entries(FIG5_PANELS)) {
   });
 }
 
+/** As the notebook labels a row: every enzyme's factor, 1x when unchanged. */
 const label = (row: Record<string, number>) =>
-  Object.entries(row)
-    .map(([k, v]) => `${v}x ${k}`)
-    .join(", ");
+  ["VDE", "ZEP", "PsbS"].map((k) => `${row[k] ?? 1}x ${k}`).join(", ");
+
+const FIG4_ORDER = ["npq4npq1", "npq4", "npq1", "lut2", "zep2", "WT"];
+const NPQ_STYLE: Record<string, { label: string; color: string }> = {
+  NPQ_qI: { label: "qI", color: "#7e2f8e" },
+  NPQ_V: { label: "V", color: "#edb120" },
+  NPQ_A: { label: "A", color: "#d95319" },
+  NPQ_Z_qE: { label: "Z (qE)", color: "#77ac30" },
+  NPQ_L: { label: "L", color: "#0072bd" },
+  NPQ_Z_qZ: { label: "Z (qZ)", color: "#8fed8f" },
+};
 
 export const validations: Validation[] = [
   {
@@ -276,7 +316,10 @@ export const validations: Validation[] = [
     title: "Figure 2: mutant fluorescence lifetime",
     deriveEach: SHIFT,
     scenarios: fig2,
-    plots: Object.keys(fig2).map(tauPlot),
+    columns: 3,
+    plots: ["npq4npq1", "npq4", "npq1", "lut2", "zep2"].map((id, i) =>
+      tauPlot(id, "ABCDE"[i], "#fa5555", STANDARD, {}),
+    ),
     golden: tauGolden(Object.keys(fig2)),
   },
   {
@@ -284,7 +327,20 @@ export const validations: Validation[] = [
     title: "Figure 3: wild type and double mutants",
     deriveEach: SHIFT,
     scenarios: fig3,
-    plots: Object.keys(fig3).map(tauPlot),
+    columns: 4,
+    plots: Object.keys(fig3).map((id, i) =>
+      tauPlot(
+        id,
+        "ABCDEFG"[i],
+        "#77ac30",
+        id === "WT_base"
+          ? [1, 20]
+          : id === "WT_mix"
+            ? [1, 3, 1, 1, 3, 9, 3]
+            : STANDARD,
+        { yLim: [0, 2], xTicks: linspace(0, 20, 3) },
+      ),
+    ),
     golden: tauGolden(Object.keys(fig3)),
   },
   {
@@ -292,16 +348,21 @@ export const validations: Validation[] = [
     title: "Figure 4: NPQ contributions",
     deriveEach: SHIFT,
     scenarios: fig4,
+    columns: 2,
     plots: SNAPSHOT_TIMES.map((time, i): Plot => ({
       type: "stackedBar",
-      title: `Time = ${time} min`,
-      categories: Object.keys(fig4),
+      panel: "ABCD"[i],
+      title: `Time = ${time} mins`,
+      categories: FIG4_ORDER,
       stacks: NPQ_PARTS.map((part) => ({
-        label: part,
-        of: Object.keys(fig4).map((id) => `nth(${id}.${part}, ${i + 1})`),
+        ...NPQ_STYLE[part],
+        of: FIG4_ORDER.map((id) => `nth(${id}.${part}, ${i + 1})`),
       })),
+      // The notebook's label reads "NPQ contributon".
       yLabel: "NPQ contribution",
       yLim: [0, 6],
+      yTicks: linspace(0, 6, 7),
+      reverseLegend: true,
     })),
     golden: fig4Golden,
   },
@@ -310,21 +371,27 @@ export const validations: Validation[] = [
     title: "Figure 5: overexpressing VDE, ZEP and PsbS",
     deriveEach: SHIFT,
     scenarios: fig5,
+    columns: 2,
     plots: Object.entries(FIG5_PANELS).map(([panel, rows]): Plot => ({
       type: "line",
-      title: panel,
+      panel,
       x: "WT.t",
       y: [
-        { of: "WT.tau_Fluo", label: "WT" },
+        { of: "WT.tau_Fluo", label: "WT", color: "black" },
         ...rows.map((row, n) => ({
           of: `${panel}${n}.tau_Fluo`,
           label: label(row),
+          color: ["#ff6161", "#ffc233", "#47a3ff"][n],
+          dash: "dashdot" as const,
         })),
-      ],
+      ].map((line) => ({ ...line, xRange: [0, Infinity] as [number, number] })),
       xLabel: "Time (min)",
-      yLabel: "τ avg",
+      yLabel: "τ_avg",
       xLim: [-1, 20],
       yLim: [-0.1, 2],
+      yTicks: linspace(0, 2, 5),
+      phases: lightBars(STANDARD, [-0.1, 0]),
+      legend: true,
     })),
     golden: tauGolden(Object.keys(fig5)),
   },

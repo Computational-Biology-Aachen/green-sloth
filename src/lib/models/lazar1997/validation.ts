@@ -1,7 +1,10 @@
 import { linspace } from "#lib/validation/helpers.js";
 import type {
+  Annotation,
   Collect,
   GoldenSeries,
+  LinePlot,
+  LineSeries,
   Plot,
   Scenario,
   Validation,
@@ -37,26 +40,72 @@ const ojip = (scenario: string) => ({
   scenario,
 });
 
-const curves = (ids: string[], labels: string[]): Plot => ({
+const LOG_TICKS = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1];
+const DASHDOTDOT = [3, 1, 1, 1, 1, 1];
+const LEGEND_TITLE = "decrease of the rate constants [%]";
+const RF = "rFJ, rFI";
+
+/** O, J, I and P written just above `curve`'s F at the steps found on `base`. */
+const stepLetters = (curve: string, base: string): Annotation[] =>
+  ["O", "J", "I", "P"].map((text, k) => {
+    const t = `nth(${base}.OJIP.time, ${k})`;
+    return {
+      text,
+      x: t,
+      y: `at(${curve}.F, ${t}, ${curve}.time) + 0.02`,
+      align: "center",
+    };
+  });
+
+interface Curve {
+  id: string;
+  label: string;
+  dash: LineSeries["dash"];
+}
+
+/** The black fluorescence curves of Figures 5 to 7, in the notebook's order. */
+const curves = (
+  list: Curve[],
+  letters: Annotation[],
+  yLim: [number, number],
+  yTicks?: number[],
+): Plot => ({
   type: "line",
-  x: `${ids[0]}.time`,
-  y: ids.map((id, i) => ({ of: `${id}.F`, label: labels[i] })),
-  xLabel: "Time (s)",
-  yLabel: "Fluorescence intensity (rel. units)",
+  x: `${list[0].id}.time`,
+  y: list.map((c) => ({
+    of: `${c.id}.F`,
+    x: `${c.id}.time`,
+    label: c.label,
+    color: "black",
+    dash: c.dash,
+  })),
+  xLabel: "time [s]",
+  yLabel: "fluorescence intensity [rel. units]",
   logX: true,
   xLim: [1e-5, 5],
-  yLim: [-0.01, 1],
+  xTicks: LOG_TICKS,
+  yLim,
+  ...(yTicks ? { yTicks } : {}),
+  annotations: letters,
+  legend: true,
+  legendTitle: LEGEND_TITLE,
 });
 
-const rFPlot = (table: string, xLabel: string): Plot => ({
+/** rF_J (squares) and rF_I (circles), black, as the notebook's inset draws them. */
+const rFPlot = (
+  table: string,
+  layout: Partial<LinePlot>,
+  scale = 100,
+): Plot => ({
   type: "line",
-  x: `${table}.x`,
+  x: `${table}.x * ${scale}`,
   y: [
-    { of: `${table}.rFJ`, label: "rF J" },
-    { of: `${table}.rFI`, label: "rF I" },
-  ],
-  xLabel,
-  yLabel: "rF J, rF I",
+    { of: `${table}.rFJ`, label: "rFJ", marker: "s" as const },
+    { of: `${table}.rFI`, label: "rFI", marker: "o" as const },
+  ].map((line) => ({ ...line, color: "black", markerSize: 3.5 })),
+  yLabel: RF,
+  legend: true,
+  ...layout,
 });
 
 const figure = (
@@ -65,9 +114,10 @@ const figure = (
   scenarios: Record<string, Scenario>,
   xs: number[],
   ids: string[],
-  xLabel: string,
+  plots: Plot[],
   ends = ids[0],
   steps = ends,
+  extraOjip: string[] = [],
 ): Validation => {
   const golden: Record<string, GoldenSeries> = Object.fromEntries(
     ids.map((s) => [`F_${s}`, { x: `${s}.time`, y: `${s}.F` }]),
@@ -77,11 +127,13 @@ const figure = (
   return {
     id,
     title,
+    // The notebook's inset sits in the main plot; here it is a second panel.
+    columns: plots.length,
     simulate: course,
     scenarios,
-    ops: [...new Set([ends, steps])].map(ojip),
+    ops: [...new Set([ends, steps, ...extraOjip])].map(ojip),
     collect: { rF: rF(ids, xs, ends, steps) },
-    plots: [curves(ids, xs.map(String)), rFPlot("rF", xLabel)],
+    plots,
     golden,
   };
 };
@@ -126,6 +178,17 @@ const family = (prefix: string, n: number, make: (i: number) => Scenario) =>
   Object.fromEntries(ids(prefix, n).map((id, i) => [id, make(i)]));
 
 const LABELLED = ["F", "y2", "y4", "y6", "y8", "y14", "y15", "y12"];
+const FIG2_STYLE: Record<string, Pick<LineSeries, "label" | "dash">> = {
+  y2: { label: "Q_A⁻Q_B" },
+  y4: { label: "Q_A⁻Q_B⁻" },
+  y6: { label: "Q_A⁻Q_B²⁻", dash: DASHDOTDOT },
+  y8: { label: "Q_A⁻Q_BH₂", dash: "dashed" },
+  y14: { label: "Q_A⁻N", dash: [1, 10] },
+  y15: { label: "Q_A⁻I", dash: "dotted" },
+  y12: { label: "Q_A⁻R", dash: [3, 5, 1, 5] },
+};
+
+const pct = (a: number) => `${Math.round(a * 100)}%`;
 
 export const validations: Validation[] = [
   {
@@ -138,11 +201,17 @@ export const validations: Validation[] = [
       {
         type: "line",
         x: "run.time",
-        y: LABELLED.map((c) => ({ of: `run.${c}`, label: c })),
-        xLabel: "Time (s)",
+        y: LABELLED.map((c) => ({
+          of: `run.${c}`,
+          ...(FIG2_STYLE[c] ?? {}),
+          color: "black",
+        })),
         logX: true,
         xLim: [1e-5, 5],
+        xTicks: LOG_TICKS,
         yLim: [-0.01, 1],
+        annotations: stepLetters("run", "run"),
+        legend: true,
       },
     ],
     golden: {
@@ -165,19 +234,66 @@ export const validations: Validation[] = [
     })),
     fig5Factors,
     ids("f", fig5Factors.length),
-    "Decrease of the rate constants",
+    [
+      curves(
+        // The notebook's order: 0, 90, 77, 50 and 100 %.
+        [0, 3, 2, 1, 4].map((i) => ({
+          id: `f${i}`,
+          label: pct(fig5Factors[i]),
+          dash: (["solid", "dashed", "dotted", "dashdot", DASHDOTDOT] as const)[
+            i
+          ],
+        })),
+        stepLetters("f0", "f0"),
+        [-0.01, 1],
+      ),
+      rFPlot("rF", {
+        xLabel: LEGEND_TITLE,
+        xLim: [-10, 110],
+        xTicks: linspace(0, 100, 6),
+        yLim: [0.3, 1.1],
+        yTicks: linspace(0.4, 1, 4),
+      }),
+    ],
   ),
   figure(
     "fig6",
     "Figure 6: inactive centres",
-    family("a", fig6Amounts.length, (i) => ({
-      initial: damaged(fig6Amounts[i]),
-    })),
+    {
+      ...family("a", fig6Amounts.length, (i) => ({
+        initial: damaged(fig6Amounts[i]),
+      })),
+      // The unchanged model, where the notebook finds the letters' times.
+      base: {},
+    },
     fig6Amounts,
     ids("a", fig6Amounts.length),
-    "Share of inactive centres",
+    [
+      curves(
+        // Largest share first, as the notebook draws them.
+        [4, 3, 2, 1, 0].map((i) => ({
+          id: `a${i}`,
+          label: pct(fig6Amounts[i]),
+          dash: (["solid", "dashed", "dotted", "dashdot", DASHDOTDOT] as const)[
+            i
+          ],
+        })),
+        // The notebook places the letters at Figure 5's step times, on the 25 % curve.
+        stepLetters("a1", "base"),
+        [-0.01, 0.95],
+      ),
+      rFPlot("rF", {
+        xLabel: LEGEND_TITLE,
+        xLim: [-10, 110],
+        xTicks: linspace(0, 100, 6),
+        yLim: [0.1, 1.1],
+        yTicks: linspace(0.2, 1, 5),
+      }),
+    ],
     // The notebook locates the steps on the 25 % curve.
     "a1",
+    "a1",
+    ["base"],
   ),
   figure(
     "fig7",
@@ -187,7 +303,25 @@ export const validations: Validation[] = [
     })),
     fig7Factors,
     ids("f", fig7Factors.length),
-    "Decrease of the rate constants",
+    [
+      curves(
+        fig7Factors.map((a, i) => ({
+          id: `f${i}`,
+          label: pct(a),
+          dash: (["solid", "dashed", "dotted", "dashdot"] as const)[i],
+        })),
+        stepLetters("f0", "f0"),
+        [0, 0.85],
+        linspace(0, 0.8, 5),
+      ),
+      rFPlot("rF", {
+        xLabel: LEGEND_TITLE,
+        xLim: [-5, 50],
+        xTicks: linspace(0, 40, 5),
+        yLim: [0.2, 0.7],
+        yTicks: linspace(0.2, 0.6, 3),
+      }),
+    ],
   ),
   figure(
     "fig8",
@@ -201,7 +335,19 @@ export const validations: Validation[] = [
     },
     fig8.map((_, i) => i),
     ids("d", fig8.length),
-    "Degree of damage",
+    [
+      rFPlot(
+        "rF",
+        {
+          xLabel: "degree of damage by herbicide action",
+          xLim: [-0.5, 7.5],
+          xTicks: linspace(0, 7, 8),
+          yLim: [0.3, 1.1],
+          yTicks: linspace(0.4, 1, 4),
+        },
+        1,
+      ),
+    ],
     "d0",
     // The notebook takes J and I from Figure 6's undamaged curve; see curatornotes.md.
     "undamaged",

@@ -1,5 +1,10 @@
 import { linspace, repeat, step } from "#lib/validation/helpers.js";
-import type { GoldenSeries, Mca, Validation } from "#lib/validation/types.js";
+import type {
+  GoldenSeries,
+  LineSeries,
+  Mca,
+  Validation,
+} from "#lib/validation/types.js";
 
 const PULSE = 5000;
 const period = (light: number) => [
@@ -32,8 +37,18 @@ const fig4Columns = [
   "NADPH_per_tot",
   "Fd_ox_per_tot",
 ];
+// Plotted, but without goldens.
+const fig4Extra = ["PQ_ox_per_tot", "PC_ox_per_tot"];
+
+const GREY = "#b3b3b3";
+const PPFD_LABEL = "PPFD / (µmol m⁻² s⁻¹)";
 
 const light = [...repeat([step(60, { PPFD: 600 }), step(60, { PPFD: 40 })], 5)];
+const FIG5_DARK = [0, 1, 2, 3, 4].map((k) => ({
+  from: 120 * k + 60,
+  to: 120 * k + 120,
+  color: GREY,
+}));
 
 const CONTROL_PARAMS = [
   "PSII_total",
@@ -95,11 +110,42 @@ const mcaAt = (pfd: number): Mca => ({
   displacement: DISPLACEMENT,
 });
 
-const heatmap = (pfd: number, title: string, rows: string[]) => ({
+const FLUX_LABELS = [
+  "PS2",
+  "PS1",
+  "b₆f",
+  "Mehler",
+  "CEF",
+  "RuBisCO",
+  "FBPase",
+  "SBPase",
+  "MDAR",
+  "DHAR",
+];
+const VARIABLE_LABELS = [
+  "PQred",
+  "Fdred",
+  "PCred",
+  "NADPH",
+  "ATP",
+  "RUBP",
+  "PGA",
+  "FBP",
+  "SBP",
+];
+
+/** MxlPy's plot.heatmap: red-blue around zero, one row per output. */
+const heatmap = (
+  pfd: number,
+  title: string,
+  rows: string[],
+  labels: string[],
+) => ({
   type: "heatmap" as const,
-  title: `${title} at PPFD ${pfd}`,
-  rows,
-  columns: CONTROL_LABELS,
+  title: `${title} · PPFD = ${pfd} µmol m⁻² s⁻¹`,
+  colormap: "RdBu_r" as const,
+  rows: labels,
+  columns: CONTROL_LABELS.map((l) => (l === "b6f" ? "b₆f" : l)),
   z: rows.map((row) =>
     CONTROL_PARAMS.map((_, c) => `nth(mca${pfd}.${row}, ${c})`),
   ),
@@ -139,13 +185,31 @@ export const validations: Validation[] = [
         type: "line",
         x: "ko.time",
         y: [
-          { of: "ko.Fluo / max(ko.Fluo)", label: "Fluorescence" },
-          { of: "ko.NPQ", x: "ko.NPQ.time", label: "NPQ" },
+          {
+            of: "ko.Fluo / max(ko.Fluo)",
+            label: "Fluorescence",
+            color: "red",
+            lineWidth: 2.5,
+          },
+          {
+            of: "ko.NPQ",
+            x: "ko.NPQ.time",
+            label: "NPQ",
+            color: "black",
+            dash: "dashed" as const,
+            lineWidth: 2,
+          },
         ],
-        xLabel: "Time (s)",
+        xLabel: "Time/(s)",
         yLabel: "Fluorescence (normalised)",
         xLim: [0, 2500],
         yLim: [0, 1.1],
+        // The dark phases, pulses included, as the notebook shades them.
+        phases: [
+          { from: 0, to: 2 * 120 - 0.8, color: GREY },
+          { from: 12 * 120 - 0.8, to: 21 * 120, color: GREY },
+        ],
+        legend: true,
       },
     ],
     golden: {
@@ -165,36 +229,62 @@ export const validations: Validation[] = [
         allowFailure: true,
       },
     },
+    columns: 2,
     plots: [
       {
         type: "line",
-        title: "Photosynthetic electron fluxes",
+        panel: "A",
+        title: "Photosynthetic Electron Fluxes",
         x: "scan.x",
         y: [
-          { of: "scan.PSI", label: "PSI" },
-          { of: "scan.PSII * 2", label: "LEF" },
-          { of: "scan.cyclic_electron_flow", label: "CEF" },
-          { of: "scan.mehler", label: "Mehler", axis: "right" },
-          { of: "scan.PTOX", label: "PTOX", axis: "right" },
-        ],
-        xLabel: "PPFD (µmol m⁻² s⁻¹)",
+          { of: "scan.PSI", label: "PSI", color: "#1a75b5" },
+          { of: "scan.PSII * 2", label: "LEF", color: "#fc7f09" },
+          { of: "scan.cyclic_electron_flow", label: "CEF", color: "#269b2a" },
+          {
+            of: "scan.mehler",
+            label: "Mehler",
+            color: "#fa0002",
+            dash: "dashed" as const,
+            axis: "right",
+          },
+          {
+            of: "scan.PTOX",
+            label: "PTOX",
+            color: "#fa0002",
+            dash: "dotted" as const,
+            axis: "right",
+          },
+        ].map((line): LineSeries => ({ ...line, lineWidth: 2 })),
+        xLabel: PPFD_LABEL,
         yLabel: "mmol e⁻ / mol Chl / s",
+        yRightLabel: "mmol e⁻ / mol Chl / s",
+        yRightColor: "red",
+        legend: true,
       },
       {
         type: "line",
-        title: "Energy and redox status",
+        panel: "B",
+        title: "Energy and Redox Status",
         x: "scan.x",
         y: [
-          { of: "scan.ATP_per_tot", label: "ATP" },
-          { of: "scan.NADPH_per_tot", label: "NADPH" },
-          { of: "scan.Fd_ox_per_tot", label: "Fd ox" },
-          { of: "scan.PQ_ox_per_tot", label: "PQ ox" },
-          { of: "scan.PC_ox_per_tot", label: "PC ox" },
-          { of: "scan.H2O2", label: "H2O2", axis: "right" },
-        ],
-        xLabel: "PPFD (µmol m⁻² s⁻¹)",
+          { of: "scan.ATP_per_tot", label: "ATP", color: "#1270b1" },
+          { of: "scan.NADPH_per_tot", label: "NADPH", color: "#fa7d07" },
+          { of: "scan.Fd_ox_per_tot", label: "Fdred", color: "#259e24" },
+          { of: "scan.PQ_ox_per_tot", label: "PQred", color: "#9464c0" },
+          { of: "scan.PC_ox_per_tot", label: "PCred", color: "#895149" },
+          {
+            of: "scan.H2O2",
+            label: "H2O2",
+            color: "#f80105",
+            dash: "dashed" as const,
+            axis: "right",
+          },
+        ].map((line): LineSeries => ({ ...line, lineWidth: 2 })),
+        xLabel: PPFD_LABEL,
         yLabel: "Fraction of the pool",
-        yRightLabel: "Concentration (mM)",
+        yRightLabel: "Concentration/mM",
+        yRightColor: "red",
+        legend: true,
       },
     ],
     golden: Object.fromEntries(
@@ -210,24 +300,44 @@ export const validations: Validation[] = [
         over: { PPFD: [1000] },
         scale: { kf_cyclic_electron_flow: log2Fold.map((e) => 2 ** e) },
         x: log2Fold,
-        columns: fig4Columns,
+        columns: [...fig4Columns, ...fig4Extra],
         // The notebook drops the points that don't converge.
         allowFailure: true,
       },
     },
+    columns: 1,
     plots: [
       {
         type: "line",
-        title: "Photosynthetic electron fluxes",
+        panel: "A",
+        title: "Photosynthetic Electron Fluxes",
         x: "scan.x",
         y: [
-          { of: "scan.PSI", label: "PSI" },
-          { of: "scan.PSII * 2", label: "LEF" },
-          { of: "scan.cyclic_electron_flow", label: "CEF" },
-          { of: "scan.H2O2", label: "H2O2", axis: "right" },
-        ],
-        xLabel: "log₂-fold change in PGR5 activity",
+          { of: "scan.PSI", label: "PSI", color: "#1a75b5" },
+          { of: "scan.PSII * 2", label: "LEF", color: "#fc7f09" },
+          { of: "scan.cyclic_electron_flow", label: "CEF", color: "#269b2a" },
+          { of: "scan.H2O2", label: "H2O2", color: "#fa0002", axis: "right" },
+        ].map((line): LineSeries => ({ ...line, lineWidth: 2 })),
         yLabel: "mmol e⁻ / mol Chl / s",
+        yRightLabel: "H₂O₂ / µM",
+        yRightColor: "red",
+        legend: true,
+      },
+      {
+        type: "line",
+        panel: "B",
+        title: "Energy and Redox Status",
+        x: "scan.x",
+        y: [
+          { of: "scan.ATP_per_tot", label: "ATP", color: "#1f77b4" },
+          { of: "scan.NADPH_per_tot", label: "NADPH", color: "#ff7f0e" },
+          { of: "scan.Fd_ox_per_tot", label: "Fdred", color: "#2da02d" },
+          { of: "scan.PQ_ox_per_tot", label: "PQred", color: "#9467bd" },
+          { of: "scan.PC_ox_per_tot", label: "PCred", color: "#8c564b" },
+        ].map((line): LineSeries => ({ ...line, lineWidth: 2 })),
+        xLabel: "log₂-fold change in PRG5 activity",
+        yLabel: "Fraction of the pool",
+        legend: true,
       },
     ],
     golden: Object.fromEntries(
@@ -242,28 +352,44 @@ export const validations: Validation[] = [
       wt: {},
       ko: { parameters: { kf_cyclic_electron_flow: 0 } },
     },
+    columns: 2,
     plots: [
       {
         type: "line",
-        title: "Fd redox state",
+        panel: "A",
         x: "wt.time",
         y: [
-          { of: "ko.Fd_ox_per_tot", label: "PGR-5 KO" },
-          { of: "wt.Fd_ox_per_tot", label: "wild type" },
+          {
+            of: "ko.Fd_ox_per_tot",
+            label: "PGR-5 KO",
+            color: "red",
+            lineWidth: 3,
+          },
+          {
+            of: "wt.Fd_ox_per_tot",
+            label: "wild type",
+            color: "black",
+            lineWidth: 3,
+          },
         ],
-        xLabel: "Time (s)",
-        yLabel: "Fd redox state",
+        xLabel: "Time / (s)",
+        yLabel: "Fd Redox State",
+        phases: FIG5_DARK,
+        // The notebook's figure-wide legend.
+        legend: true,
+        legendPosition: "bottom",
       },
       {
         type: "line",
-        title: "RuBisCO rate",
+        panel: "B",
         x: "wt.time",
         y: [
-          { of: "ko.rubisco_carboxylase", label: "PGR-5 KO" },
-          { of: "wt.rubisco_carboxylase", label: "wild type" },
+          { of: "wt.rubisco_carboxylase", color: "black", lineWidth: 3 },
+          { of: "ko.rubisco_carboxylase", color: "red", lineWidth: 3 },
         ],
-        xLabel: "Time (s)",
-        yLabel: "Rate of RuBisCO (mM/s)",
+        xLabel: "Time / (s)",
+        yLabel: "Rate of RuBisCO / (mM / s)",
+        phases: FIG5_DARK,
       },
     ],
     golden: {
@@ -283,9 +409,15 @@ export const validations: Validation[] = [
     exportTolerances: { rtol: 1e-8, atol: 1e-8 },
     simulate: { kind: "steadyState" },
     mca: Object.fromEntries(LIGHTS.map((l) => [`mca${l}`, mcaAt(l)])),
-    plots: LIGHTS.flatMap((l) => [
-      heatmap(l, "Flux control", CONTROL_FLUXES),
-      heatmap(l, "Concentration control", CONTROL_VARIABLES),
+    columns: 2,
+    plots: [1000, 100].flatMap((l) => [
+      heatmap(l, "Flux Control Coefficient", CONTROL_FLUXES, FLUX_LABELS),
+      heatmap(
+        l,
+        "Concentration Control Coefficient",
+        CONTROL_VARIABLES,
+        VARIABLE_LABELS,
+      ),
     ]),
     golden: mcaGolden,
   },

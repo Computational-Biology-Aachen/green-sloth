@@ -1,6 +1,8 @@
 import { linspace, repeat, step } from "#lib/validation/helpers.js";
 import type {
   GoldenSeries,
+  LinePlot,
+  LineSeries,
   OpSpec,
   Plot,
   ProtocolStep,
@@ -47,19 +49,18 @@ const pulse = (dark: number) => ({
   ],
 });
 
-/** The notebook's one-hour sine wave, sampled every 10 s. */
-function sineSteps(): ProtocolStep[] {
-  const t = linspace(0, 3600, 36000);
-  const raw = t.map((x) => Math.sin((x * 2 * Math.PI) / 3600 - Math.PI / 2));
+/** The notebook's one-hour sine wave at 10 points per second. */
+function sineWave() {
+  const time = linspace(0, 3600, 36000);
+  const raw = time.map((x) => Math.sin((x * 2 * Math.PI) / 3600 - Math.PI / 2));
   const lo = raw.reduce((a, b) => Math.min(a, b));
   const shifted = raw.map((v) => v - lo);
   const hi = shifted.reduce((a, b) => Math.max(a, b));
-  const light = shifted.map((v) => (v / hi) * 400);
-  return sampledSteps(t, light);
+  return { time, light: shifted.map((v) => (v / hi) * 400) };
 }
 
 /** The notebook's square wave: 75 s dark, 150 s at 400, 75 s dark, 1 s ramps. */
-function squareSteps(): ProtocolStep[] {
+function squareWave() {
   const time = [
     ...linspace(0, 75, 7500),
     ...linspace(75, 76, 100),
@@ -75,11 +76,47 @@ function squareSteps(): ProtocolStep[] {
     ...linspace(0, 0, 7500),
   ];
   const end = time[time.length - 1];
-  const times = Array.from({ length: 12 }, (_, k) =>
-    time.map((t) => t + k * end),
-  ).flat();
-  return sampledSteps(times, repeat(light, 12));
+  return {
+    time: Array.from({ length: 12 }, (_, k) =>
+      time.map((t) => t + k * end),
+    ).flat(),
+    light: repeat(light, 12),
+  };
 }
+
+const sineSteps = () => {
+  const { time, light } = sineWave();
+  return sampledSteps(time, light);
+};
+const squareSteps = () => {
+  const { time, light } = squareWave();
+  return sampledSteps(time, light);
+};
+
+/**
+ * A light pattern for shading, in hours and as a fraction of its peak: the
+ * notebook fills it on a hidden twin axis spanning the plot's height. Only the
+ * points where the light changes are kept (its `compress_repeats`), and the
+ * sine, smooth at any resolution, every 100th.
+ */
+function shading({ time, light }: { time: number[]; light: number[] }) {
+  const peak = light.reduce((a, b) => Math.max(a, b));
+  const keep = time.map(
+    (_, i) =>
+      i === 0 ||
+      i === time.length - 1 ||
+      light[i] !== light[i - 1] ||
+      light[i] !== light[i + 1],
+  );
+  const every = keep.filter(Boolean).length > 5000 ? 100 : 1;
+  const idx = time.map((_, i) => i).filter((i) => keep[i] && i % every === 0);
+  return {
+    t: idx.map((i) => time[i] / 3600),
+    light: idx.map((i) => light[i] / peak),
+  };
+}
+const SINE_LIGHT = shading(sineWave());
+const SQUARE_LIGHT = shading(squareWave());
 
 /** Every 100th sample becomes one step, lit by its ending value. */
 function sampledSteps(time: number[], light: number[]): ProtocolStep[] {
@@ -112,32 +149,193 @@ const goldenOf = (ids: string[], columns: string[]) => {
   return out;
 };
 
-const panels = (id: string, title: string): Plot[] => [
+const DV = ["Dpsi", "delta_pH_inVolts", "pmf"];
+
+/** Figure 3's rows: a left and a right series each, below the voltages. */
+const FIG3_ROWS = [
   {
-    type: "line",
-    title: `${title}: voltages`,
-    x: `${id}.time`,
-    y: ["Dpsi", "delta_pH_inVolts", "pmf"].map((c) => ({
-      of: `${id}.${c} - first(${id}.${c})`,
-      label: c,
-    })),
-    xLabel: "Time (s)",
-    yLabel: "ΔV",
-    yLim: [-0.05, 0.15],
+    left: { of: "k_b6f * 5", color: "#0506fc" },
+    right: { of: "pH_lumen", color: "#fb0f1d", dash: "solid" },
+    yLabel: "b₆f rate constant (s⁻¹)",
+    yRightLabel: "Lumen pH",
+    yLim: [0.75, 2.5],
+    yTicks: linspace(1, 2.5, 4),
+    yRightLim: [5.8, 6.5],
+    yRightTicks: linspace(5.8, 6.4, 4),
+    scale: ["1 ×10²", undefined],
   },
   {
-    type: "line",
-    title: `${title}: photodamage`,
-    x: `${id}.time`,
-    y: [
-      { of: `${id}.LEF`, label: "LEF cumulative" },
-      { of: `${id}.singO2`, label: "¹O₂ cumulative", axis: "right" },
-    ],
-    xLabel: "Time (s)",
+    left: { of: "NPQ", color: "#107207" },
+    right: { of: "K_lu * 1e2", color: "#191919", dash: "solid" },
+    yLabel: "NPQ (q_E)",
+    yRightLabel: "lumen K⁺ (M)",
+    yLim: [-0.1, 4],
+    yTicks: linspace(0, 4, 5),
+    yRightLim: [0.25, 2.5],
+    yRightTicks: linspace(0.5, 2.5, 5),
+    scale: [undefined, "1 ×10⁻²"],
+  },
+  {
+    left: { of: "QA_red / 2", color: "#246b18" },
+    right: { of: "vPSII_recomb / 4", color: "#fc030f", dash: "solid" },
+    yLabel: "Q_A⁻",
+    yRightLabel: "¹O₂ (s⁻¹)",
+    yLim: [-0.05, 0.39],
+    yTicks: linspace(0, 0.3, 4),
+    yRightLim: [-1.25, 13.75],
+    yRightTicks: linspace(0, 12.5, 6),
+    scale: [undefined, undefined],
+  },
+  {
+    left: { of: "LEF * 1e-4", color: "#157814" },
+    right: { of: "singO2 * 1e-3", color: "#fb131f", dash: "solid" },
     yLabel: "LEF cumulative",
-    yRightLabel: "¹O₂ cumulative",
+    yRightLabel: "¹O₂ (cumulative)",
+    yLim: [0, 6],
+    yTicks: linspace(0, 5, 6),
+    yRightLim: [0, 4],
+    yRightTicks: linspace(0, 4, 5),
+    scale: ["1 ×10⁴", "1 ×10³"],
   },
-];
+] as const;
+
+const FIG3_IDS = ["p0", "p1", "p10"];
+
+function fig3Plots(): Plot[] {
+  const common = (id: string, col: number, row: number): Partial<LinePlot> => ({
+    x: `${id}.time / 60`,
+    xLim: [0, 17.5],
+    xTicks: linspace(0, 15, 4),
+    ...(row === 4 ? { xLabel: "time (min)" } : {}),
+    phases: [{ from: 2.5, to: 7.5, color: "red", alpha: 0.15 }],
+    annotations: [
+      { text: `${"abc"[col]}.${row + 1}`, x: 0.85, y: 0.15, coords: "axes" },
+    ],
+  });
+  const voltages = FIG3_IDS.map((id, col): Plot => ({
+    type: "line",
+    ...common(id, col, 0),
+    x: `${id}.time / 60`,
+    y: DV.map((c, k) => ({
+      of: `${id}.${c} - first(${id}.${c})`,
+      ...(col === 0 ? { label: ["ΔΨ", "ΔpH", "pmf"][k] } : {}),
+      color: ["#1e1bfe", "#fa323a", "#0d6806"][k],
+      ...(k > 0 ? { dash: "dashed" as const } : {}),
+    })),
+    // The notebook's label reads "ΔV)".
+    ...(col === 0 ? { yLabel: "ΔV" } : {}),
+    yLim: [-0.05, 0.125],
+    yTicks: col === 0 ? linspace(0, 0.1, 3) : [],
+    legend: col === 0,
+  }));
+  const rows = FIG3_ROWS.flatMap((row, r) =>
+    FIG3_IDS.map((id, col): Plot => {
+      const base = common(id, col, r + 1);
+      const scale = [
+        ...(col === 0 && row.scale[0]
+          ? [
+              {
+                text: row.scale[0],
+                x: 0,
+                y: 1.04,
+                coords: "axes" as const,
+                color: row.left.color,
+                align: "left" as const,
+              },
+            ]
+          : []),
+        ...(col === 2 && row.scale[1]
+          ? [
+              {
+                text: row.scale[1],
+                x: 1,
+                y: 1.04,
+                coords: "axes" as const,
+                color: row.right.color,
+                align: "right" as const,
+              },
+            ]
+          : []),
+      ];
+      return {
+        type: "line",
+        ...base,
+        x: `${id}.time / 60`,
+        y: [
+          { of: `${id}.${row.left.of}`, color: row.left.color, dash: "dashed" },
+          {
+            of: `${id}.${row.right.of}`,
+            color: row.right.color,
+            axis: "right",
+          },
+        ],
+        ...(col === 0 ? { yLabel: row.yLabel } : {}),
+        ...(col === 2 ? { yRightLabel: row.yRightLabel } : {}),
+        yColor: row.left.color,
+        yRightColor: row.right.color,
+        yLim: [...row.yLim],
+        yTicks: col === 0 ? [...row.yTicks] : [],
+        yRightLim: [...row.yRightLim],
+        yRightTicks: col === 2 ? [...row.yRightTicks] : [],
+        annotations: [...(base.annotations ?? []), ...scale],
+      };
+    }),
+  );
+  // Row by row, as the notebook's 5 x 3 grid.
+  return [...voltages, ...rows];
+}
+
+const FIG4_IDS = ["normSin", "fastSin", "normSquare", "fastSquare"];
+
+/** Figure 4's light, filled up to the plot's top at its peak. */
+const lightFill = (id: string, lim: [number, number]): LineSeries => {
+  const light = id.endsWith("Sin") ? "sinLight" : "squareLight";
+  const t = id.endsWith("Sin") ? "sinT" : "squareT";
+  return {
+    of: `${lim[0]} + ${lim[1] - lim[0]} * data.${light}`,
+    x: `data.${t}`,
+    fillTo: `data.${t} * 0 + ${lim[0]}`,
+    color: "red",
+    alpha: 0.25,
+    lineWidth: 0,
+  };
+};
+
+function fig4Plots(): Plot[] {
+  const voltages = FIG4_IDS.map((id, col): Plot => ({
+    type: "line",
+    x: `${id}.time / 3600`,
+    y: [
+      lightFill(id, [-0.05, 0.15]),
+      ...DV.map((c, k) => ({
+        of: `${id}.${c} - first(${id}.${c})`,
+        ...(col === 0 ? { label: ["ΔΨ", "ΔpH", "pmf"][k] } : {}),
+        color: ["blue", "red", "green"][k],
+      })),
+    ],
+    xLabel: "Time (h)",
+    ...(col === 0 ? { yLabel: "ΔV" } : {}),
+    yLim: [-0.05, 0.15],
+    ...(col === 0 ? {} : { yTicks: [] }),
+    legend: col === 0,
+  }));
+  const damage = FIG4_IDS.map((id, col): Plot => ({
+    type: "line",
+    x: `${id}.time / 3600`,
+    y: [
+      lightFill(id, [0, 320000]),
+      { of: `${id}.LEF`, color: "green" },
+      { of: `${id}.singO2`, color: "red", axis: "right" },
+    ],
+    xLabel: "Time (h)",
+    ...(col === 0 ? { yLabel: "LEF cumulative" } : { yTicks: [] }),
+    ...(col === 3 ? { yRightLabel: "1O2 (cummulative)" } : { yRightTicks: [] }),
+    yRightColor: "red",
+    yLim: [0, 320000],
+    yRightLim: [0, 29500],
+  }));
+  return [...voltages, ...damage];
+}
 
 const DEFICIT: OpSpec[] = [
   { op: "diff", as: "LEF_to_NADPH", of: "LEF", into: true },
@@ -156,30 +354,26 @@ export const validations: Validation[] = [
   {
     id: "fig3",
     title: "Figure 3: light pulse across P_K",
+    columns: 3,
     simulate: pulse(150),
     scenarios: {
       p0: { initial: Y_FAST, parameters: { P_K: "param.P_K * 0" } },
       p1: { initial: Y_NORMAL },
       p10: { initial: Y_FAST, parameters: { P_K: "param.P_K * 10" } },
     },
-    plots: ["p0", "p1", "p10"].map((id): Plot => ({
-      type: "line",
-      title: id,
-      x: `${id}.time`,
-      y: ["Dpsi", "delta_pH_inVolts", "pmf"].map((c) => ({
-        of: `${id}.${c} - first(${id}.${c})`,
-        label: c,
-      })),
-      xLabel: "Time (s)",
-      yLabel: "ΔV",
-      yLim: [-0.05, 0.125],
-      phases: [{ from: 150, to: 450 }],
-    })),
-    golden: goldenOf(["p0", "p1", "p10"], FIG3),
+    plots: fig3Plots(),
+    golden: goldenOf(FIG3_IDS, FIG3),
   },
   {
     id: "fig4",
     title: "Figure 4: fluctuating light",
+    columns: 4,
+    data: {
+      sinT: SINE_LIGHT.t,
+      sinLight: SINE_LIGHT.light,
+      squareT: SQUARE_LIGHT.t,
+      squareLight: SQUARE_LIGHT.light,
+    },
     scenarios: {
       normSin: {
         initial: Y_NORMAL,
@@ -202,20 +396,13 @@ export const validations: Validation[] = [
         simulate: { kind: "protocol", steps: squareSteps() },
       },
     },
-    plots: [
-      ...panels("normSin", "Sine, 0.2x P_K"),
-      ...panels("fastSin", "Sine, 30x P_K"),
-      ...panels("normSquare", "Square, 0.2x P_K"),
-      ...panels("fastSquare", "Square, 30x P_K"),
-    ],
-    golden: goldenOf(
-      ["normSin", "fastSin", "normSquare", "fastSquare"],
-      ["Dpsi", "pmf", "LEF", "singO2"],
-    ),
+    plots: fig4Plots(),
+    golden: goldenOf(FIG4_IDS, ["Dpsi", "pmf", "LEF", "singO2"]),
   },
   {
     id: "fig5",
     title: "Figure 5: onset of light",
+    columns: 3,
     simulate: pulse(60),
     scenarios: {
       zero: { initial: Y_FAST, parameters: { P_K: 0 } },
@@ -224,20 +411,28 @@ export const validations: Validation[] = [
       veryFast: { initial: Y_FAST, parameters: { P_K: 600000 } },
     },
     ops: DEFICIT,
-    plots: [
-      ["v_VKC", "K⁺ flux (mol mol⁻¹ PSII s⁻¹)"],
-      ["deficit", "Proton deficit"],
-      ["deficit_int", "ATP deficit (cumulative)"],
-    ].map(([c, yLabel]): Plot => ({
+    plots: (
+      [
+        ["v_VKC", "K+ flux (mol mol⁻¹ PSII s⁻¹)", ""],
+        ["deficit", "proton deficit (fraction)", " * 5"],
+        ["deficit_int", "ATP deficit (cummulative)", " / 2"],
+      ] as const
+    ).map(([c, yLabel, factor], k): Plot => ({
       type: "line",
-      x: "zero.time",
+      x: "zero.time - 60",
+      // The notebook's window: 59 s < t < 85 s, from the light's onset.
       y: WINDOW.map((id, i) => ({
-        of: `${id}.${c}`,
+        of: `${id}.${c}${factor}`,
+        x: `${id}.time - 60`,
+        xRange: [-1 + 1e-9, 25 - 1e-9] as [number, number],
         label: `P = ${[0, 1, 10, 100][i]}X`,
+        color: ["red", "orange", "green", "blue"][i],
       })),
+      // The notebook's x label reads " Time s()".
       xLabel: "Time (s)",
       yLabel,
-      xLim: [59, 85],
+      ...(k === 1 ? { yLim: [-25, 450] as [number, number] } : {}),
+      legend: k === 1,
     })),
     golden: goldenOf(WINDOW, ["v_VKC", "deficit", "deficit_int"]),
   },
