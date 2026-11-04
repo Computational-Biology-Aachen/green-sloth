@@ -13,7 +13,7 @@
   let { model }: { model: SteadyStateModelBuilder } = $props();
 
   const texNames = $derived(
-    getTexNames([], model.parameters, model.assignments, []),
+    getTexNames([], model.parameters, model.assignments, [], []),
   );
 
   function sym(id: string): string {

@@ -20,6 +20,7 @@
       model.parameters,
       model.assignments,
       model.reactions,
+      model.data,
     ),
   );
 
