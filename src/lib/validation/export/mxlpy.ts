@@ -12,7 +12,7 @@ import type {
   ModelEdit,
   PointSetup,
   Plot,
-  PreRun,
+  ProtocolStep,
   ProtocolSimulation,
   Scan,
   Scenario,
@@ -59,44 +59,77 @@ function values(o: Record<string, ScenarioValue>): string {
   return `{${body.join(", ")}}`;
 }
 
-/** An expression over model ids, as a `fn`/`args` pair for MxlPy. */
+/** An expression over model ids, as a `lambda`, `args` pair for MxlPy. */
 function rule(src: string): string {
   const expr = parse(src);
   const args = [...new Set(refs(expr).map((p) => p.join(".")))];
   const body = toPython(expr, (p) => p.join("."));
-  return `fn=lambda ${args.join(", ")}: ${body}, args=${literal(args)}`;
+  return `lambda ${args.join(", ")}: ${body}, ${literal(args)}`;
 }
 
-function edit(e: ModelEdit, model = "m"): string {
-  if ("removeReaction" in e) {
-    return `${model}.remove_reaction(${str(e.removeReaction)})`;
-  }
+/** The edit kinds of the notebook's `apply_edits`, with the code applying each. */
+const EDIT_KINDS = {
+  remove_reaction: ["m.remove_reaction(name)"],
+  add_parameter: ["m.add_parameter(name, *args)"],
+  clamp_variable: ["m.remove_variable(name)", "m.add_parameter(name, *args)"],
+  set_data: ["m.update_data(name, *args)"],
+  parameter_to_derived: [
+    "m.remove_parameter(name)",
+    "m.add_derived(name, fn=args[0], args=args[1])",
+  ],
+  update_derived: ["m.update_derived(name, fn=args[0], args=args[1])"],
+} as const;
+type EditKind = keyof typeof EDIT_KINDS;
+
+function editKind(e: ModelEdit): EditKind {
+  if ("removeReaction" in e) return "remove_reaction";
+  if ("addParameter" in e) return "add_parameter";
+  if ("clampVariable" in e) return "clamp_variable";
+  if ("setData" in e) return "set_data";
+  if ("parameterToAssignment" in e) return "parameter_to_derived";
+  return "update_derived";
+}
+
+/** An edit as the tagged tuple `apply_edits` takes. */
+function editSpec(e: ModelEdit): string {
+  const kind = str(editKind(e));
+  if ("removeReaction" in e) return `(${kind}, ${str(e.removeReaction)})`;
   if ("addParameter" in e) {
-    return `${model}.add_parameter(${str(e.addParameter)}, ${e.value})`;
+    return `(${kind}, ${str(e.addParameter)}, ${e.value})`;
   }
-  if ("clampVariable" in e) {
-    const id = str(e.clampVariable);
-    return `${model}.remove_variable(${id})\n${model}.add_parameter(${id}, ${e.to})`;
+  if ("clampVariable" in e)
+    return `(${kind}, ${str(e.clampVariable)}, ${e.to})`;
+  if ("setData" in e) {
+    const values = toPython(parse(e.to), ([, name]) => `data[${str(name)}]`);
+    return `(${kind}, ${str(e.setData)}, pd.Series(${values}, dtype=float))`;
   }
   if ("parameterToAssignment" in e) {
-    const id = str(e.parameterToAssignment);
-    return `${model}.remove_parameter(${id})\n${model}.add_derived(${id}, ${rule(e.to)})`;
+    return `(${kind}, ${str(e.parameterToAssignment)}, ${rule(e.to)})`;
   }
-  return `${model}.update_derived(${str(e.setAssignment)}, ${rule(e.to)})`;
+  return `(${kind}, ${str(e.setAssignment)}, ${rule(e.to)})`;
 }
 
-const stepRows = (sim: ProtocolSimulation) =>
-  `[${sim.steps.map((s) => `(${s.duration}, ${literal(s.set)})`).join(", ")}]`;
+const editList = (es: ModelEdit[]) => `[${es.map(editSpec).join(", ")}]`;
+
+/** A fresh model with `edits` applied. */
+const modelWith = (edits: ModelEdit[] | undefined) =>
+  edits?.length
+    ? `apply_edits(get_model(), ${editList(edits)})`
+    : "get_model()";
+
+const stepRows = (steps: ProtocolStep[]) =>
+  `[${steps.map((s) => `(${s.duration}, ${literal(s.set)})`).join(", ")}]`;
 
 /**
- * Calls of `simulate_protocol`. A protocol table holds one value per step, so
- * steps setting other parameters, or sampled differently, start a new call.
+ * The `simulate_protocol` calls of a protocol, as `(steps, points)` pairs. A
+ * protocol table holds one value per step, so steps setting other parameters,
+ * or sampled differently, start a new call.
  */
-function protocolLines(sim: ProtocolSimulation): string[] {
+function protocolRuns(sim: ProtocolSimulation): string {
   const perStep = sim.pointsPerStep ?? 10;
-  const signature = (s: ProtocolSimulation["steps"][number]) =>
+  const signature = (s: ProtocolStep) =>
     `${s.points ?? perStep}|${Object.keys(s.set).join()}`;
-  const runs: ProtocolSimulation["steps"][] = [];
+  const runs: ProtocolStep[][] = [];
   sim.steps.forEach((step, i) => {
     if (i > 0 && signature(step) === signature(sim.steps[i - 1])) {
       runs[runs.length - 1].push(step);
@@ -104,32 +137,56 @@ function protocolLines(sim: ProtocolSimulation): string[] {
       runs.push([step]);
     }
   });
-  return runs.map(
-    (steps) =>
-      `s.simulate_protocol(make_protocol(${stepRows({ ...sim, steps })}), time_points_per_step=${steps[0].points ?? perStep})`,
+  const pairs = runs.map(
+    (steps) => `(${stepRows(steps)}, ${steps[0].points ?? perStep})`,
   );
+  return `[${pairs.join(", ")}]`;
 }
 
-/** Code running `sim` on simulator `s`. */
-function simulateLines(sim: Simulation): string[] {
-  if (sim.kind === "steadyState") return ["s.simulate_to_steady_state()"];
-  if (sim.kind === "timeCourse") {
-    return [`s.simulate_time_course(${pyArray(sim.tEval)})`];
-  }
+/** The kinds of the notebook's `simulate`, with the code running each. */
+const SIM_KINDS = {
+  steady_state: ["s.simulate_to_steady_state()"],
+  time_course: ["s.simulate_time_course(args[0])"],
+  protocol_time_course: [
+    "s.simulate_protocol_time_course(make_protocol(args[0]), args[1])",
+  ],
+  protocol: [
+    "for steps, points in args[0]:",
+    "    s.simulate_protocol(make_protocol(steps), time_points_per_step=points)",
+  ],
+} as const;
+type SimKind = keyof typeof SIM_KINDS;
+
+function simKind(sim: Simulation): SimKind {
+  if (sim.kind === "steadyState") return "steady_state";
+  if (sim.kind === "timeCourse") return "time_course";
+  return sim.tEval ? "protocol_time_course" : "protocol";
+}
+
+/** A simulation as the tuple `simulate` takes. */
+function simSpec(sim: Simulation): string {
+  const kind = str(simKind(sim));
+  if (sim.kind === "steadyState") return `(${kind},)`;
+  if (sim.kind === "timeCourse") return `(${kind}, ${pyArray(sim.tEval)})`;
   if (sim.tEval) {
-    return [
-      `s.simulate_protocol_time_course(make_protocol(${stepRows(sim)}), ${pyArray(sim.tEval)})`,
-    ];
+    return `(${kind}, ${stepRows(sim.steps)}, ${pyArray(sim.tEval)})`;
   }
-  return protocolLines(sim);
+  return `(${kind}, ${protocolRuns(sim)})`;
 }
 
-/** The times a run reports; MxlPy may also return its start and step ends. */
-const outputTimes = (sim: Simulation): number[] | undefined => {
-  if (sim.kind === "timeCourse") return sim.tEval;
-  if (sim.kind === "protocol" && sim.tEval) return sim.tEval;
-  return undefined;
-};
+/**
+ * The times to keep of a run's output, if any: MxlPy also returns the start and
+ * each step's end.
+ */
+function keptTimes(sim: Simulation): number[] | undefined {
+  const times =
+    sim.kind === "timeCourse" || sim.kind === "protocol"
+      ? sim.tEval
+      : undefined;
+  return times && !(sim.kind === "timeCourse" && times[0] === 0)
+    ? times
+    : undefined;
+}
 
 function integrator(
   tolerances: { rtol?: number; atol?: number },
@@ -140,32 +197,17 @@ function integrator(
   return `partial(Scipy, method=${str(v.exportMethod ?? "Radau")}, rtol=${rtol}, atol=${atol})`;
 }
 
-function preRun(pre: PreRun, scenario: Scenario, v: Validation): string[] {
-  const set = pre.set ? [`pre.update_parameters(${literal(pre.set)})`] : [];
+/** A run's simulation and the output times to keep, as spec entries. */
+function runEntries(sim: Simulation): string[] {
+  const times = keptTimes(sim);
   return [
-    "pre = copy.deepcopy(m)",
-    ...set,
-    `s = Simulator(pre, integrator=${integrator(scenario, v)})`,
-    ...simulateLines(pre),
-    "m.update_variables(s.get_result().unwrap_or_err().get_new_y0())",
+    `"simulate": ${simSpec(sim)}`,
+    ...(times ? [`"times": ${pyArray(times)}`] : []),
   ];
 }
 
-/** `r` as one table: time, variables, derived values and maybe dy/dt. */
-function frameOf(sim: Simulation, v: Validation): string {
-  const combined = v.returnRhs
-    ? `pd.concat([r.get_combined(), r.get_right_hand_side().add_prefix("ddt.")], axis=1)`
-    : "r.get_combined()";
-  const times = outputTimes(sim);
-  // MxlPy also returns the start and each step's end; keep the requested times.
-  const selected =
-    times && !(sim.kind === "timeCourse" && times[0] === 0)
-      ? `${combined}.reindex(${pyArray(times)}, method="nearest")`
-      : combined;
-  return `${selected}.rename_axis("time").reset_index()`;
-}
-
-function scenarioCell(
+/** A scenario's spec, as the `"key": value` entries of its `SCENARIOS` row. */
+function scenarioEntries(
   id: string,
   scenario: Scenario,
   v: Validation,
@@ -174,52 +216,214 @@ function scenarioCell(
   if (scenario.allowFailure) {
     throw new Error(`${id}: only a scan can allow failures in an export`);
   }
-  const key = str(id);
-  const lines = [`# Scenario ${id}`, "m = get_model()"];
-  scenario.edits?.forEach((e) => lines.push(edit(e)));
+  const entries: string[] = [];
+  if (scenario.edits?.length) {
+    entries.push(`"edits": ${editList(scenario.edits)}`);
+  }
   if (scenario.parameters) {
-    lines.push(`m.update_parameters(${values(scenario.parameters)})`);
+    entries.push(`"parameters": ${values(scenario.parameters)}`);
   }
-  if (scenario.initial) {
-    lines.push(`m.update_variables(${values(scenario.initial)})`);
+  if (scenario.initial) entries.push(`"initial": ${values(scenario.initial)}`);
+  if (scenario.rtol !== undefined || scenario.atol !== undefined) {
+    entries.push(`"integrator": ${integrator(scenario, v)}`);
   }
-
+  if (v.returnRhs) entries.push(`"rhs": True`);
   if (scenario.stages) {
-    if (withProtocols) lines.push(`protocols[${key}] = None`);
-    lines.push("frames, y, offset = [], None, 0.0");
-    scenario.stages.forEach((stage) => {
-      lines.push("stage = copy.deepcopy(m)");
-      stage.edits?.forEach((e) => lines.push(edit(e, "stage")));
-      lines.push(
-        "if y is not None:",
-        "    stage.update_variables({k: v for k, v in y.items() if k in stage.get_variable_names()})",
-        `s = Simulator(stage, integrator=${integrator(scenario, v)})`,
-        ...simulateLines(stage.simulate),
-        "r = s.get_result().unwrap_or_err()",
-        "y = r.get_new_y0()",
-        `frame = ${frameOf(stage.simulate, v)}`,
-        "frame['time'] += offset",
-        "offset = frame['time'].iloc[-1]",
-        "frames.append(frame if not frames else frame.iloc[1:])",
-      );
+    const stages = scenario.stages.map((stage) => {
+      const parts = runEntries(stage.simulate);
+      if (stage.edits?.length)
+        parts.unshift(`"edits": ${editList(stage.edits)}`);
+      return `{${parts.join(", ")}}`;
     });
-    lines.push(`res[${key}] = pd.concat(frames, ignore_index=True)`);
-    return lines;
+    entries.push(`"stages": [${stages.join(", ")}]`);
+  } else {
+    const sim = scenario.simulate ?? v.simulate;
+    if (!sim) throw new Error(`${id}: no simulation`);
+    if (scenario.pre?.length) {
+      const pre = scenario.pre.map(
+        ({ set, ...sim }) => `(${simSpec(sim)}, ${literal(set ?? {})})`,
+      );
+      entries.push(`"pre": [${pre.join(", ")}]`);
+    }
+    entries.push(...runEntries(sim));
+    if (withProtocols && sim.kind === "protocol") {
+      entries.push(`"protocol": ${stepRows(sim.steps)}`);
+    }
   }
+  return entries;
+}
 
-  const sim = scenario.simulate ?? v.simulate;
-  if (!sim) throw new Error(`${id}: no simulation`);
-  scenario.pre?.forEach((pre) => lines.push(...preRun(pre, scenario, v)));
-  if (withProtocols) {
+/**
+ * The `SCENARIOS` table. A long spec value that several scenarios share, such
+ * as a protocol, is written once as a constant before it.
+ */
+function scenarioTable(rows: Array<[string, string[]]>): string[] {
+  const split = (entry: string) => {
+    const at = entry.indexOf(": ");
+    return [entry.slice(0, at), entry.slice(at + 2)] as const;
+  };
+  const counts = new Map<string, number>();
+  for (const [, entries] of rows) {
+    for (const entry of new Set(entries)) {
+      counts.set(entry, (counts.get(entry) ?? 0) + 1);
+    }
+  }
+  const constants = new Map<string, string>();
+  const perKey = new Map<string, number>();
+  const lines: string[] = [];
+  for (const [entry, n] of counts) {
+    const [key, value] = split(entry);
+    if (n < 2 || value.length < 60) continue;
+    const i = (perKey.get(key) ?? 0) + 1;
+    perKey.set(key, i);
+    const name = `${JSON.parse(key).toUpperCase()}_${i}`;
+    constants.set(entry, `${key}: ${name}`);
+    lines.push(`${name} = ${value}`);
+  }
+  return [
+    ...lines,
+    "SCENARIOS = {",
+    ...rows.map(
+      ([id, entries]) =>
+        `    ${str(id)}: {${entries.map((e) => constants.get(e) ?? e).join(", ")}},`,
+    ),
+    "}",
+  ];
+}
+
+/** What a notebook's validations need from the shared runner cell. */
+interface RunnerNeeds {
+  edits: Set<EditKind>;
+  sims: Set<SimKind>;
+  scenarios: boolean;
+  pre: boolean;
+  stages: boolean;
+  rhs: boolean;
+}
+
+function runnerNeeds(validations: Validation[]): RunnerNeeds {
+  const needs: RunnerNeeds = {
+    edits: new Set(),
+    sims: new Set(),
+    scenarios: false,
+    pre: false,
+    stages: false,
+    rhs: false,
+  };
+  const addEdits = (es: ModelEdit[] | undefined) =>
+    es?.forEach((e) => needs.edits.add(editKind(e)));
+  for (const v of validations) {
+    for (const s of Object.values(v.scenarios ?? {})) {
+      needs.scenarios = true;
+      needs.rhs ||= Boolean(v.returnRhs);
+      addEdits(s.edits);
+      for (const stage of s.stages ?? []) {
+        needs.stages = true;
+        addEdits(stage.edits);
+        needs.sims.add(simKind(stage.simulate));
+      }
+      for (const pre of s.pre ?? []) {
+        needs.pre = true;
+        needs.sims.add(simKind(pre));
+      }
+      const sim = s.simulate ?? v.simulate;
+      if (!s.stages && sim) needs.sims.add(simKind(sim));
+    }
+    Object.values(v.scans ?? {}).forEach((scan) => addEdits(scan.edits));
+    Object.values(v.mca ?? {}).forEach((m) => addEdits(m.edits));
+    Object.values(v.stability ?? {}).forEach((p) => addEdits(p.edits));
+  }
+  return needs;
+}
+
+/** An if/elif chain over `kind`, one branch per used kind. */
+function dispatch(
+  kinds: Iterable<string>,
+  code: Record<string, readonly string[]>,
+): string[] {
+  return [...kinds].flatMap((kind, i) => [
+    `    ${i === 0 ? "if" : "elif"} kind == ${str(kind)}:`,
+    ...code[kind].map((l) => `        ${l}`),
+  ]);
+}
+
+/**
+ * The helpers every validation's scenarios run through, written once: model
+ * edits, simulations and the scenario runner, with only the parts in use.
+ */
+function runnerCell(needs: RunnerNeeds): string[] {
+  const lines: string[] = [];
+  if (needs.edits.size > 0) {
     lines.push(
-      `protocols[${key}] = ${sim.kind === "protocol" ? stepRows(sim) : "None"}`,
+      "def apply_edits(m, edits):",
+      '    """Apply structural edits, each a `(kind, name, *args)` tuple, to `m`."""',
+      "    for kind, name, *args in edits:",
+      ...dispatch(needs.edits, EDIT_KINDS).map((l) => `    ${l}`),
+      "    return m",
+    );
+  }
+  if (!needs.scenarios) return lines;
+  if (lines.length > 0) lines.push("", "");
+  const combined = needs.rhs
+    ? [
+        "    df = r.get_combined()",
+        "    if rhs:",
+        '        df = pd.concat([df, r.get_right_hand_side().add_prefix("ddt.")], axis=1)',
+      ]
+    : ["    df = r.get_combined()"];
+  lines.push(
+    "def simulate(m, sim, integrator):",
+    '    """Run `sim`, a `(kind, *args)` tuple, on model `m`."""',
+    "    s = Simulator(m, integrator=integrator)",
+    "    kind, *args = sim",
+    ...dispatch(needs.sims, SIM_KINDS),
+    "    return s.get_result().unwrap_or_err()",
+    "",
+    "",
+    `def to_frame(r, times=None${needs.rhs ? ", rhs=False" : ""}):`,
+    '    """A result as one table: time, variables and derived values."""',
+    ...combined,
+    "    if times is not None:",
+    '        df = df.reindex(times, method="nearest")',
+    '    return df.rename_axis("time").reset_index()',
+    "",
+    "",
+    "def run_scenario(spec, integrator):",
+    '    """Run one entry of a `SCENARIOS` table on a fresh model."""',
+    `    m = ${needs.edits.size > 0 ? 'apply_edits(get_model(), spec.get("edits", []))' : "get_model()"}`,
+    '    m.update_parameters(spec.get("parameters", {}))',
+    '    m.update_variables(spec.get("initial", {}))',
+    '    integrator = spec.get("integrator", integrator)',
+  );
+  const rhs = needs.rhs ? ', spec.get("rhs", False)' : "";
+  if (needs.pre) {
+    lines.push(
+      '    for sim, values in spec.get("pre", []):',
+      "        pre = copy.deepcopy(m)",
+      "        pre.update_parameters(values)",
+      "        m.update_variables(simulate(pre, sim, integrator).get_new_y0())",
+    );
+  }
+  if (needs.stages) {
+    lines.push(
+      '    if "stages" in spec:',
+      "        frames, y, offset = [], None, 0.0",
+      '        for stage in spec["stages"]:',
+      `            sm = ${needs.edits.size > 0 ? 'apply_edits(copy.deepcopy(m), stage.get("edits", []))' : "copy.deepcopy(m)"}`,
+      "            if y is not None:",
+      "                sm.update_variables({k: v for k, v in y.items() if k in sm.get_variable_names()})",
+      '            r = simulate(sm, stage["simulate"], integrator)',
+      "            y = r.get_new_y0()",
+      `            f = to_frame(r, stage.get("times")${rhs})`,
+      '            f["time"] += offset',
+      '            offset = f["time"].iloc[-1]',
+      "            frames.append(f if not frames else f.iloc[1:])",
+      "        return pd.concat(frames, ignore_index=True)",
     );
   }
   lines.push(
-    `s = Simulator(m, integrator=${integrator(scenario, v)})`,
-    ...simulateLines(sim),
-    "r = s.get_result().unwrap_or_err()",
-    `res[${key}] = ${frameOf(sim, v)}`,
+    '    r = simulate(m, spec["simulate"], integrator)',
+    `    return to_frame(r, spec.get("times")${rhs})`,
   );
   return lines;
 }
@@ -245,15 +449,10 @@ function scanCell(name: string, scan: Scan, v: Validation): string[] {
   }
   const steady = sim.kind === "steadyState";
   const lines = [`# Scan ${name}`];
-  const model = scan.edits ? "m" : "get_model()";
-  if (scan.edits) {
-    lines.push("m = get_model()");
-    scan.edits.forEach((e) => lines.push(edit(e)));
-  }
   lines.push(
     `to_scan = ${toScan(scan)}`,
     `result = scan.${steady ? "steady_state" : "time_course"}(`,
-    `    ${model},`,
+    `    ${modelWith(scan.edits)},`,
     "    to_scan=to_scan,",
     ...(steady ? [] : [`    time_points=${pyArray(sim.tEval)},`]),
     `    runner=KineticRunner(integrator=${integrator({}, v)}),`,
@@ -291,8 +490,7 @@ function scanCell(name: string, scan: Scan, v: Validation): string[] {
 /** A point analysis' model: a fresh one with its changes applied. */
 function pointModel(setup: PointSetup): string[] {
   return [
-    "m = get_model()",
-    ...(setup.edits ?? []).map((e) => edit(e)),
+    `m = ${modelWith(setup.edits)}`,
     ...(setup.set ? [`m.update_parameters(${values(setup.set)})`] : []),
     ...(setup.initial ? [`m.update_variables(${values(setup.initial)})`] : []),
   ];
@@ -499,6 +697,44 @@ function plotCell(v: Validation): string[] {
   return lines;
 }
 
+/**
+ * A `collect` column as a numpy array. When every entry is one expression over
+ * a different scenario, as a scan's final values are, it is written once, as a
+ * comprehension over the scenario ids.
+ */
+function collectColumn(
+  exprs: string[],
+  ids: Set<string>,
+  py: (src: string) => string,
+): string {
+  const parts = exprs.map((src) => {
+    const used = new Set(
+      refs(parse(src)).flatMap(([head]) => (ids.has(head) ? [head] : [])),
+    );
+    const id = used.size === 1 ? [...used][0] : undefined;
+    const code = py(src);
+    const template =
+      id === undefined
+        ? undefined
+        : code
+            .replaceAll(`res[${str(id)}]`, "res[i]")
+            .replaceAll(`ops[${str(id)}]`, "ops[i]");
+    return { id, code, template };
+  });
+  const template = parts[0]?.template;
+  const uniform =
+    parts.length > 1 &&
+    template !== undefined &&
+    parts.every(
+      (p) => p.template === template && !template.includes(str(p.id)),
+    );
+  if (uniform) {
+    const scenarioIds = parts.map((p) => p.id);
+    return `np.array([${template} for i in ${literal(scenarioIds)}])`;
+  }
+  return `np.array([${parts.map((p) => p.code).join(", ")}])`;
+}
+
 function validationCells(v: Validation, goldenSeries: boolean): string[][] {
   const ids = Object.keys(v.scenarios ?? {});
   const namedOps = (v.ops ?? []).some((o) => o.op !== "column");
@@ -509,12 +745,32 @@ function validationCells(v: Validation, goldenSeries: boolean): string[][] {
       "data = {k: np.array(c) for k, c in data.items()}",
     );
   }
-  if (ids.length > 0) sim.push("res = {}");
-  if (namedOps) sim.push("protocols = {}");
-  if (v.collect || v.scans || v.mca || v.stability) sim.push("tables = {}");
-  for (const id of ids) {
-    sim.push("", ...scenarioCell(id, v.scenarios![id], v, namedOps));
+  if (ids.length > 0) {
+    const scenarios = v.scenarios!;
+    sim.push(
+      `INTEGRATOR = ${integrator({}, v)}`,
+      ...scenarioTable(
+        ids.map((id) => [id, scenarioEntries(id, scenarios[id], v, namedOps)]),
+      ),
+      "res = dict(",
+      "    parallelise(",
+      "        partial(run_scenario, integrator=INTEGRATOR),",
+      "        list(SCENARIOS.items()),",
+      // One worker per scenario at most: starting idle workers costs more
+      // than short runs take.
+      ids.length === 1
+        ? "        parallel=False,"
+        : "        max_workers=min(len(SCENARIOS), os.cpu_count()),",
+      "    )",
+      ")",
+    );
   }
+  if (namedOps) {
+    sim.push(
+      'protocols = {k: s.get("protocol") for k, s in SCENARIOS.items()}',
+    );
+  }
+  if (v.collect || v.scans || v.mca || v.stability) sim.push("tables = {}");
   for (const [name, scan] of Object.entries(v.scans ?? {})) {
     sim.push("", ...scanCell(name, scan, v));
   }
@@ -558,7 +814,7 @@ function validationCells(v: Validation, goldenSeries: boolean): string[][] {
   for (const [name, table] of Object.entries(v.collect ?? {})) {
     const columns = Object.entries(table.columns).map(
       ([col, exprs]) =>
-        `${str(col)}: np.array([${exprs.map((e) => expr(e)).join(", ")}])`,
+        `${str(col)}: ${collectColumn(exprs, new Set(ids), (e) => expr(e))}`,
     );
     lines.push(
       `tables[${str(name)}] = {"x": ${pyArray(table.x)}, ${columns.join(", ")}}`,
@@ -591,6 +847,7 @@ function importLines(source: string): string[] {
     uses("np") && "import numpy as np",
     uses("pd") && "import pandas as pd",
     mxlpy.length > 0 && `from mxlpy import ${mxlpy.join(", ")}`,
+    uses("parallelise") && "from mxlpy.parallel import parallelise",
     uses("KineticRunner") && "from mxlpy.runners import KineticRunner",
     uses("cumulative_trapezoid") &&
       "from scipy.integrate import cumulative_trapezoid",
@@ -600,6 +857,7 @@ function importLines(source: string): string[] {
   ].filter((l): l is string => Boolean(l));
   const std = [
     uses("copy") && "import copy",
+    uses("os") && "import os",
     uses("partial") && "from functools import partial",
   ].filter((l): l is string => Boolean(l));
   return [...std, ...(std.length > 0 ? [""] : []), ...third];
@@ -631,11 +889,13 @@ export function toMxlpyNotebook(
   );
   const opCells =
     used.size > 0 ? [[...used].map((op) => OPS[op].python.source)] : [];
+  const runner = runnerCell(runnerNeeds(validations));
+  const helperCells = [...opCells, ...(runner.length > 0 ? [runner] : [])];
   const figures = validations.map((v) => ({
     title: v.title,
     cells: validationCells(v, goldenSeries),
   }));
-  const body = [...opCells, ...figures.flatMap((f) => f.cells)]
+  const body = [...helperCells, ...figures.flatMap((f) => f.cells)]
     .flat()
     .join("\n");
   const usesBase = /\bbase\./.test(body);
@@ -653,7 +913,7 @@ export function toMxlpyNotebook(
       ),
       code(importLines(body)),
       code([model.buildMxlpy(), ...setup]),
-      ...opCells.map(code),
+      ...helperCells.map(code),
       ...figures.flatMap((f) => [
         markdown(`## ${f.title}`),
         ...f.cells.map(code),
