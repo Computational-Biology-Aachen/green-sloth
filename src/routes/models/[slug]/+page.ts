@@ -23,8 +23,31 @@ const schemeModules = import.meta.glob(
   },
 ) as Record<string, string>;
 
+const assetUrls = import.meta.glob(
+  "../../../lib/models/*/assets/*.{svg,png,jpg,jpeg,webp,gif,avif}",
+  {
+    query: "?url",
+    import: "default",
+    eager: true,
+  },
+) as Record<string, string>;
+
 function slugOf(path: string): string | undefined {
   return path.match(/\/models\/([^/]+)\//)?.[1];
+}
+
+// The markdown is loaded raw, so relative image paths (./assets/x.png) would
+// otherwise resolve against the page URL instead of the bundled asset.
+function resolveAssets(md: string, slug: string): string {
+  return md.replace(
+    /(!\[[^\]]*\]\()\.\/(assets\/[^)\s]+)/g,
+    (match, prefix: string, rel: string) => {
+      const key = Object.keys(assetUrls).find(
+        (p) => slugOf(p) === slug && p.endsWith(`/${rel}`),
+      );
+      return key ? `${prefix}${assetUrls[key]}` : match;
+    },
+  );
 }
 
 export const load: PageLoad = async ({ params }) => {
@@ -43,7 +66,7 @@ export const load: PageLoad = async ({ params }) => {
       (p) => slugOf(p) === slug && p.endsWith(`/${file}`),
     );
     if (!key) return null;
-    return (await mdModules[key]()) as string;
+    return resolveAssets((await mdModules[key]()) as string, slug);
   }
 
   const [desc, changes, curatornotes, model] = await Promise.all([
