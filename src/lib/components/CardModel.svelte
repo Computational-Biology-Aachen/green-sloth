@@ -1,8 +1,9 @@
 <!--
   @component
 
-  A linked card representing a model, showing its scheme image (or a gradient
-  "biotech" placeholder) above a name label.
+  A linked card representing a model, showing its scheme image (or the
+  photosynthesis scheme with its parts highlighted, or a gradient "biotech"
+  placeholder) above a name label.
 
   ### Props
 
@@ -11,7 +12,10 @@
   - `href: string`
     Destination the whole card links to.
   - `image?: string`
-    Optional scheme image URL; omitted shows the placeholder.
+    Optional scheme image URL.
+  - `parts?: Part[]`
+    Parts of photosynthesis the model covers; without `image` they are shown
+    highlighted on the photosynthesis scheme. Without either, a placeholder.
   - `styleVars?: { mediaHeight?: string; fallbackIconSize?: string }`
     Optional overrides for CSS custom properties.
 
@@ -22,18 +26,22 @@
   ```
 -->
 <script lang="ts">
+  import type { Part } from "../tags";
   import { toStyleString } from "../utils";
+  import PhotosynthesisScheme from "./PhotosynthesisScheme.svelte";
 
   let {
     name,
     href,
     image,
+    parts = [],
     license,
     styleVars = {},
   }: {
     name: string;
     href: string;
     image?: string;
+    parts?: readonly Part[];
     license?: string;
     styleVars?: {
       mediaHeight?: string;
@@ -64,12 +72,18 @@
         loading="lazy"
         decoding="async"
       />
+    {:else if parts.length > 0}
+      <div class="scheme">
+        <PhotosynthesisScheme highlighted={(part) => parts.includes(part)} />
+      </div>
     {:else}
       <div class="fallback">
         <span class="material-symbols-outlined">biotech</span>
       </div>
     {/if}
-    {#if license}
+    <!-- The license credits the scheme image, so it has nothing to say
+         about our own photosynthesis scheme. -->
+    {#if license && image}
       <span class="copyright">
         {license}
       </span>
@@ -125,6 +139,11 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+
+  .scheme {
+    padding: var(--space-2);
+    height: 100%;
   }
 
   .fallback {
