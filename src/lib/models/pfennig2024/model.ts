@@ -658,6 +658,34 @@ export function initModel(): KineticModelBuilder {
       texName: "fluo\\_influence\\_pbs",
       unit: Unit.fromJson({ factors: [] }),
     })
+    .addParameter("PPFD", {
+      value: 100.0,
+      displayName: "PPFD",
+      texName: "PPFD",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "micro", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
+      slider: {
+        min: "0",
+        max: "1000",
+        step: "10",
+      },
+    })
+    .addParameter("PPFD_measure", {
+      value: 1.0,
+      texName: "PPFD\\_measure",
+      unit: Unit.fromJson({
+        factors: [
+          { kind: "mole", prefix: "micro", exponent: 1 },
+          { kind: "metre", exponent: -2 },
+          { kind: "second", exponent: -1 },
+        ],
+      }),
+    })
     .addParameter("lcf", {
       value: 0.4852970468572075,
       texName: "lcf",
@@ -1057,9 +1085,12 @@ export function initModel(): KineticModelBuilder {
       texName: "dpH",
     })
     .addAssignment("light_OCP", {
-      fn: new Simpson([
-        new Mul([new Name("light_spectrum"), new Name("ocp_absorption")]),
-        new Name("wavelength"),
+      fn: new Mul([
+        new Name("PPFD"),
+        new Simpson([
+          new Mul([new Name("light_spectrum"), new Name("ocp_absorption")]),
+          new Name("wavelength"),
+        ]),
       ]),
       texName: "light\\_OCP",
     })
@@ -1116,6 +1147,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addAssignment("absorption_chla", {
       fn: new Mul([
+        new Name("PPFD"),
         new Name("chla_content"),
         new Simpson([
           new Mul([new Name("abs_coef_chla"), new Name("light_spectrum")]),
@@ -1126,6 +1158,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addAssignment("absorption_beta_carotene", {
       fn: new Mul([
+        new Name("PPFD"),
         new Name("beta_carotene_content"),
         new Simpson([
           new Mul([
@@ -1139,6 +1172,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addAssignment("absorption_allophycocyanin", {
       fn: new Mul([
+        new Name("PPFD"),
         new Name("allophycocyanin_content"),
         new Simpson([
           new Mul([
@@ -1152,6 +1186,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addAssignment("absorption_phycocyanin", {
       fn: new Mul([
+        new Name("PPFD"),
         new Name("phycocyanin_content"),
         new Simpson([
           new Mul([
@@ -1217,6 +1252,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addAssignment("ml_absorption_chla", {
       fn: new Mul([
+        new Name("PPFD_measure"),
         new Name("chla_content"),
         new Simpson([
           new Mul([
@@ -1230,6 +1266,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addAssignment("ml_absorption_beta_carotene", {
       fn: new Mul([
+        new Name("PPFD_measure"),
         new Name("beta_carotene_content"),
         new Simpson([
           new Mul([
@@ -1243,6 +1280,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addAssignment("ml_absorption_allophycocyanin", {
       fn: new Mul([
+        new Name("PPFD_measure"),
         new Name("allophycocyanin_content"),
         new Simpson([
           new Mul([
@@ -1256,6 +1294,7 @@ export function initModel(): KineticModelBuilder {
     })
     .addAssignment("ml_absorption_phycocyanin", {
       fn: new Mul([
+        new Name("PPFD_measure"),
         new Name("phycocyanin_content"),
         new Simpson([
           new Mul([

@@ -1621,6 +1621,60 @@
         },
         "texName": "fluo\\_influence\\_pbs"
       },
+      "PPFD": {
+        "value": {
+          "type": "Num",
+          "value": 100
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "PPFD",
+        "texName": "PPFD",
+        "slider": {
+          "min": "0",
+          "max": "1000",
+          "step": "10"
+        }
+      },
+      "PPFD_measure": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "PPFD\\_measure"
+      },
       "lcf": {
         "value": {
           "type": "Num",
@@ -4050,24 +4104,33 @@
       },
       "light_OCP": {
         "fn": {
-          "type": "Simpson",
+          "type": "Mul",
           "children": [
             {
-              "type": "Mul",
+              "type": "Name",
+              "value": "PPFD"
+            },
+            {
+              "type": "Simpson",
               "children": [
                 {
-                  "type": "Name",
-                  "value": "light_spectrum"
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "light_spectrum"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "ocp_absorption"
+                    }
+                  ]
                 },
                 {
                   "type": "Name",
-                  "value": "ocp_absorption"
+                  "value": "wavelength"
                 }
               ]
-            },
-            {
-              "type": "Name",
-              "value": "wavelength"
             }
           ]
         },
@@ -4260,6 +4323,10 @@
           "children": [
             {
               "type": "Name",
+              "value": "PPFD"
+            },
+            {
+              "type": "Name",
               "value": "chla_content"
             },
             {
@@ -4292,6 +4359,10 @@
         "fn": {
           "type": "Mul",
           "children": [
+            {
+              "type": "Name",
+              "value": "PPFD"
+            },
             {
               "type": "Name",
               "value": "beta_carotene_content"
@@ -4328,6 +4399,10 @@
           "children": [
             {
               "type": "Name",
+              "value": "PPFD"
+            },
+            {
+              "type": "Name",
               "value": "allophycocyanin_content"
             },
             {
@@ -4360,6 +4435,10 @@
         "fn": {
           "type": "Mul",
           "children": [
+            {
+              "type": "Name",
+              "value": "PPFD"
+            },
             {
               "type": "Name",
               "value": "phycocyanin_content"
@@ -4549,6 +4628,10 @@
           "children": [
             {
               "type": "Name",
+              "value": "PPFD_measure"
+            },
+            {
+              "type": "Name",
               "value": "chla_content"
             },
             {
@@ -4581,6 +4664,10 @@
         "fn": {
           "type": "Mul",
           "children": [
+            {
+              "type": "Name",
+              "value": "PPFD_measure"
+            },
             {
               "type": "Name",
               "value": "beta_carotene_content"
@@ -4617,6 +4704,10 @@
           "children": [
             {
               "type": "Name",
+              "value": "PPFD_measure"
+            },
+            {
+              "type": "Name",
               "value": "allophycocyanin_content"
             },
             {
@@ -4649,6 +4740,10 @@
         "fn": {
           "type": "Mul",
           "children": [
+            {
+              "type": "Name",
+              "value": "PPFD_measure"
+            },
             {
               "type": "Name",
               "value": "phycocyanin_content"
