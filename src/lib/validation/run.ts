@@ -94,7 +94,11 @@ function scenarioValue(
   return out;
 }
 
-function applyEdit(model: KineticModelBuilder, edit: ModelEdit) {
+function applyEdit(
+  model: KineticModelBuilder,
+  edit: ModelEdit,
+  data: Validation["data"],
+) {
   if ("removeReaction" in edit) {
     model.removeReaction(edit.removeReaction);
   } else if ("addParameter" in edit) {
@@ -102,6 +106,20 @@ function applyEdit(model: KineticModelBuilder, edit: ModelEdit) {
   } else if ("clampVariable" in edit) {
     model.removeVariable(edit.clampVariable);
     model.addParameter(edit.clampVariable, { value: edit.to });
+  } else if ("setData" in edit) {
+    const current = model.data.get(edit.setData);
+    if (!current) throw new Error(`Unknown model data "${edit.setData}"`);
+    const values = evaluate(parse(edit.to), ([scope, name]) => {
+      const col = scope === "data" ? data?.[name] : undefined;
+      if (!col) throw new Error(`Unknown reference "${scope}.${name}"`);
+      return col;
+    });
+    if (!Array.isArray(values) || values.length !== current.values.length) {
+      throw new Error(
+        `"${edit.to}" must give ${current.values.length} values for "${edit.setData}"`,
+      );
+    }
+    model.updateData(edit.setData, { ...current, values });
   } else if ("parameterToAssignment" in edit) {
     model.removeParameter(edit.parameterToAssignment);
     model.addAssignment(edit.parameterToAssignment, {
@@ -119,7 +137,11 @@ function applyEdit(model: KineticModelBuilder, edit: ModelEdit) {
   }
 }
 
-function buildScenario(base: KineticModelBuilder, scenario: Scenario) {
+function buildScenario(
+  base: KineticModelBuilder,
+  scenario: Scenario,
+  data: Validation["data"],
+) {
   const model = base.clone() as KineticModelBuilder;
   const params = new Map(
     [...base.parameters].map(([id, par]) => [id, par.value]),
@@ -136,7 +158,7 @@ function buildScenario(base: KineticModelBuilder, scenario: Scenario) {
       value: scenarioValue(v, params, init),
     });
   }
-  scenario.edits?.forEach((edit) => applyEdit(model, edit));
+  scenario.edits?.forEach((edit) => applyEdit(model, edit, data));
   for (const [id, v] of Object.entries(scenario.initial ?? {})) {
     const vari = model.variables.get(id);
     if (!vari) throw new Error(`Unknown variable "${id}"`);
@@ -241,7 +263,7 @@ async function runStages(
   let offset = 0;
   for (const [s, stage] of (scenario.stages ?? []).entries()) {
     const model = first.clone() as KineticModelBuilder;
-    stage.edits?.forEach((edit) => applyEdit(model, edit));
+    stage.edits?.forEach((edit) => applyEdit(model, edit, validation.data));
     const y0 = model.getNames().map((name) => {
       const value = state.get(name) ?? initial.get(name);
       if (value === undefined) throw new Error(`No state for "${name}"`);
@@ -281,7 +303,7 @@ async function runScenario(
   validation: Validation,
   simulate: Simulate,
 ): Promise<ScenarioState> {
-  const built = buildScenario(base, scenario);
+  const built = buildScenario(base, scenario, validation.data);
   const { model, params, init } = built;
   const sim = scenario.simulate ?? validation.simulate;
 
@@ -378,7 +400,7 @@ async function elasticities(
   simulate: Simulate,
 ): Promise<Frame> {
   const { normalized, displacement: d } = { ...MCA_DEFAULTS, ...mca };
-  const { model } = buildScenario(base, setupScenario(mca));
+  const { model } = buildScenario(base, setupScenario(mca), validation.data);
   const f = evaluator(model);
   const y = await pointState(
     name,
@@ -427,7 +449,7 @@ async function stability(
   validation: Validation,
   simulate: Simulate,
 ): Promise<Frame> {
-  const { model } = buildScenario(base, setupScenario(setup));
+  const { model } = buildScenario(base, setupScenario(setup), validation.data);
   const f = evaluator(model);
   const y = await pointState(name, model, "steadyState", validation, simulate);
   const pars = model.resolveParameters();

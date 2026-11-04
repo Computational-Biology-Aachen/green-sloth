@@ -47,7 +47,12 @@ export type ModelEdit =
   /** Replace a parameter with an assignment, e.g. a light driven by `time`. */
   | { parameterToAssignment: string; to: string }
   | { clampVariable: string; to: number }
-  | { addParameter: string; value: number };
+  | { addParameter: string; value: number }
+  /**
+   * Replace a model data array with an expression over the validation's
+   * `data.<name>` columns, e.g. another light spectrum.
+   */
+  | { setData: string; to: string };
 
 /** A run handing its final state on, unrecorded; `set` applies only to it. */
 export type PreRun = Simulation & { set?: Record<string, number> };

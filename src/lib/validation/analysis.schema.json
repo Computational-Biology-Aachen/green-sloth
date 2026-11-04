@@ -355,6 +355,20 @@
               "type": "number"
             }
           }
+        },
+        {
+          "type": "object",
+          "description": "Replace a model data array with an expression over the analysis' `data` columns, e.g. another light spectrum. The expression must give as many values as the data it replaces.",
+          "required": ["setData", "to"],
+          "additionalProperties": false,
+          "properties": {
+            "setData": {
+              "type": "string"
+            },
+            "to": {
+              "$ref": "#/$defs/expression"
+            }
+          }
         }
       ]
     },

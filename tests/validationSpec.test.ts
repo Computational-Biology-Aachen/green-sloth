@@ -201,6 +201,7 @@ type Builder = {
   parameters: Map<string, unknown>;
   variables: Map<string, unknown>;
   reactions: Map<string, unknown>;
+  data: Map<string, unknown>;
   sortDependencies(): string[];
   sortReadoutDependencies(): string[];
 };
@@ -287,6 +288,12 @@ describe.runIf(slugs.length > 0).each(slugs)("%s validation.ts", (slug) => {
         for (const e of s.edits ?? []) {
           if ("removeReaction" in e && !model.reactions.has(e.removeReaction)) {
             missing.push(`${at} ${id} edit: ${e.removeReaction}`);
+          }
+          if ("setData" in e) {
+            if (!model.data.has(e.setData)) {
+              missing.push(`${at} ${id} edit: ${e.setData}`);
+            }
+            check(`${id} edit.${e.setData}`, e.to, dataRef);
           }
         }
       }
