@@ -51,13 +51,34 @@ import data from "./model.data.json";
 export function initModel(): KineticModelBuilder {
   return new KineticModelBuilder()
     .addData("wavelength", data["wavelength"])
-    .addData("light_spectrum", data["light_spectrum"])
-    .addData("light_spectrum_measure", data["light_spectrum_measure"])
-    .addData("ocp_absorption", data["ocp_absorption"])
-    .addData("abs_coef_chla", data["abs_coef_chla"])
-    .addData("abs_coef_beta_carotene", data["abs_coef_beta_carotene"])
-    .addData("abs_coef_allophycocyanin", data["abs_coef_allophycocyanin"])
-    .addData("abs_coef_phycocyanin", data["abs_coef_phycocyanin"])
+    .addData("light_spectrum", {
+      values: data["light_spectrum"].values,
+      texName: "light\\_spectrum",
+    })
+    .addData("light_spectrum_measure", {
+      values: data["light_spectrum_measure"].values,
+      texName: "light\\_spectrum\\_measure",
+    })
+    .addData("ocp_absorption", {
+      values: data["ocp_absorption"].values,
+      texName: "ocp\\_absorption",
+    })
+    .addData("abs_coef_chla", {
+      values: data["abs_coef_chla"].values,
+      texName: "abs\\_coef\\_chla",
+    })
+    .addData("abs_coef_beta_carotene", {
+      values: data["abs_coef_beta_carotene"].values,
+      texName: "abs\\_coef\\_beta\\_carotene",
+    })
+    .addData("abs_coef_allophycocyanin", {
+      values: data["abs_coef_allophycocyanin"].values,
+      texName: "abs\\_coef\\_allophycocyanin",
+    })
+    .addData("abs_coef_phycocyanin", {
+      values: data["abs_coef_phycocyanin"].values,
+      texName: "abs\\_coef\\_phycocyanin",
+    })
     .addParameter("PSIItot", {
       value: 0.83,
       texName: "PSIItot",
