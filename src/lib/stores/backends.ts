@@ -66,12 +66,18 @@ export const wasmRadau5 = makeWasmBackend("radau5", "RADAU5");
 export const wasmDop853 = makeWasmBackend("dop853", "DOP853");
 export const wasmDopri5 = makeWasmBackend("dopri5", "DOPRI5");
 export const wasmLsoda = makeWasmBackend("lsoda", "LSODA");
+// SUNDIALS' CVODE runs in its own cvode.wasm, which the worker fetches only
+// when one of these is first used.
+export const wasmCvodeBdf = makeWasmBackend("cvode_bdf", "CVODE BDF");
+export const wasmCvodeAdams = makeWasmBackend("cvode_adams", "CVODE Adams");
 
 export const allBackends: Backend[] = [
   wasmRadau5,
   wasmDop853,
   wasmDopri5,
   wasmLsoda,
+  wasmCvodeBdf,
+  wasmCvodeAdams,
 ];
 
 export const backends = {
@@ -79,4 +85,6 @@ export const backends = {
   wasmDop853,
   wasmDopri5,
   wasmLsoda,
+  wasmCvodeBdf,
+  wasmCvodeAdams,
 };
