@@ -26,7 +26,8 @@
     type SliderOverride,
   } from "../sliders";
   import { backends, createWasmPool } from "../stores/backends";
-  import type { ModelAnalysis } from "../types";
+  import type { DataSelect as DataSelectSpec, ModelAnalysis } from "../types";
+  import DataSelect from "./DataSelect.svelte";
   import Pam from "./Pam.svelte";
   import SliderChooser from "./SliderChooser.svelte";
   import TimeCourse from "./TimeCourse.svelte";
@@ -35,9 +36,11 @@
   let {
     model,
     analyses,
+    dataSelects = [],
   }: {
     model: KineticModelBuilder;
     analyses: ModelAnalysis[];
+    dataSelects?: DataSelectSpec[];
   } = $props();
 
   // The model's own PAM analyses double as ready-made fit protocols, so a
@@ -143,6 +146,31 @@
     }
   });
 
+  // Active option per data select, and each select's lazily loaded values.
+  let activeOptions = $state<string[]>([]);
+  let optionValues = $state.raw<Array<Record<string, number[]> | null>>([]);
+  // Re-seeded per model: a freshly built model carries the default data again.
+  $effect(() => {
+    void model;
+    const selects = dataSelects;
+    activeOptions = selects.map((s) => s.default);
+    optionValues = selects.map(() => null);
+    selects.forEach((select, i) => {
+      void select.load().then((mod) => {
+        if (dataSelects !== selects) return;
+        optionValues = optionValues.with(i, mod.default);
+      });
+    });
+  });
+
+  function onDataSelect(select: DataSelectSpec, i: number, key: string) {
+    const values = optionValues[i]?.[key];
+    const current = model.data.get(select.data);
+    if (!values || !current) return;
+    model.updateData(select.data, { ...current, values });
+    for (const ref of analysisRefs) ref?.runSimulation(model);
+  }
+
   // Slider picks and values belong to one model — this component is reused
   // when navigating between model pages, so start over on a new one.
   $effect.pre(() => {
@@ -174,6 +202,7 @@
     return untrack(() => ({
       parameters: new Map(m.parameters),
       variables: new Map(m.variables),
+      data: new Map(m.data),
     }));
   });
 
@@ -195,6 +224,10 @@
     for (const [id, vari] of originals.variables) {
       model.updateVariable(id, vari);
     }
+    for (const [id, set] of originals.data) {
+      model.updateData(id, set);
+    }
+    activeOptions = dataSelects.map((s) => s.default);
     syncSlidersAndRerun();
   }
 </script>
@@ -214,6 +247,14 @@
   </Row>
 
   <div class="dashboard">
+    {#each dataSelects as select, i (select.data)}
+      <DataSelect
+        select={select}
+        values={optionValues[i] ?? null}
+        bind:active={activeOptions[i]}
+        onchange={(key) => onDataSelect(select, i, key)}
+      />
+    {/each}
     {#if sliderDefs.length > 0}
       <div class="sliders">
         {#each sliderDefs as def (def.key)}

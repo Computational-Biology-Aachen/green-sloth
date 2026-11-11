@@ -125,6 +125,23 @@ export type Contributor = {
 
 export type ModelAnalysis = TimeCourseAnalysis | PamAnalysis | SweepAnalysis;
 
+/**
+ * A dashboard picker that swaps one model data set between alternatives,
+ * e.g. a light spectrum. Exactly one option is active at a time.
+ */
+export interface DataSelect {
+  /** Id of the model data set the active option overwrites. */
+  data: string;
+  title: string;
+  /** Key of the option matching the model's data as loaded. */
+  default: string;
+  options: Array<{ key: string; label: string }>;
+  /** Lazily loads each option's values, keyed by option key. */
+  load: () => Promise<{ default: Record<string, number[]> }>;
+  /** Draw each option's values as a spectrum over [xMin, xMax]. */
+  preview?: { kind: "spectrum"; xMin: number; xMax: number; unit?: string };
+}
+
 export interface ModelMeta {
   slug: string;
   title: string;
@@ -134,5 +151,7 @@ export interface ModelMeta {
   tags: Tags;
   /** Analyses auto-run on the model's dashboard. */
   analyses: ModelAnalysis[];
+  /** Data-set pickers shown above the dashboard's sliders. */
+  dataSelects?: DataSelect[];
   contributors: Array<{ desc: string; date: Date; contributor: Contributor }>;
 }

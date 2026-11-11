@@ -44,6 +44,21 @@ export const meta: ModelMeta = {
       plot: { type: "grid", groups: [["Fluo"], ["pHlumen"]] },
     },
   ],
+  dataSelects: [
+    {
+      data: "light_spectrum",
+      title: "Light source",
+      default: "warm_white_led",
+      options: [
+        { key: "solar", label: "Solar" },
+        { key: "fluorescent_lamp", label: "Fluorescent lamp" },
+        { key: "cool_white_led", label: "Cool white LED" },
+        { key: "warm_white_led", label: "Warm white LED" },
+      ],
+      load: () => import("./lights.json"),
+      preview: { kind: "spectrum", xMin: 400, xMax: 700, unit: "nm" },
+    },
+  ],
   contributors: [
     {
       desc: "Initial implementation (generated from mxl-models)",

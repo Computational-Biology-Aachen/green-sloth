@@ -448,6 +448,7 @@
     <KineticModelDashboard
       model={model}
       analyses={data.meta.analyses}
+      dataSelects={data.meta.dataSelects}
     />
   {:else if model instanceof SteadyStateModelBuilder}
     <SSModelDashboard

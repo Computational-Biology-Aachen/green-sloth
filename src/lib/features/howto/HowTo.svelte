@@ -714,6 +714,13 @@ npm run dev               # open the model page, confirm the analyses run`;
           > file.</Li
         >
         <Li><Bold>analyses</Bold>: The analyses of the model.</Li>
+        <Li
+          ><Bold>dataSelects</Bold> (optional): Pickers that swap a model data set
+          between alternatives (e.g. light spectra), shown above the dashboard's sliders.
+          Each names the <Code>data</Code> id, its options, the
+          <Code>default</Code> option and a lazy <Code>load</Code> of the option values
+          (e.g. <Code>() =&gt; import("./lights.json")</Code>).</Li
+        >
         <Li><Bold>contributors</Bold>: The contributors of the model.</Li>
       </Ol>
     </Accordion>
