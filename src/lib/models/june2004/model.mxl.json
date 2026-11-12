@@ -1,0 +1,375 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/steady-state-model.schema.json",
+  "spec_version": "1.1",
+  "kind": "steady-state",
+  "model_id": "june2004",
+  "model": {
+    "parameters": {
+      "T_leaf": {
+        "value": {
+          "type": "Num",
+          "value": 25
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "T_leaf",
+        "texName": "T_L",
+        "slider": {
+          "min": "0",
+          "max": "50",
+          "step": "0.5"
+        }
+      },
+      "J_To": {
+        "value": {
+          "type": "Num",
+          "value": 257
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "J(To)",
+        "texName": "J(T_o)",
+        "slider": {
+          "min": "0",
+          "max": "450",
+          "step": "1"
+        }
+      },
+      "To": {
+        "value": {
+          "type": "Num",
+          "value": 33
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "To",
+        "texName": "T_o",
+        "slider": {
+          "min": "15",
+          "max": "60",
+          "step": "0.1"
+        }
+      },
+      "Omega": {
+        "value": {
+          "type": "Num",
+          "value": 23.8
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "Omega",
+        "texName": "\\Omega",
+        "slider": {
+          "min": "5",
+          "max": "40",
+          "step": "0.1"
+        }
+      },
+      "I": {
+        "value": {
+          "type": "Num",
+          "value": 1200
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "I",
+        "texName": "I"
+      },
+      "a": {
+        "value": {
+          "type": "Num",
+          "value": 0.9
+        },
+        "unit": {
+          "factors": []
+        },
+        "texName": "a"
+      },
+      "f": {
+        "value": {
+          "type": "Num",
+          "value": 0.15
+        },
+        "unit": {
+          "factors": []
+        },
+        "texName": "f"
+      }
+    },
+    "derived": {
+      "J": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "J_To"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Minus",
+                "children": [
+                  {
+                    "type": "Pow",
+                    "left": {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Minus",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "T_leaf"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "To"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Omega"
+                        }
+                      ]
+                    },
+                    "right": {
+                      "type": "Num",
+                      "value": 2
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "J",
+        "texName": "J"
+      },
+      "J_rel25": {
+        "fn": {
+          "type": "Exp",
+          "child": {
+            "type": "Minus",
+            "children": [
+              {
+                "type": "Pow",
+                "left": {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 25
+                        },
+                        {
+                          "type": "Name",
+                          "value": "To"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Omega"
+                    }
+                  ]
+                },
+                "right": {
+                  "type": "Num",
+                  "value": 2
+                }
+              },
+              {
+                "type": "Pow",
+                "left": {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "T_leaf"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "To"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Omega"
+                    }
+                  ]
+                },
+                "right": {
+                  "type": "Num",
+                  "value": 2
+                }
+              }
+            ]
+          }
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "J/J(25)",
+        "texName": "J/J_{25}"
+      },
+      "phi_PSII": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 2
+                },
+                {
+                  "type": "Name",
+                  "value": "J"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "I"
+                },
+                {
+                  "type": "Name",
+                  "value": "a"
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Name",
+                      "value": "f"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "phi_PSII",
+        "texName": "\\phi_{PSII}"
+      },
+      "Omega_regression": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Num",
+              "value": 11.6
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 0.18
+                },
+                {
+                  "type": "Name",
+                  "value": "To"
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "Omega (regression)",
+        "texName": "\\Omega_{reg}"
+      }
+    }
+  }
+}
