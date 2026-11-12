@@ -295,6 +295,7 @@
             backend={backends.wasmRadau5}
             selectedKeys={analysis.variables}
             normalizedKeys={analysis.normalizedKeys}
+            labels={analysis.labels}
             showDerived={analysis.showDerived ?? false}
             nTimePoints={analysis.nTimePoints ?? DEFAULT_N_TIME_POINTS}
             timeoutInSeconds={analysis.timeoutInSeconds ?? DEFAULT_TIMEOUT}
@@ -309,6 +310,7 @@
             backend={backends.wasmRadau5}
             selectedKeys={analysis.variables}
             normalizedKeys={analysis.normalizedKeys}
+            labels={analysis.labels}
             showDerived={analysis.showDerived ?? false}
             nTimePoints={analysis.nTimePoints ?? DEFAULT_N_TIME_POINTS}
             timeoutInSeconds={analysis.timeoutInSeconds ?? DEFAULT_TIMEOUT}

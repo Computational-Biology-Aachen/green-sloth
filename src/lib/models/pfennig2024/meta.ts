@@ -28,20 +28,15 @@ export const meta: ModelMeta = {
   analyses: [
     {
       type: "timecourse",
-      title: "Time course",
+      title: "Linear and cyclic electron flow",
       tEnd: 300,
       nTimePoints: 500,
-      variables: ["PQ_ox", "PC_ox", "Fd_ox", "NADPH", "ATP", "OCP"],
-      plot: { type: "magnitude" },
-    },
-    {
-      type: "timecourse",
-      title: "Fluorescence and lumen pH",
-      tEnd: 300,
-      nTimePoints: 500,
-      variables: ["Fluo", "pHlumen"],
+      variables: ["vPS2", "vNQ"],
       showDerived: true,
-      plot: { type: "grid", groups: [["Fluo"], ["pHlumen"]] },
+      labels: {
+        vPS2: "Linear electron flow (PSII)",
+        vNQ: "Cyclic electron flow (NDH-1)",
+      },
     },
   ],
   dataSelects: [

@@ -43,6 +43,7 @@
     showDerived = false,
     selectedKeys = undefined,
     normalizedKeys = undefined,
+    labels = undefined,
     nTimePoints,
     lineDisplay,
     plot,
@@ -57,6 +58,7 @@
     showDerived?: boolean;
     selectedKeys?: string[];
     normalizedKeys?: string[];
+    labels?: Record<string, string>;
     nTimePoints: number;
     lineDisplay: "current" | "last" | "first";
     plot?: PlotLayout;
@@ -147,7 +149,7 @@
     return normalizedKeys?.includes(key) ? normalizeToMax(data) : data;
   }
   function label(key: string): string {
-    const name = displayNames.get(key) ?? key;
+    const name = labels?.[key] ?? displayNames.get(key) ?? key;
     return normalizedKeys?.includes(key) ? `Norm(${name})` : name;
   }
   const displayNames = $derived(model.getDisplayNames());

@@ -80,6 +80,8 @@ export interface TimeCourseAnalysis {
   showDerived?: boolean;
   /** Keys to normalise to their own max before plotting. */
   normalizedKeys?: string[];
+  /** Legend labels by series key, overriding the model's display names. */
+  labels?: Record<string, string>;
   /** Chart layout; omitted → a single chart. */
   plot?: PlotLayout;
   /** Per-analysis simulation timeout; defaults to the dashboard value. */
@@ -105,6 +107,8 @@ export interface PamAnalysis {
   showDerived?: boolean;
   /** Keys to normalise to their own max before plotting. */
   normalizedKeys?: string[];
+  /** Legend labels by series key, overriding the model's display names. */
+  labels?: Record<string, string>;
   /** Upper y-axis bound. */
   yMax?: number;
   /** Chart layout; omitted → a single chart. */
