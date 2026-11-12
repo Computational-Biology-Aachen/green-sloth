@@ -517,7 +517,7 @@
           ><Icon>download</Icon> Download code</Button
         >
       {/if}
-      {#if hasValidation}
+      {#if hasValidation && model instanceof KineticModelBuilder}
         <Button
           variant="inverted"
           onclick={downloadNotebook}

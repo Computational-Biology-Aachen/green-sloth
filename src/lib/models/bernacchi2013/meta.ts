@@ -17,16 +17,26 @@ export const meta: ModelMeta = {
   analyses: [
     {
       type: "sweep",
+      title: "CO₂ response",
       parameter: "Ci",
       min: 50,
       max: 1000,
       steps: 100,
       yMax: 60,
       yLabel: "Carbon fixation",
-      // selectedKeys: ["an", "wc", "wj", "wp"],
-      // Variables span several orders of magnitude; auto-split them into
-      // per-magnitude subplots so small-valued species stay readable.
-      plot: { type: "magnitude" },
+      selectedKeys: ["rubisco", "rubp", "tpu", "an"],
+    },
+    {
+      type: "sweep",
+      title: "Leaf-temperature response",
+      parameter: "T_leaf",
+      min: 5,
+      max: 40,
+      steps: 100,
+      yMin: 0,
+      yMax: 40,
+      yLabel: "Carbon fixation",
+      selectedKeys: ["rubisco", "rubp", "tpu", "an"],
     },
   ],
   contributors: [
@@ -38,6 +48,11 @@ export const meta: ModelMeta = {
     {
       desc: "Maintenance",
       date: new Date(2026, 6),
+      contributor: contributors.marvinvanaalst,
+    },
+    {
+      desc: "Leaf-temperature responses and validation figures",
+      date: new Date(2026, 10),
       contributor: contributors.marvinvanaalst,
     },
   ],

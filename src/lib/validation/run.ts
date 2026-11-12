@@ -3,9 +3,10 @@
  * simulates it, then applies ops and derived columns. Takes `simulate` as an
  * argument so the browser (worker pool) and the tests (Node) share all of this.
  */
-import type {
+import {
   KineticModelBuilder,
-  SimulationRequest,
+  SteadyStateModelBuilder,
+  type SimulationRequest,
 } from "@computational-biology-aachen/mxlweb-core";
 import { derivedKeys } from "../utils";
 import { evaluate, parse, toMathml, type Value } from "./expr";
@@ -31,6 +32,12 @@ export type SimulateResult = {
   err?: { message: string };
 };
 export type Simulate = (req: SimulationRequest) => Promise<SimulateResult>;
+
+/**
+ * A steady-state model has no variables: its "simulation" is evaluating its
+ * assignments at the scenario's parameters, without a solver.
+ */
+export type ValidationModel = KineticModelBuilder | SteadyStateModelBuilder;
 
 export type RunOptions = {
   /** Scenarios simulated at once. */
@@ -95,12 +102,18 @@ function scenarioValue(
 }
 
 function applyEdit(
-  model: KineticModelBuilder,
+  model: ValidationModel,
   edit: ModelEdit,
   data: Validation["data"],
 ) {
+  if (
+    model instanceof SteadyStateModelBuilder &&
+    ("removeReaction" in edit || "clampVariable" in edit)
+  ) {
+    throw new Error("A steady-state model has no reactions or variables");
+  }
   if ("removeReaction" in edit) {
-    model.removeReaction(edit.removeReaction);
+    (model as KineticModelBuilder).removeReaction(edit.removeReaction);
   } else if ("addParameter" in edit) {
     model.addParameter(edit.addParameter, { value: edit.value });
   } else if ("clampVariable" in edit) {
@@ -137,12 +150,12 @@ function applyEdit(
   }
 }
 
-function buildScenario(
-  base: KineticModelBuilder,
+function buildScenario<M extends ValidationModel>(
+  base: M,
   scenario: Scenario,
   data: Validation["data"],
 ) {
-  const model = base.clone() as KineticModelBuilder;
+  const model = base.clone() as M;
   const params = new Map(
     [...base.parameters].map(([id, par]) => [id, par.value]),
   );
@@ -299,13 +312,28 @@ async function runStages(
 async function runScenario(
   id: string,
   scenario: Scenario,
-  base: KineticModelBuilder,
+  base: ValidationModel,
   validation: Validation,
   simulate: Simulate,
 ): Promise<ScenarioState> {
   const built = buildScenario(base, scenario, validation.data);
   const { model, params, init } = built;
   const sim = scenario.simulate ?? validation.simulate;
+
+  if (model instanceof SteadyStateModelBuilder) {
+    if (sim?.kind !== "steadyState" || scenario.stages || scenario.pre) {
+      throw new Error(
+        `${id}: a steady-state model only takes a steadyState simulation`,
+      );
+    }
+    return {
+      frame: evaluateAssignments(model),
+      ops: {},
+      protocol: undefined,
+      params,
+      init,
+    };
+  }
 
   if (scenario.stages) {
     const frame = await runStages(id, scenario, built, validation, simulate);
@@ -351,6 +379,20 @@ async function runScenario(
 
 type Fn = (time: number, y: number[], pars: number[]) => number[];
 const compile = <T>(src: string) => new Function(`return (${src})`)() as T;
+
+/** A steady-state model's assignments at its parameters, as a one-row frame. */
+function evaluateAssignments(model: SteadyStateModelBuilder): Frame {
+  const row = compile<Fn>(model.buildJsDerived().allDerived)(
+    0,
+    [],
+    model.resolveParameters(),
+  );
+  const frame: Frame = { time: [0] };
+  derivedKeys(model).forEach((name, j) => {
+    frame[name] = [row[j]];
+  });
+  return frame;
+}
 
 /** A model's rhs and derived values at any state, without integrating. */
 function evaluator(model: KineticModelBuilder) {
@@ -485,7 +527,7 @@ async function mapLimited<T, R>(
 
 export async function runValidation(
   spec: Validation,
-  base: KineticModelBuilder,
+  base: ValidationModel,
   simulate: Simulate,
   { concurrency = 1, onProgress }: RunOptions = {},
 ): Promise<ValidationResult> {
@@ -573,12 +615,20 @@ export async function runValidation(
       if (opSpec.into) state.frame[opSpec.as] = out.value;
     }
   }
+  const needsKinetic = Object.keys({
+    ...validation.mca,
+    ...validation.stability,
+  }).length;
+  if (needsKinetic && !(base instanceof KineticModelBuilder)) {
+    throw new Error("MCA and stability need a kinetic model");
+  }
+  const kinetic = base as KineticModelBuilder;
   for (const [name, mca] of Object.entries(validation.mca ?? {})) {
     if (mca.type === "responseCoefficients") continue;
-    tables[name] = await elasticities(name, mca, base, validation, simulate);
+    tables[name] = await elasticities(name, mca, kinetic, validation, simulate);
   }
   for (const [name, setup] of Object.entries(validation.stability ?? {})) {
-    tables[name] = await stability(name, setup, base, validation, simulate);
+    tables[name] = await stability(name, setup, kinetic, validation, simulate);
   }
   for (const [name, table] of Object.entries(validation.collect ?? {})) {
     const frame: Frame = { x: table.x };

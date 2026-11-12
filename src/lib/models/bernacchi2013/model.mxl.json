@@ -8,7 +8,7 @@
       "Ci": {
         "value": {
           "type": "Num",
-          "value": 275
+          "value": 270
         },
         "unit": {
           "factors": [],
@@ -52,10 +52,31 @@
           "step": "10"
         }
       },
-      "Vcmax": {
+      "T_leaf": {
         "value": {
           "type": "Num",
-          "value": 100
+          "value": 25
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "T_leaf",
+        "texName": "T_{leaf}",
+        "slider": {
+          "min": "5",
+          "max": "40",
+          "step": "0.5"
+        }
+      },
+      "Vcmax25": {
+        "value": {
+          "type": "Num",
+          "value": 98
         },
         "unit": {
           "factors": [
@@ -74,12 +95,12 @@
             }
           ]
         },
-        "texName": "V_{cmax}"
+        "texName": "V_{cmax,25}"
       },
-      "Jmax": {
+      "Jmax25": {
         "value": {
           "type": "Num",
-          "value": 200
+          "value": 180
         },
         "unit": {
           "factors": [
@@ -98,12 +119,12 @@
             }
           ]
         },
-        "texName": "J_{max}"
+        "texName": "J_{max,25}"
       },
-      "TPU": {
+      "TPU25": {
         "value": {
           "type": "Num",
-          "value": 12
+          "value": 10.62
         },
         "unit": {
           "factors": [
@@ -122,12 +143,12 @@
             }
           ]
         },
-        "texName": "T_{PU}"
+        "texName": "T_{PU,25}"
       },
-      "Rd": {
+      "Rd25": {
         "value": {
           "type": "Num",
-          "value": 1.5
+          "value": 1.1
         },
         "unit": {
           "factors": [
@@ -146,9 +167,9 @@
             }
           ]
         },
-        "texName": "R_d"
+        "texName": "R_{d,25}"
       },
-      "Gamma_star": {
+      "Gamma_star25": {
         "value": {
           "type": "Num",
           "value": 42.75
@@ -157,9 +178,9 @@
           "factors": [],
           "multiplier": 0.000001
         },
-        "texName": "\\Gamma^*"
+        "texName": "\\Gamma^*_{25}"
       },
-      "Kc": {
+      "Kc25": {
         "value": {
           "type": "Num",
           "value": 404.9
@@ -168,9 +189,9 @@
           "factors": [],
           "multiplier": 0.000001
         },
-        "texName": "K_c"
+        "texName": "K_{c,25}"
       },
-      "Ko": {
+      "Ko25": {
         "value": {
           "type": "Num",
           "value": 278.4
@@ -179,7 +200,7 @@
           "factors": [],
           "multiplier": 0.001
         },
-        "texName": "K_o"
+        "texName": "K_{o,25}"
       },
       "O": {
         "value": {
@@ -196,7 +217,27 @@
       "alpha": {
         "value": {
           "type": "Num",
-          "value": 0.24
+          "value": 0.85
+        },
+        "unit": {
+          "factors": []
+        },
+        "texName": "\\alpha"
+      },
+      "beta": {
+        "value": {
+          "type": "Num",
+          "value": 0.5
+        },
+        "unit": {
+          "factors": []
+        },
+        "texName": "\\beta"
+      },
+      "phi": {
+        "value": {
+          "type": "Num",
+          "value": 0.82
         },
         "unit": {
           "factors": [
@@ -210,31 +251,848 @@
             }
           ]
         },
-        "texName": "\\alpha"
+        "texName": "\\Phi"
       },
       "theta": {
         "value": {
           "type": "Num",
-          "value": 0.7
+          "value": 0.85
         },
         "unit": {
           "factors": []
         },
-        "texName": "\\theta"
+        "texName": "\\Theta"
+      },
+      "R": {
+        "value": {
+          "type": "Num",
+          "value": 8.314
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "R"
+      },
+      "Vcmax_dHa": {
+        "value": {
+          "type": "Num",
+          "value": 65330
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "\\Delta H_{a,V_{cmax}}"
+      },
+      "Rd_dHa": {
+        "value": {
+          "type": "Num",
+          "value": 46390
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "\\Delta H_{a,R_d}"
+      },
+      "Gamma_star_dHa": {
+        "value": {
+          "type": "Num",
+          "value": 37830
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "\\Delta H_{a,\\Gamma^*}"
+      },
+      "Kc_dHa": {
+        "value": {
+          "type": "Num",
+          "value": 79430
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "\\Delta H_{a,K_c}"
+      },
+      "Ko_dHa": {
+        "value": {
+          "type": "Num",
+          "value": 36380
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "\\Delta H_{a,K_o}"
+      },
+      "Jmax_Topt": {
+        "value": {
+          "type": "Num",
+          "value": 56.4
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": 1
+            }
+          ]
+        },
+        "texName": "T_{opt,J}"
+      },
+      "Jmax_omega": {
+        "value": {
+          "type": "Num",
+          "value": 30.6
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": 1
+            }
+          ]
+        },
+        "texName": "\\Omega_J"
+      },
+      "TPU_dHa": {
+        "value": {
+          "type": "Num",
+          "value": 50630
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "\\Delta H_{a,TPU}"
+      },
+      "TPU_dS": {
+        "value": {
+          "type": "Num",
+          "value": 840.7
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "\\Delta S_{TPU}"
+      },
+      "TPU_dHd": {
+        "value": {
+          "type": "Num",
+          "value": 258480
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "texName": "\\Delta H_{d,TPU}"
       }
     },
     "derived": {
+      "Tk": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "T_leaf"
+            },
+            {
+              "type": "Num",
+              "value": 273.15
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
+        },
+        "texName": "T_k"
+      },
+      "Vcmax": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Vcmax25"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Divide",
+                "children": [
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "Vcmax_dHa"
+                      },
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "Tk"
+                          },
+                          {
+                            "type": "Num",
+                            "value": 298.15
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "R"
+                      },
+                      {
+                        "type": "Name",
+                        "value": "Tk"
+                      },
+                      {
+                        "type": "Num",
+                        "value": 298.15
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "Vcmax",
+        "texName": "V_{cmax}"
+      },
+      "Rd": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Rd25"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Divide",
+                "children": [
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "Rd_dHa"
+                      },
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "Tk"
+                          },
+                          {
+                            "type": "Num",
+                            "value": 298.15
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "R"
+                      },
+                      {
+                        "type": "Name",
+                        "value": "Tk"
+                      },
+                      {
+                        "type": "Num",
+                        "value": 298.15
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "Rd",
+        "texName": "R_d"
+      },
+      "Gamma_star": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Gamma_star25"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Divide",
+                "children": [
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "Gamma_star_dHa"
+                      },
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "Tk"
+                          },
+                          {
+                            "type": "Num",
+                            "value": 298.15
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "R"
+                      },
+                      {
+                        "type": "Name",
+                        "value": "Tk"
+                      },
+                      {
+                        "type": "Num",
+                        "value": 298.15
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.000001
+        },
+        "displayName": "Gamma_star",
+        "texName": "\\Gamma^*"
+      },
+      "Kc": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Kc25"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Divide",
+                "children": [
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "Kc_dHa"
+                      },
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "Tk"
+                          },
+                          {
+                            "type": "Num",
+                            "value": 298.15
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "R"
+                      },
+                      {
+                        "type": "Name",
+                        "value": "Tk"
+                      },
+                      {
+                        "type": "Num",
+                        "value": 298.15
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.000001
+        },
+        "displayName": "Kc",
+        "texName": "K_c"
+      },
+      "Ko": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Ko25"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Divide",
+                "children": [
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "Ko_dHa"
+                      },
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "Tk"
+                          },
+                          {
+                            "type": "Num",
+                            "value": 298.15
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "R"
+                      },
+                      {
+                        "type": "Name",
+                        "value": "Tk"
+                      },
+                      {
+                        "type": "Num",
+                        "value": 298.15
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.001
+        },
+        "displayName": "Ko",
+        "texName": "K_o"
+      },
+      "Jmax": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Jmax25"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Minus",
+                "children": [
+                  {
+                    "type": "Pow",
+                    "left": {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Minus",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 25
+                            },
+                            {
+                              "type": "Name",
+                              "value": "Jmax_Topt"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Jmax_omega"
+                        }
+                      ]
+                    },
+                    "right": {
+                      "type": "Num",
+                      "value": 2
+                    }
+                  },
+                  {
+                    "type": "Pow",
+                    "left": {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Minus",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "T_leaf"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "Jmax_Topt"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Jmax_omega"
+                        }
+                      ]
+                    },
+                    "right": {
+                      "type": "Num",
+                      "value": 2
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "Jmax",
+        "texName": "J_{max}"
+      },
+      "TPU": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "TPU25"
+                },
+                {
+                  "type": "Exp",
+                  "child": {
+                    "type": "Divide",
+                    "children": [
+                      {
+                        "type": "Mul",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "TPU_dHa"
+                          },
+                          {
+                            "type": "Minus",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "Tk"
+                              },
+                              {
+                                "type": "Num",
+                                "value": 298.15
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Mul",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "R"
+                          },
+                          {
+                            "type": "Name",
+                            "value": "Tk"
+                          },
+                          {
+                            "type": "Num",
+                            "value": 298.15
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Exp",
+                  "child": {
+                    "type": "Divide",
+                    "children": [
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Mul",
+                            "children": [
+                              {
+                                "type": "Name",
+                                "value": "TPU_dS"
+                              },
+                              {
+                                "type": "Name",
+                                "value": "Tk"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "Name",
+                            "value": "TPU_dHd"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Mul",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "R"
+                          },
+                          {
+                            "type": "Name",
+                            "value": "Tk"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "TPU",
+        "texName": "T_{PU}"
+      },
       "absorbed": {
         "fn": {
           "type": "Mul",
           "children": [
             {
               "type": "Name",
+              "value": "PPFD"
+            },
+            {
+              "type": "Name",
               "value": "alpha"
             },
             {
               "type": "Name",
-              "value": "PPFD"
+              "value": "phi"
+            },
+            {
+              "type": "Name",
+              "value": "beta"
             }
           ]
         },
@@ -477,6 +1335,157 @@
         "displayName": "Wc",
         "texName": "W_c"
       },
+      "Wj": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "J"
+                },
+                {
+                  "type": "Name",
+                  "value": "Ci_safe"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 4.5
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Ci_safe"
+                    }
+                  ]
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 10.5
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Gamma_star"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "Wj",
+        "texName": "W_j"
+      },
+      "co2_factor": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Num",
+              "value": 1
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Gamma_star"
+                },
+                {
+                  "type": "Name",
+                  "value": "Ci_safe"
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "co2_factor",
+        "texName": "1 - \\Gamma^*/C_i"
+      },
+      "Wp": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 3
+                },
+                {
+                  "type": "Name",
+                  "value": "TPU"
+                }
+              ]
+            },
+            {
+              "type": "Max",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "co2_factor"
+                },
+                {
+                  "type": "Num",
+                  "value": 1e-12
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "Wp",
+        "texName": "W_p"
+      },
       "rubisco": {
         "fn": {
           "type": "Minus",
@@ -485,26 +1494,8 @@
               "type": "Mul",
               "children": [
                 {
-                  "type": "Minus",
-                  "children": [
-                    {
-                      "type": "Num",
-                      "value": 1
-                    },
-                    {
-                      "type": "Divide",
-                      "children": [
-                        {
-                          "type": "Name",
-                          "value": "Gamma_star"
-                        },
-                        {
-                          "type": "Name",
-                          "value": "Ci_safe"
-                        }
-                      ]
-                    }
-                  ]
+                  "type": "Name",
+                  "value": "co2_factor"
                 },
                 {
                   "type": "Name",
@@ -543,60 +1534,15 @@
           "type": "Minus",
           "children": [
             {
-              "type": "Divide",
+              "type": "Mul",
               "children": [
                 {
-                  "type": "Mul",
-                  "children": [
-                    {
-                      "type": "Name",
-                      "value": "J"
-                    },
-                    {
-                      "type": "Minus",
-                      "children": [
-                        {
-                          "type": "Name",
-                          "value": "Ci_safe"
-                        },
-                        {
-                          "type": "Name",
-                          "value": "Gamma_star"
-                        }
-                      ]
-                    }
-                  ]
+                  "type": "Name",
+                  "value": "co2_factor"
                 },
                 {
-                  "type": "Add",
-                  "children": [
-                    {
-                      "type": "Mul",
-                      "children": [
-                        {
-                          "type": "Num",
-                          "value": 4
-                        },
-                        {
-                          "type": "Name",
-                          "value": "Ci_safe"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "Mul",
-                      "children": [
-                        {
-                          "type": "Num",
-                          "value": 8
-                        },
-                        {
-                          "type": "Name",
-                          "value": "Gamma_star"
-                        }
-                      ]
-                    }
-                  ]
+                  "type": "Name",
+                  "value": "Wj"
                 }
               ]
             },
@@ -671,19 +1617,37 @@
       },
       "an": {
         "fn": {
-          "type": "Min",
+          "type": "Minus",
           "children": [
             {
-              "type": "Name",
-              "value": "rubisco"
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "co2_factor"
+                },
+                {
+                  "type": "Min",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "Wc"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Wj"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Wp"
+                    }
+                  ]
+                }
+              ]
             },
             {
               "type": "Name",
-              "value": "rubp"
-            },
-            {
-              "type": "Name",
-              "value": "tpu"
+              "value": "Rd"
             }
           ]
         },

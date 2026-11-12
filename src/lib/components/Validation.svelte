@@ -27,7 +27,10 @@
     StackedBarChart,
   } from "@computational-biology-aachen/design";
   import Row from "@computational-biology-aachen/design/Row.svelte";
-  import { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+  import {
+    KineticModelBuilder,
+    SteadyStateModelBuilder,
+  } from "@computational-biology-aachen/mxlweb-core";
   import { buildModel } from "../loadModel";
   import {
     createValidationPool,
@@ -35,7 +38,11 @@
   } from "../validation/browser";
   import { decimate } from "../validation/decimate";
   import { expandScans } from "../validation/helpers";
-  import { runValidation, type ValidationResult } from "../validation/run";
+  import {
+    runValidation,
+    type ValidationModel,
+    type ValidationResult,
+  } from "../validation/run";
   import type {
     LinePlot,
     Plot,
@@ -86,10 +93,13 @@
     return () => stopAll("idle");
   });
 
-  async function freshModel(): Promise<KineticModelBuilder> {
+  async function freshModel(): Promise<ValidationModel> {
     const model = await buildModel(slug);
-    if (!(model instanceof KineticModelBuilder)) {
-      throw new Error("Validations need a kinetic model");
+    if (
+      !(model instanceof KineticModelBuilder) &&
+      !(model instanceof SteadyStateModelBuilder)
+    ) {
+      throw new Error("Validations need a kinetic or steady-state model");
     }
     return model;
   }
