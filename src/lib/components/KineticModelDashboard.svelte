@@ -18,8 +18,8 @@
   import H2 from "@computational-biology-aachen/design/H2.svelte";
   import Row from "@computational-biology-aachen/design/Row.svelte";
   import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
-  import { untrack } from "svelte";
   import { Fit } from "@computational-biology-aachen/mxlweb-core/fit";
+  import { untrack } from "svelte";
   import {
     effectiveSlider,
     type SliderCandidate,
@@ -28,10 +28,10 @@
   import { backends, createWasmPool } from "../stores/backends";
   import type { DataSelect as DataSelectSpec, ModelAnalysis } from "../types";
   import DataSelect from "./DataSelect.svelte";
+  import InfoButton from "./InfoButton.svelte";
   import Pam from "./Pam.svelte";
   import SliderChooser from "./SliderChooser.svelte";
   import TimeCourse from "./TimeCourse.svelte";
-  import InfoButton from "./InfoButton.svelte";
 
   let {
     model,
@@ -131,7 +131,7 @@
 
   // Whether to overlay the previous run as a dashed reference line.
   let displayReference = $state(true);
-  const lineDisplay = $derived(displayReference ? "last" : "current");
+  const lineDisplay = $derived(displayReference ? "first" : "current");
 
   // Current slider values, seeded from the defs. A slider switched off is
   // dropped, so switching it back on reseeds from the model's current value.
