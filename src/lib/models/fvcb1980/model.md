@@ -4,18 +4,18 @@ Since this model has seen widespread use, a variant that includes translation er
 
 $$
 \begin{align*}
-    A &= V_\mathrm{c} \cdot \left( \frac{1 - \Gamma ^*}{\mathrm{CO_2}} \right) - R_\mathrm{d}\\
+    A &= V_\mathrm{c} \cdot \left( 1 - \frac{\Gamma ^*}{\mathrm{CO_2}} \right) - R_\mathrm{d}\\
 
     \text{min-W}:\\
 
     V_\mathrm{c} &= \min(W_\mathrm{c}, W_\mathrm{j}, W_\mathrm{p})\\
-    \Rightarrow A &= \min(W_\mathrm{c}, W_\mathrm{j}, W_\mathrm{p}) \cdot \left( \frac{1 - \Gamma ^*}{\mathrm{CO_2}} \right) - R_\mathrm{d}\\
+    \Rightarrow A &= \min(W_\mathrm{c}, W_\mathrm{j}, W_\mathrm{p}) \cdot \left( 1 - \frac{\Gamma ^*}{\mathrm{CO_2}} \right) - R_\mathrm{d}\\
 
     \text{min-A}:\\
 
-    A_\mathrm{c} &= W_\mathrm{c} \cdot \left( \frac{1 - \Gamma ^*}{\mathrm{CO_2}} \right) - R_\mathrm{d}\\
-    A_\mathrm{j} &= W_\mathrm{j} \cdot \left( \frac{1 - \Gamma ^*}{\mathrm{CO_2}} \right) - R_\mathrm{d}\\
-    A_\mathrm{p} &= W_\mathrm{p} \cdot \left( \frac{1 - \Gamma ^*}{\mathrm{CO_2}} \right) - R_\mathrm{d}\\
+    A_\mathrm{c} &= W_\mathrm{c} \cdot \left( 1 - \frac{\Gamma ^*}{\mathrm{CO_2}} \right) - R_\mathrm{d}\\
+    A_\mathrm{j} &= W_\mathrm{j} \cdot \left( 1 - \frac{\Gamma ^*}{\mathrm{CO_2}} \right) - R_\mathrm{d}\\
+    A_\mathrm{p} &= W_\mathrm{p} \cdot \left( 1 - \frac{\Gamma ^*}{\mathrm{CO_2}} \right) - R_\mathrm{d}\\
 
     \Rightarrow A &= \min(A_\mathrm{c}, A_\mathrm{j}, A_\mathrm{p})\\
 \end{align*}
