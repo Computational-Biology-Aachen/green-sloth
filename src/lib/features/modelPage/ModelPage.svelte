@@ -9,37 +9,24 @@
   import type { Validation as ValidationSpec } from "#lib/validation/types.js";
   import SSModelTables from "#lib/components/SSModelTables.svelte";
   import InfoButton from "#lib/components/InfoButton.svelte";
+  import { mdPlugins } from "#lib/markdown.js";
   import type { ModelMeta } from "#lib/types.js";
   import { resolve } from "$app/paths";
   import {
     Accordion,
-    Bold,
     ButtonMenu,
     ButtonMenuItem,
-    Code,
     Figure,
     H1,
     H2,
-    H3,
-    H4,
-    H5,
-    H6,
     Image,
     InfoBox,
     Li,
     Link,
-    Pre,
     Section,
     SectionHeader,
-    Sub,
-    Table,
     Tabs,
-    Tbody,
-    Td,
     Text,
-    Th,
-    Thead,
-    Tr,
     Ul,
   } from "@computational-biology-aachen/design";
   import Button from "@computational-biology-aachen/design/Button.svelte";
@@ -52,9 +39,7 @@
     SteadyStateModelBuilder,
   } from "@computational-biology-aachen/mxlweb-core";
   import { modelToSbml } from "@computational-biology-aachen/mxlweb-core/sbml";
-  import rehypeKatex from "rehype-katex";
-  import remarkMath from "remark-math";
-  import Markdown, { type Plugin } from "svelte-exmarkdown";
+  import Markdown from "svelte-exmarkdown";
 
   let {
     data,
@@ -69,40 +54,6 @@
       model: ModelBuilderBase;
     };
   } = $props();
-
-  // Render model markdown with the corporate-design components in place of the
-  // default HTML elements; anything unmapped falls back to plain HTML.
-  const mdPlugins: Plugin[] = [
-    {
-      remarkPlugin: remarkMath,
-      rehypePlugin: [rehypeKatex, { output: "html" }],
-    },
-    {
-      renderer: {
-        p: Text,
-        h1: H1,
-        h2: H2,
-        h3: H3,
-        h4: H4,
-        h5: H5,
-        h6: H6,
-        a: Link,
-        strong: Bold,
-        img: Image,
-        sub: Sub,
-        ul: Ul,
-        li: Li,
-        code: Code,
-        pre: Pre,
-        table: Table,
-        thead: Thead,
-        tbody: Tbody,
-        tr: Tr,
-        th: Th,
-        td: Td,
-      },
-    },
-  ];
 
   // Lazy: a model's protocols and data only load on its own page.
   const validationSpecs = import.meta.glob<{ validations: ValidationSpec[] }>(
