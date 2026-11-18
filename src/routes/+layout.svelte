@@ -90,7 +90,22 @@
     text-decoration: none;
   }
 
+  .brand {
+    min-width: 0;
+  }
+
+  /* On very narrow screens with large text the word truncates instead of
+     pushing the burger and GitHub link off-screen (the logo keeps the name
+     via its alt text). */
+  .brand span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .brand-logo {
+    flex-shrink: 0;
     width: auto;
     height: 1.8rem;
   }

@@ -7,7 +7,6 @@
     Accordion,
     Li,
     Link,
-    Text,
     Ul,
   } from "@computational-biology-aachen/design";
   import ImageRound from "@computational-biology-aachen/design/ImageRound.svelte";
@@ -48,7 +47,7 @@
     styleVars={{ size: "136px" }}
   />
   <div class="info">
-    <Text><strong>{contributor.name}</strong></Text>
+    <p class="name">{contributor.name}</p>
     <div class="links">
       {#if contributor.homepage}
         <Link href={contributor.homepage}><Fa icon={faHome} /></Link>
@@ -96,6 +95,7 @@
 <style>
   .card {
     display: flex;
+    flex-wrap: wrap;
     align-items: start;
     gap: var(--space-4);
     border: 1px solid var(--color-border);
@@ -112,9 +112,22 @@
 
   .info {
     display: flex;
+    flex: 1 1 12rem;
     flex-direction: column;
     gap: var(--space-2);
-    width: 100%;
+    /* Wraps under the photo when narrower than 12rem (large text sizes) and
+       may shrink below its longest word. */
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Not the design Text: its justified alignment spreads short two-line
+     names ("Quang      Huy") across the column. */
+  .name {
+    margin: 0;
+    color: var(--color-text);
+    font-weight: var(--weight-bold);
+    font-size: 1rem;
   }
 
   .links {

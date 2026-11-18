@@ -17,6 +17,8 @@
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    /* Expanding one card's model list must not stretch its row neighbours. */
+    align-items: start;
     gap: var(--space-6);
     margin: 0 auto;
     width: 100%;
