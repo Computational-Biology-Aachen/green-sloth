@@ -44,7 +44,14 @@
 
 {#if model.variables.size > 0}
   <Accordion title="Variables">
-    <div class="table-wrap">
+    <!-- Focusable so keyboard users can scroll the overflowing table. -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <div
+      class="table-wrap"
+      role="region"
+      aria-label="Variables table"
+      tabindex="0"
+    >
       <table>
         <thead>
           <tr><th>Symbol</th><th>ID</th><th>Initial value</th><th>Unit</th></tr>
@@ -82,7 +89,14 @@
 
 {#if model.parameters.size > 0}
   <Accordion title="Parameters">
-    <div class="table-wrap">
+    <!-- Focusable so keyboard users can scroll the overflowing table. -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <div
+      class="table-wrap"
+      role="region"
+      aria-label="Parameters table"
+      tabindex="0"
+    >
       <table>
         <thead>
           <tr><th>Symbol</th><th>ID</th><th>Value</th><th>Unit</th></tr>
@@ -111,7 +125,14 @@
 
 {#if model.assignments.size > 0}
   <Accordion title="Derived quantities">
-    <div class="table-wrap">
+    <!-- Focusable so keyboard users can scroll the overflowing table. -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <div
+      class="table-wrap"
+      role="region"
+      aria-label="Derived quantities table"
+      tabindex="0"
+    >
       <table>
         <thead>
           <tr><th>Symbol</th><th>ID</th><th>Equation</th><th>Unit</th></tr>
@@ -145,7 +166,14 @@
 
 {#if model.reactions.size > 0}
   <Accordion title="Reactions">
-    <div class="table-wrap">
+    <!-- Focusable so keyboard users can scroll the overflowing table. -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <div
+      class="table-wrap"
+      role="region"
+      aria-label="Reactions table"
+      tabindex="0"
+    >
       <table>
         <thead>
           <tr

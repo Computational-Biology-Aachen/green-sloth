@@ -55,6 +55,7 @@
 
 <style>
   fieldset {
+    container-type: inline-size;
     margin: 0;
     border: none;
     padding: 0;
@@ -70,7 +71,8 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-3);
   }
-  @media (max-width: 640px) {
+  /* Narrow where the dashboard column is narrow, not just on phones. */
+  @container (width < 40rem) {
     .grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }

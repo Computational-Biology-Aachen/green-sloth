@@ -81,7 +81,9 @@
 
   .card:hover,
   .card:focus-visible {
-    transform: translateY(-3px);
+    @media (prefers-reduced-motion: no-preference) {
+      transform: translateY(-3px);
+    }
     box-shadow: var(--shadow-primary);
   }
 

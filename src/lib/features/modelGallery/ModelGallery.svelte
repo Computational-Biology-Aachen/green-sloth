@@ -108,18 +108,17 @@
     { value: "unvalidated", label: "Unvalidated" },
   ];
 
-  // Intercept the usual search shortcuts so they focus the model filter
-  // instead of the browser's find bar: Ctrl/Cmd+F always, and "/" when the
-  // user isn't already typing into a field.
+  // "/" focuses the model filter when the user isn't typing into a field.
+  // Ctrl/Cmd+F is left to the browser's find bar (users rely on it, and
+  // find-in-page also reaches text the filter doesn't search).
   function onWindowKey(e: KeyboardEvent) {
-    const isFind = (e.ctrlKey || e.metaKey) && e.key === "f";
     const target = e.target as HTMLElement | null;
     const typing =
       target?.tagName === "INPUT" ||
       target?.tagName === "TEXTAREA" ||
       target?.isContentEditable;
     const isSlash = e.key === "/" && !typing;
-    if (isFind || isSlash) {
+    if (isSlash) {
       e.preventDefault();
       filterInput?.focus();
       filterInput?.select();

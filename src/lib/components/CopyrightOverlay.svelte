@@ -10,10 +10,12 @@
   class="copyright-bug"
   href={doi}
   target="_blank"
+  rel="noopener"
 >
   <span class="copyright-text">
     {license} - {journal}
   </span>
+  <span class="visually-hidden">(opens in a new tab)</span>
 </a>
 
 <style>
@@ -33,6 +35,15 @@
     pointer-events: auto;
     color: white;
 
+    white-space: nowrap;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
     white-space: nowrap;
   }
 </style>

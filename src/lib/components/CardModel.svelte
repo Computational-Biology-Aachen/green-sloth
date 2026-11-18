@@ -112,7 +112,9 @@
   }
 
   .card:hover {
-    transform: translateY(-3px);
+    @media (prefers-reduced-motion: no-preference) {
+      transform: translateY(-3px);
+    }
     box-shadow:
       2px 5px 12px 0 rgba(0, 0, 0, 0.15),
       var(--shadow-primary);

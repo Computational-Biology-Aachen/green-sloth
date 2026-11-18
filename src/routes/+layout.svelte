@@ -101,13 +101,17 @@
     left: var(--space-4);
     transform: translateY(-100%);
     z-index: 100;
-    transition: transform 150ms ease-out;
+
     border-radius: 0 0 var(--radius-md) var(--radius-md);
     background: var(--color-primary);
     padding: var(--space-2) var(--space-4);
     color: var(--color-text-inverse);
     font-weight: 600;
     text-decoration: none;
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: transform 150ms ease-out;
+    }
   }
 
   .skip-link:focus-visible {

@@ -34,6 +34,7 @@
       src={greenslothLogo}
       alt="GreenSloth"
       class="hero-logo"
+      fetchpriority="high"
     />
     <H1 color="light">Photosynthesis Models at your Pace</H1>
     <div class="hero-actions">

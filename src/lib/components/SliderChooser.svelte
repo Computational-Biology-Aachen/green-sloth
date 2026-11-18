@@ -84,7 +84,14 @@
     bind:value={query}
   />
 
-  <div class="table-wrap">
+  <!-- Focusable so keyboard users can scroll the overflowing table. -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <div
+    class="table-wrap"
+    role="region"
+    aria-label="Parameters table"
+    tabindex="0"
+  >
     <table>
       <thead>
         <tr>
@@ -183,7 +190,7 @@
   .table-wrap {
     border: var(--border);
     border-radius: var(--radius-lg);
-    max-height: 60vh;
+    max-height: 60dvh;
     overflow: auto;
   }
   table {
@@ -200,7 +207,7 @@
     position: sticky;
     top: 0;
     z-index: 1;
-    background-color: #e5e7eb;
+    background-color: var(--slate-50);
     font-weight: var(--weight-bold);
     font-size: 0.7rem;
     text-transform: uppercase;

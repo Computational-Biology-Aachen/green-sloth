@@ -160,11 +160,13 @@
     ),
   );
 
+  // meta.ts dates are local-midnight `new Date(y, m)`, so keep the local zone.
+  const curationDate = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+  });
   function formatCurationDate(date: Date): string {
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-    });
+    return curationDate.format(date);
   }
 
   let citationCount: number | null = $state(null);

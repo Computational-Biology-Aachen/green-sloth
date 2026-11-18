@@ -310,7 +310,14 @@
     with no shared display name still show up as unique even if they mean the
     same thing.
   </p>
-  <div class="table-wrap">
+  <!-- Focusable so keyboard users can scroll the overflowing table. -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <div
+    class="table-wrap"
+    role="region"
+    aria-label="Overview table"
+    tabindex="0"
+  >
     <table>
       <thead>
         <tr>
@@ -415,7 +422,14 @@
           Only show differences ({nDiffering} of {sharedParams.length})
         </label>
       </Row>
-      <div class="table-wrap param-values">
+      <!-- Focusable so keyboard users can scroll the overflowing table. -->
+      <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+      <div
+        class="table-wrap param-values"
+        role="region"
+        aria-label="Shared parameter values table"
+        tabindex="0"
+      >
         <table>
           <thead>
             <tr>

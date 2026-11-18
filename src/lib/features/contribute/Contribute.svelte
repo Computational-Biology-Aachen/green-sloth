@@ -77,6 +77,20 @@
   let modelMd = $state("");
   let commentMd = $state("");
   let schemeSvg = $state("");
+
+  // Preview pasted SVG as an image: <img> never runs scripts or event
+  // handlers inside the SVG, unlike injecting it with {@html}.
+  let schemeUrl = $state<string | null>(null);
+  $effect(() => {
+    const svg = schemeSvg.trim();
+    if (!svg) {
+      schemeUrl = null;
+      return;
+    }
+    const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+    schemeUrl = url;
+    return () => URL.revokeObjectURL(url);
+  });
   let curatorNotesMd = $state("");
 
   function toggleTag(category: string, tag: string) {
@@ -151,10 +165,22 @@ export const meta: ModelMeta = {
   );
 
   let copied = $state<string | null>(null);
+  let copyStatus = $state("");
+  let copyTimer: ReturnType<typeof setTimeout> | undefined;
   async function copy(label: string, text: string) {
-    await navigator.clipboard.writeText(text);
-    copied = label;
-    setTimeout(() => (copied = null), 1500);
+    clearTimeout(copyTimer);
+    try {
+      await navigator.clipboard.writeText(text);
+      copied = label;
+      copyStatus = "Copied to clipboard";
+    } catch {
+      copied = null;
+      copyStatus = "Copying failed — select the text and copy it manually";
+    }
+    copyTimer = setTimeout(() => {
+      copied = null;
+      copyStatus = "";
+    }, 1500);
   }
 </script>
 
@@ -263,6 +289,7 @@ export const meta: ModelMeta = {
             class={tags[category]?.includes(tag)
               ? "primary tag-button"
               : "inverted tag-button"}
+            aria-pressed={tags[category]?.includes(tag) ?? false}
             onclick={() => toggleTag(category, tag)}
           >
             {tag}
@@ -281,6 +308,7 @@ export const meta: ModelMeta = {
   <textarea
     class="file"
     rows="5"
+    aria-label="model.md"
     bind:value={modelMd}></textarea>
   <Text
     ><Code>comment.md</Code> (Optional) — Short comment on the model implementation.</Text
@@ -288,6 +316,7 @@ export const meta: ModelMeta = {
   <textarea
     class="file"
     rows="2"
+    aria-label="comment.md (optional)"
     bind:value={commentMd}></textarea>
   <Text
     ><Code>scheme.svg</Code> (Optional) — Model Scheme in an <Code>svg</Code> format.
@@ -296,9 +325,16 @@ export const meta: ModelMeta = {
   <textarea
     class="file"
     rows="4"
+    aria-label="scheme.svg (optional)"
     bind:value={schemeSvg}></textarea>
-  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-  <div class="center">{@html schemeSvg}</div>
+  {#if schemeUrl}
+    <div class="center">
+      <img
+        src={schemeUrl}
+        alt="Preview of the pasted model scheme"
+      />
+    </div>
+  {/if}
 
   <H2>4. The validation</H2>
   <Text>
@@ -310,6 +346,7 @@ export const meta: ModelMeta = {
   <textarea
     class="file"
     rows="2"
+    aria-label="curatornotes.md (optional)"
     bind:value={curatorNotesMd}></textarea>
   <Text
     ><Code>curatornotes.md</Code> (Optional) — A short note on the model validation
@@ -322,6 +359,12 @@ export const meta: ModelMeta = {
     file{schemeSvg.trim() ? " and SVG are" : " is"} too large for a URL — copy
     {schemeSvg.trim() ? "them" : "it"} and paste into the matching box on the issue.
   </Text>
+  <p
+    class="visually-hidden"
+    role="status"
+  >
+    {copyStatus}
+  </p>
   <div class="actions">
     <Button
       variant="secondary"
@@ -395,5 +438,14 @@ export const meta: ModelMeta = {
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-2, 8px);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
   }
 </style>

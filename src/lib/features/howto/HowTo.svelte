@@ -19,7 +19,6 @@
     SectionHeader,
     Text,
     Row,
-    Pair,
     Button,
     Ol,
     Li,
@@ -30,6 +29,7 @@
     Accordion,
   } from "@computational-biology-aachen/design";
   import Image from "@computational-biology-aachen/design/Image.svelte";
+  import { tick } from "svelte";
   const repo = "https://github.com/Computational-Biology-Aachen/green-sloth";
   let section = $state("website");
   $effect(() => {
@@ -43,6 +43,29 @@
   });
   function setSection(newSection: string) {
     section = newSection;
+  }
+
+  const SECTIONS = [
+    { key: "website", label: "Website" },
+    { key: "fittodata", label: "Fit to Data" },
+    { key: "contribute", label: "Contribute" },
+    { key: "submit", label: "Submit" },
+  ];
+
+  // ARIA tabs keyboard model: arrows/Home/End move and select.
+  async function onTabKey(event: KeyboardEvent) {
+    const i = SECTIONS.findIndex((s) => s.key === section);
+    const next = {
+      ArrowRight: (i + 1) % SECTIONS.length,
+      ArrowLeft: (i - 1 + SECTIONS.length) % SECTIONS.length,
+      Home: 0,
+      End: SECTIONS.length - 1,
+    }[event.key];
+    if (next === undefined) return;
+    event.preventDefault();
+    setSection(SECTIONS[next].key);
+    await tick();
+    document.getElementById(`howto-tab-${SECTIONS[next].key}`)?.focus();
   }
 
   const pam_protocol_code = `from mxlpy import make_protocol
@@ -282,495 +305,528 @@ npm run dev               # open the model page, confirm the analyses run`;
 <SectionHeader width="narrow">
   <Row justify="between">
     <H1 color="light">How To</H1>
-    <Pair justify="end">
-      <Button
-        variant="inverted"
-        class={section === "website" ? "inverted active-tab" : "inverted"}
-        onclick={() => setSection("website")}>Website</Button
-      >
-      <Button
-        variant="inverted"
-        class={section === "fittodata" ? "inverted active-tab" : "inverted"}
-        onclick={() => setSection("fittodata")}>Fit to Data</Button
-      >
-      <Button
-        variant="inverted"
-        class={section === "contribute" ? "inverted active-tab" : "inverted"}
-        onclick={() => setSection("contribute")}>Contribute</Button
-      >
-      <Button
-        variant="inverted"
-        class={section === "submit" ? "inverted active-tab" : "inverted"}
-        onclick={() => setSection("submit")}>Submit</Button
-      >
-    </Pair>
+    <div
+      class="howto-tabs"
+      role="tablist"
+      aria-label="How-to topics"
+      tabindex="-1"
+      onkeydown={onTabKey}
+    >
+      {#each SECTIONS as s (s.key)}
+        <Button
+          variant="inverted"
+          id="howto-tab-{s.key}"
+          role="tab"
+          aria-selected={section === s.key}
+          tabindex={section === s.key ? 0 : -1}
+          class={section === s.key ? "inverted active-tab" : "inverted"}
+          onclick={() => setSection(s.key)}>{s.label}</Button
+        >
+      {/each}
+    </div>
   </Row>
 </SectionHeader>
 
-{#if section === "website"}
-  <Section
-    variant="light"
-    width="narrow"
-  >
-    <H1>1. Find a model</H1>
-    <Text>
-      Use the website to find a model you are interested in. With the help of
-      the tags, the live simulation, and the model comparisons, you should find
-      a model that you may want to use for your own research or educational
-      purposes.
-    </Text>
-    <H1>2. Download the model</H1>
-    <Text>
-      Once a model is chosen, you can download it in several formats. We suggest
-      using MxlPy, but if you want to use the model in another programming
-      language, you can also download it in SBML format or as a raw Python file.
-      Please respect the model's license and the original authors' work.
-      GreenSloth is a repository of models and does not own the rights to them.
-    </Text>
-    <H1>3. Using the MxlPy version</H1>
-    <Text>
-      We recommend using the MxlPy version of each model, as the Python package
-      is great for ODE models. Additionally, the creators of GreenSloth also
-      created MxlPy, so most of the models were built using the Python package.
-      All the models are barebones ODE models, so they only need the MxlPy
-      package to run. Look at the <a
-        href="https://cpbl.rwth-aachen.de/MxlPy/latest/"
-        target="_blank">MxlPy documentation</a
-      > for more information on how to use the package and the models.
-    </Text>
-  </Section>
-{:else if section === "fittodata"}
-  <Section
-    variant="light"
-    width="narrow"
-  >
-    <Text>
-      When using a model, the first step is often fitting the model to
-      experimental data. With GreenSloth, there are two main ways to do this:
-      one through the website itself and one using your own programming
-      knowledge. Fitting is simple in theory, but the experiences can vary
-      depending on many factors. These include the model itself, the type of
-      data, the data quality, and the fitting algorithm. Even these factors can
-      be very complex, so there is sadly no one-size-fits-all solution. This
-      section will, however, give you an idea of how to start your fitting
-      journey.
-    </Text>
-    <Accordion title="Fitting on the website">
+<div
+  role="tabpanel"
+  aria-labelledby="howto-tab-{section}"
+>
+  {#if section === "website"}
+    <Section
+      variant="light"
+      width="narrow"
+    >
+      <H1>1. Find a model</H1>
       <Text>
-        The website has a built-in fitting tool, which can be used to fit the
-        model to the experimental data you upload. Here is a step-by-step guide
-        to using the tool.
+        Use the website to find a model you are interested in. With the help of
+        the tags, the live simulation, and the model comparisons, you should
+        find a model that you may want to use for your own research or
+        educational purposes.
       </Text>
-      <H2>Choose your model and enter the fitting process</H2>
+      <H1>2. Download the model</H1>
       <Text>
-        Each model has a "Fit" button on its model page that takes you to the
-        fitting modal. It is to be noted that the fitting routine on the website
-        can only fit to variables provided inside the model itself. Calculations
-        done after the fact, like how NPQ is often done, cannot be fitted here.
-        For that, you need to fit manually.
+        Once a model is chosen, you can download it in several formats. We
+        suggest using MxlPy, but if you want to use the model in another
+        programming language, you can also download it in SBML format or as a
+        raw Python file. Please respect the model's license and the original
+        authors' work. GreenSloth is a repository of models and does not own the
+        rights to them.
       </Text>
-      <img
-        src={IMG_FIT_BUTTON}
-        alt="The live simulation of the Li2021 model, showcasing the 'Fit' button"
-      />
+      <H1>3. Using the MxlPy version</H1>
       <Text>
-        The modal contains a lot of information and lets you change several
-        settings for the fitting process. On the left, you can change the
-        fitting routine's parameters. From which routine to use to how many
-        evaluations to run. You can also choose an ensemble fit, which weights
-        the data by percentage and can therefore create several fitting
-        routines. On the right, you can upload your own experimental data.
+        We recommend using the MxlPy version of each model, as the Python
+        package is great for ODE models. Additionally, the creators of
+        GreenSloth also created MxlPy, so most of the models were built using
+        the Python package. All the models are barebones ODE models, so they
+        only need the MxlPy package to run. Look at the <a
+          href="https://cpbl.rwth-aachen.de/MxlPy/latest/"
+          target="_blank">MxlPy documentation</a
+        > for more information on how to use the package and the models.
       </Text>
-      <img
-        src={IMG_FIT_SETINGS}
-        alt="The fitting modal with various settings"
-      />
+    </Section>
+  {:else if section === "fittodata"}
+    <Section
+      variant="light"
+      width="narrow"
+    >
       <Text>
-        This data needs to be in CSV format, with variable names as columns and
-        each row as a data point. Best practice is to match the data variables
-        to the names used in the model; however, the website auto-detects the
-        names and lets you map them to the corresponding model variables. Once
-        these settings are set, the most important part of fitting can now be
-        tackled.
+        When using a model, the first step is often fitting the model to
+        experimental data. With GreenSloth, there are two main ways to do this:
+        one through the website itself and one using your own programming
+        knowledge. Fitting is simple in theory, but the experiences can vary
+        depending on many factors. These include the model itself, the type of
+        data, the data quality, and the fitting algorithm. Even these factors
+        can be very complex, so there is sadly no one-size-fits-all solution.
+        This section will, however, give you an idea of how to start your
+        fitting journey.
       </Text>
-      <img
-        src={IMG_FIT_DATA}
-        alt="The fitting modal with various settings"
-      />
-      <Text>
-        Choosing the right parameters to fit is not only crucial, but also the
-        most difficult part of the process. With experience in the system being
-        modeled and the model itself, it is easier to bridge the model and the
-        data. Knowing which parameters affect which parts of the model, and
-        which matter most, is crucial to a successful fit. However, getting
-        there is challenging and often requires a lot of trial and error. This
-        is where the website truly shines: you can easily change the parameters
-        to fit and quickly see how the fitting routine performs. The initial
-        guesses for each parameter are provided inside the model itself. Check
-        the boxes of the parameters you wish to fit. Afterward, you scroll down
-        to find two graphs.
-      </Text>
-      <img
-        src={IMG_FIT_PARAMS}
-        alt="The parameters of the to-be fit model"
-      />
-      <Text>
-        These two graphs will represent the fitting process. The first graph
-        shows the model's simulation results, while the second shows the
-        residual norm for each evaluation. Right now, since no fitting has been
-        done, only the uploaded data appears on the left. Once the "Run fit"
-        button is pressed, the live simulation will start.
-      </Text>
-      <img
-        src={IMG_FIT_GRAPHS}
-        alt="The graphs of the fitting modal"
-      />
-      <Text>
-        Depending on the task, it may take a while to finish. However, you can
-        see the fitting process in real time, as the model's simulation changes
-        with each evaluation. The residual norm graph also shows how well the
-        fitting is performing and whether it is converging. Once the fitting is
-        done, you can see the fitted values in the parameters section, where you
-        chose them. At the top of the modal, you can find an "Apply fitted
-        parameters" button to apply the parameters to the model on the page
-        under the modal. Then use the sliders to adjust your newly fitted model
-        and see how it performs.
-      </Text>
-      <img
-        src={IMG_FIT_DONE}
-        alt="The fit of the model"
-      />
-    </Accordion>
-    <Accordion title="Fitting locally">
-      <Text>
-        In some cases, the online fitting tool may not be sufficient. This can
-        be because the model is too complex, the data isn't the right type, or
-        the fitting routine isn't suited to the task. In these cases, locally
-        fitting the model is the best option. This requires not only programming
-        knowledge, but also a good understanding of the model and the data. To
-        help with this journey, we provide an example fitting routine using the <a
-          target="_blank"
-          href="{resolve('/models')}/matuszynska2016">Matuszynska2016</a
-        >
-        model. The snippets shown here are part of a Jupyter Notebook using Python
-        and the MxlPy package. The latter has built-in fitting functions, but because
-        we are addressing a more complex problem, we will use a custom-built fitting
-        routine. We will use MxlPy only to simulate the model. To ensure the integration
-        runs smoothly, we will use the <Code>Assimulo</Code> solver, so make sure
-        your MxlPy installation includes it.
-      </Text>
-      <H3>0. Finding the model</H3>
-      <Text>
-        First, we need to state what we want to do. To do that, we determine
-        what we have; in this example, we have experimental data for NPQ. So we
-        first look through GreenSloth to find a model that somehow showcases
-        NPQ. Using the tag system, live simulations, and the model information
-        tables, we determine that <a
-          target="_blank"
-          href="{resolve('/models')}/matuszynska2016">Matuszynska2016</a
-        > is a good candidate. We tried to fit the model to our data through the online
-        tool; however, we quickly realized that the model does not have a true variable
-        for NPQ and can only be calculated from the model's fluorescence output. However,
-        because our experimental data is measured the same way, we can still use this
-        model; we need our own fitting routine. So now, we download the MxlPy version
-        of the model and start our fitting journey.
-      </Text>
-      <H3>1. Preparing for fitting</H3>
-      <Text>
-        To start, we need to create everything our model needs, including
-        recreating our data. Therefore, we need to create a simulation protocol
-        and any parsing functions our experimental data needs. In this case, our
-        data was extracted through a PAM simulation, so we need to review the
-        data's metadata to determine the length of each phase and pulse, and the
-        PPFD values used. It's easiest when this protocol is created using a
-        function, as seen here:
-      </Text>
-      <Accordion title="Show PAM protocol code">
-        <Pre>
-          {pam_protocol_code}
-        </Pre>
+      <Accordion title="Fitting on the website">
+        <Text>
+          The website has a built-in fitting tool, which can be used to fit the
+          model to the experimental data you upload. Here is a step-by-step
+          guide to using the tool.
+        </Text>
+        <H2>Choose your model and enter the fitting process</H2>
+        <Text>
+          Each model has a "Fit" button on its model page that takes you to the
+          fitting modal. It is to be noted that the fitting routine on the
+          website can only fit to variables provided inside the model itself.
+          Calculations done after the fact, like how NPQ is often done, cannot
+          be fitted here. For that, you need to fit manually.
+        </Text>
+        <img
+          src={IMG_FIT_BUTTON}
+          width="1057"
+          height="560"
+          loading="lazy"
+          decoding="async"
+          alt="The live simulation of the Li2021 model, showcasing the 'Fit' button"
+        />
+        <Text>
+          The modal contains a lot of information and lets you change several
+          settings for the fitting process. On the left, you can change the
+          fitting routine's parameters. From which routine to use to how many
+          evaluations to run. You can also choose an ensemble fit, which weights
+          the data by percentage and can therefore create several fitting
+          routines. On the right, you can upload your own experimental data.
+        </Text>
+        <img
+          src={IMG_FIT_SETINGS}
+          width="1871"
+          height="850"
+          loading="lazy"
+          decoding="async"
+          alt="The fitting modal with various settings"
+        />
+        <Text>
+          This data needs to be in CSV format, with variable names as columns
+          and each row as a data point. Best practice is to match the data
+          variables to the names used in the model; however, the website
+          auto-detects the names and lets you map them to the corresponding
+          model variables. Once these settings are set, the most important part
+          of fitting can now be tackled.
+        </Text>
+        <img
+          src={IMG_FIT_DATA}
+          width="1871"
+          height="850"
+          loading="lazy"
+          decoding="async"
+          alt="The fitting modal with various settings"
+        />
+        <Text>
+          Choosing the right parameters to fit is not only crucial, but also the
+          most difficult part of the process. With experience in the system
+          being modeled and the model itself, it is easier to bridge the model
+          and the data. Knowing which parameters affect which parts of the
+          model, and which matter most, is crucial to a successful fit. However,
+          getting there is challenging and often requires a lot of trial and
+          error. This is where the website truly shines: you can easily change
+          the parameters to fit and quickly see how the fitting routine
+          performs. The initial guesses for each parameter are provided inside
+          the model itself. Check the boxes of the parameters you wish to fit.
+          Afterward, you scroll down to find two graphs.
+        </Text>
+        <img
+          src={IMG_FIT_PARAMS}
+          width="1871"
+          height="850"
+          loading="lazy"
+          decoding="async"
+          alt="The parameters of the to-be fit model"
+        />
+        <Text>
+          These two graphs will represent the fitting process. The first graph
+          shows the model's simulation results, while the second shows the
+          residual norm for each evaluation. Right now, since no fitting has
+          been done, only the uploaded data appears on the left. Once the "Run
+          fit" button is pressed, the live simulation will start.
+        </Text>
+        <img
+          src={IMG_FIT_GRAPHS}
+          width="1871"
+          height="850"
+          loading="lazy"
+          decoding="async"
+          alt="The graphs of the fitting modal"
+        />
+        <Text>
+          Depending on the task, it may take a while to finish. However, you can
+          see the fitting process in real time, as the model's simulation
+          changes with each evaluation. The residual norm graph also shows how
+          well the fitting is performing and whether it is converging. Once the
+          fitting is done, you can see the fitted values in the parameters
+          section, where you chose them. At the top of the modal, you can find
+          an "Apply fitted parameters" button to apply the parameters to the
+          model on the page under the modal. Then use the sliders to adjust your
+          newly fitted model and see how it performs.
+        </Text>
+        <img
+          src={IMG_FIT_DONE}
+          width="1871"
+          height="850"
+          loading="lazy"
+          decoding="async"
+          alt="The fit of the model"
+        />
       </Accordion>
-      <Text>
-        Additionally, we need to create a function that takes the model's output
-        and calculates NPQ from it. The fitting routine will use this function,
-        take the model's simulation results, and compare them to the
-        experimental data. So it must be written so the routine can easily call
-        it, provide the correct model output, and receive the correct values
-        back. This is done in the following function:
-      </Text>
-      <Accordion title="Show NPQ calculation code">
-        <Pre>
-          {npq_code}
-        </Pre>
+      <Accordion title="Fitting locally">
+        <Text>
+          In some cases, the online fitting tool may not be sufficient. This can
+          be because the model is too complex, the data isn't the right type, or
+          the fitting routine isn't suited to the task. In these cases, locally
+          fitting the model is the best option. This requires not only
+          programming knowledge, but also a good understanding of the model and
+          the data. To help with this journey, we provide an example fitting
+          routine using the <a
+            target="_blank"
+            href="{resolve('/models')}/matuszynska2016">Matuszynska2016</a
+          >
+          model. The snippets shown here are part of a Jupyter Notebook using Python
+          and the MxlPy package. The latter has built-in fitting functions, but because
+          we are addressing a more complex problem, we will use a custom-built fitting
+          routine. We will use MxlPy only to simulate the model. To ensure the integration
+          runs smoothly, we will use the <Code>Assimulo</Code> solver, so make sure
+          your MxlPy installation includes it.
+        </Text>
+        <H3>0. Finding the model</H3>
+        <Text>
+          First, we need to state what we want to do. To do that, we determine
+          what we have; in this example, we have experimental data for NPQ. So
+          we first look through GreenSloth to find a model that somehow
+          showcases NPQ. Using the tag system, live simulations, and the model
+          information tables, we determine that <a
+            target="_blank"
+            href="{resolve('/models')}/matuszynska2016">Matuszynska2016</a
+          > is a good candidate. We tried to fit the model to our data through the
+          online tool; however, we quickly realized that the model does not have a
+          true variable for NPQ and can only be calculated from the model's fluorescence
+          output. However, because our experimental data is measured the same way,
+          we can still use this model; we need our own fitting routine. So now, we
+          download the MxlPy version of the model and start our fitting journey.
+        </Text>
+        <H3>1. Preparing for fitting</H3>
+        <Text>
+          To start, we need to create everything our model needs, including
+          recreating our data. Therefore, we need to create a simulation
+          protocol and any parsing functions our experimental data needs. In
+          this case, our data was extracted through a PAM simulation, so we need
+          to review the data's metadata to determine the length of each phase
+          and pulse, and the PPFD values used. It's easiest when this protocol
+          is created using a function, as seen here:
+        </Text>
+        <Accordion title="Show PAM protocol code">
+          <Pre>
+            {pam_protocol_code}
+          </Pre>
+        </Accordion>
+        <Text>
+          Additionally, we need to create a function that takes the model's
+          output and calculates NPQ from it. The fitting routine will use this
+          function, take the model's simulation results, and compare them to the
+          experimental data. So it must be written so the routine can easily
+          call it, provide the correct model output, and receive the correct
+          values back. This is done in the following function:
+        </Text>
+        <Accordion title="Show NPQ calculation code">
+          <Pre>
+            {npq_code}
+          </Pre>
+        </Accordion>
+        <Text>
+          With this, we can finally look at how different our model is from the
+          experimental data. This will also let us check the functions we
+          created beforehand to see if they work as intended. We can now run the
+          model with the protocol we created and use the function to calculate
+          NPQ. Then we can plot the results and compare them to our experimental
+          data.
+        </Text>
+        <Accordion title="Show Simulation and Plotting code">
+          <Pre>
+            {first_test}
+          </Pre>
+        </Accordion>
+        <Image src={IMG_LOCALFIT_FIRST} />
+        <H3>2. The Fitting Routine</H3>
+        <Text>
+          We can see that our functions work, but the model is far from our
+          experimental data. So now we have to create the actual fitting
+          routine. In this example, we will use the <Code>least_squares</Code> function
+          from
+          <Code>scipy.optimize</Code>. You can use another, but keep in mind
+          that the arguments may differ. In this case, the function needs a
+          residual function, a starting guess for the parameters, and parameter
+          bounds. The residual function is the difference between the NPQ values
+          from a simulation run with a given set of parameters and the
+          experimental data. So we need to write this function to take a new set
+          of parameters, insert them into our model, run the simulation,
+          calculate NPQ, and return the difference from the experimental data.
+          Note what your fitting routine gives to the residual function. Here,
+          it returns a list of parameter values to be fitted, in the order given
+          in the starting guess. So we need to make sure we insert the right
+          values in the right order into our model. This is done in the
+          following function:
+        </Text>
+        <Accordion title="Show Residuals Function code">
+          <Pre>
+            {residual_func}
+          </Pre>
+        </Accordion>
+        <Text>
+          Now we can start thinking about which parameters we want to fit. This
+          takes practice and a lot of trial and error. It helps to look at the
+          output we wish to fit and which parameters affect it directly, then go
+          from there. Some parameters, however, should definitely not be fitted.
+          For example, physical constants, parameters we know won't change, or
+          parameters set by the simulation protocol. To make the trial-and-error
+          part of the fitting easier and more efficient, it is recommended to
+          create a collection of the parameters you wish to change. With MxlPy,
+          it's easy to change several parameters at once using dictionaries. So
+          we will set it up using that same format.
+        </Text>
+        <Text>
+          Additionally, we can supply custom starting guesses; however, you
+          usually use the ones already in the model. Also set the bounds to a
+          reasonable range, with some already having physical constraints that
+          should be respected. The following code shows an example of how to set
+          up the parameters to be fitted:
+        </Text>
+        <Accordion title="Show Fitting parameters code">
+          <Pre>
+            {fit_params}
+          </Pre>
+        </Accordion>
+        <Text>
+          We can now run the fitting routine. We will use the <Code
+            >least_squares</Code
+          > function from <Code>scipy.optimize</Code>. The arguments are the
+          residual function, the starting guess, and the bounds. The fitting
+          routine returns a set of parameters that best fit the experimental
+          data. We can then use these parameters to rerun the model and assess
+          how well it fits the data. The following code shows how to run the
+          fitting routine:
+        </Text>
+        <Accordion title="Show Fitting Routine code">
+          <Pre>
+            {fitting_code}
+          </Pre>
+        </Accordion>
+        <Accordion title="Show Fitting Results code">
+          <Pre>
+            {fit_plot_code}
+          </Pre>
+        </Accordion>
+        <Image src={IMG_LOCALFIT_RESULT} />
+        <H3>3. Are we done?</H3>
+        <Text>
+          Now we assess whether the fitting was successful. The fitted
+          parameters are clearly better than the initial ones; however, they are
+          still not perfect. The fitting definitely has problems with the
+          relaxation phase of the PAM protocol. This is where the
+          trial-and-error part of fitting comes in. We can now change the
+          parameters we want to fit, the starting guesses, or the bounds. We can
+          also change the fitting routine itself, or even use a different one.
+          The possibilities are endless, and it is up to you to find the best
+          combination of parameters and fitting routine to fit your data best.
+          Keep in mind that not every model fits every data set, and sometimes
+          it is better to use a different model or even create your own. Fitting
+          is an art, and it takes practice to get good at it. Don't be
+          discouraged if you don't get the perfect fit on the first try. Keep
+          trying, and you will get there.
+        </Text>
       </Accordion>
+    </Section>
+  {:else if section === "contribute"}
+    <Section
+      variant="light"
+      width="narrow"
+    >
+      <H1>Two ways to contribute</H1>
+      <Ol>
+        <Li>
+          <Bold>From the browser, no setup.</Bold> Use the
+          <button
+            type="button"
+            class="link-button"
+            onclick={() => setSection("submit")}>in-app builder</button
+          >: paste your model, confirm it simulates in the live preview, fill in
+          the metadata, and open a pre-filled issue. A workflow validates it and
+          opens the pull request for you.
+        </Li>
+        <Li>
+          <Bold>As a pull request yourself.</Bold> Clone the repo, drop a
+          <Code>src/lib/models/&lt;slug&gt;/</Code> folder (below), run the checks,
+          and open a PR. A more comprehensive guide can be found in <Link
+            href="{repo}/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</Link
+          >
+        </Li>
+      </Ol>
+      <H1>How a model looks like</H1>
       <Text>
-        With this, we can finally look at how different our model is from the
-        experimental data. This will also let us check the functions we created
-        beforehand to see if they work as intended. We can now run the model
-        with the protocol we created and use the function to calculate NPQ. Then
-        we can plot the results and compare them to our experimental data.
+        Models are auto-discovered directories under <Code
+          >src/lib/models/&lt;slug&gt;/</Code
+        >. The <Bold>required</Bold> files are the <Code>meta.ts</Code> and a model
+        file in any supported format:
       </Text>
-      <Accordion title="Show Simulation and Plotting code">
-        <Pre>
-          {first_test}
-        </Pre>
-      </Accordion>
-      <Image src={IMG_LOCALFIT_FIRST} />
-      <H3>2. The Fitting Routine</H3>
+      <Ol>
+        <Li><Code>model.mxl.json</Code> (preferred)</Li>
+        <Li><Code>model.sbml</Code></Li>
+        <Li><Code>model.ts</Code></Li>
+      </Ol>
+      <Pre>{folder}</Pre>
       <Text>
-        We can see that our functions work, but the model is far from our
-        experimental data. So now we have to create the actual fitting routine.
-        In this example, we will use the <Code>least_squares</Code> function from
-        <Code>scipy.optimize</Code>. You can use another, but keep in mind that
-        the arguments may differ. In this case, the function needs a residual
-        function, a starting guess for the parameters, and parameter bounds. The
-        residual function is the difference between the NPQ values from a
-        simulation run with a given set of parameters and the experimental data.
-        So we need to write this function to take a new set of parameters,
-        insert them into our model, run the simulation, calculate NPQ, and
-        return the difference from the experimental data. Note what your fitting
-        routine gives to the residual function. Here, it returns a list of
-        parameter values to be fitted, in the order given in the starting guess.
-        So we need to make sure we insert the right values in the right order
-        into our model. This is done in the following function:
+        The <Code>&lt;slug&gt;</Code>, which is the directory name will be the
+        name of the model on the website, and must match the <Code>slug</Code> field
+        in <Code>meta.ts</Code>.
       </Text>
-      <Accordion title="Show Residuals Function code">
-        <Pre>
-          {residual_func}
-        </Pre>
-      </Accordion>
+      <H2>1. The model file</H2>
       <Text>
-        Now we can start thinking about which parameters we want to fit. This
-        takes practice and a lot of trial and error. It helps to look at the
-        output we wish to fit and which parameters affect it directly, then go
-        from there. Some parameters, however, should definitely not be fitted.
-        For example, physical constants, parameters we know won't change, or
-        parameters set by the simulation protocol. To make the trial-and-error
-        part of the fitting easier and more efficient, it is recommended to
-        create a collection of the parameters you wish to change. With MxlPy,
-        it's easy to change several parameters at once using dictionaries. So we
-        will set it up using that same format.
-      </Text>
-      <Text>
-        Additionally, we can supply custom starting guesses; however, you
-        usually use the ones already in the model. Also set the bounds to a
-        reasonable range, with some already having physical constraints that
-        should be respected. The following code shows an example of how to set
-        up the parameters to be fitted:
-      </Text>
-      <Accordion title="Show Fitting parameters code">
-        <Pre>
-          {fit_params}
-        </Pre>
-      </Accordion>
-      <Text>
-        We can now run the fitting routine. We will use the <Code
-          >least_squares</Code
-        > function from <Code>scipy.optimize</Code>. The arguments are the
-        residual function, the starting guess, and the bounds. The fitting
-        routine returns a set of parameters that best fit the experimental data.
-        We can then use these parameters to rerun the model and assess how well
-        it fits the data. The following code shows how to run the fitting
-        routine:
-      </Text>
-      <Accordion title="Show Fitting Routine code">
-        <Pre>
-          {fitting_code}
-        </Pre>
-      </Accordion>
-      <Accordion title="Show Fitting Results code">
-        <Pre>
-          {fit_plot_code}
-        </Pre>
-      </Accordion>
-      <Image src={IMG_LOCALFIT_RESULT} />
-      <H3>3. Are we done?</H3>
-      <Text>
-        Now we assess whether the fitting was successful. The fitted parameters
-        are clearly better than the initial ones; however, they are still not
-        perfect. The fitting definitely has problems with the relaxation phase
-        of the PAM protocol. This is where the trial-and-error part of fitting
-        comes in. We can now change the parameters we want to fit, the starting
-        guesses, or the bounds. We can also change the fitting routine itself,
-        or even use a different one. The possibilities are endless, and it is up
-        to you to find the best combination of parameters and fitting routine to
-        fit your data best. Keep in mind that not every model fits every data
-        set, and sometimes it is better to use a different model or even create
-        your own. Fitting is an art, and it takes practice to get good at it.
-        Don't be discouraged if you don't get the perfect fit on the first try.
-        Keep trying, and you will get there.
-      </Text>
-    </Accordion>
-  </Section>
-{:else if section === "contribute"}
-  <Section
-    variant="light"
-    width="narrow"
-  >
-    <H1>Two ways to contribute</H1>
-    <Ol>
-      <Li>
-        <Bold>From the browser, no setup.</Bold> Use the
-        <button
-          type="button"
-          class="link-button"
-          onclick={() => setSection("submit")}>in-app builder</button
-        >: paste your model, confirm it simulates in the live preview, fill in
-        the metadata, and open a pre-filled issue. A workflow validates it and
-        opens the pull request for you.
-      </Li>
-      <Li>
-        <Bold>As a pull request yourself.</Bold> Clone the repo, drop a
-        <Code>src/lib/models/&lt;slug&gt;/</Code> folder (below), run the checks,
-        and open a PR. A more comprehensive guide can be found in <Link
-          href="{repo}/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</Link
-        >
-      </Li>
-    </Ol>
-    <H1>How a model looks like</H1>
-    <Text>
-      Models are auto-discovered directories under <Code
-        >src/lib/models/&lt;slug&gt;/</Code
-      >. The <Bold>required</Bold> files are the <Code>meta.ts</Code> and a model
-      file in any supported format:
-    </Text>
-    <Ol>
-      <Li><Code>model.mxl.json</Code> (preferred)</Li>
-      <Li><Code>model.sbml</Code></Li>
-      <Li><Code>model.ts</Code></Li>
-    </Ol>
-    <Pre>{folder}</Pre>
-    <Text>
-      The <Code>&lt;slug&gt;</Code>, which is the directory name will be the
-      name of the model on the website, and must match the <Code>slug</Code> field
-      in <Code>meta.ts</Code>.
-    </Text>
-    <H2>1. The model file</H2>
-    <Text>
-      The model file itself is data. It is recommended to let a tool write the
-      model file for you:
-    </Text>
-    <Ol>
-      <Li
-        ><a
-          href="https://github.com/Computational-Biology-Aachen/mxlpy"
-          target="_blank"
-          rel="noopener noreferrer"><Code>MxlPy</Code></a
-        >: A python package for working with ODE models, that has the canonical <Code
-          >.mxl.json</Code
-        > export.</Li
-      >
-      <Li
-        ><Bold>SBML</Bold>: Use a tool that exports an <Code>sbml</Code> file and
-        drop it in the folder and greensloth converts it on load with <Code
-          >sbmlToModel</Code
-        >.</Li
-      >
-      <Li
-        >Handwriting a <Code>model.ts</Code> file to correspond to your model. (Very
-        tedious)</Li
-      >
-    </Ol>
-    <H2>2. The <Code>meta.ts</Code> file</H2>
-    <Text>
-      The <Code>meta.ts</Code> file contains the metadata of the model, such as the
-      title, DOI, tags, and dashboard analyses. It is required for the model to be
-      correctly displayed on the website.
-    </Text>
-    <Pre>{metaTs}</Pre>
-    <Accordion title="Each field explained">
-      <Text>
-        The <Code>meta.ts</Code> file is a TypeScript file that exports a <Code
-          >meta</Code
-        > object of type <Code>ModelMeta</Code>. The <Code>ModelMeta</Code> type is
-        defined in <Code>$lib/types</Code>. The <Code>meta</Code> object contains
-        the following fields:
+        The model file itself is data. It is recommended to let a tool write the
+        model file for you:
       </Text>
       <Ol>
         <Li
-          ><Bold>slug</Bold>: The slug of the model, which is the directory
-          name.</Li
-        >
-        <Li
-          ><Bold>title</Bold>: The title of the model, often the first Author's
-          surname and the year of publication.</Li
-        >
-        <Li><Bold>DOI</Bold>: The DOI of the model.</Li>
-        <Li><Bold>journal</Bold>: The journal of the model.</Li>
-        <Li
-          ><Bold>license</Bold>: If the publication is open access, this field
-          should be filled with the license information. If non-open access, but
-          a scheme is recreated, 'Recreated' should be added</Li
-        >
-        <Li
-          ><Bold>tags</Bold>: The tags of the model. The <Code>Object</Code> should
-          include all available tag categories, if the model does not have a tag of
-          that category, the array should be empty. The avaiable Tags can be found
-          in the
-          <a
-            href="{repo}/blob/main/src/lib/tags.ts"
+          ><a
+            href="https://github.com/Computational-Biology-Aachen/mxlpy"
             target="_blank"
-            rel="noopener noreferrer"><Code>tags.ts</Code></a
-          > file.</Li
+            rel="noopener noreferrer"><Code>MxlPy</Code></a
+          >: A python package for working with ODE models, that has the
+          canonical <Code>.mxl.json</Code> export.</Li
         >
-        <Li><Bold>analyses</Bold>: The analyses of the model.</Li>
         <Li
-          ><Bold>dataSelects</Bold> (optional): Pickers that swap a model data set
-          between alternatives (e.g. light spectra), shown above the dashboard's sliders.
-          Each names the <Code>data</Code> id, its options, the
-          <Code>default</Code> option and a lazy <Code>load</Code> of the option values
-          (e.g. <Code>() =&gt; import("./lights.json")</Code>).</Li
+          ><Bold>SBML</Bold>: Use a tool that exports an <Code>sbml</Code> file and
+          drop it in the folder and greensloth converts it on load with <Code
+            >sbmlToModel</Code
+          >.</Li
         >
-        <Li><Bold>contributors</Bold>: The contributors of the model.</Li>
+        <Li
+          >Handwriting a <Code>model.ts</Code> file to correspond to your model. (Very
+          tedious)</Li
+        >
       </Ol>
-    </Accordion>
-    <H2>3. The model depiction</H2>
-    <Text>
-      The model depiction is done in two ways. One is a brief description of the
-      model, as shown in the publication. It should include the model's purpose,
-      the model's structure, and the model's assumptions. This is done in the <Code
-        >model.md</Code
-      > file.
-    </Text>
-    <Text>
-      The other is a reaction scheme diagram, which is a visual representation
-      of the model's reactions. It should include all reactions, all species,
-      and all compartments. The reaction scheme diagram should be in SVG format
-      and should be named <Code>scheme.svg</Code>. Depending on the license of
-      the publication, the scheme can be directly taken from there, or it can
-      bre loosely recreated. If the scheme is recreated, it should be mentioned
-      in the <Code>license</Code> field of the <Code>meta.ts</Code> file. This step
-      is optional, but highly recommended, as it helps to understand the model better.
-    </Text>
-    <H2>4. The model validation</H2>
-    <Text>
-      The model reimplementation should be validated by recreating the original
-      publication's figures. The validation figures should be placed in the <Code
-        >figs/</Code
-      > directory, and the script to generate them should be included by calling it
-      <Code>validation.*ipynb</Code>. It does not have to be written in Python,
-      but a Jupyter Notebook is definitely recommended. If there are errors in
-      the validation, but the it is still considered a good addition to the
-      GreenSloth website, a <Code>curatornotes.md</Code> file should be added to explain
-      the errors and the reasoning behind it.
-    </Text>
-    <Text>
-      A model can also declare its figures as data in <Code>validation.ts</Code
-      >, next to <Code>meta.ts</Code>. These run from the model on the website
-      itself when a figure is opened, can be downloaded as an MxlPy notebook,
-      and are checked against frozen reference values whenever the model
-      changes.
-    </Text>
-    <H2>5. Verify and open a PR</H2>
-    <Pre>{verifyCode}</Pre>
-    <Text>
-      Then open a pull request against <Link href={repo}>green-sloth</Link>. CI
-      re-runs <Code>validate:models</Code> and a build on every PR.
-    </Text>
-  </Section>
-{:else if section === "submit"}
-  <Contribute />
-{/if}
+      <H2>2. The <Code>meta.ts</Code> file</H2>
+      <Text>
+        The <Code>meta.ts</Code> file contains the metadata of the model, such as
+        the title, DOI, tags, and dashboard analyses. It is required for the model
+        to be correctly displayed on the website.
+      </Text>
+      <Pre>{metaTs}</Pre>
+      <Accordion title="Each field explained">
+        <Text>
+          The <Code>meta.ts</Code> file is a TypeScript file that exports a <Code
+            >meta</Code
+          > object of type <Code>ModelMeta</Code>. The <Code>ModelMeta</Code> type
+          is defined in <Code>$lib/types</Code>. The <Code>meta</Code> object contains
+          the following fields:
+        </Text>
+        <Ol>
+          <Li
+            ><Bold>slug</Bold>: The slug of the model, which is the directory
+            name.</Li
+          >
+          <Li
+            ><Bold>title</Bold>: The title of the model, often the first
+            Author's surname and the year of publication.</Li
+          >
+          <Li><Bold>DOI</Bold>: The DOI of the model.</Li>
+          <Li><Bold>journal</Bold>: The journal of the model.</Li>
+          <Li
+            ><Bold>license</Bold>: If the publication is open access, this field
+            should be filled with the license information. If non-open access,
+            but a scheme is recreated, 'Recreated' should be added</Li
+          >
+          <Li
+            ><Bold>tags</Bold>: The tags of the model. The <Code>Object</Code> should
+            include all available tag categories, if the model does not have a tag
+            of that category, the array should be empty. The avaiable Tags can be
+            found in the
+            <a
+              href="{repo}/blob/main/src/lib/tags.ts"
+              target="_blank"
+              rel="noopener noreferrer"><Code>tags.ts</Code></a
+            > file.</Li
+          >
+          <Li><Bold>analyses</Bold>: The analyses of the model.</Li>
+          <Li
+            ><Bold>dataSelects</Bold> (optional): Pickers that swap a model data set
+            between alternatives (e.g. light spectra), shown above the dashboard's
+            sliders. Each names the <Code>data</Code> id, its options, the
+            <Code>default</Code> option and a lazy <Code>load</Code> of the option
+            values (e.g. <Code>() =&gt; import("./lights.json")</Code>).</Li
+          >
+          <Li><Bold>contributors</Bold>: The contributors of the model.</Li>
+        </Ol>
+      </Accordion>
+      <H2>3. The model depiction</H2>
+      <Text>
+        The model depiction is done in two ways. One is a brief description of
+        the model, as shown in the publication. It should include the model's
+        purpose, the model's structure, and the model's assumptions. This is
+        done in the <Code>model.md</Code> file.
+      </Text>
+      <Text>
+        The other is a reaction scheme diagram, which is a visual representation
+        of the model's reactions. It should include all reactions, all species,
+        and all compartments. The reaction scheme diagram should be in SVG
+        format and should be named <Code>scheme.svg</Code>. Depending on the
+        license of the publication, the scheme can be directly taken from there,
+        or it can bre loosely recreated. If the scheme is recreated, it should
+        be mentioned in the <Code>license</Code> field of the <Code
+          >meta.ts</Code
+        > file. This step is optional, but highly recommended, as it helps to understand
+        the model better.
+      </Text>
+      <H2>4. The model validation</H2>
+      <Text>
+        The model reimplementation should be validated by recreating the
+        original publication's figures. The validation figures should be placed
+        in the <Code>figs/</Code> directory, and the script to generate them should
+        be included by calling it
+        <Code>validation.*ipynb</Code>. It does not have to be written in
+        Python, but a Jupyter Notebook is definitely recommended. If there are
+        errors in the validation, but the it is still considered a good addition
+        to the GreenSloth website, a <Code>curatornotes.md</Code> file should be added
+        to explain the errors and the reasoning behind it.
+      </Text>
+      <Text>
+        A model can also declare its figures as data in <Code
+          >validation.ts</Code
+        >, next to <Code>meta.ts</Code>. These run from the model on the website
+        itself when a figure is opened, can be downloaded as an MxlPy notebook,
+        and are checked against frozen reference values whenever the model
+        changes.
+      </Text>
+      <H2>5. Verify and open a PR</H2>
+      <Pre>{verifyCode}</Pre>
+      <Text>
+        Then open a pull request against <Link href={repo}>green-sloth</Link>.
+        CI re-runs <Code>validate:models</Code> and a build on every PR.
+      </Text>
+    </Section>
+  {:else if section === "submit"}
+    <Contribute />
+  {/if}
+</div>
 
 <style>
   :global(H1) {
@@ -794,5 +850,11 @@ npm run dev               # open the model page, confirm the analyses run`;
   }
   :global(button.active-tab) {
     border-bottom: 0.2em solid var(--color-accent) !important;
+  }
+  .howto-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--gap);
   }
 </style>
