@@ -2,7 +2,7 @@
  * CI gate for the committed model data files. For every `model.mxl.json`:
  *
  *   1. Schema-validate it — `mxlJsonToModel` checks the document against the
- *      vendored mxl-schemas v1 schema and throws on any violation.
+ *      vendored mxl-schemas v0 schema and throws on any violation.
  *   2. Soundness-check it, per the backend the app actually runs it through:
  *      - kinetic models must have at least one state variable with finite
  *        initial values, and lower cleanly to the WAT/WASM backend

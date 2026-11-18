@@ -1,6 +1,6 @@
 {
-  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/kinetic-model.schema.json",
-  "spec_version": "1.2",
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v0/kinetic-model.schema.json",
+  "spec_version": "0.3",
   "kind": "kinetic",
   "model_id": "pfennig2024",
   "data_ref": "model.data.json",

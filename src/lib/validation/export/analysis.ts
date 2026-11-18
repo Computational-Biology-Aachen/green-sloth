@@ -24,7 +24,7 @@ import type {
 } from "../types";
 
 export const ANALYSIS_SCHEMA_URL =
-  "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/analysis.schema.json";
+  "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v0/analysis.schema.json";
 
 export type ModelKind = "kinetic" | "ode" | "steady-state";
 
@@ -169,7 +169,7 @@ export function toAnalysisDocument(
 ): object {
   return {
     $schema: ANALYSIS_SCHEMA_URL,
-    spec_version: "1.1",
+    spec_version: "0.1",
     kind: "analysis",
     model: { model_id: modelId, kind },
     // Through JSON, as a file would hold them: drops `undefined` fields.

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/analysis.schema.json",
+  "$id": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v0/analysis.schema.json",
   "title": "Mxl analysis format",
   "description": "Simulations, data handling, plots and checks for one .mxl.json model, as plain data that runs on several backends (mxlweb, MxlPy). Analyses not possible for the model's kind (e.g. a time course of a steady-state model) are rejected by the schema; whether ids exist in the model is left to consumers.",
   "type": "object",
@@ -13,8 +13,8 @@
     },
     "spec_version": {
       "type": "string",
-      "enum": ["1.1"],
-      "description": "Version of the analysis format. 1.1 stores expressions as node trees (ADR 0014); the experimental 1.0 string expressions are no longer accepted."
+      "enum": ["0.1"],
+      "description": "Version of the analysis format (pre-1.0: a minor bump may break, see ADR 0011). Expressions are stored as node trees (ADR 0014)."
     },
     "kind": {
       "type": "string",

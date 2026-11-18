@@ -1,6 +1,6 @@
 {
-  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v1/steady-state-model.schema.json",
-  "spec_version": "1.1",
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v0/steady-state-model.schema.json",
+  "spec_version": "0.2",
   "kind": "steady-state",
   "model_id": "johnson2021",
   "model": {

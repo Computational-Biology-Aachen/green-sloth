@@ -20,7 +20,7 @@ const MODELS = fileURLToPath(new URL("../src/lib/models", import.meta.url));
 const SCHEMAS = fileURLToPath(
   new URL("../../../misc/mxl-schemas", import.meta.url),
 );
-const hasSchemas = existsSync(`${SCHEMAS}/v1/analysis.schema.json`);
+const hasSchemas = existsSync(`${SCHEMAS}/v0/analysis.schema.json`);
 const slugs = readdirSync(MODELS).filter((slug) =>
   existsSync(`${MODELS}/${slug}/validation.ts`),
 );
@@ -47,7 +47,7 @@ describe.each(slugs)("%s", (slug) => {
 
 describe.runIf(hasSchemas)("mxl-schemas", () => {
   it("vendored analysis schema matches mxl-schemas", () => {
-    expect(schema).toEqual(readJson(`${SCHEMAS}/v1/analysis.schema.json`));
+    expect(schema).toEqual(readJson(`${SCHEMAS}/v0/analysis.schema.json`));
   });
 
   type Case = { name: string; valid: boolean; document: unknown };
