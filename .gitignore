@@ -6,3 +6,6 @@ dist
 .env.*
 !.env.example
 tmp/
+
+# Agent skills installed via `npx skills` (restore with `npx skills install -a claude-code`)
+.claude/skills/modern-web-guidance/
