@@ -644,6 +644,7 @@ function styleKwargs(s: LineSeries): string {
   if (s.markerSize !== undefined) kw.push(`markersize=${s.markerSize}`);
   if (s.markerFace) kw.push(`markerfacecolor=${str(s.markerFace)}`);
   if (s.markerEdge) kw.push(`markeredgecolor=${str(s.markerEdge)}`);
+  if (s.markEvery !== undefined) kw.push(`markevery=${s.markEvery}`);
   return kw.map((k) => `, ${k}`).join("");
 }
 
