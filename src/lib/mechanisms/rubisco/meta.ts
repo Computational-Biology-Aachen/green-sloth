@@ -216,6 +216,22 @@ export const meta: MechanismMeta = {
       },
     },
     {
+      id: "ethier2004",
+      citation: "Ethier 2004",
+      year: 2004,
+      doi: "10.1111/j.1365-3040.2004.01140.x",
+      slug: "ethier2004",
+      choices: {
+        resolution: FVCB_CORE.resolution,
+        "rubp-dependence": FVCB_CORE.rubp,
+        oxygenation: [...FVCB_CORE.oxygenation, "specificity"],
+        "effector-inhibition": FVCB_CORE.inhibition,
+        "activation-and-activase": FVCB_CORE.activation,
+        "co2-at-the-active-site": "cc",
+        temperature: "none",
+      },
+    },
+    {
       id: "tcherkez2006",
       citation: "Tcherkez 2006",
       year: 2006,
