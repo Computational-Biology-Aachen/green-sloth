@@ -11,6 +11,7 @@ import { isRef, parse, refs, toPython } from "../expr";
 import { scanX } from "../helpers";
 import { OPS } from "../ops";
 import type {
+  Annotation,
   LineSeries,
   Mca,
   ModelEdit,
@@ -658,6 +659,22 @@ function ruleLine(ax: string, fn: string, r: Rule): string {
   return `${ax}.${fn}(${[r.value, ...kw].join(", ")})`;
 }
 
+function annotationLine(
+  ax: string,
+  a: Annotation,
+  py: (src: string) => string,
+): string {
+  const at = (p: number | string) => (typeof p === "number" ? p : py(p));
+  const kw = [
+    a.coords === "axes" && `transform=${ax}.transAxes`,
+    a.color && `color=${str(a.color)}`,
+    a.size !== undefined && `fontsize=${a.size}`,
+    a.bold && `fontweight="bold"`,
+    a.align && `ha=${str(a.align)}`,
+  ].filter(Boolean);
+  return `${ax}.text(${[at(a.x), at(a.y), str(a.text), ...kw].join(", ")})`;
+}
+
 function plotLines(plot: Plot, ax: string, v: Validation): string[] {
   const py = (src: string) => {
     const expr = parse(src);
@@ -666,6 +683,9 @@ function plotLines(plot: Plot, ax: string, v: Validation): string[] {
     return isRef(expr) ? code.replace(/\.to_numpy\(\)$/, "") : code;
   };
   const lines: string[] = [];
+  for (const a of plot.annotations ?? []) {
+    lines.push(annotationLine(ax, a, py));
+  }
   if (plot.title) lines.push(`${ax}.set_title(${str(plot.title)})`);
   if (plot.type === "line") {
     const right = plot.y.some((s) => s.axis === "right");
