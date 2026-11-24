@@ -92,7 +92,9 @@ $$
 
 **Gaussian.** $J(T) = J_\mathrm{opt} \exp\!\left[-\left(\frac{T - T_\mathrm{opt}}{\Omega}\right)^2\right]$, a simpler peaked form with directly interpretable parameters ([June 2004](https://doi.org/10.1071/FP03250)).
 
-**Growth-temperature acclimation.** The deactivation entropy $\Delta S$ (and so $T_\mathrm{opt}$) shifts with growth temperature ([Kattge & Knorr 2007](https://doi.org/10.1111/j.1365-3040.2007.01690.x), [Kumarathunge 2019](https://doi.org/10.1111/nph.15668)). This matters when the model runs over seasons or across climates.
+**Temperature of the light response.** Besides $J_{\max}$, the quantum yield $\Phi_\mathrm{PSII}$ and the convexity $\Theta$ of $J(I)$ also depend on leaf temperature. [Bernacchi 2003](/models/bernacchi2003) measures both by fluorescence and fits them as quadratics in $T$, replacing the usual constant 0.85 and 0.7. The light-adapted $\Phi_\mathrm{PSII}$ rises from about 0.55 at 10 °C to 0.7 at 30 °C.
+
+**Growth-temperature acclimation.** The deactivation entropy $\Delta S$ (and so $T_\mathrm{opt}$) shifts with growth temperature ([Kattge & Knorr 2007](https://doi.org/10.1111/j.1365-3040.2007.01690.x), [Kumarathunge 2019](https://doi.org/10.1111/nph.15668)). [Bernacchi 2003](/models/bernacchi2003) instead fits $J_{\max}$ and $\Theta$ with a Gaussian in leaf and growth temperature. This matters when the model runs over seasons or across climates.
 
 ## Stomatal coupling
 
