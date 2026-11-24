@@ -1,0 +1,31 @@
+**Reproduced:** Fig 3a–c, Fig 4a and 4b with both insets, and Supplementary Fig S4. These are all the model-output figures with printed parameters. Each was compared by overlaying the exported notebook's figure on a 400 dpi render of the paper.
+
+**Not reproduced:**
+
+- Fig 1 is a schematic. Figs 2a, 2c, 2d and S2 are data.
+- The lines of Fig 2b are fits of the original model (Eqns 5–8, with $\alpha_{old}$) to each plant's A–Ci curve, averaged per treatment. They are visibly jagged, and the RuBP- and TPU-limited segments of a treatment don't meet. The per-plant parameters aren't printed. As a scratch check, the normalised TPU branch $(A_p + R_d)/3T_p = (1 - \Gamma^_/C)/(1 - (1 + 3\alpha\_{old})\Gamma^_/C)$ needs no $T_p$. With the treatment means of Fig 2c ($\alpha_{old}$ ≈ 0.07, 0.27 and 0.59), it lies on the three solid lines within about 0.005.
+- Fig S1, Fig S3 and Table S1 are averages over fits to the individual plants of Fig S2.
+- Eqn 9's $J_a$ is an output (`Ja`), but its only figure (S3) needs the measured A.
+
+**Closed form.** The paper's model is already explicit. $\alpha_G$ and $\alpha_S$ are each the minimum of an upper bound and an N-supply limit, given in closed form for each limitation in Eqns 16–21 (derived in the SI, Eqns S1–S11). So each limitation has its own effective $\alpha_G$, $\alpha_S$, $\Gamma^_\_{\alpha_G}$ (Eqn 12) and potential rate: $A_c$, $A_j$ and $A_p$ are each $W(1 - \Gamma^__{\alpha_G}/C) - R_d$ with their own $\alpha_G$. The model takes $A = \min(A_c, A_j, A_p)$, and the effective $\alpha_G$, $\alpha_S$ and $V_o$ (Fig 3b, Fig S4) are those of the limitation that sets A. This reading reproduces Fig 3b's kinks and Fig 4's insets. Eqn 11 literally takes the minimum of the W and then applies the $\Gamma^*_{\alpha_G}$ of that limitation. On every validation scan, that gives the same A and the same limitation as $\min(A_c, A_j, A_p)$. Below the compensation point, where $1 - \Gamma^*/C < 0$, the minimum picks the wrong limitation. Every figure of the paper starts above it ("Graphs show values above the CO₂ compensation point"), and so do the validations. Eqn 18/19's branch for $J \le N^{max}(2\beta + 6)$ is a `Piecewise`. Where Eqn 14's denominator is ≤ 0, TPU can't limit, and $W_p$ is set very large, as in harley1991. Eqn 15's β is 0/0 without any export ($\alpha_G^{max} = \alpha_S^{max} = 0$). Its denominator is floored at 1e-12, so β = 0 and both α stay 0. I checked Eqns S6/S7 and S10/S11 by substituting them back into Eqns S1, S2, S5 and S8 numerically. Under TPU limitation with N supply limiting, A comes out as $3T_p - R_d + 2N^{max}$ for glycine only and $3T_p - R_d + 3N^{max}$ for serine only. These are the 36.5 and 38 plateaus of Fig 4a, as the paper's "2 moles" and "3 moles of carbon" per N say.
+
+**Unprinted parameters.**
+
+- **Kc, Ko and $S\_{c/o}$.** The Methods name the Excel fitting tool of Sharkey et al. (2007; ref. 47) for the Fig 2 fits. For Fig 3 they say only that the new model was fitted "using the solver tool in Excel", without naming the constants. The model assumes the same 25 °C constants as the tool: Kc = 27.238 Pa, Ko = 16.582 kPa, and Γ* = 3.743 Pa at 21 kPa O₂, which gives $S_{c/o} = 0.5 O/\Gamma^*$ = 2805. With these, Fig 4a's $A_c$ crosses zero at 4.4 Pa and crosses the no-N $A_p$ at 38 Pa, both as drawn. All of Fig 4's kinks are where the paper draws them: N supply stops limiting at 95 Pa (glycine), 55 Pa (serine) and 67 Pa (mixture).
+- **O₂ partial pressure of the measurements.** With O = 21 kPa, the N-limit kink of Fig 3b (and the end of Fig 3a's $A_p$ plateau) falls at 83.7 Pa. The digitised kink is at 78.4 Pa. Every Γ*-driven transition scales with O, so the kink fixes O = 19.7 kPa. That is 21 % of about 94 kPa, the air pressure at ANU's ~580 m. With it, Fig 3's transitions all fall where the paper draws them: Ac/Aj at 32 Pa (paper 32), Aj/Ap at 63 Pa (paper 63) and the N limit at 78.4 Pa. Fig 3c's ambient curve then lies within 0.05 µmol m⁻² s⁻¹ of the digitised line from 125 to 192 Pa. At 21 kPa it would be 0.1–0.2 high. Fig S4 (Fig 3a's parameters) starts at $V_o$ = 12.0–12.2 at C → 0, as the model does at 19.7 kPa (12.24; 12.60 at 21 kPa). Fig 3 and S4 and the model defaults use 19.7 kPa, and Fig 3c's minimal O₂ (0.2 %) is 0.19 kPa. Fig 4 is a theoretical illustration. Its kinks match at 21 kPa, and it uses 21 kPa.
+- **J in Fig 4a.** Fig 4a is "light-saturated" and the caption gives only J = 65 (panel b). Panel a is drawn with J = 1000, so that $A_j$ never limits there.
+
+**Residual offsets.**
+
+- **Fig 3c, minimal O₂.** The plateau is $3T_p - R_d$ = 29.31 here, but 29.08 digitised: 0.23 µmol m⁻² s⁻¹ (0.8 %) low in the paper. At 0.2 % O₂ the plateau depends on almost nothing but $T_p$ and $R_d$, so a rounded $T_p$ would explain it ($T_p$ = 10.13 gives 29.08). But the ambient curve, with the same $T_p$, matches with 10.2. The cause is unexplained. The kink (26.5 Pa) and the RuBP-limited rise match.
+- **Fig S4.** The digitised $V_o$ curves sit 2–4 % above the model at mid and high C (Rubisco-limited 4.68 vs 4.57 at 100 Pa; RuBP-limited 5.69 vs 5.46 at 50 Pa), while the intercept at C → 0 is slightly lower (12.0 vs 12.2). No single O fits both the intercept and the tail, so the Rubisco constants behind S4 probably differ slightly from Sharkey et al. (2007). The crossings and the "actual $V_o$" path match.
+
+**Text values.**
+
+- Fig 4a inset, TPU-limited plateaus: +9 % (glycine only), +13.4 % (serine only) and +12.1 % (mixture). The text says "9, 13 and 12%".
+- Fig 3b: $N_{total}$ = $N^{max}$ = 1.21 below 78 Pa, split into $N_S = N^{max}(1 - \beta)$ = 0.89 and $N_G = N^{max}\beta$ = 0.32 (β = 0.262), as drawn. $\alpha_{total}$ reaches 0.47.
+- Fig 3c: above about 40 Pa, A is higher at 21 % than at 0.2 % O₂, as the text says.
+
+**Not enforced.** The paper requires $0 \le \alpha_G^{max} + \tfrac{4}{3}\alpha_S^{max} \le 1$. The two sliders are independent, so a user can set combinations outside it.
+
+**Presentation.** The insets of Fig 4 are separate panels. The y axis of Fig 3b's left panel runs to 1.38 so that both axes' ticks line up as in the paper. The labels are plain text (Ac, Cc), because matplotlib's default font lacks the subscript glyphs.

@@ -67,7 +67,7 @@ At high CO₂, the export and use of triose phosphate can limit photosynthesis a
 
 **Glycerate re-entry (α).** A fraction α of glycolate carbon leaves the photorespiratory cycle and does not return as glycerate, so oxygenation can relieve TPU limitation. This explains reversed O₂ sensitivity ([Harley & Sharkey 1991](/models/harley1991)). With $v_o = \Phi\, v_c$ the TPU-limited rate has the closed form $W_p = 3\, T_p\, C / (C - (1 + 3\alpha)\Gamma^\ast)$, so the paper's iteration isn't needed; GreenSloth's implementation is parameterised by the returning fraction $f_{gly} = 3(1 - \alpha)/4$ instead.
 
-**Glycine/serine export (αG, αS).** Carbon leaves photorespiration as glycine or serine, coupling photorespiration to nitrogen assimilation and changing $W_c$, $W_j$ and $W_p$ ([Busch 2018](https://doi.org/10.1038/s41477-017-0065-x), [McClain & Sharkey 2019](https://doi.org/10.1093/jxb/erz058)).
+**Glycine/serine export (αG, αS).** Carbon leaves photorespiration as glycine or serine, coupling photorespiration to nitrogen assimilation ([Busch 2018](/models/busch2018), [McClain & Sharkey 2019](https://doi.org/10.1093/jxb/erz058)). Glycine export lowers the CO₂ released per oxygenation, and so $\Gamma^*$. Reducing NO₃⁻ costs electrons, which lowers $W_j$. Under a TPU limitation the exported carbon is a second sink, which raises $W_p$. $\alpha_G$ and $\alpha_S$ are capped by a maximum de novo N supply, so they fall as photorespiration rises.
 
 ## Finite mesophyll conductance
 

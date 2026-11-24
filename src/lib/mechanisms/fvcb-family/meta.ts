@@ -234,13 +234,16 @@ export const meta: MechanismMeta = {
       citation: "Busch 2018",
       year: 2018,
       doi: "10.1038/s41477-017-0065-x",
+      slug: "busch2018",
       branch: "tpu",
       buildsOn: ["harley1991"],
       choices: {
         "limiting-rates": ["wc", "wj", "wp"],
         "combining-the-limits": "min-w",
         "triose-phosphate-utilisation": "ags",
-        "finite-mesophyll-conductance": "finite",
+        // "gm is not known here and assumed to be infinite" (Fig 3 legend)
+        "finite-mesophyll-conductance": "infinite",
+        "stomatal-coupling": "none",
         "canopy-scaling": "leaf",
         "isotope-discrimination": "no",
       },
