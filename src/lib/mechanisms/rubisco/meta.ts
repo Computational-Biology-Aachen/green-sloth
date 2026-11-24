@@ -247,6 +247,22 @@ export const meta: MechanismMeta = {
       },
     },
     {
+      id: "fvcb2009",
+      citation: "von Caemmerer 2009",
+      year: 2009,
+      doi: "10.1007/978-1-4020-9237-4_9",
+      slug: "fvcb2009",
+      choices: {
+        resolution: FVCB_CORE.resolution,
+        "rubp-dependence": FVCB_CORE.rubp,
+        oxygenation: [...FVCB_CORE.oxygenation, "specificity"],
+        "effector-inhibition": FVCB_CORE.inhibition,
+        "activation-and-activase": FVCB_CORE.activation,
+        "co2-at-the-active-site": ["ci", "cc"],
+        temperature: "arrhenius",
+      },
+    },
+    {
       id: "zhu2009",
       citation: "Zhu 2009",
       year: 2009,
