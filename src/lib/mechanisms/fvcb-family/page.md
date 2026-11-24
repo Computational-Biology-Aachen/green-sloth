@@ -73,7 +73,7 @@ At high CO₂, the export and use of triose phosphate can limit photosynthesis a
 
 **Infinite gm (Ci).** The classic simplification: Rubisco sees $C_i$. All kinetic constants are then apparent values on a $C_i$ basis.
 
-**Finite gm (Cc).** $C_c = C_i - A/g_m$. Substituting into $W_c$ or $W_j$ turns each limitation into a quadratic in $A$ ([Ethier & Livingston 2004](https://doi.org/10.1111/j.1365-3040.2004.01140.x), [von Caemmerer 2009](/models/fvcb2009)); [Ethier 2004](/models/ethier2004) shows that fitting the $g_m = \infty$ curves to a leaf with low $g_m$ underestimates $V_{cmax}$. $g_m$ is temperature-dependent ([Bernacchi 2002](https://doi.org/10.1104/pp.008250)), and the response differs between species.
+**Finite gm (Cc).** $C_c = C_i - A/g_m$. Substituting into $W_c$ or $W_j$ turns each limitation into a quadratic in $A$ ([Ethier & Livingston 2004](https://doi.org/10.1111/j.1365-3040.2004.01140.x), [von Caemmerer 2009](/models/fvcb2009)); [Ethier 2004](/models/ethier2004) shows that fitting the $g_m = \infty$ curves to a leaf with low $g_m$ underestimates $V_{cmax}$. $g_m$ is temperature-dependent ([Bernacchi 2002](/models/bernacchi2002), peaking at 35–37.5 °C in tobacco), and the response differs between species.
 
 **Resistance pathway / refixation.** (Photo)respiratory CO₂ is released in the mitochondria, not at Rubisco, so part of it is refixed before it escapes. Rice and wheat refix 24–38 % of the CO₂ they (photo)respire, measured with ¹²CO₂/¹³CO₂ isotope fluxes ([Busch 2013](https://doi.org/10.1111/j.1365-3040.2012.02567.x)). Splitting $g_m$ into cell-wall and chloroplast components and adding a refixation fraction makes the apparent $g_m$ vary with CO₂ and O₂ ([Tholen 2012](https://doi.org/10.1111/j.1365-3040.2012.02538.x), [Yin & Struik 2017](https://doi.org/10.1007/s11120-017-0340-8)). A conductance that is small at low light has a related effect: $C_c$ rises as irradiance falls, so $\Gamma^*/C_c$ changes along the light response, which explains much of the Kok effect without changing day respiration ([Farquhar & Busch 2017](/models/farquhar2017)).
 
@@ -81,7 +81,7 @@ At high CO₂, the export and use of triose phosphate can limit photosynthesis a
 
 ## Temperature
 
-**Arrhenius.** $k(T) = k_{25} \exp\!\left[\frac{\Delta H_a (T - 298.15)}{298.15\, R\, T}\right]$ ([Bernacchi 2001](https://doi.org/10.1111/j.1365-3040.2001.00668.x) for $V_{c,\max}$, $K_c$, $K_o$ and $\Gamma^\ast$ measured in vivo on a $C_i$ basis). _Pitfall:_ Bernacchi 2001 parameters assume infinite $g_m$. On a $C_c$ basis, use [Bernacchi 2002](https://doi.org/10.1104/pp.008250) or [Walker 2013](https://doi.org/10.1111/pce.12166).
+**Arrhenius.** $k(T) = k_{25} \exp\!\left[\frac{\Delta H_a (T - 298.15)}{298.15\, R\, T}\right]$ ([Bernacchi 2001](https://doi.org/10.1111/j.1365-3040.2001.00668.x) for $V_{c,\max}$, $K_c$, $K_o$ and $\Gamma^\ast$ measured in vivo on a $C_i$ basis). _Pitfall:_ Bernacchi 2001 parameters assume infinite $g_m$. On a $C_c$ basis, use [Bernacchi 2002](/models/bernacchi2002) or [Walker 2013](https://doi.org/10.1111/pce.12166).
 
 **Peaked Arrhenius.** Adds high-temperature deactivation, mainly for $J_{\max}$ and $V_{c,\max}$ ([Harley 1985](https://doi.org/10.1007/BF00395048), [Medlyn 2002](https://doi.org/10.1046/j.1365-3040.2002.00891.x); for $J_{\max}$ with the parameters of FvCB 1980 in [von Caemmerer 2009](/models/fvcb2009)):
 

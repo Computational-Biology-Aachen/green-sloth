@@ -425,6 +425,7 @@ export const meta: MechanismMeta = {
       citation: "Bernacchi 2002",
       year: 2002,
       doi: "10.1104/pp.008250",
+      slug: "bernacchi2002",
       branch: "temperature",
       buildsOn: ["bernacchi2001"],
       choices: {
