@@ -3,17 +3,22 @@
  * and matplotlib. Generated on demand; misc/mxl-e2e executes the result and holds
  * it to the same goldens as the TS engine.
  */
-import type { KineticModelBuilder } from "@computational-biology-aachen/mxlweb-core";
+import {
+  type KineticModelBuilder,
+  SteadyStateModelBuilder,
+} from "@computational-biology-aachen/mxlweb-core";
 import { isRef, parse, refs, toPython } from "../expr";
 import { scanX } from "../helpers";
 import { OPS } from "../ops";
 import type {
+  LineSeries,
   Mca,
   ModelEdit,
   PointSetup,
   Plot,
   ProtocolStep,
   ProtocolSimulation,
+  Rule,
   Scan,
   Scenario,
   ScenarioValue,
@@ -439,15 +444,33 @@ function toScan(scan: Scan): string {
       `${str(id)}: base.get_parameter_values()[${str(id)}] * ${column(xs)}`,
   );
   const body = `{${[...over, ...scale].join(", ")}}`;
-  return scan.grid ? `cartesian_product(${body})` : `pd.DataFrame(${body})`;
+  if (scan.grid) return `cartesian_product(${body})`;
+  // All scalars (a one-point scan): pandas then needs the index spelled out
+  const single = [
+    ...Object.values(scan.over),
+    ...Object.values(scan.scale ?? {}),
+  ].every((xs) => xs.length === 1);
+  return single ? `pd.DataFrame(${body}, index=[0])` : `pd.DataFrame(${body})`;
 }
 
-function scanCell(name: string, scan: Scan, v: Validation): string[] {
+/**
+ * A scan cell. A steady-state model has nothing to integrate: MxlPy scans it
+ * with its default runner, which evaluates it.
+ */
+function scanCell(
+  name: string,
+  scan: Scan,
+  v: Validation,
+  evaluated: boolean,
+): string[] {
   const sim = scan.simulate ?? v.simulate;
   if (sim?.kind !== "steadyState" && sim?.kind !== "timeCourse") {
     throw new Error(`${name}: a scan runs a steady state or a time course`);
   }
   const steady = sim.kind === "steadyState";
+  if (evaluated && !steady) {
+    throw new Error(`${name}: a steady-state model has no time course`);
+  }
   const lines = [`# Scan ${name}`];
   lines.push(
     `to_scan = ${toScan(scan)}`,
@@ -455,7 +478,9 @@ function scanCell(name: string, scan: Scan, v: Validation): string[] {
     `    ${modelWith(scan.edits)},`,
     "    to_scan=to_scan,",
     ...(steady ? [] : [`    time_points=${pyArray(sim.tEval)},`]),
-    `    runner=KineticRunner(integrator=${integrator({}, v)}),`,
+    ...(evaluated
+      ? []
+      : [`    runner=KineticRunner(integrator=${integrator({}, v)}),`]),
     ")",
     steady
       ? "frame = result.combined"
@@ -598,6 +623,41 @@ function refMapper(v: Validation, scope?: string) {
   };
 }
 
+const LINESTYLES = {
+  solid: "-",
+  dashed: "--",
+  dotted: ":",
+  dashdot: "-.",
+} as const;
+
+/** A series' style as matplotlib keyword arguments, each with a leading comma. */
+function styleKwargs(s: LineSeries): string {
+  const kw: string[] = [];
+  if (s.color) kw.push(`color=${str(s.color)}`);
+  if (s.style === "markers") kw.push(`ls="none"`);
+  else if (Array.isArray(s.dash)) kw.push(`ls=(0, ${literal(s.dash)})`);
+  else if (s.dash) kw.push(`ls=${str(LINESTYLES[s.dash])}`);
+  if (s.lineWidth !== undefined) kw.push(`lw=${s.lineWidth}`);
+  const marker = s.marker ?? (s.style === "markers" ? "o" : undefined);
+  if (marker) kw.push(`marker=${str(marker)}`);
+  if (s.markerSize !== undefined) kw.push(`markersize=${s.markerSize}`);
+  if (s.markerFace) kw.push(`markerfacecolor=${str(s.markerFace)}`);
+  if (s.markerEdge) kw.push(`markeredgecolor=${str(s.markerEdge)}`);
+  return kw.map((k) => `, ${k}`).join("");
+}
+
+function ruleLine(ax: string, fn: string, r: Rule): string {
+  const kw = [
+    r.color && `color=${str(r.color)}`,
+    r.dash &&
+      (Array.isArray(r.dash)
+        ? `ls=(0, ${literal(r.dash)})`
+        : `ls=${str(LINESTYLES[r.dash])}`),
+    r.lineWidth !== undefined && `lw=${r.lineWidth}`,
+  ].filter(Boolean);
+  return `${ax}.${fn}(${[r.value, ...kw].join(", ")})`;
+}
+
 function plotLines(plot: Plot, ax: string, v: Validation): string[] {
   const py = (src: string) => {
     const expr = parse(src);
@@ -620,8 +680,7 @@ function plotLines(plot: Plot, ax: string, v: Validation): string[] {
           `${target}.errorbar(${x}, ${y}, yerr=${py(s.err)}, fmt="^"${label})`,
         );
       } else {
-        const style = s.style === "markers" ? `, ls="none", marker="o"` : "";
-        lines.push(`${target}.plot(${x}, ${y}${style}${label})`);
+        lines.push(`${target}.plot(${x}, ${y}${styleKwargs(s)}${label})`);
       }
     }
     if (plot.logX) lines.push(`${ax}.set_xscale("log")`);
@@ -635,6 +694,8 @@ function plotLines(plot: Plot, ax: string, v: Validation): string[] {
     if (right && plot.yRightLim) {
       lines.push(`${ax}_right.set_ylim(${plot.yRightLim.join(", ")})`);
     }
+    for (const r of plot.hLines ?? []) lines.push(ruleLine(ax, "axhline", r));
+    for (const r of plot.vLines ?? []) lines.push(ruleLine(ax, "axvline", r));
     for (const p of plot.phases ?? []) {
       lines.push(`${ax}.axvspan(${p.from}, ${p.to}, color="gray", alpha=0.3)`);
     }
@@ -681,7 +742,7 @@ function plotLines(plot: Plot, ax: string, v: Validation): string[] {
 
 function plotCell(v: Validation): string[] {
   const n = v.plots.length;
-  const columns = Math.min(n, 3);
+  const columns = typeof v.columns === "number" ? v.columns : Math.min(n, 3);
   const rows = Math.ceil(n / columns);
   const lines = [
     `fig, axs = plt.subplots(nrows=${rows}, ncols=${columns}, figsize=(${5 * columns}, ${4 * rows}), squeeze=False)`,
@@ -735,7 +796,16 @@ function collectColumn(
   return `np.array([${parts.map((p) => p.code).join(", ")}])`;
 }
 
-function validationCells(v: Validation, goldenSeries: boolean): string[][] {
+function validationCells(
+  v: Validation,
+  goldenSeries: boolean,
+  evaluated: boolean,
+): string[][] {
+  if (evaluated && (v.scenarios || v.mca || v.stability)) {
+    throw new Error(
+      `${v.id}: only scans are exported for a steady-state model`,
+    );
+  }
   const ids = Object.keys(v.scenarios ?? {});
   const namedOps = (v.ops ?? []).some((o) => o.op !== "column");
   const sim: string[] = [];
@@ -772,7 +842,7 @@ function validationCells(v: Validation, goldenSeries: boolean): string[][] {
   }
   if (v.collect || v.scans || v.mca || v.stability) sim.push("tables = {}");
   for (const [name, scan] of Object.entries(v.scans ?? {})) {
-    sim.push("", ...scanCell(name, scan, v));
+    sim.push("", ...scanCell(name, scan, v, evaluated));
   }
   for (const [name, spec] of Object.entries(v.mca ?? {})) {
     sim.push("", ...mcaCell(name, spec, v));
@@ -866,7 +936,7 @@ function importLines(source: string): string[] {
 /** A notebook as a plain .ipynb object. */
 export function toMxlpyNotebook(
   title: string,
-  model: KineticModelBuilder,
+  model: KineticModelBuilder | SteadyStateModelBuilder,
   validations: Validation[],
   { goldenSeries = false }: { goldenSeries?: boolean } = {},
 ): object {
@@ -893,7 +963,11 @@ export function toMxlpyNotebook(
   const helperCells = [...opCells, ...(runner.length > 0 ? [runner] : [])];
   const figures = validations.map((v) => ({
     title: v.title,
-    cells: validationCells(v, goldenSeries),
+    cells: validationCells(
+      v,
+      goldenSeries,
+      model instanceof SteadyStateModelBuilder,
+    ),
   }));
   const body = [...helperCells, ...figures.flatMap((f) => f.cells)]
     .flat()
