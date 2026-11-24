@@ -229,7 +229,7 @@ export const meta: MechanismMeta = {
       year: 2018,
       doi: "10.1038/s41477-017-0065-x",
       branch: "tpu",
-      buildsOn: ["harley1991", "busch2013"],
+      buildsOn: ["harley1991"],
       choices: {
         "limiting-rates": ["wc", "wj", "wp"],
         "combining-the-limits": "min-w",
@@ -316,21 +316,6 @@ export const meta: MechanismMeta = {
       },
     },
     {
-      id: "busch2013",
-      citation: "Busch 2013",
-      year: 2013,
-      doi: "10.1111/j.1365-3040.2012.02567.x",
-      branch: "gm",
-      buildsOn: ["ethier2004"],
-      choices: {
-        "limiting-rates": ["wc", "wj"],
-        "combining-the-limits": "min-w",
-        "finite-mesophyll-conductance": "pathway",
-        "canopy-scaling": "leaf",
-        "isotope-discrimination": "no",
-      },
-    },
-    {
       id: "tomas2013",
       citation: "Tomás 2013",
       year: 2013,
@@ -369,7 +354,7 @@ export const meta: MechanismMeta = {
       year: 2017,
       doi: "10.1007/s11120-017-0340-8",
       branch: "gm",
-      buildsOn: ["tholen2012", "busch2013"],
+      buildsOn: ["tholen2012"],
       choices: {
         "limiting-rates": ["wc", "wj"],
         "finite-mesophyll-conductance": "pathway",
@@ -789,7 +774,7 @@ export const meta: MechanismMeta = {
       year: 2020,
       doi: "10.1038/s41477-020-0606-6",
       branch: "isotopes",
-      buildsOn: ["farquhar1982", "busch2013"],
+      buildsOn: ["farquhar1982"],
       choices: {
         "finite-mesophyll-conductance": "pathway",
         "canopy-scaling": "leaf",
