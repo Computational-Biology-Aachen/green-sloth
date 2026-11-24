@@ -153,6 +153,23 @@ export const meta: MechanismMeta = {
       },
     },
     {
+      // Kc, Ko, τ aren't printed; GreenSloth takes Harley 1992's Arrhenius fits
+      id: "harley1991",
+      citation: "Harley & Sharkey 1991",
+      year: 1991,
+      doi: "10.1007/BF00035838",
+      slug: "harley1991",
+      choices: {
+        resolution: FVCB_CORE.resolution,
+        "rubp-dependence": FVCB_CORE.rubp,
+        oxygenation: [...FVCB_CORE.oxygenation, "specificity"],
+        "effector-inhibition": FVCB_CORE.inhibition,
+        "activation-and-activase": FVCB_CORE.activation,
+        "co2-at-the-active-site": FVCB_CORE.co2,
+        temperature: "arrhenius",
+      },
+    },
+    {
       id: "harley1992",
       citation: "Harley 1992",
       year: 1992,

@@ -214,13 +214,19 @@ export const meta: MechanismMeta = {
       citation: "Harley & Sharkey 1991",
       year: 1991,
       doi: "10.1007/BF00035838",
+      slug: "harley1991",
       branch: "tpu",
       buildsOn: ["sharkey1985"],
       choices: {
         "limiting-rates": ["wc", "wj", "wp"],
         "combining-the-limits": "min-w",
+        // Eqn 4: Wj = R/(1 + Φ), i.e. J/4 per RuBP
+        "electron-requirement": "j4",
         "triose-phosphate-utilisation": "alpha",
+        "finite-mesophyll-conductance": "infinite",
+        "stomatal-coupling": "none",
         "canopy-scaling": "leaf",
+        "isotope-discrimination": "no",
       },
     },
     {

@@ -170,3 +170,6 @@ Stop and wait for the user when:
 - Read the paper before trusting its to-implement.md description: busch2013 was listed as "the base model" but is a measurement paper. Classify it from its figures (model output or data), not from the summary.
 - Panels that fit a regression to a scan of model output (e.g. farquhar2017's two-line Kok fits) aren't expressible in `validation.ts`. Check them in a scratch script, and document them as left out.
 - The site's sweep charts clip y at 0 unless `yMin` is set. Any analysis with negative values (A below the compensation point) needs an explicit `yMin`.
+- Before trusting a caption's "parameters of Fig X", fit the effective rate per curve to the scan: harley1991 Figs 3–5 say "Fig 2C" but are drawn with cotton's R = 56.7. A printed "R" or "Pml" may be the light-saturated rate, which only matches with a light response (harley1991: Harley 1992's α = 0.24 at the measurement PFD).
+- An implicit Wp that depends on vo (glycerate re-entry) is linear in vc once vo = Φ vc, with Φ = O/(τC) depending only on C and O, so no iteration is needed.
+- The notebook export dropped `markEvery` until harley1991. Check that every SeriesStyle field a validation uses actually reaches `styleKwargs` in `export/mxlpy.ts` (`alpha` and `zorder` still don't).

@@ -65,7 +65,7 @@ At high CO₂, the export and use of triose phosphate can limit photosynthesis a
 
 **Wp = 3 TPU.** $A_p = 3\, T_p - R_d$ ([Sharkey 1985](https://doi.org/10.1007/BF02861058)). Land-surface models often tie $T_p$ to $V_{c,\max}$ ([Lombardozzi 2018](https://doi.org/10.1088/1748-9326/aacf68)). Whether global models need TPU at all is still debated ([Rogers 2021](https://doi.org/10.1111/nph.17092), [Gregory 2021](https://doi.org/10.1111/pce.14153)).
 
-**Glycerate re-entry (α).** A fraction α of glycolate carbon leaves the photorespiratory cycle and does not return as glycerate, so oxygenation can relieve TPU limitation. This explains reversed O₂ sensitivity ([Harley & Sharkey 1991](https://doi.org/10.1007/BF00035838)).
+**Glycerate re-entry (α).** A fraction α of glycolate carbon leaves the photorespiratory cycle and does not return as glycerate, so oxygenation can relieve TPU limitation. This explains reversed O₂ sensitivity ([Harley & Sharkey 1991](/models/harley1991)). With $v_o = \Phi\, v_c$ the TPU-limited rate has the closed form $W_p = 3\, T_p\, C / (C - (1 + 3\alpha)\Gamma^\ast)$, so the paper's iteration isn't needed; GreenSloth's implementation is parameterised by the returning fraction $f_{gly} = 3(1 - \alpha)/4$ instead.
 
 **Glycine/serine export (αG, αS).** Carbon leaves photorespiration as glycine or serine, coupling photorespiration to nitrogen assimilation and changing $W_c$, $W_j$ and $W_p$ ([Busch 2018](https://doi.org/10.1038/s41477-017-0065-x), [McClain & Sharkey 2019](https://doi.org/10.1093/jxb/erz058)).
 
