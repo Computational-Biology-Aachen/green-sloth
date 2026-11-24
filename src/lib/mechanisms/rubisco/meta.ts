@@ -310,6 +310,23 @@ export const meta: MechanismMeta = {
       },
     },
     {
+      // Electron-transport-limited only: Rubisco enters through Γ* (Eqns 4, 5)
+      id: "farquhar2017",
+      citation: "Farquhar & Busch 2017",
+      year: 2017,
+      doi: "10.1111/nph.14512",
+      slug: "farquhar2017",
+      choices: {
+        resolution: "lumped-cbb",
+        "rubp-dependence": "implicit",
+        oxygenation: "gamma-star",
+        "effector-inhibition": FVCB_CORE.inhibition,
+        "activation-and-activase": FVCB_CORE.activation,
+        "co2-at-the-active-site": "cc",
+        temperature: "arrhenius",
+      },
+    },
+    {
       id: "morales2018",
       citation: "Morales 2018",
       year: 2018,

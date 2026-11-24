@@ -167,3 +167,6 @@ Stop and wait for the user when:
 - When a figure says "parameters of Table X" but sits a constant offset off, try the table's alternative (bracketed, footnoted) values before fitting: fvcb2009 Fig 9.5 is drawn with Table 9.1's bracketed Γ*.
 - Digitising: at 400 dpi, find the frame (long dark rows/columns) and the inner ticks programmatically, then read curves as dark-pixel clusters per pixel column. That gives about 0.05 axis units, enough to tell a parameter offset from a reading error.
 - The mxl-e2e notebook check matches goldens by nearest x, so a series whose points share one x (a vertical drop line) fails right after freezing. Leave such a presentational series out of `golden`.
+- Read the paper before trusting its to-implement.md description: busch2013 was listed as "the base model" but is a measurement paper. Classify it from its figures (model output or data), not from the summary.
+- Panels that fit a regression to a scan of model output (e.g. farquhar2017's two-line Kok fits) aren't expressible in `validation.ts`. Check them in a scratch script, and document them as left out.
+- The site's sweep charts clip y at 0 unless `yMin` is set. Any analysis with negative values (A below the compensation point) needs an explicit `yMin`.

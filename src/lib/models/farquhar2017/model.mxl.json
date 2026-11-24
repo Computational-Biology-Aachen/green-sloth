@@ -1,0 +1,1847 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v0/steady-state-model.schema.json",
+  "spec_version": "0.2",
+  "kind": "steady-state",
+  "model_id": "farquhar2017",
+  "model": {
+    "parameters": {
+      "I": {
+        "value": {
+          "type": "Num",
+          "value": 100
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "I",
+        "texName": "I",
+        "slider": {
+          "min": "0",
+          "max": "400",
+          "step": "1"
+        }
+      },
+      "Ca": {
+        "value": {
+          "type": "Num",
+          "value": 400
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.000001
+        },
+        "displayName": "Ca",
+        "texName": "C_a/P",
+        "slider": {
+          "min": "0",
+          "max": "2000",
+          "step": "10"
+        }
+      },
+      "Ci": {
+        "value": {
+          "type": "Num",
+          "value": 40.2
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.000001
+        },
+        "displayName": "Ci",
+        "texName": "C_i/P",
+        "slider": {
+          "min": "0",
+          "max": "400",
+          "step": "0.1"
+        }
+      },
+      "O": {
+        "value": {
+          "type": "Num",
+          "value": 210
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.001
+        },
+        "displayName": "O",
+        "texName": "O/P",
+        "slider": {
+          "min": "0",
+          "max": "400",
+          "step": "5"
+        }
+      },
+      "T_leaf": {
+        "value": {
+          "type": "Num",
+          "value": 25
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "T_leaf",
+        "texName": "T",
+        "slider": {
+          "min": "5",
+          "max": "45",
+          "step": "0.5"
+        }
+      },
+      "P": {
+        "value": {
+          "type": "Num",
+          "value": 100000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "pascal",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "P",
+        "texName": "P"
+      },
+      "f": {
+        "value": {
+          "type": "Num",
+          "value": 0.3
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "f",
+        "texName": "f",
+        "slider": {
+          "min": "0",
+          "max": "0.9",
+          "step": "0.01"
+        }
+      },
+      "Rd_25": {
+        "value": {
+          "type": "Num",
+          "value": 1
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "Rd_25",
+        "texName": "R_{d,25}",
+        "slider": {
+          "min": "0",
+          "max": "4",
+          "step": "0.05"
+        }
+      },
+      "b_Rd": {
+        "value": {
+          "type": "Num",
+          "value": 0.1012
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "b_Rd",
+        "texName": "b_{R_d}"
+      },
+      "c_Rd": {
+        "value": {
+          "type": "Num",
+          "value": 0.0005
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": -2
+            }
+          ]
+        },
+        "displayName": "c_Rd",
+        "texName": "c_{R_d}"
+      },
+      "c_G": {
+        "value": {
+          "type": "Num",
+          "value": 20.07
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "c_G",
+        "texName": "c"
+      },
+      "dHa_G": {
+        "value": {
+          "type": "Num",
+          "value": 46.3
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "prefix": "kilo",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "dHa_G",
+        "texName": "\\Delta H_a"
+      },
+      "O_ref": {
+        "value": {
+          "type": "Num",
+          "value": 210
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.001
+        },
+        "displayName": "O_ref",
+        "texName": "O_{ref}"
+      },
+      "R": {
+        "value": {
+          "type": "Num",
+          "value": 8.314
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "R",
+        "texName": "R"
+      },
+      "gt_0": {
+        "value": {
+          "type": "Num",
+          "value": 0.001
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "gt_0",
+        "texName": "g_{t,0}",
+        "slider": {
+          "min": "0.0005",
+          "max": "0.05",
+          "step": "0.0005"
+        }
+      },
+      "gt_slope": {
+        "value": {
+          "type": "Num",
+          "value": 0.0005434782608695652
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 1000000
+        },
+        "displayName": "gt_slope",
+        "texName": "s_{g_t}"
+      },
+      "gm_gs": {
+        "value": {
+          "type": "Num",
+          "value": 1.5
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "gm_gs",
+        "texName": "g_m/g_s"
+      },
+      "n_half": {
+        "value": {
+          "type": "Num",
+          "value": 6.6
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "n_half",
+        "texName": "n",
+        "slider": {
+          "min": "1.1",
+          "max": "20",
+          "step": "0.1"
+        }
+      }
+    },
+    "derived": {
+      "T_K": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "T_leaf"
+            },
+            {
+              "type": "Num",
+              "value": 273.15
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "T_K",
+        "texName": "T_k"
+      },
+      "Rd": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Rd_25"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Minus",
+                "children": [
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "b_Rd"
+                      },
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "T_leaf"
+                          },
+                          {
+                            "type": "Num",
+                            "value": 25
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "c_Rd"
+                      },
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Pow",
+                            "left": {
+                              "type": "Name",
+                              "value": "T_leaf"
+                            },
+                            "right": {
+                              "type": "Num",
+                              "value": 2
+                            }
+                          },
+                          {
+                            "type": "Num",
+                            "value": 625
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "Rd",
+        "texName": "R_d"
+      },
+      "Gamma_star_Pa": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Minus",
+                "children": [
+                  {
+                    "type": "Name",
+                    "value": "c_G"
+                  },
+                  {
+                    "type": "Divide",
+                    "children": [
+                      {
+                        "type": "Mul",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "dHa_G"
+                          },
+                          {
+                            "type": "Num",
+                            "value": 1000
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Mul",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "R"
+                          },
+                          {
+                            "type": "Name",
+                            "value": "T_K"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "O"
+                },
+                {
+                  "type": "Name",
+                  "value": "O_ref"
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "pascal",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "Gamma_star_Pa",
+        "texName": "\\Gamma^*"
+      },
+      "Gamma_star": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "Gamma_star_Pa"
+                },
+                {
+                  "type": "Name",
+                  "value": "P"
+                }
+              ]
+            },
+            {
+              "type": "Num",
+              "value": 1000000
+            }
+          ]
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.000001
+        },
+        "displayName": "Gamma_star",
+        "texName": "\\Gamma^*/P"
+      },
+      "J": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "I"
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Name",
+                      "value": "f"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Num",
+              "value": 2
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "J",
+        "texName": "J"
+      },
+      "I_prime": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "J"
+            },
+            {
+              "type": "Num",
+              "value": 4
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "I_prime",
+        "texName": "I'"
+      },
+      "gt": {
+        "fn": {
+          "type": "Add",
+          "children": [
+            {
+              "type": "Name",
+              "value": "gt_0"
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "gt_slope"
+                },
+                {
+                  "type": "Name",
+                  "value": "J"
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "gt",
+        "texName": "g_t"
+      },
+      "gs": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "gt"
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Name",
+                      "value": "gm_gs"
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "gm_gs"
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "gs",
+        "texName": "g_s"
+      },
+      "gm": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "gm_gs"
+            },
+            {
+              "type": "Name",
+              "value": "gs"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "gm",
+        "texName": "g_m"
+      },
+      "gsw": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Num",
+              "value": 1.6
+            },
+            {
+              "type": "Name",
+              "value": "gs"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "gsw",
+        "texName": "g_{sw}"
+      },
+      "A": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "I_prime"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Rd"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "gt"
+                        },
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Ca"
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Num",
+                                  "value": 2
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "Gamma_star"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Sqrt",
+                  "child": {
+                    "type": "Minus",
+                    "children": [
+                      {
+                        "type": "Pow",
+                        "left": {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Minus",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "I_prime"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "Rd"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "gt"
+                                },
+                                {
+                                  "type": "Add",
+                                  "children": [
+                                    {
+                                      "type": "Name",
+                                      "value": "Ca"
+                                    },
+                                    {
+                                      "type": "Mul",
+                                      "children": [
+                                        {
+                                          "type": "Num",
+                                          "value": 2
+                                        },
+                                        {
+                                          "type": "Name",
+                                          "value": "Gamma_star"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "right": {
+                          "type": "Num",
+                          "value": 2
+                        }
+                      },
+                      {
+                        "type": "Mul",
+                        "children": [
+                          {
+                            "type": "Num",
+                            "value": 4
+                          },
+                          {
+                            "type": "Minus",
+                            "children": [
+                              {
+                                "type": "Mul",
+                                "children": [
+                                  {
+                                    "type": "Name",
+                                    "value": "I_prime"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "gt"
+                                  },
+                                  {
+                                    "type": "Minus",
+                                    "children": [
+                                      {
+                                        "type": "Name",
+                                        "value": "Ca"
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "Gamma_star"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Mul",
+                                "children": [
+                                  {
+                                    "type": "Name",
+                                    "value": "Rd"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "gt"
+                                  },
+                                  {
+                                    "type": "Add",
+                                    "children": [
+                                      {
+                                        "type": "Name",
+                                        "value": "Ca"
+                                      },
+                                      {
+                                        "type": "Mul",
+                                        "children": [
+                                          {
+                                            "type": "Num",
+                                            "value": 2
+                                          },
+                                          {
+                                            "type": "Name",
+                                            "value": "Gamma_star"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "base": {
+                    "type": "Num",
+                    "value": 2
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Num",
+              "value": 2
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "A",
+        "texName": "A"
+      },
+      "Cc": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Ca"
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "A"
+                },
+                {
+                  "type": "Name",
+                  "value": "gt"
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.000001
+        },
+        "displayName": "Cc",
+        "texName": "C_c/P"
+      },
+      "A_i": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "I_prime"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Rd"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "gm"
+                        },
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Ci"
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Num",
+                                  "value": 2
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "Gamma_star"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Sqrt",
+                  "child": {
+                    "type": "Minus",
+                    "children": [
+                      {
+                        "type": "Pow",
+                        "left": {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Minus",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "I_prime"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "Rd"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "gm"
+                                },
+                                {
+                                  "type": "Add",
+                                  "children": [
+                                    {
+                                      "type": "Name",
+                                      "value": "Ci"
+                                    },
+                                    {
+                                      "type": "Mul",
+                                      "children": [
+                                        {
+                                          "type": "Num",
+                                          "value": 2
+                                        },
+                                        {
+                                          "type": "Name",
+                                          "value": "Gamma_star"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "right": {
+                          "type": "Num",
+                          "value": 2
+                        }
+                      },
+                      {
+                        "type": "Mul",
+                        "children": [
+                          {
+                            "type": "Num",
+                            "value": 4
+                          },
+                          {
+                            "type": "Minus",
+                            "children": [
+                              {
+                                "type": "Mul",
+                                "children": [
+                                  {
+                                    "type": "Name",
+                                    "value": "I_prime"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "gm"
+                                  },
+                                  {
+                                    "type": "Minus",
+                                    "children": [
+                                      {
+                                        "type": "Name",
+                                        "value": "Ci"
+                                      },
+                                      {
+                                        "type": "Name",
+                                        "value": "Gamma_star"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Mul",
+                                "children": [
+                                  {
+                                    "type": "Name",
+                                    "value": "Rd"
+                                  },
+                                  {
+                                    "type": "Name",
+                                    "value": "gm"
+                                  },
+                                  {
+                                    "type": "Add",
+                                    "children": [
+                                      {
+                                        "type": "Name",
+                                        "value": "Ci"
+                                      },
+                                      {
+                                        "type": "Mul",
+                                        "children": [
+                                          {
+                                            "type": "Num",
+                                            "value": 2
+                                          },
+                                          {
+                                            "type": "Name",
+                                            "value": "Gamma_star"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "base": {
+                    "type": "Num",
+                    "value": 2
+                  }
+                }
+              ]
+            },
+            {
+              "type": "Num",
+              "value": 2
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "A_i",
+        "texName": "A_{C_i}"
+      },
+      "Cc_i": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Ci"
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "A_i"
+                },
+                {
+                  "type": "Name",
+                  "value": "gm"
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.000001
+        },
+        "displayName": "Cc_i",
+        "texName": "C_c/P (C_i)"
+      },
+      "Ic": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 8
+                    },
+                    {
+                      "type": "Name",
+                      "value": "Rd"
+                    }
+                  ]
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Name",
+                      "value": "f"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Add",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 2
+                        },
+                        {
+                          "type": "Divide",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Gamma_star"
+                            },
+                            {
+                              "type": "Name",
+                              "value": "Ca"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Num",
+                      "value": 1
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "Gamma_star"
+                        },
+                        {
+                          "type": "Name",
+                          "value": "Ca"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "Ic",
+        "texName": "I_c"
+      },
+      "m1": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "Rd"
+            },
+            {
+              "type": "Name",
+              "value": "Ic"
+            }
+          ]
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "m1",
+        "texName": "m_1"
+      },
+      "I_half": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "n_half"
+            },
+            {
+              "type": "Name",
+              "value": "Ic"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "I_half",
+        "texName": "I_{0.5}"
+      },
+      "A_half": {
+        "fn": {
+          "type": "Minus",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Mul",
+                      "children": [
+                        {
+                          "type": "Name",
+                          "value": "I_half"
+                        },
+                        {
+                          "type": "Minus",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1
+                            },
+                            {
+                              "type": "Name",
+                              "value": "f"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Num",
+                      "value": 8
+                    }
+                  ]
+                },
+                {
+                  "type": "Divide",
+                  "children": [
+                    {
+                      "type": "Minus",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Divide",
+                          "children": [
+                            {
+                              "type": "Name",
+                              "value": "Gamma_star"
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Num",
+                                  "value": 0.5
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "Ca"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Add",
+                      "children": [
+                        {
+                          "type": "Num",
+                          "value": 1
+                        },
+                        {
+                          "type": "Mul",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 2
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "Gamma_star"
+                                },
+                                {
+                                  "type": "Mul",
+                                  "children": [
+                                    {
+                                      "type": "Num",
+                                      "value": 0.5
+                                    },
+                                    {
+                                      "type": "Name",
+                                      "value": "Ca"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Name",
+              "value": "Rd"
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "prefix": "micro",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "A_half",
+        "texName": "A_{0.5}"
+      },
+      "m2": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Name",
+              "value": "A_half"
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "n_half"
+                    },
+                    {
+                      "type": "Num",
+                      "value": 1
+                    }
+                  ]
+                },
+                {
+                  "type": "Name",
+                  "value": "Ic"
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "m2",
+        "texName": "m_2"
+      },
+      "inhibition": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Divide",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "n_half"
+                },
+                {
+                  "type": "Minus",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "n_half"
+                    },
+                    {
+                      "type": "Num",
+                      "value": 1
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Minus",
+              "children": [
+                {
+                  "type": "Num",
+                  "value": 1
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Minus",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Num",
+                                  "value": 2
+                                },
+                                {
+                                  "type": "Divide",
+                                  "children": [
+                                    {
+                                      "type": "Name",
+                                      "value": "Gamma_star"
+                                    },
+                                    {
+                                      "type": "Name",
+                                      "value": "Ca"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Num",
+                                  "value": 4
+                                },
+                                {
+                                  "type": "Divide",
+                                  "children": [
+                                    {
+                                      "type": "Name",
+                                      "value": "Gamma_star"
+                                    },
+                                    {
+                                      "type": "Name",
+                                      "value": "Ca"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Divide",
+                      "children": [
+                        {
+                          "type": "Add",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1
+                            },
+                            {
+                              "type": "Mul",
+                              "children": [
+                                {
+                                  "type": "Num",
+                                  "value": 2
+                                },
+                                {
+                                  "type": "Divide",
+                                  "children": [
+                                    {
+                                      "type": "Name",
+                                      "value": "Gamma_star"
+                                    },
+                                    {
+                                      "type": "Name",
+                                      "value": "Ca"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Minus",
+                          "children": [
+                            {
+                              "type": "Num",
+                              "value": 1
+                            },
+                            {
+                              "type": "Divide",
+                              "children": [
+                                {
+                                  "type": "Name",
+                                  "value": "Gamma_star"
+                                },
+                                {
+                                  "type": "Name",
+                                  "value": "Ca"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Num",
+              "value": 100
+            }
+          ]
+        },
+        "unit": {
+          "factors": [],
+          "multiplier": 0.01
+        },
+        "displayName": "inhibition",
+        "texName": "1 - m_2/m_1"
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+import contributors from "#lib/contributors.js";
+import type { ModelMeta } from "#lib/types.js";
+
+export const meta: ModelMeta = {
+  slug: "farquhar2017",
+  title: "Farquhar & Busch 2017",
+  journal: "New Phytologist",
+  license: "© The Authors, New Phytologist Trust",
+  DOI: "10.1111/nph.14512",
+  tags: {
+    "Part of Photosynthesis": ["CBB Cycle", "Photorespiration"],
+    "Model type": ["Steady State"],
+    "Explains data": ["Gas exchange"],
+    Organism: ["Theoretical"],
+    "PMF description": [],
+  },
+  analyses: [
+    {
+      type: "sweep",
+      title: "Light response near the compensation point",
+      parameter: "I",
+      min: 0,
+      max: 100,
+      steps: 101,
+      yMin: -1.5,
+      yLabel: "A / µmol m⁻² s⁻¹",
+      selectedKeys: ["A"],
+    },
+    {
+      type: "sweep",
+      title: "Chloroplastic CO₂",
+      parameter: "I",
+      min: 0,
+      max: 100,
+      steps: 101,
+      yMin: 0,
+      yLabel: "Cc/P / µmol mol⁻¹",
+      selectedKeys: ["Cc"],
+    },
+    {
+      type: "sweep",
+      title: "Laisk approach: A at constant Ci",
+      parameter: "I",
+      min: 0,
+      max: 400,
+      steps: 201,
+      yMin: -1.2,
+      yMax: 0.5,
+      yLabel: "A / µmol m⁻² s⁻¹",
+      selectedKeys: ["A_i"],
+    },
+    {
+      type: "sweep",
+      title: "Apparent inhibition of Rd (simplest version, Eqn 17)",
+      parameter: "Ca",
+      min: 100,
+      max: 2000,
+      steps: 191,
+      yMin: 0,
+      yLabel: "1 − m2/m1 / %",
+      selectedKeys: ["inhibition"],
+    },
+  ],
+  contributors: [
+    {
+      desc: "Initial implementation and validation figures",
+      date: new Date(2026, 10),
+      contributor: contributors.marvinvanaalst,
+    },
+  ],
+};
