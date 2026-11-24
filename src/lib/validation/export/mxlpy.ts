@@ -702,6 +702,13 @@ function plotLines(plot: Plot, ax: string, v: Validation): string[] {
       } else {
         lines.push(`${target}.plot(${x}, ${y}${styleKwargs(s)}${label})`);
       }
+      if (s.endLabel) {
+        // Just right of the last point, as the site's direct labels
+        const last = (e: string) => `np.asarray(${e})[-1]`;
+        lines.push(
+          `${target}.annotate(${str(s.endLabel)}, (${last(x)}, ${last(y)}), xytext=(3, 0), textcoords="offset points", va="center", fontsize=8, annotation_clip=False)`,
+        );
+      }
     }
     if (plot.logX) lines.push(`${ax}.set_xscale("log")`);
     if (plot.xLabel) lines.push(`${ax}.set_xlabel(${str(plot.xLabel)})`);
