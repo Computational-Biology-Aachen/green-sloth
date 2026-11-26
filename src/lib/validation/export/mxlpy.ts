@@ -12,6 +12,7 @@ import { scanX } from "../helpers";
 import { OPS } from "../ops";
 import type {
   Annotation,
+  LinePlot,
   LineSeries,
   Mca,
   ModelEdit,
@@ -648,6 +649,15 @@ function styleKwargs(s: LineSeries): string {
   return kw.map((k) => `, ${k}`).join("");
 }
 
+/** `ax.legend(...)`; `"right"` puts it outside the plot area, as the site does. */
+function legendLine(ax: string, plot: LinePlot): string {
+  const kw =
+    plot.legendPosition === "right"
+      ? `loc="upper left", bbox_to_anchor=(1.02, 1), fontsize="small"`
+      : "";
+  return `${ax}.legend(${kw})`;
+}
+
 function ruleLine(ax: string, fn: string, r: Rule): string {
   const kw = [
     r.color && `color=${str(r.color)}`,
@@ -697,8 +707,14 @@ function plotLines(plot: Plot, ax: string, v: Validation): string[] {
       const x = py(s.x ?? plot.x);
       const y = py(s.of);
       if (s.err) {
+        const bars = [
+          s.errLineWidth !== undefined && `, elinewidth=${s.errLineWidth}`,
+          s.capSize !== undefined && `, capsize=${s.capSize}`,
+        ].filter(Boolean);
+        // A series without a line or marker of its own keeps the old "^" points
+        const own = s.style === "markers" || s.marker || s.dash;
         lines.push(
-          `${target}.errorbar(${x}, ${y}, yerr=${py(s.err)}, fmt="^"${label})`,
+          `${target}.errorbar(${x}, ${y}, yerr=${py(s.err)}${own ? "" : `, fmt="^"`}${styleKwargs(s)}${bars.join("")}${label})`,
         );
       } else {
         lines.push(`${target}.plot(${x}, ${y}${styleKwargs(s)}${label})`);
@@ -716,6 +732,11 @@ function plotLines(plot: Plot, ax: string, v: Validation): string[] {
     if (plot.yLabel) lines.push(`${ax}.set_ylabel(${str(plot.yLabel)})`);
     if (plot.xLim) lines.push(`${ax}.set_xlim(${plot.xLim.join(", ")})`);
     if (plot.yLim) lines.push(`${ax}.set_ylim(${plot.yLim.join(", ")})`);
+    if (plot.xTicks) {
+      const labels = plot.xTickLabels ? `, ${literal(plot.xTickLabels)}` : "";
+      lines.push(`${ax}.set_xticks(${literal(plot.xTicks)}${labels})`);
+    }
+    if (plot.yTicks) lines.push(`${ax}.set_yticks(${literal(plot.yTicks)})`);
     if (right && plot.yRightLabel) {
       lines.push(`${ax}_right.set_ylabel(${str(plot.yRightLabel)})`);
     }
@@ -727,7 +748,7 @@ function plotLines(plot: Plot, ax: string, v: Validation): string[] {
     for (const p of plot.phases ?? []) {
       lines.push(`${ax}.axvspan(${p.from}, ${p.to}, color="gray", alpha=0.3)`);
     }
-    if (plot.y.some((s) => s.label)) lines.push(`${ax}.legend()`);
+    if (plot.y.some((s) => s.label)) lines.push(legendLine(ax, plot));
   } else if (plot.type === "scatter") {
     for (const s of plot.series) {
       const label = s.label ? `, label=${str(s.label)}` : "";
