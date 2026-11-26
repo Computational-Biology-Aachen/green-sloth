@@ -325,6 +325,20 @@ export const meta: MechanismMeta = {
       },
     },
     {
+      id: "evans2013",
+      citation: "Evans 2013",
+      year: 2013,
+      doi: "10.1111/j.1365-3040.2012.02591.x",
+      slug: "evans2013",
+      branch: "gm",
+      buildsOn: ["bernacchi2002"],
+      choices: {
+        "finite-mesophyll-conductance": "anatomical",
+        temperature: "arrhenius",
+        "canopy-scaling": "leaf",
+      },
+    },
+    {
       id: "tomas2013",
       citation: "Tomás 2013",
       year: 2013,

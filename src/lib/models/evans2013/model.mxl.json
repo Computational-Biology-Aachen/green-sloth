@@ -1,0 +1,696 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Computational-Biology-Aachen/mxl-schemas/main/v0/steady-state-model.schema.json",
+  "spec_version": "0.2",
+  "kind": "steady-state",
+  "model_id": "evans2013",
+  "model": {
+    "parameters": {
+      "T_leaf": {
+        "value": {
+          "type": "Num",
+          "value": 25
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "T_leaf",
+        "texName": "T",
+        "slider": {
+          "min": "5",
+          "max": "45",
+          "step": "0.5"
+        }
+      },
+      "rhoH25": {
+        "value": {
+          "type": "Num",
+          "value": 33.06
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -3
+            },
+            {
+              "kind": "bar",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "rhoH25",
+        "texName": "\\rho H_{25}"
+      },
+      "T_H": {
+        "value": {
+          "type": "Num",
+          "value": 2400
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "kelvin",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "T_H",
+        "texName": "T_H"
+      },
+      "D0": {
+        "value": {
+          "type": "Num",
+          "value": 0.00000181
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "D0",
+        "texName": "D_0"
+      },
+      "E_D": {
+        "value": {
+          "type": "Num",
+          "value": 16900
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "E_D",
+        "texName": "E_D"
+      },
+      "R": {
+        "value": {
+          "type": "Num",
+          "value": 8.314
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "kelvin",
+              "exponent": -1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "R",
+        "texName": "\\mathcal{R}"
+      },
+      "l": {
+        "value": {
+          "type": "Num",
+          "value": 1.5
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "prefix": "micro",
+              "exponent": 1
+            }
+          ]
+        },
+        "displayName": "l",
+        "texName": "l",
+        "slider": {
+          "min": "0.5",
+          "max": "5",
+          "step": "0.05"
+        }
+      },
+      "Sc": {
+        "value": {
+          "type": "Num",
+          "value": 22
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "Sc",
+        "texName": "S_c",
+        "slider": {
+          "min": "5",
+          "max": "40",
+          "step": "0.5"
+        }
+      },
+      "gmem25": {
+        "value": {
+          "type": "Num",
+          "value": 1.03
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "bar",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "gmem25",
+        "texName": "g_{mem,25}",
+        "slider": {
+          "min": "0.1",
+          "max": "5",
+          "step": "0.01"
+        }
+      },
+      "E_mem": {
+        "value": {
+          "type": "Num",
+          "value": 50000
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "joule",
+              "exponent": 1
+            },
+            {
+              "kind": "mole",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "E_mem",
+        "texName": "E",
+        "slider": {
+          "min": "0",
+          "max": "100000",
+          "step": "1000"
+        }
+      },
+      "gm25_lin": {
+        "value": {
+          "type": "Num",
+          "value": 0.57
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "bar",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "gm25_lin",
+        "texName": "g_{m,25}",
+        "slider": {
+          "min": "0.05",
+          "max": "2",
+          "step": "0.01"
+        }
+      },
+      "a_lin": {
+        "value": {
+          "type": "Num",
+          "value": -0.26
+        },
+        "unit": {
+          "factors": []
+        },
+        "displayName": "a_lin",
+        "texName": "a"
+      },
+      "b_lin": {
+        "value": {
+          "type": "Num",
+          "value": 0.051
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "celsius",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "b_lin",
+        "texName": "b"
+      }
+    },
+    "derived": {
+      "rhoH": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "rhoH25"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Mul",
+                "children": [
+                  {
+                    "type": "Name",
+                    "value": "T_H"
+                  },
+                  {
+                    "type": "Minus",
+                    "children": [
+                      {
+                        "type": "Divide",
+                        "children": [
+                          {
+                            "type": "Num",
+                            "value": 1
+                          },
+                          {
+                            "type": "Add",
+                            "children": [
+                              {
+                                "type": "Num",
+                                "value": 273
+                              },
+                              {
+                                "type": "Name",
+                                "value": "T_leaf"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Divide",
+                        "children": [
+                          {
+                            "type": "Num",
+                            "value": 1
+                          },
+                          {
+                            "type": "Num",
+                            "value": 298
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -3
+            },
+            {
+              "kind": "bar",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "rhoH",
+        "texName": "\\rho H"
+      },
+      "D": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "D0"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Divide",
+                "children": [
+                  {
+                    "type": "Minus",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "E_D"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "R"
+                      },
+                      {
+                        "type": "Add",
+                        "children": [
+                          {
+                            "type": "Num",
+                            "value": 273
+                          },
+                          {
+                            "type": "Name",
+                            "value": "T_leaf"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "metre",
+              "exponent": 2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "D",
+        "texName": "D"
+      },
+      "g_liq": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "rhoH"
+                },
+                {
+                  "type": "Name",
+                  "value": "D"
+                },
+                {
+                  "type": "Name",
+                  "value": "Sc"
+                }
+              ]
+            },
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "l"
+                },
+                {
+                  "type": "Num",
+                  "value": 0.000001
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "bar",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "g_liq",
+        "texName": "g_{liq}"
+      },
+      "g_mem": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "gmem25"
+            },
+            {
+              "type": "Exp",
+              "child": {
+                "type": "Divide",
+                "children": [
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Minus",
+                        "children": [
+                          {
+                            "type": "Name",
+                            "value": "T_leaf"
+                          },
+                          {
+                            "type": "Num",
+                            "value": 25
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Name",
+                        "value": "E_mem"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Mul",
+                    "children": [
+                      {
+                        "type": "Name",
+                        "value": "R"
+                      },
+                      {
+                        "type": "Num",
+                        "value": 298
+                      },
+                      {
+                        "type": "Add",
+                        "children": [
+                          {
+                            "type": "Num",
+                            "value": 273
+                          },
+                          {
+                            "type": "Name",
+                            "value": "T_leaf"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "bar",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "g_mem",
+        "texName": "g_{mem}"
+      },
+      "gm": {
+        "fn": {
+          "type": "Divide",
+          "children": [
+            {
+              "type": "Mul",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "g_liq"
+                },
+                {
+                  "type": "Name",
+                  "value": "g_mem"
+                }
+              ]
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "g_liq"
+                },
+                {
+                  "type": "Name",
+                  "value": "g_mem"
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "bar",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "gm",
+        "texName": "g_m"
+      },
+      "gm_lin": {
+        "fn": {
+          "type": "Mul",
+          "children": [
+            {
+              "type": "Name",
+              "value": "gm25_lin"
+            },
+            {
+              "type": "Add",
+              "children": [
+                {
+                  "type": "Name",
+                  "value": "a_lin"
+                },
+                {
+                  "type": "Mul",
+                  "children": [
+                    {
+                      "type": "Name",
+                      "value": "b_lin"
+                    },
+                    {
+                      "type": "Name",
+                      "value": "T_leaf"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "factors": [
+            {
+              "kind": "mole",
+              "exponent": 1
+            },
+            {
+              "kind": "metre",
+              "exponent": -2
+            },
+            {
+              "kind": "second",
+              "exponent": -1
+            },
+            {
+              "kind": "bar",
+              "exponent": -1
+            }
+          ]
+        },
+        "displayName": "gm_lin",
+        "texName": "g_{m,lin}"
+      }
+    }
+  }
+}

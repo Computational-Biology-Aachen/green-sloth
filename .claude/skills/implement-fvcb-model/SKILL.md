@@ -185,3 +185,5 @@ Stop and wait for the user when:
 - Argmax in `validation.ts`: `at(s.x, max(s.y), s.y)` in a `collect`; one marker style per point: `slice(col, i, i + 1)` as the series' `x`/`of`/`err`.
 - The notebook export dropped colour/marker on `err` series and ignored `xTicks`/`yTicks`/`legendPosition` until kumarathunge2019.
 - Headless site check: Python playwright needs `launch(executable_path=~/.cache/ms-playwright/chromium_headless_shell-<n>/chrome-headless-shell-linux64/chrome-headless-shell)` when its pinned build isn't installed. Stop the dev server by PID; `pkill -f <pattern>` also kills the calling shell.
+- A paper whose to-implement summary promises a full model may only have one small model-output figure (evans2013: an isotope measurement paper, with gm(T) from gliq and gmem in series as its only model, Fig 7). Implement just that, and treat a fitted regression line drawn over data (Fig 5) as a printed empirical model, not data.
+- PMC, Springer and WUR eDepot PDF links return HTML bot pages to curl, like Wiley; PLOS `article/file?…&type=printable` downloads directly.
