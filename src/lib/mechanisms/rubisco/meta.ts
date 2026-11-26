@@ -360,6 +360,24 @@ export const meta: MechanismMeta = {
       },
     },
     {
+      // Vcmax: peaked Arrhenius with acclimated EaV and ΔSV; Kc, Ko and Γ*
+      // standard Arrhenius (Bernacchi et al. 2001)
+      id: "kumarathunge2019",
+      citation: "Kumarathunge 2019",
+      year: 2019,
+      doi: "10.1111/nph.15668",
+      slug: "kumarathunge2019",
+      choices: {
+        resolution: FVCB_CORE.resolution,
+        "rubp-dependence": FVCB_CORE.rubp,
+        oxygenation: FVCB_CORE.oxygenation,
+        "effector-inhibition": FVCB_CORE.inhibition,
+        "activation-and-activase": FVCB_CORE.activation,
+        "co2-at-the-active-site": FVCB_CORE.co2,
+        temperature: ["arrhenius", "peaked"],
+      },
+    },
+    {
       id: "bellasio2019",
       citation: "Bellasio 2019",
       year: 2019,

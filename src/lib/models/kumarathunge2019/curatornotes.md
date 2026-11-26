@@ -1,0 +1,32 @@
+**Source.** Read from the accepted manuscript (Brookhaven report BNL-209679-2018-JAAM, OSTI), not the typeset New Phytologist version. Its Table 2 is the published model.
+
+**Reproduced.** Fig. 7a (ToptA275 predicted with Table 2 against observed, for the 18 mature-plant datasets) and Fig. 7b (the same with Kattge & Knorr 2007). All 36 predicted values equal the figure's: every point sits on the same whole degree as in the paper. The fit through them (Scots pine, Finland excluded, as in the authors' code) is y = 1.098 x − 2.20, r² = 0.81 (caption: y = 1.09 x − 2.20, r² = 0.80) for Fig. 7a, and y = 1.583 x − 13.76, r² = 0.84 (caption: 1.58 x − 13.82, 0.83) for Fig. 7b. The thick lines are the captions' fits, drawn as data.
+
+**Inputs from the authors' repository.** The paper prints neither the per-dataset inputs of Fig. 7 nor how Topt was predicted. Both come from the analysis code the paper links (bitbucket.org/Kumarathunge/photom, `R/plot_model_topts.R`, `R/Functions/functions_for_analysis.R`, `Tables/`):
+
+- Inputs per dataset: T_growth (30-day mean air temperature, or the growing-season mean gMDD0 where it is missing), T_home (BIO5/10, the warmest month's mean maximum), the observed ToptA275 ± SE, and the fitted RL25. Vcmax25 is the PFT mean of `Tables/pft_specific_vcmax.csv`, which is Table 2 unrounded (39.04, 82.97, 42.81, 80.40, 39.45, 78.30). The savanna dataset (EA-Te in the legend) takes the EA-Tr Vcmax25, as in the code.
+- Model: plantecophys' `Photosyn` (version 1.4-4 read) at Ci = 275 µmol mol⁻¹, its default PPFD of 1500 µmol m⁻² s⁻¹, α = 0.24, θ = 0.85, O = 210 mmol mol⁻¹ and Patm = 100 kPa. Kc, Ko and Γ\* are Bernacchi et al. (2001) as in Medlyn et al. (2002a): 404.9 µmol mol⁻¹ (79.43 kJ mol⁻¹), 278.4 mmol mol⁻¹ (36.38) and 42.75 µmol mol⁻¹ (37.83), scaled with the standard Arrhenius term from 298.15 K.
+- Topt: Anet at leaf temperatures 15, 16, …, 35 °C, and the leaf temperature of the largest value. The validation does the same with `at(T, max(A), A)`, so predictions are whole degrees.
+
+**Why Fig. 7 uses `A_net_h` and unrounded coefficients.** The code differs from the printed equations in two ways. With Table 2's printed values and Eqn 2's plain minimum, three of the 18 predictions in Fig. 7a move by 1 °C (semi-arid woodland 28, savanna 33, AU-QLD rainforest 30). With the printed values and Photosyn's minimum, one moves (Panama, 31). On a continuous temperature axis the shifts are below 0.5 °C, so these are grid effects.
+
+- Photosyn combines Ac and Aj with a hyperbolic minimum of curvature 0.9999, `(Ac + Aj − √((Ac + Aj)² − 4 θh Ac Aj)) / (2 θh)`. That is about 1 % below min(Ac, Aj) where the two meet. `A_net` follows Eqn 2 (min); `A_net_h` is the Photosyn form that Fig. 7 needs.
+- The code uses Table 2's coefficients unrounded: JVr = 2.55684 − 0.03707 T_home − 0.02019 (T_growth − T_home), ΔSJ = 658.7761 − 0.8431 T_home − 0.5194 (T_growth − T_home), EaJ = 40.71109. Table 2's 0.0375 for the T_home slope of JVr is not the rounding of 0.03707; it may be a misprint for 0.0371. The model's defaults are Table 2 as printed, and Fig. 7a sets the code's values.
+
+**RL is not in Table 2.** Fig. 7a (the code) sets RL25 = Vcmax25 (0.0326 − 0.0006 T_growth), the seasonal RL25:Vcmax25 fit that Table 1 prints rounded as 0.03 − 0.001 T_growth, and scales it with Q10 = 1.2515 ("mean of all datasets", not printed). These are the model's defaults. Table 1's Arrhenius fits of RL (Eqn 9) have activation energies indistinguishable from zero and are not used. Fig. 7b uses the fitted RL25 per dataset (`rV_a` = |RL25| / Vcmax25, `rV_b` = 0), since Kattge & Knorr give none, with the same Q10.
+
+**Kattge & Knorr in Table 2's form.** Fig. 7b's functions (EaV 72 and EaJ 50 kJ mol⁻¹, ΔSV = 668.39 − 1.07 T_growth, ΔSJ = 659.7 − 0.75 T_growth, JVr = 2.59 − 0.035 T_growth, all as in the authors' code) fit Eqns 11 and 13 by setting the T_home slope equal to the deviation slope, which cancels T_home.
+
+**TPU.** Eqn 2 includes Wp = 3 TPU (Eqn 5), but the paper's analysis leaves it out: accounting for TPU did not change the fitted Vcmax and Jmax (Fig. S2), and Photosyn disables it below Ci = 400. The model has no Wp, and the paper gives no TPU value.
+
+**Not reproduced.** Figs 1–6 are data (fitted Topt, Ea, ΔS, Vcmax25, Jmax25 and JVr against T_growth or T_home) with regression lines whose coefficients are Table 1, fits to data, not model output. The crossed circle of Fig. 7a (the unacclimated Leuning 2002 parameters, ToptA275 ≈ 25 °C) is a single point with Leuning's Hd, which differs from Eqn 7's fixed 200 kJ mol⁻¹, and is left out. As a check of Eqn 8, Table 2's functions give ToptV = 33.2, 36.2 and 39.1 °C at T_growth 5, 15 and 25 °C, against Table 1's seasonal regression 32.1, 35.7 and 39.3. ToptJ (with T_home = T_growth) is 27.2, 31.0 and 35.0 against 29.2, 32.3 and 35.4. These agree as well as a regression on fitted values and a function of regression lines can be expected to.
+
+**Misprints.**
+
+- Eqn 7 prints the denominator as 1 + exp((Tk ΔS + Hd)/(Tk R)). With + Hd, the function no longer equals k25 at 25 °C. The numerator, Medlyn et al. (2002a) and Photosyn all have − Hd, which the model uses.
+- The Results say EaV and ΔSV are modelled "using Eqn 12" (adaptation, in T_home). Table 2 and Table 1's seasonal fits (39.7 + 1.14 T_growth, 645.1 − 0.38 T_growth) are Eqn 11, in T_growth, which the model follows.
+- Eqn 7's text gives Hd in kJ mol⁻¹, but its value as 200000 J mol⁻¹; the model uses J mol⁻¹. α is listed in mol mol⁻¹, which is right for a quantum yield.
+
+**Model.** Eqn 2: Anet = min(Wc, Wj)(1 − Γ\*/Ci) − RL, with Wc = Vcmax Ci / (Ci + Kc (1 + Oi/Ko)) (Eqn 3), Wj = J Ci / (4 (Ci + 2Γ\*)) (Eqn 4) and J the smaller root of Eqn 6. Vcmax and Jmax follow Eqn 7 with Hd = 200 kJ mol⁻¹ and Table 2's EaV, ΔSV, JVr (so Jmax25 = Vcmax25 JVr), EaJ and ΔSJ. ToptV and ToptJ are Eqn 8. Infinite gm, so Vcmax and Jmax are apparent values, as in the paper. Every function is explicit, so no root has to be chosen beyond Eqn 6's smaller one.
+
+**Assumed parameters.** The defaults (T_growth 12.9 °C, T_home 23.8 °C, Vcmax25 39.0) are Fig. 7a's DA-Te dataset (Mongolian oak, Japan). Ci = 275 µmol mol⁻¹ is Fig. 7's. PPFD = 1500 µmol m⁻² s⁻¹ is Photosyn's default, which the code leaves unset; the paper only names 1800 µmol m⁻² s⁻¹, as the fallback when fitting A–Ci curves without a measured PPFD. The functions were fitted for T_growth of about 3–30 °C and leaf temperatures of 1–50 °C.
